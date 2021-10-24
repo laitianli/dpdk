@@ -40,7 +40,7 @@ eal_runtime_config_path(void)
 
 	snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
 			RUNTIME_CONFIG_FNAME);
-	return buffer;
+	return buffer;/* /var/run/dpdk/rte/config */
 }
 
 /** Path of primary/secondary communication unix socket file. */

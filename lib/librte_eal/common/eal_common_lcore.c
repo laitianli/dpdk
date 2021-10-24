@@ -167,7 +167,7 @@ rte_eal_cpu_init(void)
 		"Support maximum %u logical core(s) by configuration.\n",
 		RTE_MAX_LCORE);
 	RTE_LOG(INFO, EAL, "Detected %u lcore(s)\n", config->lcore_count);
-
+	/* 根据socket id进行排序 */
 	/* sort all socket id's in ascending order */
 	qsort(lcore_to_socket_id, RTE_DIM(lcore_to_socket_id),
 			sizeof(lcore_to_socket_id[0]), socket_id_cmp);

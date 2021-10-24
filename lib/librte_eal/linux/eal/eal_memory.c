@@ -2306,7 +2306,7 @@ memseg_primary_init(void)
 	n_memtypes = cur_type;
 
 	/* set up limits for types */
-	max_mem = (uint64_t)RTE_MAX_MEM_MB << 20;
+	max_mem = (uint64_t)RTE_MAX_MEM_MB << 20;/* 512GB */
 	max_mem_per_type = RTE_MIN((uint64_t)RTE_MAX_MEM_MB_PER_TYPE << 20,
 			max_mem / n_memtypes);
 	/*
@@ -2381,7 +2381,7 @@ memseg_primary_init(void)
 				goto out;
 			}
 			msl = &mcfg->memsegs[msl_idx++];
-
+			/* 分配到虚拟地址 */
 			if (alloc_memseg_list(msl, pagesz, n_segs,
 					socket_id, cur_seglist))
 				goto out;

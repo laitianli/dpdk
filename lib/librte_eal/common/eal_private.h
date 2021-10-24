@@ -35,11 +35,12 @@ struct lcore_config {
 };
 
 extern struct lcore_config lcore_config[RTE_MAX_LCORE];
-
+/* 全局配置信息结构 */
 /**
  * The global RTE configuration structure.
  */
 struct rte_config {
+	/* rte_eal_cpu_init()函数中赋值 */
 	uint32_t master_lcore;       /**< Id of the master lcore */
 	uint32_t lcore_count;        /**< Number of available logical cores. */
 	uint32_t numa_node_count;    /**< Number of detected NUMA nodes. */

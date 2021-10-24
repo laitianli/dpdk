@@ -20,7 +20,7 @@
 #else
 #define MAX_HUGEPAGE_SIZES 3  /**< support up to 3 page sizes */
 #endif
-
+/* 每个类型的大页都对应一个结构，如2M对应一个struct hugepage_info, 1G也对应一个struct hugepage_info */
 /*
  * internal configuration structure for the number, size and
  * mount points of hugepages
@@ -76,8 +76,9 @@ struct internal_config {
 	char *hugepage_dir;         /**< specific hugetlbfs directory to use */
 	char *user_mbuf_pool_ops_name;
 			/**< user defined mbuf pool ops name */
+	/* 系统支持的大页内存种类数：如一页4K，一页2M，一页1G */
 	unsigned num_hugepage_sizes;      /**< how many sizes on this system */
-	struct hugepage_info hugepage_info[MAX_HUGEPAGE_SIZES];
+	struct hugepage_info hugepage_info[MAX_HUGEPAGE_SIZES];/* x86最多支持三种大页内存，因此数组最大为3 */
 	enum rte_iova_mode iova_mode ;    /**< Set IOVA mode on this system  */
 	rte_cpuset_t ctrl_cpuset;         /**< cpuset for ctrl threads */
 	volatile unsigned int init_complete;

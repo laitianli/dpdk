@@ -491,7 +491,7 @@ eal_hugepage_info_init(void)
 {
 	struct hugepage_info *hpi, *tmp_hpi;
 	unsigned int i;
-
+	/* 从/sys/kernel/mm/hugepage目录中获取大页信息 */
 	if (hugepage_info_init() < 0)
 		return -1;
 
@@ -500,7 +500,7 @@ eal_hugepage_info_init(void)
 		return 0;
 
 	hpi = &internal_config.hugepage_info[0];
-
+	/* 将internal_config.hugepage_info信息保存到文件/var/run/dpdk/rte/hugepage_info文件中 */
 	tmp_hpi = create_shared_memory(eal_hugepage_info_path(),
 			sizeof(internal_config.hugepage_info));
 	if (tmp_hpi == NULL) {

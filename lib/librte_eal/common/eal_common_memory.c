@@ -68,7 +68,7 @@ eal_get_virtual_area(void *requested_addr, size_t *size,
 #ifdef RTE_ARCH_64
 	if (next_baseaddr == NULL && internal_config.base_virtaddr == 0 &&
 			rte_eal_process_type() == RTE_PROC_PRIMARY)
-		next_baseaddr = (void *) eal_get_baseaddr();
+		next_baseaddr = (void *) eal_get_baseaddr();/* 4GB */
 #endif
 	if (requested_addr == NULL && next_baseaddr != NULL) {
 		requested_addr = next_baseaddr;

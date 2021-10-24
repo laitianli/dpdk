@@ -6,7 +6,22 @@
 
 #include <rte_common.h>
 #include <rte_cpuflags.h>
-
+/* 
+ *RTE_COMPILE_TIME_CPUFLAGS=RTE_CPUFLAG_SSE,
+ 							RTE_CPUFLAG_SSE2,
+ 							RTE_CPUFLAG_SSE3,
+ 							RTE_CPUFLAG_SSSE3,
+ 							RTE_CPUFLAG_SSE4_1,
+ 							RTE_CPUFLAG_SSE4_2,
+ 							RTE_CPUFLAG_AES,
+ 							RTE_CPUFLAG_PCLMULQDQ,
+ 							RTE_CPUFLAG_AVX,
+ 							RTE_CPUFLAG_RDRAND,
+ 							RTE_CPUFLAG_RDSEED,
+ 							RTE_CPUFLAG_FSGSBASE,
+ 							RTE_CPUFLAG_F16C,
+ 							RTE_CPUFLAG_AVX2  
+ */
 int
 rte_cpu_is_supported(void)
 {
@@ -17,7 +32,7 @@ rte_cpu_is_supported(void)
 	unsigned count = RTE_DIM(compile_time_flags), i;
 	int ret;
 
-	for (i = 0; i < count; i++) {
+	for (i = 0; i < count; i++) { /* 判断cpu特性 */
 		ret = rte_cpu_get_flag_enabled(compile_time_flags[i]);
 
 		if (ret < 0) {

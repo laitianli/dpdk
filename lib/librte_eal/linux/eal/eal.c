@@ -83,15 +83,15 @@ static struct flock wr_lock = {
 		.l_start = offsetof(struct rte_mem_config, memsegs),
 		.l_len = sizeof(early_mem_config.memsegs),
 };
-
+/* 配置信息，其中mem_config会保存在文件/var/run/dpdk/config文件里 */
 /* Address of global and public configuration */
 static struct rte_config rte_config = {
 		.mem_config = &early_mem_config,
 };
-
+/* 逻辑核相关配置文件 */
 /* internal configuration (per-core) */
 struct lcore_config lcore_config[RTE_MAX_LCORE];
-
+/* 与参数相关的配置文件 */
 /* internal configuration */
 struct internal_config internal_config;
 
@@ -256,7 +256,7 @@ rte_eal_mbuf_user_pool_ops(void)
 struct rte_config *
 rte_eal_get_configuration(void)
 {
-	return &rte_config;
+	return &rte_config; /* 此变量将保存在共享内存中 */
 }
 
 enum rte_iova_mode
@@ -296,7 +296,7 @@ eal_parse_sysfs_value(const char *filename, unsigned long *val)
 	return 0;
 }
 
-
+/* 创建/var/run/dpdk/rte/config配置文件，用于存放rte_config.mem_config结构体信息 */
 /* create memory configuration in shared/mmap memory. Take out
  * a write lock on the memsegs, so we can auto-detect primary/secondary.
  * This means we never close the file while running (auto-close on exit).
@@ -498,7 +498,7 @@ rte_config_init(void)
 
 	switch (rte_config.process_type){
 	case RTE_PROC_PRIMARY:
-		if (rte_eal_config_create() < 0)
+		if (rte_eal_config_create() < 0) /* 主进程中创建/var/run/dpdk/rte/config配置文件 */
 			return -1;
 		eal_mcfg_update_from_internal();
 		break;
@@ -510,7 +510,7 @@ rte_config_init(void)
 			RTE_LOG(ERR, EAL, "Primary and secondary process DPDK version mismatch\n");
 			return -1;
 		}
-		if (rte_eal_config_reattach() < 0)
+		if (rte_eal_config_reattach() < 0)/* 保证进程获取的mem_config地址与主进程一样 */
 			return -1;
 		eal_mcfg_update_internal();
 		break;
@@ -954,7 +954,7 @@ is_iommu_enabled(void)
 
 	return n > 2;
 }
-
+/* dpdk初始化接口 */
 /* Launch threads, called at application init(). */
 int
 rte_eal_init(int argc, char **argv)
@@ -967,7 +967,7 @@ rte_eal_init(int argc, char **argv)
 	char cpuset[RTE_CPU_AFFINITY_STR_LEN];
 	char thread_name[RTE_MAX_THREAD_NAME_LEN];
 	bool phys_addrs;
-
+	/* 判断cpu特性是否支持 */
 	/* checks if the machine is adequate */
 	if (!rte_cpu_is_supported()) {
 		rte_eal_init_alert("unsupported cpu type.");
@@ -984,18 +984,18 @@ rte_eal_init(int argc, char **argv)
 	p = strrchr(argv[0], '/');
 	strlcpy(logid, p ? p + 1 : argv[0], sizeof(logid));
 	thread_id = pthread_self();
-
+	/* 初始化配置结果体 */
 	eal_reset_internal_config(&internal_config);
-
+	/* 设置log level */
 	/* set log level as early as possible */
 	eal_log_level_parse(argc, argv);
-
+	/* rte_config中与cpu相关的初始化 */
 	if (rte_eal_cpu_init() < 0) {
 		rte_eal_init_alert("Cannot detect lcores.");
 		rte_errno = ENOTSUP;
 		return -1;
 	}
-
+	/* dpdk参数解析，并存到internal_config结构体中 */
 	fctret = eal_parse_args(argc, argv);
 	if (fctret < 0) {
 		rte_eal_init_alert("Invalid 'command line' arguments.");
@@ -1003,30 +1003,30 @@ rte_eal_init(int argc, char **argv)
 		rte_atomic32_clear(&run_once);
 		return -1;
 	}
-
+	/* 加载PMD相关的库 */
 	if (eal_plugins_init() < 0) {
 		rte_eal_init_alert("Cannot init plugins");
 		rte_errno = EINVAL;
 		rte_atomic32_clear(&run_once);
 		return -1;
 	}
-
+	/* 是什么功能？ */
 	if (eal_option_device_parse()) {
 		rte_errno = ENODEV;
 		rte_atomic32_clear(&run_once);
 		return -1;
 	}
-
+	/* rte_config.mem_config保存的文件/var/run/dpdk/rte/config的创建 */
 	if (rte_config_init() < 0) {
 		rte_eal_init_alert("Cannot init config");
 		return -1;
 	}
-
+	/* 中断线程的创建 */
 	if (rte_eal_intr_init() < 0) {
 		rte_eal_init_alert("Cannot init interrupt-handling thread");
 		return -1;
 	}
-
+	/* 定时器的初始化 */
 	if (rte_eal_alarm_init() < 0) {
 		rte_eal_init_alert("Cannot init alarm");
 		/* rte_eal_alarm_init sets rte_errno on failure. */
@@ -1049,7 +1049,7 @@ rte_eal_init(int argc, char **argv)
 		rte_eal_init_alert("failed to register mp callback for hotplug");
 		return -1;
 	}
-
+	/* 总线扫描: pci,vdev/vmbus等6种总线的扫描 */
 	if (rte_bus_scan()) {
 		rte_eal_init_alert("Cannot scan the buses for devices");
 		rte_errno = ENODEV;
@@ -1122,7 +1122,10 @@ rte_eal_init(int argc, char **argv)
 	if (internal_config.no_hugetlbfs == 0) {
 		/* rte_config isn't initialized yet */
 		ret = internal_config.process_type == RTE_PROC_PRIMARY ?
-				eal_hugepage_info_init() :
+				eal_hugepage_info_init() : /* 大页内存初始化---从/sys/kernel/mem/hugepage目录中读取大页信息，
+											* 保存在internal_config.hugepage_info中 
+											* 同时将这些信息保存到/var/run/dpdk/rte/hugepage_info文件中
+											*/
 				eal_hugepage_info_read();
 		if (ret < 0) {
 			rte_eal_init_alert("Cannot get hugepage information.");
@@ -1167,7 +1170,7 @@ rte_eal_init(int argc, char **argv)
 	 * not present in primary processes, so to avoid any potential issues,
 	 * initialize memzones first.
 	 */
-	if (rte_eal_memzone_init() < 0) {
+	if (rte_eal_memzone_init() < 0) {/* 初始化memzone */
 		rte_eal_init_alert("Cannot init memzone");
 		rte_errno = ENODEV;
 		return -1;
