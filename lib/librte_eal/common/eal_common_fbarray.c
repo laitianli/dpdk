@@ -68,9 +68,9 @@ calc_mask_size(unsigned int len)
 static size_t
 calc_data_size(size_t page_sz, unsigned int elt_sz, unsigned int len)
 {
-	size_t data_sz = elt_sz * len;
-	size_t msk_sz = calc_mask_size(len);
-	return RTE_ALIGN_CEIL(data_sz + msk_sz, page_sz);
+	size_t data_sz = elt_sz * len; /* rte_memzone*2048总大小 */
+	size_t msk_sz = calc_mask_size(len); /* mask size */
+	return RTE_ALIGN_CEIL(data_sz + msk_sz, page_sz); /* 长度按页对齐 */
 }
 
 static struct used_mask *
@@ -708,7 +708,7 @@ fully_validate(const char *name, unsigned int elt_sz, unsigned int len)
 	}
 	return 0;
 }
-
+/* 位图初始化 */
 int
 rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
 		unsigned int elt_sz)
@@ -734,16 +734,16 @@ rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
 		rte_errno = ENOMEM;
 		return -1;
 	}
-
+	/* 系统内存页大小（默认为4KB） */
 	page_sz = sysconf(_SC_PAGESIZE);
 	if (page_sz == (size_t)-1) {
 		free(ma);
 		return -1;
 	}
-
+	/* 按页对齐，计算出rte_memzone * RTE_MAX_MEMZONE + mask size的总大小  */
 	/* calculate our memory limits */
 	mmap_len = calc_data_size(page_sz, elt_sz, len);
-
+	/* 分配匿名页地址,mmap_len会按系统页对齐 */
 	data = eal_get_virtual_area(NULL, &mmap_len, page_sz, 0, 0);
 	if (data == NULL) {
 		free(ma);
@@ -764,6 +764,7 @@ rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
 			goto fail;
 		}
 	} else {
+		/* /var/run/dpdk/rte/fbarray_memzone or /var/run/dpdk/rte/fbarray_memseg-2048K-%d-%d */
 		eal_get_fbarray_path(path, sizeof(path), name);
 
 		/*
@@ -793,14 +794,14 @@ rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
 			rte_errno = errno;
 			goto fail;
 		}
-
+		/* 文件映射 虚拟地址 */
 		if (resize_and_map(fd, data, mmap_len))
 			goto fail;
 	}
 	ma->addr = data;
 	ma->len = mmap_len;
 	ma->fd = fd;
-
+	/* 插入到全局列表中 */
 	/* do not close fd - keep it until detach/destroy */
 	TAILQ_INSERT_TAIL(&mem_area_tailq, ma, next);
 
@@ -813,7 +814,7 @@ rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
 	arr->len = len;
 	arr->elt_sz = elt_sz;
 	arr->count = 0;
-
+	/* 在内存块最后，存放rte_memzone的mask */
 	msk = get_used_mask(data, elt_sz, len);
 	msk->n_masks = MASK_LEN_TO_IDX(RTE_ALIGN_CEIL(len, MASK_ALIGN));
 

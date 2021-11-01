@@ -227,7 +227,7 @@ get_hugepage_dir(uint64_t hugepage_sz, char *hugedir, int len)
 			RTE_LOG(ERR, EAL, "Error parsing %s\n", proc_mounts);
 			break; /* return NULL */
 		}
-
+		/* 若指定了--huge-dir参数，则只检查指定目录 */
 		/* we have a specified --huge-dir option, only examine that dir */
 		if (internal_config.hugepage_dir != NULL &&
 				strcmp(splitstr[MOUNTPT], internal_config.hugepage_dir) != 0)
@@ -259,7 +259,7 @@ get_hugepage_dir(uint64_t hugepage_sz, char *hugedir, int len)
 	fclose(fd);
 	return retval;
 }
-
+/* 清空/dev/hugepage目录下的所有rtemap_x的所有文件 */
 /*
  * Clear the hugepage directory of whatever hugepage files
  * there are. Checks if the file is locked (i.e.
@@ -374,7 +374,7 @@ calc_num_pages(struct hugepage_info *hpi, struct dirent *dirent)
 #endif
 	}
 }
-
+/* 初始化internal_config.hugepage_info结构 */
 static int
 hugepage_info_init(void)
 {	const char dirent_start_text[] = "hugepages-";
@@ -480,7 +480,9 @@ hugepage_info_init(void)
 	/* no valid hugepage mounts available, return error */
 	return -1;
 }
-
+/* 1.初始化internal_config.hugepage_info[] 
+ * 2.将internal_config.hugepage_info[]信息保存文件/var/run/dpdk/rte/hugepage_info中
+ */
 /*
  * when we initialize the hugepage info, everything goes
  * to socket 0 by default. it will later get sorted by memory
@@ -491,7 +493,7 @@ eal_hugepage_info_init(void)
 {
 	struct hugepage_info *hpi, *tmp_hpi;
 	unsigned int i;
-	/* 从/sys/kernel/mm/hugepage目录中获取大页信息 */
+	/* 1.从/sys/kernel/mm/hugepage目录中获取大页信息，初始化 internal_config.hugepage_info[] */
 	if (hugepage_info_init() < 0)
 		return -1;
 
@@ -500,7 +502,7 @@ eal_hugepage_info_init(void)
 		return 0;
 
 	hpi = &internal_config.hugepage_info[0];
-	/* 将internal_config.hugepage_info信息保存到文件/var/run/dpdk/rte/hugepage_info文件中 */
+	/* 2.将internal_config.hugepage_info信息保存到文件/var/run/dpdk/rte/hugepage_info文件中 */
 	tmp_hpi = create_shared_memory(eal_hugepage_info_path(),
 			sizeof(internal_config.hugepage_info));
 	if (tmp_hpi == NULL) {

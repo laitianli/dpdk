@@ -371,7 +371,9 @@ rte_eal_memzone_init(void)
 	mcfg = rte_eal_get_configuration()->mem_config;
 
 	rte_rwlock_write_lock(&mcfg->mlock);
-
+	/* rte_fbarray_init创建2560个rte_memzone内存和对应位图内存
+	 * /var/run/dpdk/rte/fbarray_memzone
+	 */
 	if (rte_eal_process_type() == RTE_PROC_PRIMARY &&
 			rte_fbarray_init(&mcfg->memzones, "memzone",
 			RTE_MAX_MEMZONE, sizeof(struct rte_memzone))) {

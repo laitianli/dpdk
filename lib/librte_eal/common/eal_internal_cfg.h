@@ -20,7 +20,7 @@
 #else
 #define MAX_HUGEPAGE_SIZES 3  /**< support up to 3 page sizes */
 #endif
-/* 每个类型的大页都对应一个结构，如2M对应一个struct hugepage_info, 1G也对应一个struct hugepage_info */
+/* 每个类型的大页(2MB和1GB)都对应一个结构，如2M对应一个struct hugepage_info, 1G也对应一个struct hugepage_info */
 /*
  * internal configuration structure for the number, size and
  * mount points of hugepages

@@ -574,7 +574,7 @@ close_socket_fd(void)
 	create_socket_path(peer_name, path, sizeof(path));
 	unlink(path);
 }
-
+/* 与vbus相关的初始化，vbus会用到unix_socket，这里主要创建unix socket和线程 */
 int
 rte_mp_channel_init(void)
 {

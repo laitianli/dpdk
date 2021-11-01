@@ -262,7 +262,7 @@ elem_start_pt(struct malloc_elem *elem, size_t size, unsigned align,
 			 * couldn't fit all data into one physically contiguous
 			 * block, try again with lower addresses.
 			 */
-			if (!elem_check_phys_contig(elem->msl,
+			if (!elem_check_phys_contig(elem->msl, /* 判断物理地址是否连续 */
 					(void *)new_data_start,
 					new_data_size)) {
 				elem_size -= align;
@@ -492,10 +492,14 @@ join_elem(struct malloc_elem *elem1, struct malloc_elem *elem2)
 		inner->size = elem1->size - elem1->pad;
 	}
 }
-
+/* 将elem与elem->next或elem->prev合并。
+ * 前提: elem与 elem->next/elem->prev地址要连继续
+ * 删除elem->next/elem->prev的头部和尾部信息。
+ */
 struct malloc_elem *
 malloc_elem_join_adjacent_free(struct malloc_elem *elem)
 {
+	/* elem 与 elem->next合并 */
 	/*
 	 * check if next element exists, is adjacent and is free, if so join
 	 * with it, need to remove from free list.
@@ -511,12 +515,12 @@ malloc_elem_join_adjacent_free(struct malloc_elem *elem)
 
 		/* remove from free list, join to this one */
 		malloc_elem_free_list_remove(elem->next);
-		join_elem(elem, elem->next);
+		join_elem(elem, elem->next); /* 合并 */
 
 		/* erase header, trailer and pad */
 		memset(erase, MALLOC_POISON, erase_len);
 	}
-
+	/* elem 与 elem->prev合并 */
 	/*
 	 * check if prev element exists, is adjacent and is free, if so join
 	 * with it, need to remove from free list.

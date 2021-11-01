@@ -41,10 +41,10 @@ struct rte_mem_config {
 
 	rte_rwlock_t memory_hotplug_lock;
 	/**< Indicates whether memory hotplug request is in progress. */
-
+	/* 在函数 rte_eal_memzone_init() 中初始化 */
 	/* memory segments and zones */
 	struct rte_fbarray memzones; /**< Memzone descriptors. */
-
+	/* 在函数 memseg_primary_init() 中初始化 */
 	struct rte_memseg_list memsegs[RTE_MAX_MEMSEG_LISTS];
 	/**< List of dynamic arrays holding memsegs */
 

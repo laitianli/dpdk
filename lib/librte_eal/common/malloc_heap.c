@@ -99,10 +99,10 @@ malloc_heap_add_memory(struct malloc_heap *heap, struct rte_memseg_list *msl,
 
 	malloc_elem_init(elem, heap, msl, len, elem, len);
 
-	malloc_elem_insert(elem);
-
+	malloc_elem_insert(elem); /* 将elem插入到heap列表 */
+	/* 虚拟地址连续，两页之间就可以合并 */
 	elem = malloc_elem_join_adjacent_free(elem);
-
+	/* 将elem插入到heap->free_head[]列表中 */
 	malloc_elem_free_list_insert(elem);
 
 	return elem;
@@ -1314,7 +1314,7 @@ malloc_heap_destroy(struct malloc_heap *heap)
 
 	return 0;
 }
-
+/* 将memseg重新组织成mem heap，当memseg地址连续的 */
 int
 rte_eal_malloc_heap_init(void)
 {

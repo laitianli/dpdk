@@ -41,6 +41,7 @@ static void *next_baseaddr;
 static uint64_t system_page_sz;
 
 #define MAX_MMAP_WITH_DEFINED_ADDR_TRIES 5
+/* 从匿名页中获取虚拟地址（地址只读） */
 void *
 eal_get_virtual_area(void *requested_addr, size_t *size,
 		size_t page_sz, int flags, int mmap_flags)
@@ -53,7 +54,7 @@ eal_get_virtual_area(void *requested_addr, size_t *size,
 	if (system_page_sz == 0)
 		system_page_sz = sysconf(_SC_PAGESIZE);
 
-	mmap_flags |= MAP_PRIVATE | MAP_ANONYMOUS;
+	mmap_flags |= MAP_PRIVATE | MAP_ANONYMOUS; /* 匿名页 */
 
 	RTE_LOG(DEBUG, EAL, "Ask a virtual area of 0x%zx bytes\n", *size);
 
@@ -61,11 +62,12 @@ eal_get_virtual_area(void *requested_addr, size_t *size,
 	allow_shrink = (flags & EAL_VIRTUAL_AREA_ALLOW_SHRINK) > 0;
 	unmap = (flags & EAL_VIRTUAL_AREA_UNMAP) > 0;
 
+	/* 在dpdk参数--base-virtaddr指定了虚拟地址 */
 	if (next_baseaddr == NULL && internal_config.base_virtaddr != 0 &&
 			rte_eal_process_type() == RTE_PROC_PRIMARY)
 		next_baseaddr = (void *) internal_config.base_virtaddr;
 
-#ifdef RTE_ARCH_64
+#ifdef RTE_ARCH_64 /* 没有指定，则从4GB的空间大小 */
 	if (next_baseaddr == NULL && internal_config.base_virtaddr == 0 &&
 			rte_eal_process_type() == RTE_PROC_PRIMARY)
 		next_baseaddr = (void *) eal_get_baseaddr();/* 4GB */
@@ -96,12 +98,13 @@ eal_get_virtual_area(void *requested_addr, size_t *size,
 			rte_errno = E2BIG;
 			return NULL;
 		}
-
+		/* 以只读方式，获取匿名页 */
 		mapped_addr = mmap(requested_addr, (size_t)map_sz, PROT_READ,
 				mmap_flags, -1, 0);
+		/* 处理不允许失败标志，把内存大小减小一页 */
 		if (mapped_addr == MAP_FAILED && allow_shrink)
 			*size -= page_sz;
-
+		/* 从另外地址（+pagesize）获取虚拟地址 */
 		if (mapped_addr != MAP_FAILED && addr_is_hint &&
 		    mapped_addr != requested_addr) {
 			try++;
@@ -901,15 +904,17 @@ rte_eal_memory_init(void)
 
 	/* lock mem hotplug here, to prevent races while we init */
 	rte_mcfg_mem_read_lock();
-
+	/* 创建memory segment
+	 * /var/run/dpdk/rte/fbarray_memseg-2048K-0-{0~3}
+	 */
 	if (rte_eal_memseg_init() < 0)
 		goto fail;
-
+	/* 初始化fd_list全局数组，此数组与 rte_config.mem_config->memsegs[] 对应 */
 	if (eal_memalloc_init() < 0)
 		goto fail;
 
 	retval = rte_eal_process_type() == RTE_PROC_PRIMARY ?
-			rte_eal_hugepage_init() :
+			rte_eal_hugepage_init() : /* 分配大页并获取物理地址 */
 			rte_eal_hugepage_attach();
 	if (retval < 0)
 		goto fail;

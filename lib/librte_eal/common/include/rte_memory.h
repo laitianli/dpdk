@@ -70,8 +70,9 @@ struct rte_memseg {
  */
 struct rte_memseg_list {
 	RTE_STD_C11
-	union {
-		void *base_va;
+	/* base_va变量 memseg_primary_init()->alloc_va_space() 中分配，在 alloc_seg_walk()中使用 */
+	union { /* 保证在分配大页时用到了虚拟地址是连续 */
+		void *base_va; /* 用来存放大页组的起始地址 */
 		/**< Base virtual address for this memseg list. */
 		uint64_t addr_64;
 		/**< Makes sure addr is always 64-bits */

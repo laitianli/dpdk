@@ -1118,7 +1118,7 @@ rte_eal_init(int argc, char **argv)
 
 	RTE_LOG(INFO, EAL, "Selected IOVA mode '%s'\n",
 		rte_eal_iova_mode() == RTE_IOVA_PA ? "PA" : "VA");
-
+	/* 使用大页内存 */
 	if (internal_config.no_hugetlbfs == 0) {
 		/* rte_config isn't initialized yet */
 		ret = internal_config.process_type == RTE_PROC_PRIMARY ?
@@ -1150,7 +1150,7 @@ rte_eal_init(int argc, char **argv)
 				"RTE_LIBRTE_EAL_VMWARE_TSC_MAP_SUPPORT is not set\n");
 #endif
 	}
-
+	/* 日志初始化 */
 	if (rte_eal_log_init(logid, internal_config.syslog_facility) < 0) {
 		rte_eal_init_alert("Cannot init logging.");
 		rte_errno = ENOMEM;
@@ -1166,6 +1166,7 @@ rte_eal_init(int argc, char **argv)
 		return -1;
 	}
 #endif
+	/* rte_eal_memzone_init 创建2560个rte_memzone内存和对应位图内存 */
 	/* in secondary processes, memory init may allocate additional fbarrays
 	 * not present in primary processes, so to avoid any potential issues,
 	 * initialize memzones first.
@@ -1175,7 +1176,7 @@ rte_eal_init(int argc, char **argv)
 		rte_errno = ENODEV;
 		return -1;
 	}
-
+	/* 分配大页及物理地址 */
 	if (rte_eal_memory_init() < 0) {
 		rte_eal_init_alert("Cannot init memory");
 		rte_errno = ENOMEM;
@@ -1184,7 +1185,7 @@ rte_eal_init(int argc, char **argv)
 
 	/* the directories are locked during eal_hugepage_info_init */
 	eal_hugedirs_unlock();
-
+	/* 根据memseg_list初始化malloc_heap */
 	if (rte_eal_malloc_heap_init() < 0) {
 		rte_eal_init_alert("Cannot init malloc heap");
 		rte_errno = ENODEV;

@@ -821,6 +821,7 @@ alloc_memseg_list(struct rte_memseg_list *msl, uint64_t page_sz,
 
 	snprintf(name, sizeof(name), MEMSEG_LIST_FMT, page_sz >> 10, socket_id,
 		 type_msl_idx);
+	/* 分配 /var/run/dpdk/rte/fbarray_memseg-2048K-%d-%d 和位图 */
 	if (rte_fbarray_init(&msl->memseg_arr, name, n_segs,
 			sizeof(struct rte_memseg))) {
 		RTE_LOG(ERR, EAL, "Cannot allocate memseg list: %s\n",
@@ -838,7 +839,7 @@ alloc_memseg_list(struct rte_memseg_list *msl, uint64_t page_sz,
 
 	return 0;
 }
-
+/* 分配虚拟地址，此虚拟地址还不能访问（只读），此地址做为分配大页的起始地址 */
 static int
 alloc_va_space(struct rte_memseg_list *msl)
 {
@@ -860,7 +861,7 @@ alloc_va_space(struct rte_memseg_list *msl)
 			RTE_LOG(ERR, EAL, "Cannot reserve memory\n");
 		return -1;
 	}
-	msl->base_va = addr;
+	msl->base_va = addr; /* 保证在分配大页时用到了虚拟地址是连续 */
 	msl->len = mem_sz;
 
 	return 0;
@@ -1099,7 +1100,8 @@ get_socket_mem_size(int socket)
 
 	return size;
 }
-
+/* 计算每类大页可以使用的数量，这个数量要受到--socket-mem "512,512"参数和-m 1024（总的内存大小）参数的限制 */
+/* 把计算结果从 hp_used 参数返回 */
 /*
  * This function is a NUMA-aware equivalent of calc_num_pages.
  * It takes in the list of hugepage sizes and the
@@ -1107,16 +1109,16 @@ get_socket_mem_size(int socket)
  * pages of each size to fulfill the request for <memory> ram
  */
 static int
-calc_num_pages_per_socket(uint64_t * memory,
-		struct hugepage_info *hp_info,
-		struct hugepage_info *hp_used,
-		unsigned num_hp_info)
+calc_num_pages_per_socket(uint64_t * memory, /* --socket-mem 参数 */
+		struct hugepage_info *hp_info,	/* 从/sys/kernel/mm/hugepage/目录下读到的大页 */
+		struct hugepage_info *hp_used,  /* [out] 根据 参数 计算得到可以使用的大页内存 */
+ 		unsigned num_hp_info) /* 大页类型的总数 */
 {
 	unsigned socket, j, i = 0;
 	unsigned requested, available;
 	int total_num_pages = 0;
 	uint64_t remaining_mem, cur_mem;
-	uint64_t total_mem = internal_config.memory;
+	uint64_t total_mem = internal_config.memory; /* -m 参数指定 */
 
 	if (num_hp_info == 0)
 		return -1;
@@ -1724,7 +1726,7 @@ limits_callback(int socket_id, size_t cur_limit, size_t new_len)
 	RTE_SET_USED(new_len);
 	return -1;
 }
-
+/* 分配所有的大页(/dev/hugepages/remap_x)及物理地址 */
 static int
 eal_hugepage_init(void)
 {
@@ -1754,7 +1756,7 @@ eal_hugepage_init(void)
 		dummy.hugepage_sz = hpi->hugepage_sz;
 		if (rte_memseg_list_walk(hugepage_count_walk, &dummy) < 0)
 			return -1;
-
+		/* 计算每类大页（2MB,1GB）的总页数 */
 		for (i = 0; i < RTE_DIM(dummy.num_pages); i++) {
 			hpi->num_pages[i] = RTE_MIN(hpi->num_pages[i],
 					dummy.num_pages[i]);
@@ -1765,7 +1767,7 @@ eal_hugepage_init(void)
 	/* make a copy of socket_mem, needed for balanced allocation. */
 	for (hp_sz_idx = 0; hp_sz_idx < RTE_MAX_NUMA_NODES; hp_sz_idx++)
 		memory[hp_sz_idx] = internal_config.socket_mem[hp_sz_idx];
-
+	/* 计算每类大页可以使用的数量，这个数量要受到--socket-mem "512,512"参数和-m 1024（总的内存大小）参数的限制 */
 	/* calculate final number of pages */
 	if (calc_num_pages_per_socket(memory,
 			internal_config.hugepage_info, used_hp,
@@ -1779,7 +1781,7 @@ eal_hugepage_init(void)
 				socket_id++) {
 			struct rte_memseg **pages;
 			struct hugepage_info *hpi = &used_hp[hp_sz_idx];
-			unsigned int num_pages = hpi->num_pages[socket_id];
+			unsigned int num_pages = hpi->num_pages[socket_id]; /* dpdk可以使用的大页数 */
 			unsigned int num_pages_alloc;
 
 			if (num_pages == 0)
@@ -1802,9 +1804,9 @@ eal_hugepage_init(void)
 				needed = num_pages - num_pages_alloc;
 
 				pages = malloc(sizeof(*pages) * needed);
-
+				/* 分配大页 */
 				/* do not request exact number of pages */
-				cur_pages = eal_memalloc_alloc_seg_bulk(pages,
+				cur_pages = eal_memalloc_alloc_seg_bulk(pages, /* pages参数作用是为了后面设置 flags:RTE_MEMSEG_FLAG_DO_NOT_FREE */
 						needed, hpi->hugepage_sz,
 						socket_id, false);
 				if (cur_pages <= 0) {
@@ -2214,7 +2216,8 @@ memseg_primary_init_32(void)
 
 	return 0;
 }
-
+/* 三个概念：memory segment type, memory segmemt list, memory element */
+/* /var/run/dpdk/rte/fbarray_memseg-2048K-0-{0,3} */
 static int __rte_unused
 memseg_primary_init(void)
 {
@@ -2307,7 +2310,7 @@ memseg_primary_init(void)
 
 	/* set up limits for types */
 	max_mem = (uint64_t)RTE_MAX_MEM_MB << 20;/* 512GB */
-	max_mem_per_type = RTE_MIN((uint64_t)RTE_MAX_MEM_MB_PER_TYPE << 20,
+	max_mem_per_type = RTE_MIN((uint64_t)RTE_MAX_MEM_MB_PER_TYPE << 20/*64GB*/,
 			max_mem / n_memtypes);
 	/*
 	 * limit maximum number of segment lists per type to ensure there's
@@ -2359,10 +2362,10 @@ memseg_primary_init(void)
 				(uint64_t)RTE_MAX_MEM_MB_PER_LIST << 20);
 
 		/* calculate how many segments each segment list will have */
-		n_segs = RTE_MIN(max_segs_per_list, max_mem_per_list / pagesz);
+		n_segs = RTE_MIN(max_segs_per_list, max_mem_per_list / pagesz);/* 8196 */
 
 		/* calculate how many segment lists we can have */
-		n_seglists = RTE_MIN(max_segs_per_type / n_segs,
+		n_seglists = RTE_MIN(max_segs_per_type/* 32768 */ / n_segs /* 8196 */,
 				max_mem_per_type / max_mem_per_list);
 
 		/* limit number of segment lists according to our maximum */
@@ -2381,11 +2384,11 @@ memseg_primary_init(void)
 				goto out;
 			}
 			msl = &mcfg->memsegs[msl_idx++];
-			/* 分配到虚拟地址 */
+			
 			if (alloc_memseg_list(msl, pagesz, n_segs,
 					socket_id, cur_seglist))
 				goto out;
-
+			/* 分配到虚拟地址, 其中分配前msl->base_va = NULL; */
 			if (alloc_va_space(msl)) {
 				RTE_LOG(ERR, EAL, "Cannot allocate VA space for memseg list\n");
 				goto out;

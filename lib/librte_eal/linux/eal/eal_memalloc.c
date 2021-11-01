@@ -282,7 +282,7 @@ get_seg_memfd(struct hugepage_info *hi __rte_unused,
 #endif
 	return -1;
 }
-
+/* 创建/dev/hugepages/remap_x文件，并返回fd */
 static int
 get_seg_fd(char *path, int buflen, struct hugepage_info *hi,
 		unsigned int list_idx, unsigned int seg_idx)
@@ -318,6 +318,7 @@ get_seg_fd(char *path, int buflen, struct hugepage_info *hi,
 			fd_list[list_idx].memseg_list_fd = fd;
 		}
 	} else {
+	/* 获取文件绝对：/dev/hugepages/remem_x */
 		/* create a hugepage file path */
 		eal_get_hugefile_path(path, buflen, hi->hugedir,
 				list_idx * RTE_MAX_MEMSEG_PER_LIST + seg_idx);
@@ -466,7 +467,7 @@ resize_hugefile(int fd, uint64_t fa_offset, uint64_t page_sz, bool grow)
 	return resize_hugefile_in_filesystem(fd, fa_offset, page_sz,
 				grow);
 }
-
+/* 分配一大页，并获取虚拟地址的物理地址 */
 static int
 alloc_seg(struct rte_memseg *ms, void *addr, int socket_id,
 		struct hugepage_info *hi, unsigned int list_idx,
@@ -533,7 +534,7 @@ alloc_seg(struct rte_memseg *ms, void *addr, int socket_id,
 			fd_list[list_idx].count++;
 		} else {
 			map_offset = 0;
-			if (ftruncate(fd, alloc_sz) < 0) {
+			if (ftruncate(fd, alloc_sz) < 0) {/* 一大页一个文件 */
 				RTE_LOG(DEBUG, EAL, "%s(): ftruncate() failed: %s\n",
 					__func__, strerror(errno));
 				goto resized;
@@ -547,6 +548,7 @@ alloc_seg(struct rte_memseg *ms, void *addr, int socket_id,
 				}
 			}
 		}
+		/* MAP_POPULATE 标志保证在分配了虚拟地址时，内核产生缺页异常去分配物理地址 */
 		mmap_flags = MAP_SHARED | MAP_POPULATE | MAP_FIXED;
 	}
 
@@ -583,14 +585,14 @@ alloc_seg(struct rte_memseg *ms, void *addr, int socket_id,
 			(unsigned int)(alloc_sz >> 20));
 		goto mapped;
 	}
-
+	/* 保证虚拟地址已经分配了物理地址（强制系统产生缺页面异常） */
 	/* we need to trigger a write to the page to enforce page fault and
 	 * ensure that page is accessible to us, but we can't overwrite value
 	 * that is already there, so read the old value, and write itback.
 	 * kernel populates the page with zeroes initially.
 	 */
 	*(volatile int *)addr = *(volatile int *)addr;
-
+	/* 获取虚拟地址对应的物理地址 */
 	iova = rte_mem_virt2iova(addr);
 	if (iova == RTE_BAD_PHYS_ADDR) {
 		RTE_LOG(DEBUG, EAL, "%s(): can't get IOVA addr\n",
@@ -829,9 +831,9 @@ alloc_seg_walk(const struct rte_memseg_list *msl, void *arg)
 		void *map_addr;
 
 		cur = rte_fbarray_get(&cur_msl->memseg_arr, cur_idx);
-		map_addr = RTE_PTR_ADD(cur_msl->base_va,
+		map_addr = RTE_PTR_ADD(cur_msl->base_va, /* 以base_va起始地址，cur_idx*page_sze偏移的虚拟地址去映射大页 */
 				cur_idx * page_sz);
-
+		/* 分配一块大页，并获取虚拟地址 */
 		if (alloc_seg(cur, map_addr, wa->socket, wa->hi,
 				msl_idx, cur_idx)) {
 			RTE_LOG(DEBUG, EAL, "attempted to allocate %i segments, but only %i were allocated\n",
@@ -943,7 +945,7 @@ free_seg_walk(const struct rte_memseg_list *msl, void *arg)
 
 	return 1;
 }
-
+/* 分配所有的大页并获取对应物理地址 */
 int
 eal_memalloc_alloc_seg_bulk(struct rte_memseg **ms, int n_segs, size_t page_sz,
 		int socket, bool exact)
@@ -991,7 +993,7 @@ eal_memalloc_alloc_seg_bulk(struct rte_memseg **ms, int n_segs, size_t page_sz,
 	wa.page_sz = page_sz;
 	wa.socket = socket;
 	wa.segs_allocated = 0;
-
+	/* 分配所有的大页，并获取虚拟地址对应的物理地址 */
 	/* memalloc is locked, so it's safe to use thread-unsafe version */
 	ret = rte_memseg_list_walk_thread_unsafe(alloc_seg_walk, &wa);
 	if (ret == 0) {
@@ -1596,7 +1598,7 @@ eal_memalloc_init(void)
 			return -1;
 		}
 	}
-
+	/* 分配与 rte_config.mem_config->memsegs[] 对应的fdlist */
 	/* initialize all of the fd lists */
 	if (rte_memseg_list_walk(fd_list_create_walk, NULL))
 		return -1;
