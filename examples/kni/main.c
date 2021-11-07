@@ -41,6 +41,7 @@
 #include <rte_cycles.h>
 #include <rte_malloc.h>
 #include <rte_kni.h>
+#include <rte_pdump.h>
 
 /* Macros for printing using RTE_LOG */
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
@@ -1011,6 +1012,10 @@ main(int argc, char** argv)
 	ret = rte_eal_init(argc, argv);
 	if (ret < 0)
 		rte_exit(EXIT_FAILURE, "Could not initialise EAL (%d)\n", ret);
+#ifdef RTE_LIBRTE_PDUMP
+		/* initialize packet capture framework */
+		rte_pdump_init();
+#endif
 	argc -= ret;
 	argv += ret;
 

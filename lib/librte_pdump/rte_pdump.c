@@ -169,6 +169,8 @@ pdump_rx(uint16_t port __rte_unused, uint16_t qidx __rte_unused,
 	uint16_t max_pkts __rte_unused,
 	void *user_params)
 {
+	if(nb_pkts == 0)
+		return 0;
 	pdump_copy(pkts, nb_pkts, user_params);
 	return nb_pkts;
 }
@@ -177,6 +179,8 @@ static uint16_t
 pdump_tx(uint16_t port __rte_unused, uint16_t qidx __rte_unused,
 		struct rte_mbuf **pkts, uint16_t nb_pkts, void *user_params)
 {
+	if(nb_pkts == 0)
+		return 0;
 	pdump_copy(pkts, nb_pkts, user_params);
 	return nb_pkts;
 }
@@ -328,7 +332,6 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 		ring = p->data.dis_v1.ring;
 		mp = p->data.dis_v1.mp;
 	}
-
 	/* validation if packet capture is for all queues */
 	if (queue == RTE_PDUMP_ALL_QUEUES) {
 		struct rte_eth_dev_info dev_info;
