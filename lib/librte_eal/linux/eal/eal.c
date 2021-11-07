@@ -1003,6 +1003,7 @@ rte_eal_init(int argc, char **argv)
 		rte_atomic32_clear(&run_once);
 		return -1;
 	}
+
 	/* 加载PMD相关的库 */
 	if (eal_plugins_init() < 0) {
 		rte_eal_init_alert("Cannot init plugins");
