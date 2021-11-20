@@ -55,7 +55,7 @@ static rte_spinlock_t alarm_list_lk = RTE_SPINLOCK_INITIALIZER;
 static struct rte_intr_handle intr_handle = {.fd = -1 };
 static int handler_registered = 0;
 static void eal_alarm_callback(void *arg);
-
+/*  定时器初始化 */
 int
 rte_eal_alarm_init(void)
 {
@@ -71,7 +71,7 @@ error:
 	rte_errno = errno;
 	return -1;
 }
-
+/* 定时器处理函数 */
 static void
 eal_alarm_callback(void *arg __rte_unused)
 {
@@ -79,39 +79,39 @@ eal_alarm_callback(void *arg __rte_unused)
 	struct alarm_entry *ap;
 
 	rte_spinlock_lock(&alarm_list_lk);
-	while ((ap = LIST_FIRST(&alarm_list)) !=NULL &&
-			clock_gettime(CLOCK_TYPE_ID, &now) == 0 &&
-			(ap->time.tv_sec < now.tv_sec || (ap->time.tv_sec == now.tv_sec &&
+	while ((ap = LIST_FIRST(&alarm_list)) !=NULL && /* 遍历定时器 */
+			clock_gettime(CLOCK_TYPE_ID, &now) == 0 && /* 获取当前时间 */
+			(ap->time.tv_sec < now.tv_sec || (ap->time.tv_sec == now.tv_sec && /* 与当前时间比较 */
 						(ap->time.tv_usec * NS_PER_US) <= now.tv_nsec))) {
-		ap->executing = 1;
-		ap->executing_id = pthread_self();
+		ap->executing = 1; /* 设定定时器执行标志 */
+		ap->executing_id = pthread_self(); /* 当前线程tid */
 		rte_spinlock_unlock(&alarm_list_lk);
 
-		ap->cb_fn(ap->cb_arg);
+		ap->cb_fn(ap->cb_arg); /* 执行定时器处理函数 */
 
 		rte_spinlock_lock(&alarm_list_lk);
 
-		LIST_REMOVE(ap, next);
+		LIST_REMOVE(ap, next); /* 从定时器列表中删除 */
 		free(ap);
 	}
-
+	/* 当定时器列表中还有待处理的定时器 */
 	if (!LIST_EMPTY(&alarm_list)) {
 		struct itimerspec atime = { .it_interval = { 0, 0 } };
 
-		ap = LIST_FIRST(&alarm_list);
+		ap = LIST_FIRST(&alarm_list); /* 从列表中取出第一个定时器（因为是有序的定时器列表，所以后面的不再更新） */
 		atime.it_value.tv_sec = ap->time.tv_sec;
 		atime.it_value.tv_nsec = ap->time.tv_usec * NS_PER_US;
 		/* perform borrow for subtraction if necessary */
 		if (now.tv_nsec > (ap->time.tv_usec * NS_PER_US))
 			atime.it_value.tv_sec--, atime.it_value.tv_nsec += US_PER_S * NS_PER_US;
-
+		/* 更新定时器时间 */
 		atime.it_value.tv_sec -= now.tv_sec;
 		atime.it_value.tv_nsec -= now.tv_nsec;
-		timerfd_settime(intr_handle.fd, 0, &atime, NULL);
+		timerfd_settime(intr_handle.fd, 0, &atime, NULL); /* 重新设置定时器 */
 	}
 	rte_spinlock_unlock(&alarm_list_lk);
 }
-
+/* 安装定时器，将定时器插入到定时器列表(有序)中 */
 int
 rte_eal_alarm_set(uint64_t us, rte_eal_alarm_callback cb_fn, void *cb_arg)
 {
@@ -136,31 +136,33 @@ rte_eal_alarm_set(uint64_t us, rte_eal_alarm_callback cb_fn, void *cb_arg)
 	new_alarm->time.tv_sec = now.tv_sec + (((now.tv_nsec / NS_PER_US) + us) / US_PER_S);
 
 	rte_spinlock_lock(&alarm_list_lk);
-	if (!handler_registered) {
+	if (!handler_registered) {/* 若定时还没有注册，则先注册 */
 		/* registration can fail, callback can be registered later */
-		if (rte_intr_callback_register(&intr_handle,
+		if (rte_intr_callback_register(&intr_handle, /* 中断注册接口 */
 				eal_alarm_callback, NULL) == 0)
 			handler_registered = 1;
 	}
 
-	if (LIST_EMPTY(&alarm_list))
+	if (LIST_EMPTY(&alarm_list)) /* 定时器列表为空，则直接在头部插入 */
 		LIST_INSERT_HEAD(&alarm_list, new_alarm, next);
 	else {
-		LIST_FOREACH(ap, &alarm_list, next) {
+		LIST_FOREACH(ap, &alarm_list, next) { /* 根据时间，在定时器列表找到适当位置插入 */
 			if (ap->time.tv_sec > new_alarm->time.tv_sec ||
 					(ap->time.tv_sec == new_alarm->time.tv_sec &&
 							ap->time.tv_usec > new_alarm->time.tv_usec)){
-				LIST_INSERT_BEFORE(ap, new_alarm, next);
+				LIST_INSERT_BEFORE(ap, new_alarm, next); /* 在ap元素前插入 */
 				break;
 			}
 			if (LIST_NEXT(ap, next) == NULL) {
-				LIST_INSERT_AFTER(ap, new_alarm, next);
+				LIST_INSERT_AFTER(ap, new_alarm, next); /* 在ap元素后插入 */
 				break;
 			}
 		}
 	}
-
-	if (LIST_FIRST(&alarm_list) == new_alarm) {
+	/* 如果当前的定时器列表只有一个(也是当前这个)，则开启定时器 
+	 * 后面开启的定时器就不需要开启定时器。
+	 */
+	if (LIST_FIRST(&alarm_list) == new_alarm) { 
 		struct itimerspec alarm_time = {
 			.it_interval = {0, 0},
 			.it_value = {
@@ -168,13 +170,13 @@ rte_eal_alarm_set(uint64_t us, rte_eal_alarm_callback cb_fn, void *cb_arg)
 				.tv_nsec = (us % US_PER_S) * NS_PER_US,
 			},
 		};
-		ret |= timerfd_settime(intr_handle.fd, 0, &alarm_time, NULL);
+		ret |= timerfd_settime(intr_handle.fd, 0, &alarm_time, NULL); /* 定时器开启 */
 	}
 	rte_spinlock_unlock(&alarm_list_lk);
 
 	return ret;
 }
-
+/* 定时器取消 */
 int
 rte_eal_alarm_cancel(rte_eal_alarm_callback cb_fn, void *cb_arg)
 {
@@ -192,19 +194,19 @@ rte_eal_alarm_cancel(rte_eal_alarm_callback cb_fn, void *cb_arg)
 		executing = 0;
 		rte_spinlock_lock(&alarm_list_lk);
 		/* remove any matches at the start of the list */
-		while ((ap = LIST_FIRST(&alarm_list)) != NULL &&
-				cb_fn == ap->cb_fn &&
+		while ((ap = LIST_FIRST(&alarm_list)) != NULL && /* 先查找第一个定时器 */
+				cb_fn == ap->cb_fn && /* 根据callback和参数查找定时器 */
 				(cb_arg == (void *)-1 || cb_arg == ap->cb_arg)) {
 
-			if (ap->executing == 0) {
-				LIST_REMOVE(ap, next);
+			if (ap->executing == 0) { /* 定时器不在执行 */
+				LIST_REMOVE(ap, next); /* 直接从列表中删除就可以 */
 				free(ap);
 				count++;
 			} else {
 				/* If calling from other context, mark that alarm is executing
 				 * so loop can spin till it finish. Otherwise we are trying to
 				 * cancel our self - mark it by EINPROGRESS */
-				if (pthread_equal(ap->executing_id, pthread_self()) == 0)
+				if (pthread_equal(ap->executing_id, pthread_self()) == 0) /* 执行定时器和取消定时器不在同一个线程中，则等待定时器执行完成 */
 					executing++;
 				else
 					err = EINPROGRESS;
@@ -215,7 +217,7 @@ rte_eal_alarm_cancel(rte_eal_alarm_callback cb_fn, void *cb_arg)
 		ap_prev = ap;
 
 		/* now go through list, removing entries not at start */
-		LIST_FOREACH(ap, &alarm_list, next) {
+		LIST_FOREACH(ap, &alarm_list, next) {/* 在列表中查找 */
 			/* this won't be true first time through */
 			if (cb_fn == ap->cb_fn &&
 					(cb_arg == (void *)-1 || cb_arg == ap->cb_arg)) {
@@ -233,7 +235,7 @@ rte_eal_alarm_cancel(rte_eal_alarm_callback cb_fn, void *cb_arg)
 			ap_prev = ap;
 		}
 		rte_spinlock_unlock(&alarm_list_lk);
-	} while (executing != 0);
+	} while (executing != 0); /* 有正在执行的定时器，则要继续等待 */
 
 	if (count == 0 && err == 0)
 		rte_errno = ENOENT;
