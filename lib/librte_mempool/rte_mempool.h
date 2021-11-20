@@ -909,6 +909,7 @@ rte_mempool_set_ops_byname(struct rte_mempool *mp, const char *name,
  */
 int rte_mempool_register_ops(const struct rte_mempool_ops *ops);
 
+int rte_sort_mempool_ops(void);
 /**
  * Sort global array rte_mempool_ops_table.ops[] .
  * Used by rte_eal_memzone_init()

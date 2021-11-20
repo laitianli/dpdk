@@ -211,3 +211,4 @@ rte_mempool_set_ops_byname(struct rte_mempool *mp, const char *name,
 	mp->pool_config = pool_config;
 	return 0;
 }
+
