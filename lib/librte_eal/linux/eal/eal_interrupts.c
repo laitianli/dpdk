@@ -442,7 +442,7 @@ uio_intx_intr_enable(const struct rte_intr_handle *intr_handle)
 
 	return 0;
 }
-
+/* 禁用中断 */
 static int
 uio_intr_disable(const struct rte_intr_handle *intr_handle)
 {
@@ -456,7 +456,7 @@ uio_intr_disable(const struct rte_intr_handle *intr_handle)
 	}
 	return 0;
 }
-
+/* 使能中断 */
 static int
 uio_intr_enable(const struct rte_intr_handle *intr_handle)
 {
@@ -470,7 +470,7 @@ uio_intr_enable(const struct rte_intr_handle *intr_handle)
 	}
 	return 0;
 }
-
+/* 中断注册接口、定时器注册接口：将fd加入到epoll_wait的文件列表中 */
 int
 rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
 			rte_intr_callback_fn cb, void *cb_arg)
@@ -487,25 +487,27 @@ rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
 			"Registering with invalid input parameter\n");
 		return -EINVAL;
 	}
-
+	/* 申请回调数据结构 */
 	/* allocate a new interrupt callback entity */
 	callback = calloc(1, sizeof(*callback));
 	if (callback == NULL) {
 		RTE_LOG(ERR, EAL, "Can not allocate memory\n");
 		return -ENOMEM;
 	}
-	callback->cb_fn = cb;
-	callback->cb_arg = cb_arg;
+	callback->cb_fn = cb;/* 回调函数 */
+	callback->cb_arg = cb_arg; /* 回调函数参数 */
 	callback->pending_delete = 0;
 	callback->ucb_fn = NULL;
 
 	rte_spinlock_lock(&intr_lock);
-
+	/* 根据中断的文件描述符，查找当前中断是否已经在中断源列表中 
+	 * 若已经在中断列表中，将中断处理的回调函数插入到回调列表中。
+	 */
 	/* check if there is at least one callback registered for the fd */
 	TAILQ_FOREACH(src, &intr_sources, next) {
-		if (src->intr_handle.fd == intr_handle->fd) {
+		if (src->intr_handle.fd == intr_handle->fd) { 
 			/* we had no interrupts for this */
-			if (TAILQ_EMPTY(&src->callbacks))
+			if (TAILQ_EMPTY(&src->callbacks)) /* 有中断源，但没有中断处理函数 */
 				wake_thread = 1;
 
 			TAILQ_INSERT_TAIL(&(src->callbacks), callback, next);
@@ -513,15 +515,15 @@ rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
 			break;
 		}
 	}
-
+	/* 中断源还没有在中断列表中 */
 	/* no existing callbacks for this - add new source */
 	if (src == NULL) {
-		src = calloc(1, sizeof(*src));
+		src = calloc(1, sizeof(*src)); /* 申请中断源 */
 		if (src == NULL) {
 			RTE_LOG(ERR, EAL, "Can not allocate memory\n");
 			free(callback);
 			ret = -ENOMEM;
-		} else {
+		} else { /* 将中断源插入到中断源列表中 */
 			src->intr_handle = *intr_handle;
 			TAILQ_INIT(&src->callbacks);
 			TAILQ_INSERT_TAIL(&(src->callbacks), callback, next);
@@ -537,7 +539,7 @@ rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
 	 * check if need to notify the pipe fd waited by epoll_wait to
 	 * rebuild the wait list.
 	 */
-	if (wake_thread)
+	if (wake_thread) /* 中断源有回调函数，则要通知epoll_wait重建监听列表 */
 		if (write(intr_pipe.writefd, "1", 1) < 0)
 			return -EPIPE;
 
@@ -842,17 +844,21 @@ eal_intr_process_interrupts(struct epoll_event *events, int nfds)
 	struct rte_intr_callback active_cb;
 
 	for (n = 0; n < nfds; n++) {
-
+		/* 收到管道的消息，则表示有新的中断源加入，直接返回到中断主线程函数 eal_intr_thread_main()
+		 * 将新的中断源加入到epoll_wait中.
+		 * 调用 rte_intr_callback_register() 函数就有可能发送管道消息。
+		 */
 		/**
 		 * if the pipe fd is ready to read, return out to
 		 * rebuild the wait list.
 		 */
-		if (events[n].data.fd == intr_pipe.readfd){
+		if (events[n].data.fd == intr_pipe.readfd){ 
 			int r = read(intr_pipe.readfd, buf.charbuf,
 					sizeof(buf.charbuf));
 			RTE_SET_USED(r);
 			return -1;
 		}
+		/* 遍历中断源 */
 		rte_spinlock_lock(&intr_lock);
 		TAILQ_FOREACH(src, &intr_sources, next)
 			if (src->intr_handle.fd ==
@@ -868,12 +874,12 @@ eal_intr_process_interrupts(struct epoll_event *events, int nfds)
 		rte_spinlock_unlock(&intr_lock);
 
 		/* set the length to be read dor different handle type */
-		switch (src->intr_handle.type) {
+		switch (src->intr_handle.type) { /* 中断源的中断类型 */
 		case RTE_INTR_HANDLE_UIO:
 		case RTE_INTR_HANDLE_UIO_INTX:
 			bytes_read = sizeof(buf.uio_intr_count);
 			break;
-		case RTE_INTR_HANDLE_ALARM:
+		case RTE_INTR_HANDLE_ALARM: /* 定时器 */
 			bytes_read = sizeof(buf.timerfd_num);
 			break;
 #ifdef VFIO_PRESENT
@@ -943,7 +949,7 @@ eal_intr_process_interrupts(struct epoll_event *events, int nfds)
 
 		/* grab a lock, again to call callbacks and update status. */
 		rte_spinlock_lock(&intr_lock);
-
+		/* 执行中断源的处理函数 */
 		if (call) {
 
 			/* Finally, call all callbacks. */
@@ -964,7 +970,7 @@ eal_intr_process_interrupts(struct epoll_event *events, int nfds)
 		src->active = 0;
 
 		rv = 0;
-
+		/* 判断中断源是否有删除标志 */
 		/* check if any callback are supposed to be removed */
 		for (cb = TAILQ_FIRST(&src->callbacks); cb != NULL; cb = next) {
 			next = TAILQ_NEXT(cb, next);
@@ -982,7 +988,7 @@ eal_intr_process_interrupts(struct epoll_event *events, int nfds)
 			TAILQ_REMOVE(&intr_sources, src, next);
 			free(src);
 		}
-
+		/* 有中断源删除，则通知中断主函数去重建epoll等待列表 */
 		/* notify the pipe fd waited by epoll_wait to rebuild the wait list */
 		if (rv >= 0 && write(intr_pipe.writefd, "1", 1) < 0) {
 			rte_spinlock_unlock(&intr_lock);
@@ -1013,7 +1019,8 @@ eal_intr_handle_interrupts(int pfd, unsigned totalfds)
 	int nfds = 0;
 
 	for(;;) {
-		nfds = epoll_wait(pfd, events, totalfds,
+		/* 监听所有的中断源的文件描述符 */
+		nfds = epoll_wait(pfd, events, totalfds, 
 			EAL_INTR_EPOLL_WAIT_FOREVER);
 		/* epoll_wait fail */
 		if (nfds < 0) {
@@ -1026,12 +1033,13 @@ eal_intr_handle_interrupts(int pfd, unsigned totalfds)
 		/* epoll_wait timeout, will never happens here */
 		else if (nfds == 0)
 			continue;
+		/* 处理中断源 */
 		/* epoll_wait has at least one fd ready to read */
 		if (eal_intr_process_interrupts(events, nfds) < 0)
 			return;
 	}
 }
-
+/* 中断处理主函数 */
 /**
  * It builds/rebuilds up the epoll file descriptor with all the
  * file descriptors being waited on. Then handles the interrupts.
@@ -1059,11 +1067,12 @@ eal_intr_thread_main(__rte_unused void *arg)
 		unsigned numfds = 0;
 
 		/* create epoll fd */
-		int pfd = epoll_create(1);
+		int pfd = epoll_create(1); /* 创建epoll文件描述符 */
 		if (pfd < 0)
 			rte_panic("Cannot create epoll instance\n");
 
 		pipe_event.data.fd = intr_pipe.readfd;
+		/* 将管道读描述符加入到epoll中 */
 		/**
 		 * add pipe fd into wait list, this pipe is used to
 		 * rebuild the wait list.
@@ -1076,7 +1085,7 @@ eal_intr_thread_main(__rte_unused void *arg)
 		numfds++;
 
 		rte_spinlock_lock(&intr_lock);
-
+		/* 遍历所有的中断源，并中断源的文件描述符加入到epoll中 */
 		TAILQ_FOREACH(src, &intr_sources, next) {
 			if (src->callbacks.tqh_first == NULL)
 				continue; /* skip those with no callbacks */
@@ -1097,16 +1106,16 @@ eal_intr_thread_main(__rte_unused void *arg)
 		}
 		rte_spinlock_unlock(&intr_lock);
 		/* serve the interrupt */
-		eal_intr_handle_interrupts(pfd, numfds);
+		eal_intr_handle_interrupts(pfd, numfds); /* 处理各类中断  */
 
 		/**
 		 * when we return, we need to rebuild the
 		 * list of fds to monitor.
 		 */
-		close(pfd);
+		close(pfd); /* 关闭epoll描述符 */
 	}
 }
-
+/* 中断模块的初始化 */
 int
 rte_eal_intr_init(void)
 {
@@ -1114,7 +1123,7 @@ rte_eal_intr_init(void)
 
 	/* init the global interrupt source head */
 	TAILQ_INIT(&intr_sources);
-
+	/* 创建管道：用于通过中断主线程是否要重建epoll等待列表 */
 	/**
 	 * create a pipe which will be waited by epoll and notified to
 	 * rebuild the wait list of epoll.
@@ -1123,7 +1132,7 @@ rte_eal_intr_init(void)
 		rte_errno = errno;
 		return -1;
 	}
-
+	/* 创建中断处理线程 */
 	/* create the host thread to wait/handle the interrupt */
 	ret = rte_ctrl_thread_create(&intr_thread, "eal-intr-thread", NULL,
 			eal_intr_thread_main, NULL);
@@ -1327,7 +1336,7 @@ rte_epoll_ctl(int epfd, int op, int fd,
 
 	return 0;
 }
-
+/* 将中断源加入到中断源列表 */
 int
 rte_intr_rx_ctl(struct rte_intr_handle *intr_handle, int epfd,
 		int op, unsigned int vec, void *data)
