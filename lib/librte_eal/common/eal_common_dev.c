@@ -113,7 +113,7 @@ rte_eal_hotplug_add(const char *busname, const char *devname,
 		    const char *drvargs)
 {
 
-	char *devargs;
+	char *devargs;/* vdev:net_pcap_rx_0,rx_pcap=/root/rx.pcap */
 	int ret;
 
 	ret = build_devargs(busname, devname, drvargs, &devargs);

@@ -108,28 +108,28 @@ struct pdump_stats {
 
 struct pdump_tuples {
 	/* cli params */
-	uint16_t port;
-	char *device_id;
-	uint16_t queue;
-	char rx_dev[TX_STREAM_SIZE];
-	char tx_dev[TX_STREAM_SIZE];
-	uint32_t ring_size;
+	uint16_t port; /* 端口号 */
+	char *device_id; /* pcie id */
+	uint16_t queue; /* queueid, "*"表示所有的queue */
+	char rx_dev[TX_STREAM_SIZE]; /* rx保存的文件名 */
+	char tx_dev[TX_STREAM_SIZE]; /* tx保存的文件名 */
+	uint32_t ring_size; /* 环形队列大小 */
 	uint16_t mbuf_data_size;
 	uint32_t total_num_mbufs;
 
 	/* params for library API call */
-	uint32_t dir;
-	struct rte_mempool *mp;
-	struct rte_ring *rx_ring;
-	struct rte_ring *tx_ring;
+	uint32_t dir; /* 方向： rx or tx */
+	struct rte_mempool *mp; /* 内存池对象 */
+	struct rte_ring *rx_ring; /* rx环形队列 */
+	struct rte_ring *tx_ring; /* tx环形队列 */
 
 	/* params for packet dumping */
-	enum pdump_by dump_by_type;
-	uint16_t rx_vdev_id;
-	uint16_t tx_vdev_id;
+	enum pdump_by dump_by_type; /* 表示是通过portid or pcieid来抓包 */
+	uint16_t rx_vdev_id; /* rx虚拟设备（vdev）id */
+	uint16_t tx_vdev_id; /* tx虚拟设备（vdev）id */
 	enum pcap_stream rx_vdev_stream_type;
 	enum pcap_stream tx_vdev_stream_type;
-	bool single_pdump_dev;
+	bool single_pdump_dev; /* 是否保存为单一文件 */
 
 	/* stats */
 	struct pdump_stats stats;
@@ -242,7 +242,7 @@ parse_uint_value(const char *key, const char *value, void *extra_args)
 	v->val = t;
 	return 0;
 }
-
+/* 解析--pdump参数 */
 static int
 parse_pdump(const char *optarg)
 {
@@ -252,7 +252,7 @@ parse_pdump(const char *optarg)
 	struct parse_val v = {0};
 
 	pt = &pdump_t[num_tuples];
-
+	/* 将参数以key/value形式保存参数，其中表示有效的参数关键字 */
 	/* initial check for invalid arguments */
 	kvlist = rte_kvargs_parse(optarg, valid_pdump_arguments);
 	if (kvlist == NULL) {
@@ -261,8 +261,8 @@ parse_pdump(const char *optarg)
 	}
 
 	/* port/device_id parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_PORT_ARG);
-	cnt2 = rte_kvargs_count(kvlist, PDUMP_PCI_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_PORT_ARG); /* port */
+	cnt2 = rte_kvargs_count(kvlist, PDUMP_PCI_ARG);  /* device_id(==pcie id) */
 	if (!((cnt1 == 1 && cnt2 == 0) || (cnt1 == 0 && cnt2 == 1))) {
 		printf("--pdump=\"%s\": must have either port or "
 			"device_id argument\n", optarg);
@@ -271,49 +271,49 @@ parse_pdump(const char *optarg)
 	} else if (cnt1 == 1) {
 		v.min = 0;
 		v.max = RTE_MAX_ETHPORTS-1;
-		ret = rte_kvargs_process(kvlist, PDUMP_PORT_ARG,
+		ret = rte_kvargs_process(kvlist, PDUMP_PORT_ARG, /* 解析port */
 				&parse_uint_value, &v);
 		if (ret < 0)
 			goto free_kvlist;
 		pt->port = (uint16_t) v.val;
 		pt->dump_by_type = PORT_ID;
 	} else if (cnt2 == 1) {
-		ret = rte_kvargs_process(kvlist, PDUMP_PCI_ARG,
+		ret = rte_kvargs_process(kvlist, PDUMP_PCI_ARG, /* 解析device_id */
 				&parse_device_id, pt);
 		if (ret < 0)
 			goto free_kvlist;
 	}
 
 	/* queue parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_QUEUE_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_QUEUE_ARG); /* 获取queue个数 */
 	if (cnt1 != 1) {
 		printf("--pdump=\"%s\": must have queue argument\n", optarg);
 		ret = -1;
 		goto free_kvlist;
 	}
-	ret = rte_kvargs_process(kvlist, PDUMP_QUEUE_ARG, &parse_queue, pt);
+	ret = rte_kvargs_process(kvlist, PDUMP_QUEUE_ARG, &parse_queue, pt); /* 解析queue */
 	if (ret < 0)
 		goto free_kvlist;
 
 	/* rx-dev and tx-dev parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_RX_DEV_ARG);
-	cnt2 = rte_kvargs_count(kvlist, PDUMP_TX_DEV_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_RX_DEV_ARG); /* 获取rx-dev个数 */
+	cnt2 = rte_kvargs_count(kvlist, PDUMP_TX_DEV_ARG); /* 获取tx-dev个数 */
 	if (cnt1 == 0 && cnt2 == 0) {
 		printf("--pdump=\"%s\": must have either rx-dev or "
 			"tx-dev argument\n", optarg);
 		ret = -1;
 		goto free_kvlist;
 	} else if (cnt1 == 1 && cnt2 == 1) {
-		ret = rte_kvargs_process(kvlist, PDUMP_RX_DEV_ARG,
+		ret = rte_kvargs_process(kvlist, PDUMP_RX_DEV_ARG,/* 解析rx-dev */
 					&parse_rxtxdev, pt);
 		if (ret < 0)
 			goto free_kvlist;
-		ret = rte_kvargs_process(kvlist, PDUMP_TX_DEV_ARG,
+		ret = rte_kvargs_process(kvlist, PDUMP_TX_DEV_ARG,/* 解析tx-dev */
 					&parse_rxtxdev, pt);
 		if (ret < 0)
 			goto free_kvlist;
 		/* if captured packets has to send to the same vdev */
-		if (!strcmp(pt->rx_dev, pt->tx_dev))
+		if (!strcmp(pt->rx_dev, pt->tx_dev)) /* 如何rx-dev和tx-dev文件名相同，表示保存到一个文件中 */
 			pt->single_pdump_dev = true;
 		pt->dir = RTE_PDUMP_FLAG_RXTX;
 	} else if (cnt1 == 1) {
@@ -332,7 +332,7 @@ parse_pdump(const char *optarg)
 
 	/* optional */
 	/* ring_size parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_RING_SIZE_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_RING_SIZE_ARG);/* ring-size环形队列大小 */
 	if (cnt1 == 1) {
 		v.min = 2;
 		v.max = RTE_RING_SZ_MASK-1;
@@ -345,7 +345,7 @@ parse_pdump(const char *optarg)
 		pt->ring_size = RING_SIZE;
 
 	/* mbuf_data_size parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_MSIZE_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_MSIZE_ARG);/*mbuf-size*/
 	if (cnt1 == 1) {
 		v.min = 1;
 		v.max = UINT16_MAX;
@@ -358,7 +358,7 @@ parse_pdump(const char *optarg)
 		pt->mbuf_data_size = RTE_MBUF_DEFAULT_BUF_SIZE;
 
 	/* total_num_mbufs parsing and validation */
-	cnt1 = rte_kvargs_count(kvlist, PDUMP_NUM_MBUFS_ARG);
+	cnt1 = rte_kvargs_count(kvlist, PDUMP_NUM_MBUFS_ARG);/* total-num-mbufs */
 	if (cnt1 == 1) {
 		v.min = 1025;
 		v.max = UINT16_MAX;
@@ -463,19 +463,20 @@ pdump_rxtx(struct rte_ring *ring, uint16_t vdev_id, struct pdump_stats *stats)
 {
 	/* write input packets of port to vdev for pdump */
 	struct rte_mbuf *rxtx_bufs[BURST_SIZE];
-
+	/* 从队列中取出8个数据 */
 	/* first dequeue packets from ring of primary process */
 	const uint16_t nb_in_deq = rte_ring_dequeue_burst(ring,
 			(void *)rxtx_bufs, BURST_SIZE, NULL);
 	stats->dequeue_pkts += nb_in_deq;
 
 	if (nb_in_deq) {
+		/* 调用net_pcap虚拟设备的tx接口(eth_pcap_tx)将数据写到pcap文件中 */
 		/* then sent on vdev */
 		uint16_t nb_in_txd = rte_eth_tx_burst(
 				vdev_id,
 				0, rxtx_bufs, nb_in_deq);
 		stats->tx_pkts += nb_in_txd;
-
+		/* 释放内存空间 */
 		if (unlikely(nb_in_txd < nb_in_deq)) {
 			do {
 				rte_pktmbuf_free(rxtx_bufs[nb_in_txd]);
@@ -645,7 +646,7 @@ create_mp_ring_vdev(void)
 		snprintf(mempool_name, SIZE, MP_NAME, i);
 		mbuf_pool = rte_mempool_lookup(mempool_name);
 		if (mbuf_pool == NULL) {
-			/* create mempool */
+			/* create mempool */ /* 创建内存池，操作集名: ring_mp_mc */
 			mbuf_pool = rte_pktmbuf_pool_create_by_ops(mempool_name,
 					pt->total_num_mbufs,
 					MBUF_POOL_CACHE_SIZE, 0,
@@ -662,7 +663,7 @@ create_mp_ring_vdev(void)
 
 		if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
 			/* if captured packets has to send to the same vdev */
-			/* create rx_ring */
+			/* create rx_ring */ /* 创建rx环形队列 */
 			snprintf(ring_name, SIZE, RX_RING, i);
 			pt->rx_ring = rte_ring_create(ring_name, pt->ring_size,
 					rte_socket_id(), 0);
@@ -673,7 +674,7 @@ create_mp_ring_vdev(void)
 						__func__, __LINE__);
 			}
 
-			/* create tx_ring */
+			/* create tx_ring */ /* 创建tx环形队列 */
 			snprintf(ring_name, SIZE, TX_RING, i);
 			pt->tx_ring = rte_ring_create(ring_name, pt->ring_size,
 					rte_socket_id(), 0);
@@ -683,22 +684,23 @@ create_mp_ring_vdev(void)
 						rte_strerror(rte_errno),
 						__func__, __LINE__);
 			}
-
+			/* 创建虚拟设备名 */
 			/* create vdevs */
-			snprintf(vdev_name, sizeof(vdev_name),
+			snprintf(vdev_name, sizeof(vdev_name),/* net_pcap_rx_0 */
 				 VDEV_NAME_FMT, RX_STR, i);
 			(pt->rx_vdev_stream_type == IFACE) ?
 			snprintf(vdev_args, sizeof(vdev_args),
 				 VDEV_IFACE_ARGS_FMT, pt->rx_dev) :
-			snprintf(vdev_args, sizeof(vdev_args),
+			snprintf(vdev_args, sizeof(vdev_args),/* rx_pcap=/root/rx.pcap */
 				 VDEV_PCAP_ARGS_FMT, pt->rx_dev);
-			if (rte_eal_hotplug_add("vdev", vdev_name,
+			if (rte_eal_hotplug_add("vdev", vdev_name,/* 热添加虚拟设备 */
 						vdev_args) < 0) {
 				cleanup_rings();
 				rte_exit(EXIT_FAILURE,
 					"vdev creation failed:%s:%d\n",
 					__func__, __LINE__);
 			}
+			/* 获取虚拟设备的portid */			
 			if (rte_eth_dev_get_port_by_name(vdev_name,
 							 &portid) != 0) {
 				rte_eal_hotplug_remove("vdev", vdev_name);
@@ -708,11 +710,11 @@ create_mp_ring_vdev(void)
 					vdev_name, __func__, __LINE__);
 			}
 			pt->rx_vdev_id = portid;
-
+			/* 配置虚拟设备 */
 			/* configure vdev */
 			configure_vdev(pt->rx_vdev_id);
 
-			if (pt->single_pdump_dev)
+			if (pt->single_pdump_dev)/* 若是保存单一文件，则tx的虚拟设备id与rx的一样 */
 				pt->tx_vdev_id = portid;
 			else {
 				snprintf(vdev_name, sizeof(vdev_name),
@@ -820,18 +822,18 @@ create_mp_ring_vdev(void)
 		}
 	}
 }
-
+/* 使能pdump */
 static void
 enable_pdump(void)
 {
 	int i;
 	struct pdump_tuples *pt;
 	int ret = 0, ret1 = 0;
-
+	/* 使能pdump */
 	for (i = 0; i < num_tuples; i++) {
 		pt = &pdump_t[i];
 		if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
-			if (pt->dump_by_type == DEVICE_ID) {
+			if (pt->dump_by_type == DEVICE_ID) {/* 按deviceid */
 				ret = rte_pdump_enable_by_deviceid(
 						pt->device_id,
 						pt->queue,
@@ -844,7 +846,7 @@ enable_pdump(void)
 						RTE_PDUMP_FLAG_TX,
 						pt->tx_ring,
 						pt->mp, NULL);
-			} else if (pt->dump_by_type == PORT_ID) {
+			} else if (pt->dump_by_type == PORT_ID) {/* 按portid */
 				ret = rte_pdump_enable(pt->port, pt->queue,
 						RTE_PDUMP_FLAG_RX,
 						pt->rx_ring, pt->mp, NULL);
@@ -924,7 +926,7 @@ dump_packets(void)
 
 		while (!quit_signal) {
 			for (i = 0; i < num_tuples; i++)
-				pdump_packets(&pdump_t[i]);
+				pdump_packets(&pdump_t[i]);/* 将ring中的 mbuf写入到net_pcap 设备中 */
 		}
 
 		return;
@@ -962,7 +964,9 @@ enable_primary_monitor(void)
 	if (ret < 0)
 		printf("Fail to enable monitor:%d\n", ret);
 }
-
+/* 运行命令：
+ * ./dpdk-pdump.ofp -w 0000:b8:00.0 --file-prefix ofp -- --pdump "port=0,queue=0,rx-dev=/root/pdump/rx.pcap,tx-dev=/root/pdump/tx.pcap,total-num-mbufs=2048"
+ */
 int
 main(int argc, char **argv)
 {
@@ -971,16 +975,16 @@ main(int argc, char **argv)
 	int i;
 
 	char n_flag[] = "-n4";
-	char mp_flag[] = "--proc-type=secondary";
+	char mp_flag[] = "--proc-type=secondary"; /* pdump只能以secondary运行 */
 	char *argp[argc + 2];
 
 	/* catch ctrl-c so we can print on exit */
 	signal(SIGINT, signal_handler);
-
+	/* 构造rte_eal_init()函数参数	*/
 	argp[0] = argv[0];
 	argp[1] = n_flag;
 	argp[2] = mp_flag;
-
+	
 	for (i = 1; i < argc; i++)
 		argp[i + 2] = argv[i];
 
@@ -992,22 +996,22 @@ main(int argc, char **argv)
 
 	if (rte_eth_dev_count_avail() == 0)
 		rte_exit(EXIT_FAILURE, "No Ethernet ports - bye\n");
-
+	/* 解析“--”后面的参数 */
 	argc -= diag;
 	argv += (diag - 2);
 
 	/* parse app arguments */
-	if (argc > 1) {
+	if (argc > 1) {  /* 解析--pdump参数，将结果放在全局变量中 */
 		ret = launch_args_parse(argc, argv, argp[0]);
 		if (ret < 0)
 			rte_exit(EXIT_FAILURE, "Invalid argument\n");
 	}
-
+	/* 1.创建内存池；2.创建环形队列；3.创建虚拟网络设备vdev */
 	/* create mempool, ring and vdevs info */
 	create_mp_ring_vdev();
 	enable_pdump();
 	enable_primary_monitor();
-	dump_packets();
+	dump_packets();/* 将ring中的mbuf写入net_pcap 虚拟设备 */
 
 	disable_primary_monitor();
 	cleanup_pdump_resources();

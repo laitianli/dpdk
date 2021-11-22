@@ -148,11 +148,12 @@ pdump_copy(struct rte_mbuf **pkts, uint16_t nb_pkts, void *user_params)
 	ring = cbs->ring;
 	mp = cbs->mp;
 	for (i = 0; i < nb_pkts; i++) {
+		/* 拷贝数据，需要从内存池中申请到mbuf，数据拷由到此mbuf中 */
 		p = pdump_pktmbuf_copy(pkts[i], mp);
 		if (p)
 			dup_bufs[d_pkts++] = p;
 	}
-
+	/* 插入到ring */
 	ring_enq = rte_ring_enqueue_burst(ring, (void *)dup_bufs, d_pkts, NULL);
 	if (unlikely(ring_enq < d_pkts)) {
 		RTE_LOG(DEBUG, PDUMP,
@@ -171,6 +172,7 @@ pdump_rx(uint16_t port __rte_unused, uint16_t qidx __rte_unused,
 {
 	if(nb_pkts == 0)
 		return 0;
+	/* 拷贝mbuf，并插入到ring中 */
 	pdump_copy(pkts, nb_pkts, user_params);
 	return nb_pkts;
 }
@@ -181,10 +183,11 @@ pdump_tx(uint16_t port __rte_unused, uint16_t qidx __rte_unused,
 {
 	if(nb_pkts == 0)
 		return 0;
+	/* 拷贝mbuf，并插入到ring中 */
 	pdump_copy(pkts, nb_pkts, user_params);
 	return nb_pkts;
 }
-
+/* 在网卡的queue数组中插入回调函数 */
 static int
 pdump_register_rx_callbacks(uint16_t end_q, uint16_t port, uint16_t queue,
 				struct rte_ring *ring, struct rte_mempool *mp,
@@ -204,6 +207,7 @@ pdump_register_rx_callbacks(uint16_t end_q, uint16_t port, uint16_t queue,
 					port, qid);
 				return -EEXIST;
 			}
+			/* 在网卡的queue数组中添加回调函数，此回调函数会在函数rte_eth_rx_burst()/rte_eth_tx_burst()中调用 */
 			cbs->ring = ring;
 			cbs->mp = mp;
 			cbs->cb = rte_eth_add_first_rx_callback(port, qid,
@@ -308,6 +312,7 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 	flags = p->flags;
 	operation = p->op;
 	if (operation == ENABLE) {
+		/* 通过deviceid(pcieid)获取到 portid */
 		ret = rte_eth_dev_get_port_by_name(p->data.en_v1.device,
 				&port);
 		if (ret < 0) {
@@ -316,9 +321,9 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 				p->data.en_v1.device);
 			return -EINVAL;
 		}
-		queue = p->data.en_v1.queue;
-		ring = p->data.en_v1.ring;
-		mp = p->data.en_v1.mp;
+		queue = p->data.en_v1.queue;/* queueid */
+		ring = p->data.en_v1.ring;  /* 环形队列 */
+		mp = p->data.en_v1.mp;      /* 内存池 */
 	} else {
 		ret = rte_eth_dev_get_port_by_name(p->data.dis_v1.device,
 				&port);
@@ -333,7 +338,7 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 		mp = p->data.dis_v1.mp;
 	}
 	/* validation if packet capture is for all queues */
-	if (queue == RTE_PDUMP_ALL_QUEUES) {
+	if (queue == RTE_PDUMP_ALL_QUEUES) { /* 在所有queue中抓包 */
 		struct rte_eth_dev_info dev_info;
 
 		ret = rte_eth_dev_info_get(port, &dev_info);
@@ -363,7 +368,7 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 			return -EINVAL;
 		}
 	}
-
+	/* 注册rx方向的callback:   pdump_rx */
 	/* register RX callback */
 	if (flags & RTE_PDUMP_FLAG_RX) {
 		end_q = (queue == RTE_PDUMP_ALL_QUEUES) ? nb_rx_q : queue + 1;
@@ -372,7 +377,7 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 		if (ret < 0)
 			return ret;
 	}
-
+	/* 注册tx方向的callback:   pdump_tx */
 	/* register TX callback */
 	if (flags & RTE_PDUMP_FLAG_TX) {
 		end_q = (queue == RTE_PDUMP_ALL_QUEUES) ? nb_tx_q : queue + 1;
@@ -384,7 +389,7 @@ set_pdump_rxtx_cbs(const struct pdump_request *p)
 
 	return ret;
 }
-
+/* pdump server处理函数 */
 static int
 pdump_server(const struct rte_mp_msg *mp_msg, const void *peer)
 {
@@ -400,12 +405,14 @@ pdump_server(const struct rte_mp_msg *mp_msg, const void *peer)
 		cli_req = (const struct pdump_request *)mp_msg->param;
 		resp->ver = cli_req->ver;
 		resp->res_op = cli_req->op;
-		resp->err_value = set_pdump_rxtx_cbs(cli_req);
+		/* 将客户端的请求插入到rte_eth_devices[port_id].post_rx_burst_cbs[queue_id]中 */
+		resp->err_value = set_pdump_rxtx_cbs(cli_req); 
 	}
 
 	strlcpy(mp_resp.name, PDUMP_MP, RTE_MP_MAX_NAME_LEN);
 	mp_resp.len_param = sizeof(*resp);
 	mp_resp.num_fds = 0;
+	/* 回复客户端 */
 	if (rte_mp_reply(&mp_resp, peer) < 0) {
 		RTE_LOG(ERR, PDUMP, "failed to send to client:%s, %s:%d\n",
 			strerror(rte_errno), __func__, __LINE__);
@@ -414,7 +421,7 @@ pdump_server(const struct rte_mp_msg *mp_msg, const void *peer)
 
 	return 0;
 }
-
+/* pdump模块初始化：创建pdump server，在primary进程调用 */
 int
 rte_pdump_init(void)
 {
@@ -513,14 +520,14 @@ pdump_prepare_client_request(char *device, uint16_t queue,
 	req->ver = 1;
 	req->flags = flags;
 	req->op = operation;
-	if ((operation & ENABLE) != 0) {
+	if ((operation & ENABLE) != 0) {/* 使能操作 */
 		strlcpy(req->data.en_v1.device, device,
 			sizeof(req->data.en_v1.device));
 		req->data.en_v1.queue = queue;
 		req->data.en_v1.ring = ring;
 		req->data.en_v1.mp = mp;
 		req->data.en_v1.filter = filter;
-	} else {
+	} else {/* 删除操作 */
 		strlcpy(req->data.dis_v1.device, device,
 			sizeof(req->data.dis_v1.device));
 		req->data.dis_v1.queue = queue;
@@ -532,6 +539,7 @@ pdump_prepare_client_request(char *device, uint16_t queue,
 	strlcpy(mp_req.name, PDUMP_MP, RTE_MP_MAX_NAME_LEN);
 	mp_req.len_param = sizeof(*req);
 	mp_req.num_fds = 0;
+	/* 发送请求到primary */
 	if (rte_mp_request_sync(&mp_req, &mp_reply, &ts) == 0) {
 		mp_rep = &mp_reply.msgs[0];
 		resp = (struct pdump_response *)mp_rep->param;
@@ -546,7 +554,7 @@ pdump_prepare_client_request(char *device, uint16_t queue,
 			"client request for pdump enable/disable failed\n");
 	return ret;
 }
-
+/* 使能pdump:将pdump ring/mempoll/callback等信息加入到网卡的全局数组：rte_eth_devices[port_id].post_rx_burst_cbs[queue_id]; */
 int
 rte_pdump_enable(uint16_t port, uint16_t queue, uint32_t flags,
 			struct rte_ring *ring,
@@ -556,17 +564,19 @@ rte_pdump_enable(uint16_t port, uint16_t queue, uint32_t flags,
 
 	int ret = 0;
 	char name[DEVICE_ID_SIZE];
-
+	/* 通过portid获取deviceid */
 	ret = pdump_validate_port(port, name);
 	if (ret < 0)
 		return ret;
+	/* 判断环形队列是否是多生产者/多消费者类型 */
 	ret = pdump_validate_ring_mp(ring, mp);
 	if (ret < 0)
 		return ret;
+	/* 判断pdump标识 */
 	ret = pdump_validate_flags(flags);
 	if (ret < 0)
 		return ret;
-
+	/* 将pdump的queue/ring/mempool/filter发送到primary进程 */
 	ret = pdump_prepare_client_request(name, queue, flags,
 						ENABLE, ring, mp, filter);
 

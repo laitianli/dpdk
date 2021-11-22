@@ -317,18 +317,19 @@ process_msg(struct mp_msg_internal *m, struct sockaddr_un *s)
 	rte_mp_t action = NULL;
 
 	RTE_LOG(DEBUG, EAL, "msg: %s\n", msg->name);
-
+	/* 收到对端的reqest类型为MP_REP/MP_IGN，表示此reques是回应包，用来唤醒本进程中的发送线程 */
 	if (m->type == MP_REP || m->type == MP_IGN) {
 		struct pending_request *req = NULL;
-
+		/* 唤醒发送线程 */
 		pthread_mutex_lock(&pending_requests.lock);
+		/* 根据unix socket路径名和message名，查找pending request */
 		pending_req = find_pending_request(s->sun_path, msg->name);
 		if (pending_req) {
 			memcpy(pending_req->reply, msg, sizeof(*msg));
 			/* -1 indicates that we've been asked to ignore */
 			pending_req->reply_received =
 				m->type == MP_REP ? 1 : -1;
-
+			/* 唤醒线程 */
 			if (pending_req->type == REQUEST_TYPE_SYNC)
 				pthread_cond_signal(&pending_req->sync.cond);
 			else if (pending_req->type == REQUEST_TYPE_ASYNC)
@@ -342,7 +343,7 @@ process_msg(struct mp_msg_internal *m, struct sockaddr_un *s)
 			trigger_async_action(req);
 		return;
 	}
-
+	/* 根据message name找到实例 */
 	pthread_mutex_lock(&mp_mutex_action);
 	entry = find_action_entry_by_name(msg->name);
 	if (entry != NULL)
@@ -365,7 +366,7 @@ process_msg(struct mp_msg_internal *m, struct sockaddr_un *s)
 			RTE_LOG(ERR, EAL, "Cannot find action: %s\n",
 				msg->name);
 		}
-	} else if (action(msg, s->sun_path) < 0) {
+	} else if (action(msg, s->sun_path) < 0) { /* 执行实例对应的操作函数 */
 		RTE_LOG(ERR, EAL, "Fail to handle message: %s\n", msg->name);
 	}
 }
@@ -546,7 +547,7 @@ open_socket_fd(void)
 
 	memset(&un, 0, sizeof(un));
 	un.sun_family = AF_UNIX;
-
+	RTE_LOG(INFO, EAL, "peer_name: %s\n", peer_name);/*P: NULL, S:130312_7117336f440 */
 	create_socket_path(peer_name, un.sun_path, sizeof(un.sun_path));
 
 	unlink(un.sun_path); /* May still exist since last run */
@@ -557,7 +558,9 @@ open_socket_fd(void)
 		close(mp_fd);
 		return -1;
 	}
-
+	/* P: /var/run/dpdk/rte/mp_socket
+     * S:/var/run/dpdk/rte/mp_socket_130312_7117336f440
+	 */
 	RTE_LOG(INFO, EAL, "Multi-process socket %s\n", un.sun_path);
 	return mp_fd;
 }
@@ -594,11 +597,13 @@ rte_mp_channel_init(void)
 	/* create filter path */
 	create_socket_path("*", path, sizeof(path));
 	strlcpy(mp_filter, basename(path), sizeof(mp_filter));
-
+	/* P:mp_socket_*, S:mp_socket_* */
+	RTE_LOG(INFO, EAL, "mp_filter: %s\n", mp_filter);
 	/* path may have been modified, so recreate it */
 	create_socket_path("*", path, sizeof(path));
 	strlcpy(mp_dir_path, dirname(path), sizeof(mp_dir_path));
-
+	/* P:/var/run/dpdk/rte, S:/var/run/dpdk/rte */
+	RTE_LOG(INFO, EAL, "mp_dir_path: %s\n", mp_dir_path);
 	/* lock the directory */
 	dir_fd = open(mp_dir_path, O_RDONLY);
 	if (dir_fd < 0) {
@@ -618,7 +623,7 @@ rte_mp_channel_init(void)
 		close(dir_fd);
 		return -1;
 	}
-
+	/* 创建rte_mp_handle线程 */
 	if (rte_ctrl_thread_create(&mp_handle_tid, "rte_mp_handle",
 			NULL, mp_handle, NULL) < 0) {
 		RTE_LOG(ERR, EAL, "failed to create mp thead: %s\n",
@@ -715,7 +720,8 @@ mp_send(struct rte_mp_msg *msg, const char *peer, int type)
 
 	if (!peer && (rte_eal_process_type() == RTE_PROC_SECONDARY))
 		peer = eal_mp_socket_path();
-
+	/* S: /var/run/dpdk/rte/mp_socket, P: NULL */
+	RTE_LOG(INFO, EAL, "[%s:%d]peer: %s\n", __func__, __LINE__, peer);
 	if (peer) {
 		if (send_msg(peer, msg, type) < 0)
 			return -1;
@@ -750,6 +756,7 @@ mp_send(struct rte_mp_msg *msg, const char *peer, int type)
 
 		snprintf(path, sizeof(path), "%s/%s", mp_dir_path,
 			 ent->d_name);
+		RTE_LOG(INFO, EAL, "[%s:%d]path: %s\n", __func__, __LINE__, path);
 		if (send_msg(path, msg, type) < 0)
 			ret = -1;
 	}
@@ -900,7 +907,7 @@ mp_request_sync(const char *dst, struct rte_mp_msg *req,
 		rte_errno = EEXIST;
 		return -1;
 	}
-
+	/* 发送请求到primary */
 	ret = send_msg(dst, req, MP_REQ);
 	if (ret < 0) {
 		RTE_LOG(ERR, EAL, "Fail to send request %s:%s\n",
@@ -908,7 +915,9 @@ mp_request_sync(const char *dst, struct rte_mp_msg *req,
 		return -1;
 	} else if (ret == 0)
 		return 0;
-
+	/* 等待服务端处理函数后的回复，回复过程：由primary发送MP_REP到secondary的“rte_mp_handle”线程中，
+	 * 再由secondary的“rte_mp_handle”线程接收后唤醒。
+	 */
 	TAILQ_INSERT_TAIL(&pending_requests.requests, &pending_req, next);
 
 	reply->nb_sent++;
@@ -986,6 +995,7 @@ rte_mp_request_sync(struct rte_mp_msg *req, struct rte_mp_reply *reply,
 	/* for secondary process, send request to the primary process only */
 	if (rte_eal_process_type() == RTE_PROC_SECONDARY) {
 		pthread_mutex_lock(&pending_requests.lock);
+		/* 发送请求到primary */
 		ret = mp_request_sync(eal_mp_socket_path(), req, reply, &end);
 		pthread_mutex_unlock(&pending_requests.lock);
 		goto end;
