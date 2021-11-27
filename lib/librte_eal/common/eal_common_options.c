@@ -151,6 +151,7 @@ eal_option_device_add(enum rte_devtype type, const char *optarg)
 	return 0;
 }
 
+/* 设备选项的解析，当命令行参数有-w/-b时，会将参数存在devopt_list全局列表中 */
 int
 eal_option_device_parse(void)
 {
@@ -1204,7 +1205,7 @@ eal_parse_common_option(int opt, const char *optarg,
 
 	switch (opt) {
 	/* blacklist */
-	case 'b':
+	case 'b':/* pcie设备黑名单 */
 		if (w_used)
 			goto bw_used;
 		if (eal_option_device_add(RTE_DEVTYPE_BLACKLISTED_PCI,
@@ -1214,7 +1215,7 @@ eal_parse_common_option(int opt, const char *optarg,
 		b_used = 1;
 		break;
 	/* whitelist */
-	case 'w':
+	case 'w':/* pcie设备白名单 */
 		if (b_used)
 			goto bw_used;
 		if (eal_option_device_add(RTE_DEVTYPE_WHITELISTED_PCI,

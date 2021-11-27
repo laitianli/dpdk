@@ -50,21 +50,21 @@ TAILQ_HEAD(rte_pci_driver_list, rte_pci_driver);
 		TAILQ_FOREACH(p, &(rte_pci_bus.driver_list), next)
 
 struct rte_devargs;
-
+/* pcie设备 */
 /**
  * A structure describing a PCI device.
  */
 struct rte_pci_device {
 	TAILQ_ENTRY(rte_pci_device) next;   /**< Next probed PCI device. */
-	struct rte_device device;           /**< Inherit core device */
-	struct rte_pci_addr addr;           /**< PCI location. */
-	struct rte_pci_id id;               /**< PCI ID. */
-	struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];
+	struct rte_device device;           /**< Inherit core device *//* 设备 */
+	struct rte_pci_addr addr;           /**< PCI location. */ /* pcie设备地址 */
+	struct rte_pci_id id;               /**< PCI ID. *//* pcie设备id属性： */
+	struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];/* pcie bar空间 */
 					    /**< PCI Memory Resource */
-	struct rte_intr_handle intr_handle; /**< Interrupt handle */
-	struct rte_pci_driver *driver;      /**< PCI driver used in probing */
+	struct rte_intr_handle intr_handle; /**< Interrupt handle */ /* pcie中断句柄 */
+	struct rte_pci_driver *driver;      /**< PCI driver used in probing */ /* pcie设备驱动  */
 	uint16_t max_vfs;                   /**< sriov enable if not zero */
-	enum rte_kernel_driver kdrv;        /**< Kernel driver passthrough */
+	enum rte_kernel_driver kdrv;        /**< Kernel driver passthrough */ /* pcie使用的内核模块类型 */
 	char name[PCI_PRI_STR_SIZE+1];      /**< PCI location (ASCII) */
 	struct rte_intr_handle vfio_req_intr_handle;
 				/**< Handler of VFIO request interrupt */
@@ -170,9 +170,9 @@ struct rte_pci_driver {
  * Structure describing the PCI bus
  */
 struct rte_pci_bus {
-	struct rte_bus bus;               /**< Inherit the generic class */
-	struct rte_pci_device_list device_list;  /**< List of PCI devices */
-	struct rte_pci_driver_list driver_list;  /**< List of PCI drivers */
+	struct rte_bus bus;               /**< Inherit the generic class */ /* 总线 */
+	struct rte_pci_device_list device_list;  /**< List of PCI devices *//* 设备列表 */
+	struct rte_pci_driver_list driver_list;  /**< List of PCI drivers *//* 驱动列表 */
 };
 
 /** Device needs PCI BAR mapping (done with either IGB_UIO or VFIO) */

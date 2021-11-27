@@ -21,7 +21,7 @@
 static struct rte_tailq_elem rte_uio_tailq = {
 	.name = "UIO_RESOURCE_LIST",
 };
-EAL_REGISTER_TAILQ(rte_uio_tailq)
+EAL_REGISTER_TAILQ(rte_uio_tailq);
 
 static int
 pci_uio_map_secondary(struct rte_pci_device *dev)
@@ -77,7 +77,7 @@ pci_uio_map_secondary(struct rte_pci_device *dev)
 	RTE_LOG(ERR, EAL, "Cannot find resource for device\n");
 	return 1;
 }
-
+/* 使用igb_uio.ko模块来映射中断和bar空间 */
 /* map the PCI resource of a PCI device in virtual memory */
 int
 pci_uio_map_resource(struct rte_pci_device *dev)
@@ -90,16 +90,16 @@ pci_uio_map_resource(struct rte_pci_device *dev)
 
 	dev->intr_handle.fd = -1;
 	dev->intr_handle.uio_cfg_fd = -1;
-
+	/* secondary 进程映射bar空间： 映射bar空间，并校验与primary空间的地址是否一致 */
 	/* secondary processes - use already recorded details */
 	if (rte_eal_process_type() != RTE_PROC_PRIMARY)
 		return pci_uio_map_secondary(dev);
-
+	/* 打开/dev/uio%u文件，并将描述符赋给中断句柄 */
 	/* allocate uio resource */
 	ret = pci_uio_alloc_resource(dev, &uio_res);
 	if (ret)
 		return ret;
-
+	/* 映射bar空间 */
 	/* Map all BARs */
 	for (i = 0; i != PCI_MAX_RESOURCE; i++) {
 		/* skip empty BAR */

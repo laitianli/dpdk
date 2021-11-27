@@ -73,11 +73,11 @@ struct rte_pci_addr {
  * A structure describing a PCI mapping.
  */
 struct pci_map {
-	void *addr;
+	void *addr; /* 虚拟地址,从文件：/sys/bus/pci/devices/0000:02:06.0/resource%u解析到 */
 	char *path;
 	uint64_t offset;
 	uint64_t size;
-	uint64_t phaddr;
+	uint64_t phaddr; /* 物理地址，从文件：/sys/bus/pci/devices/0000:02:06.0/resource解析到 */
 };
 
 struct pci_msix_table {
@@ -95,7 +95,7 @@ struct mapped_pci_resource {
 	TAILQ_ENTRY(mapped_pci_resource) next;
 
 	struct rte_pci_addr pci_addr;
-	char path[PATH_MAX];
+	char path[PATH_MAX]; /* /dev/uio%u */
 	int nb_maps;
 	struct pci_map maps[PCI_MAX_RESOURCE];
 	struct pci_msix_table msix_table;

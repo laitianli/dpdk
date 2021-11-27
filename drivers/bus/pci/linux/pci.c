@@ -29,7 +29,7 @@
  */
 
 extern struct rte_pci_bus rte_pci_bus;
-
+/* 解析驱动名 */
 static int
 pci_get_kernel_driver_by_path(const char *filename, char *dri_name,
 			      size_t len)
@@ -59,7 +59,7 @@ pci_get_kernel_driver_by_path(const char *filename, char *dri_name,
 
 	return -1;
 }
-
+/* 映射pcie设备 */
 /* Map pci device */
 int
 rte_pci_map_device(struct rte_pci_device *dev)
@@ -136,7 +136,7 @@ pci_find_max_end_va(void)
 	return va;
 }
 
-
+/* 解析resource */
 /* parse one line of the "resource" sysfs file (note that the 'line'
  * string is modified)
  */
@@ -170,7 +170,7 @@ pci_parse_one_sysfs_resource(char *line, size_t len, uint64_t *phys_addr,
 
 	return 0;
 }
-
+/* /sys/bus/pci/xxxx:xx:xx.x/resource文件中读取bar空间 */
 /* parse the "resource" sysfs file */
 static int
 pci_parse_sysfs_resource(const char *filename, struct rte_pci_device *dev)
@@ -211,7 +211,7 @@ error:
 	fclose(f);
 	return -1;
 }
-
+/* 从文件/sys/bus/pci/device/xxxx:xx:xx.x目录下解析得到pcie设备属性信息，并保存到rte_pci_device结构中 */
 /* Scan one pci sysfs entry, and fill the devices list from it. */
 static int
 pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
@@ -227,8 +227,8 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		return -1;
 
 	memset(dev, 0, sizeof(*dev));
-	dev->device.bus = &rte_pci_bus.bus;
-	dev->addr = *addr;
+	dev->device.bus = &rte_pci_bus.bus;/* 设置pcie设备总线 */
+	dev->addr = *addr;/* 设备地址 */
 
 	/* get vendor id */
 	snprintf(filename, sizeof(filename), "%s/vendor", dirname);
@@ -236,7 +236,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		free(dev);
 		return -1;
 	}
-	dev->id.vendor_id = (uint16_t)tmp;
+	dev->id.vendor_id = (uint16_t)tmp;/* 厂商id */
 
 	/* get device id */
 	snprintf(filename, sizeof(filename), "%s/device", dirname);
@@ -244,7 +244,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		free(dev);
 		return -1;
 	}
-	dev->id.device_id = (uint16_t)tmp;
+	dev->id.device_id = (uint16_t)tmp;/* 设置id */
 
 	/* get subsystem_vendor id */
 	snprintf(filename, sizeof(filename), "%s/subsystem_vendor",
@@ -253,7 +253,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		free(dev);
 		return -1;
 	}
-	dev->id.subsystem_vendor_id = (uint16_t)tmp;
+	dev->id.subsystem_vendor_id = (uint16_t)tmp;/* 子厂商id */
 
 	/* get subsystem_device id */
 	snprintf(filename, sizeof(filename), "%s/subsystem_device",
@@ -262,7 +262,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		free(dev);
 		return -1;
 	}
-	dev->id.subsystem_device_id = (uint16_t)tmp;
+	dev->id.subsystem_device_id = (uint16_t)tmp;/* 子设备id */
 
 	/* get class_id */
 	snprintf(filename, sizeof(filename), "%s/class",
@@ -272,7 +272,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		return -1;
 	}
 	/* the least 24 bits are valid: class, subclass, program interface */
-	dev->id.class_id = (uint32_t)tmp & RTE_CLASS_ANY_ID;
+	dev->id.class_id = (uint32_t)tmp & RTE_CLASS_ANY_ID; /* 设备类型 */
 
 	/* get max_vfs */
 	dev->max_vfs = 0;
@@ -302,16 +302,16 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		dev->device.numa_node = 0;
 	}
 
-	pci_name_set(dev);
+	pci_name_set(dev);/* 设置dev->name和设备参数 */
 
 	/* parse resources */
-	snprintf(filename, sizeof(filename), "%s/resource", dirname);
+	snprintf(filename, sizeof(filename), "%s/resource", dirname);/* 解析resource */
 	if (pci_parse_sysfs_resource(filename, dev) < 0) {
 		RTE_LOG(ERR, EAL, "%s(): cannot parse resource\n", __func__);
 		free(dev);
 		return -1;
 	}
-
+	/* 解析驱动名称 */
 	/* parse driver */
 	snprintf(filename, sizeof(filename), "%s/driver", dirname);
 	ret = pci_get_kernel_driver_by_path(filename, driver, sizeof(driver));
@@ -320,7 +320,7 @@ pci_scan_one(const char *dirname, const struct rte_pci_addr *addr)
 		free(dev);
 		return -1;
 	}
-
+	/* 设置pci内核模块  类型 */
 	if (!ret) {
 		if (!strcmp(driver, "vfio-pci"))
 			dev->kdrv = RTE_KDRV_VFIO;
@@ -446,7 +446,7 @@ error:
 	free(buf_copy);
 	return -1;
 }
-
+/* 从目录/sys/bus/pci/devices中扫描到pcie设备，并将设备插入到rte_pci_bus.device_list列表中 */
 /*
  * Scan the content of the PCI bus, and the devices in the devices
  * list
@@ -457,7 +457,7 @@ rte_pci_scan(void)
 	struct dirent *e;
 	DIR *dir;
 	char dirname[PATH_MAX];
-	struct rte_pci_addr addr;
+	struct rte_pci_addr addr;/* pcie id: 域：总线：设备号：功能号 */
 
 	/* for debug purposes, PCI can be disabled */
 	if (!rte_eal_has_pci())
@@ -468,7 +468,7 @@ rte_pci_scan(void)
 		RTE_LOG(DEBUG, EAL, "VFIO PCI modules not loaded\n");
 #endif
 
-	dir = opendir(rte_pci_get_sysfs_path());
+	dir = opendir(rte_pci_get_sysfs_path()); 
 	if (dir == NULL) {
 		RTE_LOG(ERR, EAL, "%s(): opendir failed: %s\n",
 			__func__, strerror(errno));
@@ -478,13 +478,13 @@ rte_pci_scan(void)
 	while ((e = readdir(dir)) != NULL) {
 		if (e->d_name[0] == '.')
 			continue;
-
+		/* 从目录名中读取pcie id */
 		if (parse_pci_addr_format(e->d_name, sizeof(e->d_name), &addr) != 0)
 			continue;
-
+		/* pcie设备id */
 		snprintf(dirname, sizeof(dirname), "%s/%s",
 				rte_pci_get_sysfs_path(), e->d_name);
-
+		/* 解析pcie设备属性，保存到rte_pci_device结构中，并将结构插入到rte_pci_bus.device_list列表中 */
 		if (pci_scan_one(dirname, &addr) < 0)
 			goto error;
 	}

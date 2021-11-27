@@ -15,7 +15,7 @@
 
 static struct rte_bus_list rte_bus_list =
 	TAILQ_HEAD_INITIALIZER(rte_bus_list);
-
+/* 总线注册，在进程构造函数里调用 */
 void
 rte_bus_register(struct rte_bus *bus)
 {
@@ -38,16 +38,17 @@ rte_bus_unregister(struct rte_bus *bus)
 	TAILQ_REMOVE(&rte_bus_list, bus, next);
 	RTE_LOG(DEBUG, EAL, "Unregistered [%s] bus.\n", bus->name);
 }
-
+/* 总线扫描 */
 /* Scan all the buses for registered devices */
 int
 rte_bus_scan(void)
 {
 	int ret;
 	struct rte_bus *bus = NULL;
-
+	/* rte_bus_list全局列表中的元素由rte_bus_register()接口插入。
+	 * 当每类总线模块的构造函数执行时，就会调用此接口将总线对象struct rte_bus插入到此列表中。 */
 	TAILQ_FOREACH(bus, &rte_bus_list, next) {
-		ret = bus->scan();
+		ret = bus->scan(); /* 调用每类总线的scan, 其中pcie:rte_pci_scan(), vdev:vdev_scan() */
 		if (ret)
 			RTE_LOG(ERR, EAL, "Scan for (%s) bus failed.\n",
 				bus->name);
@@ -55,7 +56,7 @@ rte_bus_scan(void)
 
 	return 0;
 }
-
+/* 总线探测 */
 /* Probe all devices of all buses */
 int
 rte_bus_probe(void)

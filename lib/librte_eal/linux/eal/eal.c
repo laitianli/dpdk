@@ -1011,7 +1011,7 @@ rte_eal_init(int argc, char **argv)
 		rte_atomic32_clear(&run_once);
 		return -1;
 	}
-	/* 是什么功能？ */
+	/* 设备选项的解析 */
 	if (eal_option_device_parse()) {
 		rte_errno = ENODEV;
 		rte_atomic32_clear(&run_once);
@@ -1033,7 +1033,7 @@ rte_eal_init(int argc, char **argv)
 		/* rte_eal_alarm_init sets rte_errno on failure. */
 		return -1;
 	}
-
+	/* 打开unix socket,创建rte_mp_handle线程，用于实现multi-process(primary/secondary)双进程通信 */
 	/* Put mp channel init before bus scan so that we can init the vdev
 	 * bus through mp channel in the secondary process before the bus scan.
 	 */
@@ -1044,13 +1044,13 @@ rte_eal_init(int argc, char **argv)
 			return -1;
 		}
 	}
-
+	/* 动态添加设备模块初始化 */
 	/* register multi-process action callbacks for hotplug */
 	if (eal_mp_dev_hotplug_init() < 0) {
 		rte_eal_init_alert("failed to register mp callback for hotplug");
 		return -1;
 	}
-	/* 总线扫描: pci,vdev/vmbus等6种总线的扫描 */
+	/* 总线扫描: pci,pcie,vdev/vmbus等6种总线的扫描 */
 	if (rte_bus_scan()) {
 		rte_eal_init_alert("Cannot scan the buses for devices");
 		rte_errno = ENODEV;
@@ -1214,7 +1214,8 @@ rte_eal_init(int argc, char **argv)
 	RTE_LOG(DEBUG, EAL, "Master lcore %u is ready (tid=%zx;cpuset=[%s%s])\n",
 		rte_config.master_lcore, (uintptr_t)thread_id, cpuset,
 		ret == 0 ? "" : "...");
-
+	/* 创建每个core的线程，线程名：lcore-slave-x */
+	/* 依赖参数”-l 1,2“和参数”-m 0x3“ */
 	RTE_LCORE_FOREACH_SLAVE(i) {
 
 		/*

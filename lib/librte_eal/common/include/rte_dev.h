@@ -78,9 +78,9 @@ enum rte_dev_policy {
  * A generic memory resource representation.
  */
 struct rte_mem_resource {
-	uint64_t phys_addr; /**< Physical address, 0 if not resource. */
+	uint64_t phys_addr; /**< Physical address, 0 if not resource. */ /* 物理地址 */
 	uint64_t len;       /**< Length of the resource. */
-	void *addr;         /**< Virtual address, NULL when not mapped. */
+	void *addr;         /**< Virtual address, NULL when not mapped. *//* 虚拟地址 */
 };
 
 /**

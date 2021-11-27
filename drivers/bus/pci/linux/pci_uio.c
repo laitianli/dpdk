@@ -209,7 +209,7 @@ pci_uio_free_resource(struct rte_pci_device *dev,
 		dev->intr_handle.type = RTE_INTR_HANDLE_UNKNOWN;
 	}
 }
-
+/* 打开/dev/uio%u，并将描述符赋给中断句柄 */
 int
 pci_uio_alloc_resource(struct rte_pci_device *dev,
 		struct mapped_pci_resource **uio_res)
@@ -221,7 +221,7 @@ pci_uio_alloc_resource(struct rte_pci_device *dev,
 	struct rte_pci_addr *loc;
 
 	loc = &dev->addr;
-
+	/* 从/sys/bus/pci/devices/0000:02:06.0/uio/uio0/中读取uio number */
 	/* find uio resource */
 	uio_num = pci_get_uio_dev(dev, dirname, sizeof(dirname), 1);
 	if (uio_num < 0) {
@@ -229,8 +229,9 @@ pci_uio_alloc_resource(struct rte_pci_device *dev,
 				"skipping\n", loc->domain, loc->bus, loc->devid, loc->function);
 		return 1;
 	}
+	/* 字符设备名"/dev/uio<uio_num>" */
 	snprintf(devname, sizeof(devname), "/dev/uio%u", uio_num);
-
+	/* 打开字符设备名，做为中断的句柄fd */
 	/* save fd if in primary process */
 	dev->intr_handle.fd = open(devname, O_RDWR);
 	if (dev->intr_handle.fd < 0) {
@@ -238,7 +239,7 @@ pci_uio_alloc_resource(struct rte_pci_device *dev,
 			devname, strerror(errno));
 		goto error;
 	}
-
+	/* 配置文件：/sys/bus/pci/devices/0000:02:06.0/uio/uio0/device/config */
 	snprintf(cfgname, sizeof(cfgname),
 			"/sys/class/uio/uio%u/device/config", uio_num);
 	dev->intr_handle.uio_cfg_fd = open(cfgname, O_RDWR);
@@ -247,7 +248,7 @@ pci_uio_alloc_resource(struct rte_pci_device *dev,
 			cfgname, strerror(errno));
 		goto error;
 	}
-
+	/* 设置中断类型 */
 	if (dev->kdrv == RTE_KDRV_IGB_UIO)
 		dev->intr_handle.type = RTE_INTR_HANDLE_UIO;
 	else {
@@ -277,7 +278,7 @@ error:
 	pci_uio_free_resource(dev, *uio_res);
 	return -1;
 }
-
+/* 通过bar空间的idx，将pcie设备的bar空间映射到用户空间 */
 int
 pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
 		struct mapped_pci_resource *uio_res, int map_idx)
@@ -288,7 +289,7 @@ pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
 	struct rte_pci_addr *loc;
 	struct pci_map *maps;
 	int wc_activate = 0;
-
+	/* 驱动几乎没有用到RTE_PCI_DRV_WC_ACTIVATE标志 */
 	if (dev->driver != NULL)
 		wc_activate = dev->driver->drv_flags & RTE_PCI_DRV_WC_ACTIVATE;
 
@@ -321,8 +322,8 @@ pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
 				devname);
 		}
 	}
-
-	if (!wc_activate || fd < 0) {
+        if (!wc_activate || fd < 0) {
+		/*/sys/bus/pci/devices/0000:02:06.0/resource%u*/
 		snprintf(devname, sizeof(devname),
 			"%s/" PCI_PRI_FMT "/resource%d",
 			rte_pci_get_sysfs_path(),
@@ -341,7 +342,7 @@ pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
 	/* try mapping somewhere close to the end of hugepages */
 	if (pci_map_addr == NULL)
 		pci_map_addr = pci_find_max_end_va();
-
+	/* 映射到的虚拟地址 */
 	mapaddr = pci_map_resource(pci_map_addr, fd, 0,
 			(size_t)dev->mem_resource[res_idx].len, 0);
 	close(fd);
@@ -352,10 +353,10 @@ pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
 			(size_t)dev->mem_resource[res_idx].len);
 
 	pci_map_addr = RTE_PTR_ALIGN(pci_map_addr, sysconf(_SC_PAGE_SIZE));
-
+	/* 从/sys/bus/pci/xxxx:xx:xx.x/resource文件读到的物理地址 */
 	maps[map_idx].phaddr = dev->mem_resource[res_idx].phys_addr;
 	maps[map_idx].size = dev->mem_resource[res_idx].len;
-	maps[map_idx].addr = mapaddr;
+	maps[map_idx].addr = mapaddr; /* 通过mmap映射后的虚拟地址 */
 	maps[map_idx].offset = 0;
 	strcpy(maps[map_idx].path, devname);
 	dev->mem_resource[res_idx].addr = mapaddr;

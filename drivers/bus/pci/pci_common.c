@@ -54,7 +54,7 @@ static struct rte_devargs *pci_devargs_lookup(struct rte_pci_device *dev)
 	}
 	return NULL;
 }
-
+/* 设置pcie设备名，在rte_pci_scan中调用 */
 void
 pci_name_set(struct rte_pci_device *dev)
 {
@@ -62,9 +62,9 @@ pci_name_set(struct rte_pci_device *dev)
 
 	/* Each device has its internal, canonical name set. */
 	rte_pci_device_name(&dev->addr,
-			dev->name, sizeof(dev->name));
+			dev->name, sizeof(dev->name));/* dev->name: 0000:03:02.0 */
 	devargs = pci_devargs_lookup(dev);
-	dev->device.devargs = devargs;
+	dev->device.devargs = devargs; /* 设置设备的参数（由程序参数:"-w 0000:01:02.1"）传入 */
 	/* In blacklist mode, if the device is not blacklisted, no
 	 * rte_devargs exists for it.
 	 */
@@ -77,7 +77,7 @@ pci_name_set(struct rte_pci_device *dev)
 		/* Otherwise, it uses the internal, canonical form. */
 		dev->device.name = dev->name;
 }
-
+/* 比较pcie驱动和pcie设备的pciid */
 /*
  * Match the PCI Driver and Device using the ID Table
  */
@@ -113,7 +113,11 @@ rte_pci_match(const struct rte_pci_driver *pci_drv,
 
 	return 0;
 }
-
+/* 1.比较pcie驱动和pcie设备的pcieid；
+ * 2.打开/dev/uio%u文件，并将描述符赋给中断句柄；
+ * 3.映射pcie设备的bar空间；
+ * 4.调用pcie驱动的probe()接口初始化设备；
+ */
 /*
  * If vendor/device ID match, call the probe() function of the
  * driver.
@@ -130,7 +134,7 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 		return -EINVAL;
 
 	loc = &dev->addr;
-
+	/* 1.根据设备的pcieid与驱动的pcieid比较 */
 	/* The device is not blacklisted; Check if driver supports it */
 	if (!rte_pci_match(dr, dev))
 		/* Match of device and driver failed */
@@ -139,7 +143,7 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 	RTE_LOG(INFO, EAL, "PCI device "PCI_PRI_FMT" on NUMA socket %i\n",
 			loc->domain, loc->bus, loc->devid, loc->function,
 			dev->device.numa_node);
-
+	/* 1.1在黑名单的设备，直接返回 */
 	/* no initialization when blacklisted, return without error */
 	if (dev->device.devargs != NULL &&
 		dev->device.devargs->policy ==
@@ -153,7 +157,7 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 		RTE_LOG(WARNING, EAL, "  Invalid NUMA socket, default to 0\n");
 		dev->device.numa_node = 0;
 	}
-
+	/* 1.2用是否已经有驱动来判断是否已经probe过 */
 	already_probed = rte_dev_is_probed(&dev->device);
 	if (already_probed && !(dr->drv_flags & RTE_PCI_DRV_PROBE_AGAIN)) {
 		RTE_LOG(DEBUG, EAL, "Device %s is already probed\n",
@@ -182,10 +186,10 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 				iova_mode == RTE_IOVA_PA ? "PA" : "VA");
 			return -EINVAL;
 		}
-
+		/* 关联设备驱动 */
 		dev->driver = dr;
 	}
-
+	/* 2.映射pcie设备资源： 中断使用的fd、pci设备bar空间 */
 	if (!already_probed && (dr->drv_flags & RTE_PCI_DRV_NEED_MAPPING)) {
 		/* map resources for devices that use igb_uio */
 		ret = rte_pci_map_device(dev);
@@ -194,7 +198,7 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 			return ret;
 		}
 	}
-
+	/* 4.调用驱动的probe函数:eth_i40e_pci_probe() */
 	/* call the driver probe() function */
 	ret = dr->probe(dr, dev);
 	if (already_probed)
@@ -214,7 +218,7 @@ rte_pci_probe_one_driver(struct rte_pci_driver *dr,
 
 	return ret;
 }
-
+/* 制裁pcie设备驱动 */
 /*
  * If vendor/device ID match, call the remove() function of the
  * driver.
@@ -255,7 +259,7 @@ rte_pci_detach_dev(struct rte_pci_device *dev)
 
 	return 0;
 }
-
+/* 根据pcie设备对象，去probe相应驱动 */
 /*
  * If vendor/device ID match, call the probe() function of all
  * registered driver for the given device. Return < 0 if initialization
@@ -269,7 +273,7 @@ pci_probe_all_drivers(struct rte_pci_device *dev)
 
 	if (dev == NULL)
 		return -EINVAL;
-
+	/* 遍历总线下的驱动 */
 	FOREACH_DRIVER_ON_PCIBUS(dr) {
 		rc = rte_pci_probe_one_driver(dr, dev);
 		if (rc < 0)
@@ -282,7 +286,7 @@ pci_probe_all_drivers(struct rte_pci_device *dev)
 	}
 	return 1;
 }
-
+/* pci总线已经挂了pcie设备（rte_pci_scan()完成）和pcie驱动（在构造函数完成） */
 /*
  * Scan the content of the PCI bus, and call the probe() function for
  * all registered drivers that have a matching entry in its id_table
@@ -296,18 +300,17 @@ rte_pci_probe(void)
 	struct rte_devargs *devargs;
 	int probe_all = 0;
 	int ret = 0;
-
+	/* 在进程启动中没有带"-w 0000:01:02.1"参数，则要全局扫描 */
 	if (rte_pci_bus.bus.conf.scan_mode != RTE_BUS_SCAN_WHITELIST)
 		probe_all = 1;
-
+	/* 遍历总线下的pcie设备 */
 	FOREACH_DEVICE_ON_PCIBUS(dev) {
 		probed++;
-
-		devargs = dev->device.devargs;
+		devargs = dev->device.devargs; /* 在哪里赋值的呢？在rte_pci_scan()时调用pci_name_set()设置 */
 		/* probe all or only whitelisted devices */
-		if (probe_all)
+		if (probe_all) /* 没有指定参数"-w 0000:01:02.1",则会把所有的pcie设备都调用probe()函数 */
 			ret = pci_probe_all_drivers(dev);
-		else if (devargs != NULL &&
+		else if (devargs != NULL && /* 只有指定了参数"-w 0000:01:02.1"，devargs才不为NULL。因此只有”-w“指定的设备才会probe */
 			devargs->policy == RTE_DEV_WHITELISTED)
 			ret = pci_probe_all_drivers(dev);
 		if (ret < 0) {
@@ -369,7 +372,7 @@ pci_parse(const char *name, void *addr)
 		*out = pci_addr;
 	return parse == false;
 }
-
+/* pcie驱动注册，在构造函数中执行：将驱动插入到rte_pci_bus.driver_list中，并设备pcie驱动的总线 */
 /* register a driver */
 void
 rte_pci_register(struct rte_pci_driver *driver)
@@ -674,8 +677,8 @@ rte_pci_get_iommu_class(void)
 
 struct rte_pci_bus rte_pci_bus = {
 	.bus = {
-		.scan = rte_pci_scan,
-		.probe = rte_pci_probe,
+		.scan = rte_pci_scan, /* pcie设备的扫描 */
+		.probe = rte_pci_probe, /*  */
 		.find_device = pci_find_device,
 		.plug = pci_plug,
 		.unplug = pci_unplug,

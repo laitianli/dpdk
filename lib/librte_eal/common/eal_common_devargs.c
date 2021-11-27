@@ -173,7 +173,7 @@ bus_name_cmp(const struct rte_bus *bus, const void *name)
 {
 	return strncmp(bus->name, name, strlen(bus->name));
 }
-
+/* 根据设备名去总线列表rte_bus_list中查到对应  的总线 */
 int
 rte_devargs_parse(struct rte_devargs *da, const char *dev)
 {
@@ -184,7 +184,7 @@ rte_devargs_parse(struct rte_devargs *da, const char *dev)
 
 	if (da == NULL)
 		return -EINVAL;
-
+	/* 根据总线名称查找总线 */
 	/* Retrieve eventual bus info */
 	do {
 		devname = dev;
@@ -195,6 +195,8 @@ rte_devargs_parse(struct rte_devargs *da, const char *dev)
 		if (rte_bus_find_by_device_name(devname) == bus)
 			break;
 	} while (1);
+	/* 根据设备名(0000:02:06.0)去pcie总线查找 */
+	/* 1.-w 0000:02:06.0,0000:02:05.0,只用","前部分去查找 */
 	/* Store device name */
 	i = 0;
 	while (devname[i] != '\0' && devname[i] != ',') {
@@ -216,7 +218,7 @@ rte_devargs_parse(struct rte_devargs *da, const char *dev)
 			return -EFAULT;
 		}
 	}
-	da->bus = bus;
+	da->bus = bus;/* 设备对应总线 */
 	/* Parse eventual device arguments */
 	if (devname[i] == ',')
 		da->args = strdup(&devname[i + 1]);
@@ -295,7 +297,7 @@ rte_devargs_insert(struct rte_devargs **da)
 	TAILQ_INSERT_TAIL(&devargs_list, *da, next);
 	return 0;
 }
-
+/* RTE_DEVTYPE_WHITELISTED_PCI, "0000:02:06.0,0000:02:05.0" */
 /* store a whitelist parameter for later parsing */
 int
 rte_devargs_add(enum rte_devtype devtype, const char *devargs_str)
