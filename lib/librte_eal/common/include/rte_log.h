@@ -334,7 +334,7 @@ int rte_vlog(uint32_t level, uint32_t logtype, const char *format, va_list ap)
  */
 #define RTE_LOG(l, t, ...)					\
 	 rte_log(RTE_LOG_ ## l,					\
-		 RTE_LOGTYPE_ ## t, # t ": " __VA_ARGS__)
+		 RTE_LOGTYPE_ ## t, "\033[31m"# t ": \033[0m" __VA_ARGS__)
 
 /**
  * Generates a log message for data path.
