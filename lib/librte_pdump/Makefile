@@ -13,9 +13,9 @@ LDLIBS += -lrte_eal -lrte_mempool -lrte_mbuf -lrte_ethdev
 EXPORT_MAP := rte_pdump_version.map
 
 # all source are stored in SRCS-y
-SRCS-$(CONFIG_RTE_LIBRTE_PDUMP) := rte_pdump.c
+SRCS-$(CONFIG_RTE_LIBRTE_PDUMP) := rte_pdump.c rte_pdump_filter.c
 
 # install this header file
-SYMLINK-$(CONFIG_RTE_LIBRTE_PDUMP)-include := rte_pdump.h
+SYMLINK-$(CONFIG_RTE_LIBRTE_PDUMP)-include := rte_pdump.h rte_pdump_filter.h
 
 include $(RTE_SDK)/mk/rte.lib.mk

@@ -11,7 +11,7 @@ CFLAGS += $(WERROR_FLAGS)
 
 # all source are stored in SRCS-y
 
-SRCS-y := main.c
+SRCS-y := main.c pdump_filter.c
 
 include $(RTE_SDK)/mk/rte.app.mk
 
