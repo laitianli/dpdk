@@ -62,8 +62,10 @@ struct rte_timer_data {
 };
 
 #define RTE_MAX_DATA_ELS 64
+/* rte_time使用的memzone */
 static const struct rte_memzone *rte_timer_data_mz;
 static int *volatile rte_timer_mz_refcnt;
+/* rte_time定时器数据结构，正好是rte_timer_data_mz->addr */
 static struct rte_timer_data *rte_timer_data_arr;
 static const uint32_t default_data_id;
 static uint32_t rte_timer_subsystem_initialized;
@@ -127,7 +129,9 @@ rte_timer_data_dealloc(uint32_t id)
 
 	return 0;
 }
-
+/* rte timer定时器初始化
+ * 创建全局数组，并初始化
+ */
 /* Init the timer library. Allocate an array of timer data structs in shared
  * memory, and allocate the zeroth entry for use with original timer
  * APIs. Since the intersection of the sets of lcore ids in primary and
@@ -150,9 +154,10 @@ rte_timer_subsystem_init(void)
 		return -EALREADY;
 
 	rte_mcfg_timer_lock();
-
+	/* 根据memzone名称查对memzone */
 	mz = rte_memzone_lookup(mz_name);
 	if (mz == NULL) {
+		/* 分配memzone */
 		mz = rte_memzone_reserve_aligned(mz_name, mem_size,
 				SOCKET_ID_ANY, 0, RTE_CACHE_LINE_SIZE);
 		if (mz == NULL) {
@@ -373,7 +378,7 @@ timer_get_prev_entries_for_node(struct rte_timer *tim, unsigned tim_lcore,
 			prev[i] = prev[i]->sl_next[i];
 	}
 }
-
+/* 将定时器对象添加到列表中 */
 /* call with lock held as necessary
  * add in list
  * timer must be in config state
@@ -395,13 +400,14 @@ timer_add(struct rte_timer *tim, unsigned int tim_lcore,
 			priv_timer[tim_lcore].curr_skiplist_depth);
 	if (tim_level == priv_timer[tim_lcore].curr_skiplist_depth)
 		priv_timer[tim_lcore].curr_skiplist_depth++;
-
+	/* 新定时器都插入到跳表的1~lvl级 */
 	lvl = tim_level;
 	while (lvl > 0) {
 		tim->sl_next[lvl] = prev[lvl]->sl_next[lvl];
 		prev[lvl]->sl_next[lvl] = tim;
 		lvl--;
 	}
+	/* 新定时器插入到跳表的第0级*/
 	tim->sl_next[0] = prev[0]->sl_next[0];
 	prev[0]->sl_next[0] = tim;
 
@@ -636,7 +642,11 @@ rte_timer_pending(struct rte_timer *tim)
 {
 	return tim->status.state == RTE_TIMER_PENDING;
 }
-
+/* 运行挂在当前核上的所有定时器
+ * 跳表将作为一个常规链表来遍历级别0的列表（包含所有定时器条目）直到遇到尚未到期的条目。
+ * 当列表中有条目，但是没有任何定时器到期时，为了提高性能，第一个定时器条目的到期时间
+ * 保存在每个逻辑核的定时器列表结构中。
+ */
 /* must be called periodically, run all timer that expired */
 static void
 __rte_timer_manage(struct rte_timer_data *timer_data)
@@ -644,19 +654,22 @@ __rte_timer_manage(struct rte_timer_data *timer_data)
 	union rte_timer_status status;
 	struct rte_timer *tim, *next_tim;
 	struct rte_timer *run_first_tim, **pprev;
-	unsigned lcore_id = rte_lcore_id();
+	unsigned lcore_id = rte_lcore_id(); /* 获取当前核id */
 	struct rte_timer *prev[MAX_SKIPLIST_DEPTH + 1];
 	uint64_t cur_time;
 	int i, ret;
+	/* 定时器对象列表（与cpu核一一对应） */
 	struct priv_timer *priv_timer = timer_data->priv_timer;
 
 	/* timer manager only runs on EAL thread with valid lcore_id */
 	assert(lcore_id < RTE_MAX_LCORE);
 
 	__TIMER_STAT_ADD(priv_timer, manage, 1);
+	/* 判断当前核的定时器列表是否有定时器 */
 	/* optimize for the case where per-cpu list is empty */
 	if (priv_timer[lcore_id].pending_head.sl_next[0] == NULL)
 		return;
+	/* 获取当前时间 */
 	cur_time = rte_get_timer_cycles();
 
 #ifdef RTE_ARCH_64
@@ -666,20 +679,20 @@ __rte_timer_manage(struct rte_timer_data *timer_data)
 	if (likely(priv_timer[lcore_id].pending_head.expire > cur_time))
 		return;
 #endif
-
+	/* 锁住定时器列表 */
 	/* browse ordered list, add expired timers in 'expired' list */
 	rte_spinlock_lock(&priv_timer[lcore_id].list_lock);
-
+	/* 判断是否有定时器到期 */
 	/* if nothing to do just unlock and return */
 	if (priv_timer[lcore_id].pending_head.sl_next[0] == NULL ||
 	    priv_timer[lcore_id].pending_head.sl_next[0]->expire > cur_time) {
 		rte_spinlock_unlock(&priv_timer[lcore_id].list_lock);
 		return;
 	}
-
+	/* 定时器列表中的第0个定时器 */
 	/* save start of list of expired timers */
 	tim = priv_timer[lcore_id].pending_head.sl_next[0];
-
+	/* 获取跳表中已经超时的定时器：比当前时间还早的 */
 	/* break the existing list at current time point */
 	timer_get_prev_entries(cur_time, lcore_id, prev, priv_timer);
 	for (i = priv_timer[lcore_id].curr_skiplist_depth -1; i >= 0; i--) {
@@ -731,7 +744,7 @@ __rte_timer_manage(struct rte_timer_data *timer_data)
 		 * function, we have nothing to do here */
 		if (priv_timer[lcore_id].updated == 1)
 			continue;
-
+		/* 单次定时器 */
 		if (tim->period == 0) {
 			/* remove from done list and mark timer as stopped */
 			status.state = RTE_TIMER_STOP;
@@ -739,7 +752,7 @@ __rte_timer_manage(struct rte_timer_data *timer_data)
 			rte_wmb();
 			tim->status.u32 = status.u32;
 		}
-		else {
+		else { /* 循环定时器，将定时器重新插入到跳表 */
 			/* keep it in list and mark timer as pending */
 			rte_spinlock_lock(&priv_timer[lcore_id].list_lock);
 			status.state = RTE_TIMER_PENDING;
@@ -755,12 +768,14 @@ __rte_timer_manage(struct rte_timer_data *timer_data)
 	}
 	priv_timer[lcore_id].running_tim = NULL;
 }
-
+/* 更新定时器列表中的定时器时间
+ * 由外部模块循环调用
+ */
 int
 rte_timer_manage(void)
 {
 	struct rte_timer_data *timer_data;
-
+	/* 从全局数组 */
 	TIMER_DATA_VALID_GET_OR_ERR_RET(default_data_id, timer_data, -EINVAL);
 
 	__rte_timer_manage(timer_data);
@@ -1003,7 +1018,7 @@ __rte_timer_dump_stats(struct rte_timer_data *timer_data __rte_unused, FILE *f)
 	fprintf(f, "No timer statistics, RTE_LIBRTE_TIMER_DEBUG is disabled\n");
 #endif
 }
-
+/* 显示定时器统计信息 */
 int
 rte_timer_dump_stats(FILE *f)
 {
