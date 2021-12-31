@@ -134,6 +134,9 @@ check_port(struct rte_mbuf *pkt, struct port_info* info)
     struct rte_ipv4_hdr *ipv4_hdr;
     eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
+    if (ipv4_hdr->next_proto_id != IPPROTO_UDP &&
+        ipv4_hdr->next_proto_id != IPPROTO_TCP)
+        return 0;
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if((t_port & 0xFFFF0000) >> 16 == htons(info->ports[i])) /* dest */
@@ -154,6 +157,9 @@ check_port_dst(struct rte_mbuf *pkt, struct port_info* info)
     struct rte_ipv4_hdr *ipv4_hdr;
     eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
+    if (ipv4_hdr->next_proto_id != IPPROTO_UDP &&
+        ipv4_hdr->next_proto_id != IPPROTO_TCP)
+        return 0;
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if((t_port & 0xFFFF0000) >> 16 == htons(info->ports[i]))
@@ -172,6 +178,9 @@ check_port_src(struct rte_mbuf *pkt, struct port_info* info)
     struct rte_ipv4_hdr *ipv4_hdr;
     eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
+    if (ipv4_hdr->next_proto_id != IPPROTO_UDP &&
+        ipv4_hdr->next_proto_id != IPPROTO_TCP)
+        return 0;
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if((t_port & 0xFFFF) == htons(info->ports[i]))
