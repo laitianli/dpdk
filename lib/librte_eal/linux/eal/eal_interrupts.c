@@ -660,7 +660,7 @@ rte_intr_callback_unregister(const struct rte_intr_handle *intr_handle,
 
 	return ret;
 }
-
+/* rte中断使能 */
 int
 rte_intr_enable(const struct rte_intr_handle *intr_handle)
 {
@@ -673,7 +673,7 @@ rte_intr_enable(const struct rte_intr_handle *intr_handle)
 	switch (intr_handle->type){
 	/* write to the uio fd to enable the interrupt */
 	case RTE_INTR_HANDLE_UIO:
-		if (uio_intr_enable(intr_handle))
+		if (uio_intr_enable(intr_handle)) /* igb_uio中断使用 */
 			return -1;
 		break;
 	case RTE_INTR_HANDLE_UIO_INTX:

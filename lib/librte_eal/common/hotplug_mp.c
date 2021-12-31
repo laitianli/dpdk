@@ -437,7 +437,7 @@ int eal_dev_hotplug_request_to_secondary(struct eal_dev_mp_req *req)
 	free(mp_reply.msgs);
 	return 0;
 }
-
+/* 处理multi-process动态添加设备 */
 int eal_mp_dev_hotplug_init(void)
 {
 	int ret;
