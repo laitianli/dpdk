@@ -479,7 +479,7 @@ enum {
  */
 struct rte_mbuf {
 	MARKER cacheline0;
-
+	/* 数据的起始地址 */
 	void *buf_addr;           /**< Virtual address of segment buffer. */
 	/**
 	 * Physical address of segment buffer.
@@ -488,13 +488,14 @@ struct rte_mbuf {
 	 * working on vector drivers easier.
 	 */
 	RTE_STD_C11
-	union {
+	union { /* 数据虚拟地址对应的物理地址 */
 		rte_iova_t buf_iova;
 		rte_iova_t buf_physaddr; /**< deprecated */
 	} __rte_aligned(sizeof(rte_iova_t));
 
 	/* next 8 bytes are initialised on RX descriptor rearm */
 	MARKER64 rearm_data;
+	/* 有效数据的偏移量 */
 	uint16_t data_off;
 
 	/**
@@ -507,7 +508,7 @@ struct rte_mbuf {
 	 * config option.
 	 */
 	RTE_STD_C11
-	union {
+	union { /* 引用计数 */
 		rte_atomic16_t refcnt_atomic; /**< Atomically accessed refcnt */
 		/** Non-atomically accessed refcnt */
 		uint16_t refcnt;
@@ -721,7 +722,7 @@ struct rte_mbuf_ext_shared_info {
 	(!((mb)->ol_flags & (IND_ATTACHED_MBUF | EXT_ATTACHED_MBUF)))
 
 #define MBUF_INVALID_PORT UINT16_MAX
-
+/* 根据数据偏移量获取数据起始虚拟地址 */
 /**
  * A macro that points to an offset into the data in the mbuf.
  *
@@ -738,7 +739,7 @@ struct rte_mbuf_ext_shared_info {
  */
 #define rte_pktmbuf_mtod_offset(m, t, o)	\
 	((t)((char *)(m)->buf_addr + (m)->data_off + (o)))
-
+/* 获取数据的虚拟地址，数据偏移量为0 */
 /**
  * A macro that points to the start of the data in the mbuf.
  *
@@ -753,6 +754,7 @@ struct rte_mbuf_ext_shared_info {
  */
 #define rte_pktmbuf_mtod(m, t) rte_pktmbuf_mtod_offset(m, t, 0)
 
+/* 根据数据偏移量获取数据起始物理地址 */
 /**
  * A macro that returns the IO address that points to an offset of the
  * start of the data in the mbuf
@@ -765,6 +767,7 @@ struct rte_mbuf_ext_shared_info {
 #define rte_pktmbuf_iova_offset(m, o) \
 	(rte_iova_t)((m)->buf_iova + (m)->data_off + (o))
 
+/* 获取数据的物理地址，数据偏移量为0 */
 /**
  * A macro that returns the IO address that points to the start of the
  * data in the mbuf
