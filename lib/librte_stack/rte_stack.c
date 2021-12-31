@@ -24,7 +24,7 @@ TAILQ_HEAD(rte_stack_list, rte_tailq_entry);
 static struct rte_tailq_elem rte_stack_tailq = {
 	.name = RTE_TAILQ_STACK_NAME,
 };
-EAL_REGISTER_TAILQ(rte_stack_tailq)
+EAL_REGISTER_TAILQ(rte_stack_tailq);
 
 
 static void
