@@ -12,7 +12,6 @@
 #include <rte_spinlock.h>
 #include <rte_rwlock.h>
 #include <rte_tailq.h>
-#include <rte_mempool.h>
 #include "malloc_heap.h"
 
 /**
