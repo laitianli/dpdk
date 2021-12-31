@@ -76,9 +76,9 @@ note_info()
 {
 	echo -e "\033[1;42;37m Dump NIC: ${OFP_NETDEV}, save rxtx file: ${RX_DEV_NAME}\033[0m"
 	echo -e "\033[1;42;37m run cmd: $0 -help to show readme.\033[0m"
-	
+
 }
-run_pdump() 
+run_pdump()
 {
     #${PDUMP_BIN} -w ${OFP_NETDEV} --file-prefix ofp -- --pdump "port=0,queue=0,rx-dev=${RX_DEV_NAME},tx-dev=${TX_DEV_NAME},total-num-mbufs=4096"
     arg=$@
@@ -111,24 +111,24 @@ main()
         shift
         shift
     done
-	
+
 	if [ ! -d "${PDUMP_FILE_PATH}" ];then
 		mkdir -p ${PDUMP_FILE_PATH}
 	fi
-	
+
     if [ ! -z "$pcieid" ];then
         if [[ ! -z $(echo $pcieid | grep ":" ) ]] && [[ ! -z $(echo $pcieid | grep "\." ) ]]  ;then
             OFP_NETDEV=$pcieid
         fi
     fi
-	
+
 	note_info;
 
     if [[ ! -z "$c" ]] && [[ ! -z "$s" ]];then
         echo -e "\033[031m [Error] argument [ -c , -s ] can't be set at the same time!\033[0m"
         exit -1;
     fi
-	
+
     if [ ! -z "$c" ];then
         filter+="count=$c"
         filter+=","
@@ -137,7 +137,7 @@ main()
         filter+="size=$s"
         filter+=","
     fi
-    
+
     if [ ! -z "$ether" ];then
         filter+="ether=$ether"
         filter+=","
@@ -157,12 +157,12 @@ main()
         filter+="host=$host"
         filter+=","
     fi
-    
+
     if [ ! -z "$host_dst" ];then
         filter+="host_dst=$host_dst"
         filter+=","
     fi
-    
+
     if [ ! -z "$host_src" ];then
         filter+="host_src=$host_src"
         filter+=","

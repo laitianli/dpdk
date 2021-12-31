@@ -222,7 +222,7 @@ __parse_size(const char *key __rte_unused, const char *value,
     }
     else if ((p = strchr(str_size, 'M')) || (p = strchr(str_size, 'm'))) {
         size = strtoul(str_size, &end, 10) * 1024 * 1024;
-    }   
+    }
     else if ((p = strchr(str_size, 'G')) || (p = strchr(str_size, 'g'))) {
         size = strtoul(str_size, &end, 10) * 1024 * 1024 * 1024;
     }
@@ -232,7 +232,7 @@ __parse_size(const char *key __rte_unused, const char *value,
     pf->cs.size = (uint32_t)size;
     return 0;
 }
-static int 
+static int
 __check_is_mac(const char* mac, unsigned char *a, unsigned char* b, unsigned char* c,
         unsigned char* d, unsigned char* e, unsigned char* f)
 {
@@ -245,7 +245,7 @@ __check_is_mac(const char* mac, unsigned char *a, unsigned char* b, unsigned cha
 }
 
 
-static int 
+static int
 __check_is_ip(const char* ip, unsigned char *a, unsigned char* b, unsigned char* c,
         unsigned char* d)
 {
@@ -273,7 +273,7 @@ static int __parse_mac(const char* val, void* arg)
     int i = 0;
     while (cur && (p = strstr(cur, PDUMP_FILTER_DELIM))) {
         *p = '\0';
-        ret = __check_is_mac(cur, &info->eths[i].mac[0], &info->eths[i].mac[1], &info->eths[i].mac[2], 
+        ret = __check_is_mac(cur, &info->eths[i].mac[0], &info->eths[i].mac[1], &info->eths[i].mac[2],
             &info->eths[i].mac[3], &info->eths[i].mac[4], &info->eths[i].mac[5]);
         if(!ret) {
             i++;
@@ -282,7 +282,7 @@ static int __parse_mac(const char* val, void* arg)
     }
 
     if (cur && *cur != '\0') {
-        ret = __check_is_mac(cur, &info->eths[i].mac[0], &info->eths[i].mac[1], &info->eths[i].mac[2], 
+        ret = __check_is_mac(cur, &info->eths[i].mac[0], &info->eths[i].mac[1], &info->eths[i].mac[2],
             &info->eths[i].mac[3], &info->eths[i].mac[4], &info->eths[i].mac[5]);
         if(!ret) {
             i++;
@@ -326,7 +326,7 @@ static int __parse_ip(const char* val, void* arg)
     info->s = i;
     free(str_mac);
     return i;
-}       
+}
 
 static int
 __parse_ether(const char *key __rte_unused, const char *value,
@@ -412,7 +412,7 @@ __parse_proto(const char *key __rte_unused, const char *value,
         }
         cur = p + 1;
     }
-    
+
     if (cur && *cur != '\0') {
         for (j = 0; proto_n[j].name != NULL; j++) {
             if (!strcmp(cur, proto_n[j].name)) {
@@ -445,7 +445,7 @@ int pdump_filter_parse(const char* optarg)
         printf("--filter=\"-c / -s \": invalid argument passed\n");
         return -1;
     }
-    dp_filter = rte_malloc("dpdk_pdump_filter", 
+    dp_filter = rte_malloc("dpdk_pdump_filter",
         sizeof(struct pdump_filter), 0);
     if(!dp_filter) {
         printf("[Error] rte_malloc failed!\n");
@@ -455,15 +455,15 @@ int pdump_filter_parse(const char* optarg)
     if (cnt1 == 1) {
         v.min = 0;
         v.max = 0xFFFFFFFF;
-        ret = rte_kvargs_process(kvlist, FILTER_COUNT, 
+        ret = rte_kvargs_process(kvlist, FILTER_COUNT,
                 &__parse_uint_value, &v);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_COUNT_FLAGS;
-        dp_filter->cs.count = v.val;        
+        dp_filter->cs.count = v.val;
     }
     if (cnt2 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_SIZE, 
+        ret = rte_kvargs_process(kvlist, FILTER_SIZE,
                 &__parse_size, dp_filter);
         if (ret < 0)
             goto free_kvlist;
@@ -472,16 +472,16 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_ETHER);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_ETHER, 
+        ret = rte_kvargs_process(kvlist, FILTER_ETHER,
                 &__parse_ether, (void*)&dp_filter->ether);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_ETHER_FLAGS;
     }
-    
+
     cnt1 = rte_kvargs_count(kvlist, FILTER_ETHER_SRC);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_ETHER_SRC, 
+        ret = rte_kvargs_process(kvlist, FILTER_ETHER_SRC,
                 &__parse_ether, (void*)&dp_filter->ether_src);
         if (ret < 0)
             goto free_kvlist;
@@ -490,7 +490,7 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_ETHER_DST);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_ETHER_DST, 
+        ret = rte_kvargs_process(kvlist, FILTER_ETHER_DST,
                 &__parse_ether, (void*)&dp_filter->ether_dst);
         if (ret < 0)
             goto free_kvlist;
@@ -499,16 +499,16 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_HOST);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_HOST, 
+        ret = rte_kvargs_process(kvlist, FILTER_HOST,
                 &__parse_ips, (void*)&dp_filter->host);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_HOST_FLAGS;
     }
-    
+
     cnt1 = rte_kvargs_count(kvlist, FILTER_HOST_DST);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_HOST_DST, 
+        ret = rte_kvargs_process(kvlist, FILTER_HOST_DST,
                 &__parse_ips, (void*)&dp_filter->h_dst);
         if (ret < 0)
             goto free_kvlist;
@@ -517,7 +517,7 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_HOST_SRC);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_HOST_SRC, 
+        ret = rte_kvargs_process(kvlist, FILTER_HOST_SRC,
                 &__parse_ips, (void*)&dp_filter->h_src);
         if (ret < 0)
             goto free_kvlist;
@@ -526,16 +526,16 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_NET);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_NET, 
+        ret = rte_kvargs_process(kvlist, FILTER_NET,
                 &__parse_net_ips, (void*)&dp_filter->net);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_NET_FLAGS;
     }
-    
+
     cnt1 = rte_kvargs_count(kvlist, FILTER_NET_SRC);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_NET_SRC, 
+        ret = rte_kvargs_process(kvlist, FILTER_NET_SRC,
                 &__parse_net_ips, (void*)&dp_filter->n_src);
         if (ret < 0)
             goto free_kvlist;
@@ -543,16 +543,16 @@ int pdump_filter_parse(const char* optarg)
     }
     cnt1 = rte_kvargs_count(kvlist, FILTER_NET_DST);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_NET_DST, 
+        ret = rte_kvargs_process(kvlist, FILTER_NET_DST,
                 &__parse_net_ips, (void*)&dp_filter->n_dst);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_NET_DST_FLAGS;
     }
-    
+
     cnt1 = rte_kvargs_count(kvlist, FILTER_PORT);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_PORT, 
+        ret = rte_kvargs_process(kvlist, FILTER_PORT,
                 &__parse_ports, (void*)&dp_filter->port);
         if (ret < 0)
             goto free_kvlist;
@@ -561,7 +561,7 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_PORT_DST);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_PORT_DST, 
+        ret = rte_kvargs_process(kvlist, FILTER_PORT_DST,
                 &__parse_ports, (void*)&dp_filter->port_dst);
         if (ret < 0)
             goto free_kvlist;
@@ -570,7 +570,7 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_PORT_SRC);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_PORT_SRC, 
+        ret = rte_kvargs_process(kvlist, FILTER_PORT_SRC,
                 &__parse_ports, (void*)&dp_filter->port_src);
         if (ret < 0)
             goto free_kvlist;
@@ -579,16 +579,16 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_PROTO);
     if (cnt1 == 1) {
-        ret = rte_kvargs_process(kvlist, FILTER_PROTO, 
+        ret = rte_kvargs_process(kvlist, FILTER_PROTO,
                 &__parse_proto, (void*)&dp_filter->protos);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_PROTO_FLAGS;
     }
-    
+
     dump_pdump_filter(dp_filter);
     return 0;
-    
+
 free_kvlist:
     rte_kvargs_free(kvlist);
     return ret;

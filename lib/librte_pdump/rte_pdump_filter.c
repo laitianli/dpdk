@@ -4,7 +4,7 @@
 #include "rte_pdump.h"
 #include "rte_pdump_filter.h"
 
-static inline unsigned char 
+static inline unsigned char
 check_ether(unsigned char *mac_addr, struct ether_info* info)
 {
     int i = 0;
@@ -12,7 +12,7 @@ check_ether(unsigned char *mac_addr, struct ether_info* info)
     //printf("[%s:%d] info: 0x%p\n", __func__, __LINE__, info);
     for (i = 0; i < info->s; i++) {
         tmp_mac = info->eths[i].mac;
-        if(mac_addr[0] == tmp_mac[0] && 
+        if(mac_addr[0] == tmp_mac[0] &&
             mac_addr[1] == tmp_mac[1] &&
             mac_addr[2] == tmp_mac[2] &&
             mac_addr[3] == tmp_mac[3] &&
@@ -22,7 +22,7 @@ check_ether(unsigned char *mac_addr, struct ether_info* info)
     }
     return 0;
 }
-static inline unsigned char 
+static inline unsigned char
 check_ether_src_dst(unsigned char *src_mac_addr, unsigned char *dst_mac_addr, struct ether_info* info)
 {
     int i = 0;
@@ -30,7 +30,7 @@ check_ether_src_dst(unsigned char *src_mac_addr, unsigned char *dst_mac_addr, st
     //printf("[%s:%d] info: 0x%p\n", __func__, __LINE__, info);
     for (i = 0; i < info->s; i++) {
         tmp_mac = info->eths[i].mac;
-        if(src_mac_addr[0] == tmp_mac[0] && 
+        if(src_mac_addr[0] == tmp_mac[0] &&
             src_mac_addr[1] == tmp_mac[1] &&
             src_mac_addr[2] == tmp_mac[2] &&
             src_mac_addr[3] == tmp_mac[3] &&
@@ -38,7 +38,7 @@ check_ether_src_dst(unsigned char *src_mac_addr, unsigned char *dst_mac_addr, st
             src_mac_addr[5] == tmp_mac[5]) {
             return 1;
         }
-        else if(dst_mac_addr[0] == tmp_mac[0] && 
+        else if(dst_mac_addr[0] == tmp_mac[0] &&
             dst_mac_addr[1] == tmp_mac[1] &&
             dst_mac_addr[2] == tmp_mac[2] &&
             dst_mac_addr[3] == tmp_mac[3] &&
@@ -68,18 +68,18 @@ check_proto(struct rte_mbuf *pkt, struct proto_info* info)
             if (ipv4_hdr->next_proto_id == info->pro[i])
                 return 1;
         }
-    }   
+    }
     return 0;
 }
 
-static inline unsigned char 
+static inline unsigned char
 check_host(struct rte_mbuf *pkt, struct ip_info* info)
 {
     //printf("[%s:%d] pkt: 0x%p, info: 0x%p\n", __func__, __LINE__, pkt, info);
     int i = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if(ipv4_hdr->src_addr == info->ips[i]) {
@@ -87,19 +87,19 @@ check_host(struct rte_mbuf *pkt, struct ip_info* info)
         }
         else if(ipv4_hdr->dst_addr == info->ips[i]) {
             return 1;
-        }       
+        }
     }
     return 0;
 }
 
-static inline unsigned char 
+static inline unsigned char
 check_host_src(struct rte_mbuf *pkt, struct ip_info* info)
 {
     //printf("[%s:%d] pkt: 0x%p, info: 0x%p\n", __func__, __LINE__, pkt, info);
     int i = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if(ipv4_hdr->src_addr == info->ips[i]) {
@@ -115,7 +115,7 @@ check_host_dst(struct rte_mbuf *pkt, struct ip_info* info)
     int i = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     for (i = 0; i < info->s; i++) {
         if(ipv4_hdr->dst_addr == info->ips[i]) {
@@ -132,7 +132,7 @@ check_port(struct rte_mbuf *pkt, struct port_info* info)
     unsigned int t_port = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
@@ -152,7 +152,7 @@ check_port_dst(struct rte_mbuf *pkt, struct port_info* info)
     unsigned int t_port = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
@@ -170,7 +170,7 @@ check_port_src(struct rte_mbuf *pkt, struct port_info* info)
     unsigned int t_port = 0;
     struct rte_ether_hdr *eth_hdr;
     struct rte_ipv4_hdr *ipv4_hdr;
-    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);    
+    eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
     ipv4_hdr = (struct rte_ipv4_hdr *)(eth_hdr + 1);
     t_port = *(unsigned int*)(ipv4_hdr + 1);
     for (i = 0; i < info->s; i++) {
@@ -193,15 +193,15 @@ int pdump_filter_pkts(struct rte_mbuf *pkt, void* filter)
         return 1;
     }
     eth_hdr = rte_pktmbuf_mtod(pkt, struct rte_ether_hdr *);
-    if (pf->filter_flags & FILTER_ETHER_FLAGS) {    
-        check_flag &= check_ether_src_dst(eth_hdr->s_addr.addr_bytes, 
+    if (pf->filter_flags & FILTER_ETHER_FLAGS) {
+        check_flag &= check_ether_src_dst(eth_hdr->s_addr.addr_bytes,
             eth_hdr->d_addr.addr_bytes, &pf->ether);
         if (!check_flag) {
             ret = 0;
             goto end;
         }
     }
-    if (pf->filter_flags & FILTER_ETHER_SRC_FLAGS) {        
+    if (pf->filter_flags & FILTER_ETHER_SRC_FLAGS) {
         check_flag &= check_ether(eth_hdr->s_addr.addr_bytes, &pf->ether_src);
         if (!check_flag) {
             ret = 0;
@@ -244,11 +244,11 @@ int pdump_filter_pkts(struct rte_mbuf *pkt, void* filter)
             goto end;
         }
     }
-    
+
     /*
      * TODO: net net_src net_dst
      */
-     
+
     if (pf->filter_flags & FILTER_PORT_FLAGS) {
         check_flag &= check_port(pkt, &pf->port);
         if (!check_flag) {

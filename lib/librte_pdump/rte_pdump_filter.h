@@ -7,25 +7,25 @@
 
 #define FILTER_COUNT_FLAGS  (1 << 0)
 #define FILTER_COUNT        "count"
-    
+
 #define FILTER_SIZE_FLAGS   (1 << 1)
 #define FILTER_SIZE         "size"
 
 #define FILTER_ETHER_FLAGS  (1 << 2)
 #define FILTER_ETHER        "ether"
-    
+
 #define FILTER_ETHER_SRC_FLAGS (1 << 3)
 #define FILTER_ETHER_SRC    "ether_src"
-    
+
 #define FILTER_ETHER_DST_FLAGS (1 << 4)
 #define FILTER_ETHER_DST    "ether_dst"
 
 #define FILTER_HOST_FLAGS   (1 <<5)
 #define FILTER_HOST         "host"
-    
+
 #define FILTER_HOST_SRC_FLAGS (1 <<6)
 #define FILTER_HOST_SRC     "host_src"
-    
+
 #define FILTER_HOST_DST_FLAGS (1 << 7)
 #define FILTER_HOST_DST     "host_dst"
 
@@ -34,7 +34,7 @@
 
 #define FILTER_NET_SRC_FLAGS (1 << 9)
 #define FILTER_NET_SRC      "net_src"
-    
+
 #define FILTER_NET_DST_FLAGS (1 << 10)
 #define FILTER_NET_DST      "net_dst"
 
@@ -43,10 +43,10 @@
 
 #define FILTER_PORT_SRC_FLAGS (1 << 12)
 #define FILTER_PORT_SRC     "port_src"
-    
+
 #define FILTER_PORT_DST_FLAGS   (1 << 13)
 #define FILTER_PORT_DST     "port_dst"
-    
+
 #define FILTER_PROTO_FLAGS (1 << 14)
 #define FILTER_PROTO        "proto"
 
@@ -76,7 +76,7 @@ struct proto_info {
 };
 
 struct pdump_filter {
-    uint64_t    filter_flags; 
+    uint64_t    filter_flags;
     union {
         uint32_t count;
         uint32_t size;
