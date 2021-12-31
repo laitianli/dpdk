@@ -366,7 +366,7 @@ rte_eth_find_next_sibling(uint16_t port_id, uint16_t ref_port_id)
 	return rte_eth_find_next_of(port_id,
 			rte_eth_devices[ref_port_id].device);
 }
-
+/* 创建primary/secondary共享数据 */
 static void
 rte_eth_dev_shared_data_prepare(void)
 {
@@ -449,7 +449,9 @@ rte_eth_dev_find_free_port(void)
 	}
 	return RTE_MAX_ETHPORTS;
 }
-
+/* 根据下载获取rte_eth_dev对象，并关联rte_eth_dev_shared_data->data[]共享数据
+ * 网卡对象rte_eth_dev在全局列表rte_eth_devices[]数组下标与共享数据rte_eth_dev_shared_data->data[]的数组下标一样。
+ */
 static struct rte_eth_dev *
 eth_dev_get(uint16_t port_id)
 {
@@ -459,7 +461,7 @@ eth_dev_get(uint16_t port_id)
 
 	return eth_dev;
 }
-
+/* 根据pcie id分配rte_eth_dev对象 */
 struct rte_eth_dev *
 rte_eth_dev_allocate(const char *name)
 {
@@ -477,29 +479,32 @@ rte_eth_dev_allocate(const char *name)
 		RTE_ETHDEV_LOG(ERR, "Ethernet device name is too long\n");
 		return NULL;
 	}
-
+	/* 分配primary/secondary共享内存空间 */
 	rte_eth_dev_shared_data_prepare();
 
 	/* Synchronize port creation between primary and secondary threads. */
 	rte_spinlock_lock(&rte_eth_dev_shared_data->ownership_lock);
-
+	/* 已经分配，直接返回 */
 	if (_rte_eth_dev_allocated(name) != NULL) {
 		RTE_ETHDEV_LOG(ERR,
 			"Ethernet device with name %s already allocated\n",
 			name);
 		goto unlock;
 	}
-
+	/* 从全局数据找到一个空闲的元素下标 */
 	port_id = rte_eth_dev_find_free_port();
 	if (port_id == RTE_MAX_ETHPORTS) {
 		RTE_ETHDEV_LOG(ERR,
 			"Reached maximum number of Ethernet ports\n");
 		goto unlock;
 	}
-
+	/* 根据下载获取rte_eth_dev对象，并关联rte_eth_dev_shared_data->data[]共享数据
+	 * 网卡对象rte_eth_dev在全局列表rte_eth_devices[]数组下标与共享数据rte_eth_dev_shared_data->data[]的数组下标一样。
+	 */
 	eth_dev = eth_dev_get(port_id);
+	/* 设置网卡共享数据名(pcieid) */
 	strlcpy(eth_dev->data->name, name, sizeof(eth_dev->data->name));
-	eth_dev->data->port_id = port_id;
+	eth_dev->data->port_id = port_id; /* 设置网卡共享数据的portid */
 	eth_dev->data->mtu = RTE_ETHER_MTU;
 
 unlock:
@@ -507,7 +512,7 @@ unlock:
 
 	return eth_dev;
 }
-
+/* 在secondary process进程中，probe()时调用此接口申请网卡对象rte_eth_dev */
 /*
  * Attach to a port already registered by the primary process, which
  * makes sure that the same device would have the same port id both
@@ -533,8 +538,9 @@ rte_eth_dev_attach_secondary(const char *name)
 			"Device %s is not driven by the primary process\n",
 			name);
 	} else {
+		/* 关联rte_eth_devices[]和rte_eth_dev_shared_data->data[],并返回网卡对象rte_eth_dev */
 		eth_dev = eth_dev_get(i);
-		RTE_ASSERT(eth_dev->data->port_id == i);
+		RTE_ASSERT(eth_dev->data->port_id == i); /* portid与primary process保持一致 */
 	}
 
 	rte_spinlock_unlock(&rte_eth_dev_shared_data->ownership_lock);
@@ -4195,7 +4201,10 @@ rte_eth_dma_zone_reserve(const struct rte_eth_dev *dev, const char *ring_name,
 	return rte_memzone_reserve_aligned(z_name, size, socket_id,
 			RTE_MEMZONE_IOVA_CONTIG, align);
 }
-
+/* 1.从全局数组rte_eth_devices[]和 rte_eth_dev_shared_data->data[]分配rte_eth_dev对象
+ * 2.调用ethdev_bus_specific_init()初始化
+ * 3.调用ethdev_init()初始化设备。
+ */
 int
 rte_eth_dev_create(struct rte_device *device, const char *name,
 	size_t priv_data_size,
@@ -4207,12 +4216,13 @@ rte_eth_dev_create(struct rte_device *device, const char *name,
 	int retval;
 
 	RTE_FUNC_PTR_OR_ERR_RET(*ethdev_init, -EINVAL);
-
+	/* primary进程：分配rte_eth_dev对象 */
 	if (rte_eal_process_type() == RTE_PROC_PRIMARY) {
+		/* 1.从全局数组rte_eth_devices[]中分配一个rte_eth_dev对象 */
 		ethdev = rte_eth_dev_allocate(name);
 		if (!ethdev)
 			return -ENODEV;
-
+		/* 2.分配私有数据空间 */
 		if (priv_data_size) {
 			ethdev->data->dev_private = rte_zmalloc_socket(
 				name, priv_data_size, RTE_CACHE_LINE_SIZE,
@@ -4225,6 +4235,7 @@ rte_eth_dev_create(struct rte_device *device, const char *name,
 			}
 		}
 	} else {
+		/* 3.secondary进程，从全局数组rte_eth_devices[]分配到rte_eth_dev对象，并保存数组下标要与primary保持一致 */
 		ethdev = rte_eth_dev_attach_secondary(name);
 		if (!ethdev) {
 			RTE_LOG(ERR, EAL, "secondary process attach failed, "
@@ -4243,7 +4254,7 @@ rte_eth_dev_create(struct rte_device *device, const char *name,
 			goto probe_failed;
 		}
 	}
-
+	/* 3.设备驱动初始化 */
 	retval = ethdev_init(ethdev, init_params);
 	if (retval) {
 		RTE_LOG(ERR, EAL, "ethdev initialisation failed");

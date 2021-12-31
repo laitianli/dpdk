@@ -348,10 +348,10 @@ enum rte_eth_rx_mq_mode {
 	/** For RX side, only RSS is on */
 	ETH_MQ_RX_RSS = ETH_MQ_RX_RSS_FLAG,
 	/** For RX side,only DCB is on. */
-	ETH_MQ_RX_DCB = ETH_MQ_RX_DCB_FLAG,
+	ETH_MQ_RX_DCB = ETH_MQ_RX_DCB_FLAG, /* DCB: data center bridge */
 	/** Both DCB and RSS enable */
 	ETH_MQ_RX_DCB_RSS = ETH_MQ_RX_RSS_FLAG | ETH_MQ_RX_DCB_FLAG,
-
+	/* VMDQ: virtual machine device queue,可实现给虚拟机的虚拟网卡分配一个queue,实现vm直通 */
 	/** Only VMDQ, no RSS nor DCB */
 	ETH_MQ_RX_VMDQ_ONLY = ETH_MQ_RX_VMDQ_FLAG,
 	/** RSS mode with VMDQ */

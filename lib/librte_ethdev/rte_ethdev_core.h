@@ -602,7 +602,7 @@ typedef int (*eth_tx_hairpin_queue_setup_t)
 	(struct rte_eth_dev *dev, uint16_t tx_queue_id,
 	 uint16_t nb_tx_desc,
 	 const struct rte_eth_hairpin_conf *hairpin_conf);
-
+/* 网卡的操作接口集，不包括rx/tx接口 */
 /**
  * @internal A structure containing the functions exported by an Ethernet driver.
  */
@@ -763,7 +763,7 @@ struct rte_eth_rxtx_callback {
 	} fn;
 	void *param;
 };
-
+/* 网络设备数据结构 */
 /**
  * @internal
  * The generic data structure associated with each ethernet device.
@@ -775,32 +775,32 @@ struct rte_eth_rxtx_callback {
  * process, while the actual configuration data for the device is shared.
  */
 struct rte_eth_dev {
-	eth_rx_burst_t rx_pkt_burst; /**< Pointer to PMD receive function. */
-	eth_tx_burst_t tx_pkt_burst; /**< Pointer to PMD transmit function. */
-	eth_tx_prep_t tx_pkt_prepare; /**< Pointer to PMD transmit prepare function. */
+	eth_rx_burst_t rx_pkt_burst; /**< Pointer to PMD receive function. *//*接收接口*/
+	eth_tx_burst_t tx_pkt_burst; /**< Pointer to PMD transmit function. *//*发送接口*/
+	eth_tx_prep_t tx_pkt_prepare; /**< Pointer to PMD transmit prepare function. *//**/
 	/**
 	 * Next two fields are per-device data but *data is shared between
 	 * primary and secondary processes and *process_private is per-process
 	 * private. The second one is managed by PMDs if necessary.
 	 */
-	struct rte_eth_dev_data *data;  /**< Pointer to device data. */
-	void *process_private; /**< Pointer to per-process device data. */
-	const struct eth_dev_ops *dev_ops; /**< Functions exported by PMD */
-	struct rte_device *device; /**< Backing device */
-	struct rte_intr_handle *intr_handle; /**< Device interrupt handle */
+	struct rte_eth_dev_data *data;  /**< Pointer to device data. *//* primary/secondary共享数据 */
+	void *process_private; /**< Pointer to per-process device data. *//* primary/secondary私有的数据 */
+	const struct eth_dev_ops *dev_ops; /**< Functions exported by PMD *//* 操作函数接口，接收/发送接口不在这个结构里 */
+	struct rte_device *device; /**< Backing device *//* 设备对象 */
+	struct rte_intr_handle *intr_handle; /**< Device interrupt handle *//* 设备中断句柄 */
 	/** User application callbacks for NIC interrupts */
 	struct rte_eth_dev_cb_list link_intr_cbs;
 	/**
 	 * User-supplied functions called from rx_burst to post-process
 	 * received packets before passing them to the user
 	 */
-	struct rte_eth_rxtx_callback *post_rx_burst_cbs[RTE_MAX_QUEUES_PER_PORT];
+	struct rte_eth_rxtx_callback *post_rx_burst_cbs[RTE_MAX_QUEUES_PER_PORT]; /* 设置网卡rx queue的钩子函数，pdump和bpf模块会使用到 */
 	/**
 	 * User-supplied functions called from tx_burst to pre-process
 	 * received packets before passing them to the driver for transmission.
 	 */
-	struct rte_eth_rxtx_callback *pre_tx_burst_cbs[RTE_MAX_QUEUES_PER_PORT];
-	enum rte_eth_dev_state state; /**< Flag indicating the port state */
+	struct rte_eth_rxtx_callback *pre_tx_burst_cbs[RTE_MAX_QUEUES_PER_PORT]; /* 设置网卡tx queue的钩子函数，pdump和bpf模块会使用到 */
+	enum rte_eth_dev_state state; /**< Flag indicating the port state *//* 网卡设备状态 */
 	void *security_ctx; /**< Context for security ops */
 
 	uint64_t reserved_64s[4]; /**< Reserved for future fields */
@@ -809,7 +809,7 @@ struct rte_eth_dev {
 
 struct rte_eth_dev_sriov;
 struct rte_eth_dev_owner;
-
+/* 网卡设备，primary/secondary共享的数据 */
 /**
  * @internal
  * The data part, with no function pointers, associated with each ethernet device.
@@ -818,7 +818,7 @@ struct rte_eth_dev_owner;
  * processes in a multi-process configuration.
  */
 struct rte_eth_dev_data {
-	char name[RTE_ETH_NAME_MAX_LEN]; /**< Unique identifier name */
+	char name[RTE_ETH_NAME_MAX_LEN]; /**< Unique identifier name *//* 网卡名字 */
 
 	void **rx_queues; /**< Array of pointers to RX queues. */
 	void **tx_queues; /**< Array of pointers to TX queues. */
@@ -831,9 +831,10 @@ struct rte_eth_dev_data {
 			/**< PMD-specific private data.
 			 *   @see rte_eth_dev_release_port()
 			 */
-
+	/* 网卡连接状态 */
 	struct rte_eth_link dev_link;   /**< Link-level information & status. */
-	struct rte_eth_conf dev_conf;   /**< Configuration applied to device. */
+	/* 网卡配置 */
+	struct rte_eth_conf dev_conf;   /**< Configuration applied to device. *//* 问：在哪里初始化 */
 	uint16_t mtu;                   /**< Maximum Transmission Unit. */
 	uint32_t min_rx_buf_size;
 			/**< Common RX buffer size handled by all queues. */

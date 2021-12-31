@@ -347,7 +347,7 @@ enum i40e_acpi_programming_method {
 #define I40E_WOL_SUPPORT_MASK			0x1
 #define I40E_ACPI_PROGRAMMING_METHOD_MASK	0x2
 #define I40E_PROXY_SUPPORT_MASK			0x4
-
+/* i40e网卡的特性集合，从网卡寄存器中读取 */
 /* Capabilities of a PF or a VF or the whole device */
 struct i40e_hw_capabilities {
 	u32  switch_mode;
@@ -409,11 +409,11 @@ struct i40e_hw_capabilities {
 	bool sdp[I40E_HW_CAP_MAX_GPIO];
 	u32 nvm_image_type;
 	u32 num_flow_director_filters;
-	u32 num_vfs;
+	u32 num_vfs;	/* 支持的虚拟网卡个数 */
 	u32 vf_base_id;
 	u32 num_vsis;
-	u32 num_rx_qp;
-	u32 num_tx_qp;
+	u32 num_rx_qp;	/* rx queue个数 */
+	u32 num_tx_qp;	/* tx queue个数 */
 	u32 base_queue;
 	u32 num_msix_vectors;
 	u32 num_msix_vectors_vf;
@@ -647,18 +647,18 @@ struct i40e_dcbx_config {
 	struct i40e_dcb_pfc_config pfc;
 	struct i40e_dcb_app_priority_table app[I40E_DCBX_MAX_APPS];
 };
-
+/* i40e的物理特性描述 */
 /* Port hardware description */
 struct i40e_hw {
-	u8 *hw_addr;
+	u8 *hw_addr;	/* bar空间的起始地址 */
 	void *back;
 
 	/* subsystem structs */
-	struct i40e_phy_info phy;
-	struct i40e_mac_info mac;
-	struct i40e_bus_info bus;
-	struct i40e_nvm_info nvm;
-	struct i40e_fc_info fc;
+	struct i40e_phy_info phy;	/* phy状态信息 */
+	struct i40e_mac_info mac;	/* mac相关信息 */
+	struct i40e_bus_info bus;	/* pcie总线信息 */
+	struct i40e_nvm_info nvm;	/* 固件信息 */
+	struct i40e_fc_info fc;		/* 流控信息 */
 
 	/* switch device is used to get link status when i40e is in ipn3ke */
 	struct rte_eth_dev *switch_dev;
@@ -669,13 +669,13 @@ struct i40e_hw {
 	u16 subsystem_device_id;
 	u16 subsystem_vendor_id;
 	u8 revision_id;
-	u8 port;
+	u8 port; /* 是什么概念？ */
 	bool adapter_stopped;
 	bool adapter_closed;
 
 	/* capabilities for entire device and PCI func */
-	struct i40e_hw_capabilities dev_caps;
-	struct i40e_hw_capabilities func_caps;
+	struct i40e_hw_capabilities dev_caps;	/* i40e设备物理特性 */
+	struct i40e_hw_capabilities func_caps;  /* i40e功能特性 */
 
 	/* Flow Director shared filter space */
 	u16 fdir_shared_filter_count;
@@ -691,7 +691,7 @@ struct i40e_hw {
 
 	/* Closest numa node to the device */
 	u16 numa_node;
-
+	/* i40e的接收/发送队列 [问: 在哪里初始化？] */
 	/* Admin Queue info */
 	struct i40e_adminq_info aq;
 
@@ -1419,7 +1419,7 @@ struct i40e_fcoe_stats {
 #define I40E_FCOE_VF_STAT_OFFSET	0
 #define I40E_FCOE_PF_STAT_OFFSET	128
 #define I40E_FCOE_STAT_MAX		(I40E_FCOE_PF_STAT_OFFSET + I40E_MAX_PF)
-
+/* i40e MAC层的相关统计 */
 /* Statistics collected by the MAC */
 struct i40e_hw_port_stats {
 	/* eth stats collected by the port */

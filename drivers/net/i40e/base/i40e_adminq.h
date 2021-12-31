@@ -60,7 +60,7 @@ struct i40e_arq_event_info {
 	u16 buf_len;
 	u8 *msg_buf;
 };
-
+/* 环形队列描述符 */
 /* Admin Queue information */
 struct i40e_adminq_info {
 	struct i40e_adminq_ring arq;    /* receive queue */

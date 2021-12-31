@@ -2925,7 +2925,9 @@ i40e_get_latest_rx_vec(bool scatter)
 	return scatter ? i40e_recv_scattered_pkts_vec :
 			 i40e_recv_pkts_vec;
 }
-
+/* 获取rx_pkt_burst()接口
+ * scatter=false
+ */
 static eth_rx_burst_t
 i40e_get_recommend_rx_vec(bool scatter)
 {
@@ -2974,11 +2976,11 @@ i40e_set_rx_function(struct rte_eth_dev *dev)
 		}
 	}
 
-	if (ad->rx_vec_allowed) {
+	if (ad->rx_vec_allowed) { /* true */
 		/* Vec Rx path */
 		PMD_INIT_LOG(DEBUG, "Vector Rx path will be used on port=%d.",
 				dev->data->port_id);
-		if (ad->use_latest_vec)
+		if (ad->use_latest_vec) /* 0 */
 			dev->rx_pkt_burst =
 			i40e_get_latest_rx_vec(dev->data->scattered_rx);
 		else

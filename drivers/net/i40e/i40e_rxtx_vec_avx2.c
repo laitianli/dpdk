@@ -242,7 +242,7 @@ _recv_raw_pkts_vec_avx2(struct i40e_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 	 */
 	if (rxq->rxrearm_nb > RTE_I40E_RXQ_REARM_THRESH)
 		i40e_rxq_rearm(rxq);
-
+	/* 判断队列中是否有数据 */
 	/* Before we start moving massive data around, check to see if
 	 * there is actually a packet available
 	 */
@@ -728,7 +728,7 @@ _recv_raw_pkts_vec_avx2(struct i40e_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 	rxq->rxrearm_nb += received;
 	return received;
 }
-
+/* i40e接收接口rx_pkt_burst() */
 /*
  * Notice:
  * - nb_pkts < RTE_I40E_DESCS_PER_LOOP, just return no packet

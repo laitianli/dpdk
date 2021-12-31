@@ -941,16 +941,17 @@ struct i40e_pf {
 	uint16_t max_num_vsi;
 	struct i40e_res_pool_info qp_pool;    /*Queue pair pool */
 	struct i40e_res_pool_info msix_pool;  /* MSIX interrupt pool */
-
+	/* i40e MAC层的相关统计 */
 	struct i40e_hw_port_stats stats_offset;
 	struct i40e_hw_port_stats stats;
+	/* i40e数据包的相关统计 */
 	/* internal packet statistics, it should be excluded from the total */
 	struct i40e_eth_stats internal_stats_offset;
 	struct i40e_eth_stats internal_stats;
 	bool offset_loaded;
-
+	/* primary/secondary共享数据的统计 */
 	struct rte_eth_dev_data *dev_data; /* Pointer to the device data */
-	struct rte_ether_addr dev_addr; /* PF device mac address */
+	struct rte_ether_addr dev_addr; /* PF device mac address */ /* MAC地址 */
 	uint64_t flags; /* PF feature flags */
 	/* All kinds of queue pair setting for different VSIs */
 	struct i40e_pf_vf *vfs;
@@ -1079,14 +1080,16 @@ struct i40e_vf {
 
 #define I40E_MAX_PKT_TYPE  256
 #define I40E_FLOW_TYPE_MAX 64
-
+/* i40e适配器
+ * 问题: i40e网卡的环形队列及描述符在哪里管理？
+ */
 /*
  * Structure to store private data for each PF/VF instance.
  */
 struct i40e_adapter {
 	/* Common for both PF and VF */
-	struct i40e_hw hw;
-	struct rte_eth_dev *eth_dev;
+	struct i40e_hw hw;	/* i40e物理特性描述 */
+	struct rte_eth_dev *eth_dev;	/* dpdk网卡对象 */
 
 	/* Specific for PF or VF */
 	union {
@@ -1099,7 +1102,7 @@ struct i40e_adapter {
 	bool rx_vec_allowed;
 	bool tx_simple_allowed;
 	bool tx_vec_allowed;
-
+	/* 1588协议相关 */
 	/* For PTP */
 	struct rte_timecounter systime_tc;
 	struct rte_timecounter rx_tstamp_tc;

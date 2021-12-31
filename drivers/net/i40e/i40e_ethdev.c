@@ -447,8 +447,8 @@ static const struct rte_pci_id pci_id_i40e_map[] = {
 };
 
 static const struct eth_dev_ops i40e_eth_dev_ops = {
-	.dev_configure                = i40e_dev_configure,
-	.dev_start                    = i40e_dev_start,
+	.dev_configure                = i40e_dev_configure, /* 设备配置接口 */
+	.dev_start                    = i40e_dev_start,     /* 设备使能接口 */
 	.dev_stop                     = i40e_dev_stop,
 	.dev_close                    = i40e_dev_close,
 	.dev_reset		      = i40e_dev_reset,
@@ -636,7 +636,7 @@ static const struct rte_i40e_xstats_name_off rte_i40e_txq_prio_strings[] = {
 
 #define I40E_NB_TXQ_PRIO_XSTATS (sizeof(rte_i40e_txq_prio_strings) / \
 		sizeof(rte_i40e_txq_prio_strings[0]))
-
+/* i40e驱动的probe，驱动入口 */
 static int
 eth_i40e_pci_probe(struct rte_pci_driver *pci_drv __rte_unused,
 	struct rte_pci_device *pci_dev)
@@ -651,7 +651,7 @@ eth_i40e_pci_probe(struct rte_pci_driver *pci_drv __rte_unused,
 		if (retval)
 			return retval;
 	}
-
+	/* 创建rte_eth_dev对象,初始化i40e驱动程序 */
 	retval = rte_eth_dev_create(&pci_dev->device, pci_dev->device.name,
 		sizeof(struct i40e_adapter),
 		eth_dev_pci_specific_init, pci_dev,
@@ -707,7 +707,7 @@ static int eth_i40e_pci_remove(struct rte_pci_device *pci_dev)
 		return rte_eth_dev_pci_generic_remove(pci_dev,
 						eth_i40e_dev_uninit);
 }
-
+/* i4oe驱动对象 */
 static struct rte_pci_driver rte_i40e_pmd = {
 	.id_table = pci_id_i40e_map,
 	.drv_flags = RTE_PCI_DRV_NEED_MAPPING | RTE_PCI_DRV_INTR_LSC,
@@ -1338,7 +1338,17 @@ free_end:
 }
 
 #define I40E_ALARM_INTERVAL 50000 /* us */
-
+/* i40e初始化函数
+ * 1.设置网卡操作接口；
+ * 2.复位；
+ * 3.从寄存器读取i40e网卡特性；
+ * 4.读取网卡MAC地址
+ * 5.读取phy link信息; 
+ * 6.设置DCB；
+ * 7.注册中断处理函数；
+ * 8.使能uio中断；
+ * 9.读取MAC统计信息；
+ */
 static int
 eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 {
@@ -1352,10 +1362,10 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 	uint8_t aq_fail = 0;
 
 	PMD_INIT_FUNC_TRACE();
-
+	/* 设置网卡操作接口 */
 	dev->dev_ops = &i40e_eth_dev_ops;
-	dev->rx_pkt_burst = i40e_recv_pkts;
-	dev->tx_pkt_burst = i40e_xmit_pkts;
+	dev->rx_pkt_burst = i40e_recv_pkts; /* 接收 */
+	dev->tx_pkt_burst = i40e_xmit_pkts; /* 发送 */
 	dev->tx_pkt_prepare = i40e_prep_pkts;
 
 	/* for secondary processes, we don't initialise any further as primary
@@ -1499,7 +1509,7 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 	 * in firmware in the future.
 	 */
 	i40e_configure_registers(hw);
-
+	/* 从寄存器读取i40e网卡特性,并保存hw->func_caps */
 	/* Get hw capabilities */
 	ret = i40e_get_cap(hw);
 	if (ret != I40E_SUCCESS) {
@@ -1541,9 +1551,10 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 		PMD_INIT_LOG(ERR, "Failed to configure lan hmc: %d", ret);
 		goto err_configure_lan_hmc;
 	}
-
+	/* 读取网卡MAC地址 */
 	/* Get and check the mac address */
 	i40e_get_mac_addr(hw, hw->mac.addr);
+	/* 校验MAC地址合法性 */
 	if (i40e_validate_mac_addr(hw->mac.addr) != I40E_SUCCESS) {
 		PMD_INIT_LOG(ERR, "mac address is not valid");
 		ret = -EIO;
@@ -1555,6 +1566,7 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 
 	/* Disable flow control */
 	hw->fc.requested_mode = I40E_FC_NONE;
+	/* 读取phy的特性，包括link信息 */
 	i40e_set_fc(hw, &aq_fail, TRUE);
 
 	/* Set the global registers with default ether type value */
@@ -1609,27 +1621,28 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 	 * release the private port resources.
 	 */
 	dev->data->dev_flags |= RTE_ETH_DEV_CLOSE_REMOVE;
-
+	/* 设置DCB */
 	/* Init dcb to sw mode by default */
 	ret = i40e_dcb_init_configure(dev, TRUE);
 	if (ret != I40E_SUCCESS) {
 		PMD_INIT_LOG(INFO, "Failed to init dcb.");
 		pf->flags &= ~I40E_FLAG_DCB;
 	}
+	/* DCB初始化完成后，再次从寄存器读取i40e网卡特性,并保存hw->func_caps */
 	/* Update HW struct after DCB configuration */
 	i40e_get_cap(hw);
 
 	/* initialize pf host driver to setup SRIOV resource if applicable */
 	i40e_pf_host_init(dev);
-
+	/* 注册中断处理函数 */
 	/* register callback func to eal lib */
 	rte_intr_callback_register(intr_handle,
 				   i40e_dev_interrupt_handler, dev);
-
+	/* 配置中断，使能中断 */
 	/* configure and enable device interrupt */
 	i40e_pf_config_irq0(hw, TRUE);
 	i40e_pf_enable_irq0(hw);
-
+	/* 使能uio中断 */
 	/* enable uio intr after callback register */
 	rte_intr_enable(intr_handle);
 
@@ -1674,7 +1687,7 @@ eth_i40e_dev_init(struct rte_eth_dev *dev, void *init_params __rte_unused)
 	/* initialize rss configuration from rte_flow */
 	memset(&pf->rss_info, 0,
 		sizeof(struct i40e_rte_flow_rss_conf));
-
+	/* 读取MAC统计信息 */
 	/* reset all stats of the device, including pf and main vsi */
 	i40e_dev_stats_reset(dev);
 
@@ -1803,7 +1816,7 @@ i40e_dev_configure(struct rte_eth_dev *dev)
 	struct i40e_hw *hw = I40E_DEV_PRIVATE_TO_HW(dev->data->dev_private);
 	enum rte_eth_rx_mq_mode mq_mode = dev->data->dev_conf.rxmode.mq_mode;
 	int i, ret;
-
+	/* 读取phy特性 */
 	ret = i40e_dev_sync_phy_type(hw);
 	if (ret)
 		return ret;
@@ -4603,7 +4616,7 @@ i40e_destroy_spinlock_d(__attribute__((unused)) struct i40e_spinlock *sp)
 {
 	return;
 }
-
+/* 读取硬件特性列表，保存到i40e_hw->func_caps */
 /**
  * Get the hardware capabilities, which will be parsed
  * and saved into struct i40e_hw.
@@ -4623,7 +4636,7 @@ i40e_get_cap(struct i40e_hw *hw)
 		PMD_DRV_LOG(ERR, "Failed to allocate memory");
 		return I40E_ERR_NO_MEMORY;
 	}
-
+	/* 读取特性列表，并解析保存到i40e_hw结构中 */
 	/* Get, parse the capabilities and save it to hw */
 	ret = i40e_aq_discover_capabilities(hw, buf, len, &size,
 			i40e_aqc_opc_list_func_capabilities, NULL);
@@ -4837,7 +4850,7 @@ i40e_pf_get_switch_config(struct i40e_pf *pf)
 		PMD_DRV_LOG(ERR, "Failed to allocated memory");
 		return -ENOMEM;
 	}
-
+	/* 获取交接接口配置 */
 	/* Get the switch configurations */
 	ret = i40e_aq_get_switch_config(hw, switch_config,
 		I40E_AQ_LARGE_BUF, &start_seid, NULL);
@@ -6707,7 +6720,7 @@ i40e_notify_all_vfs_link_status(struct rte_eth_dev *dev)
 	for (i = 0; i < pf->vf_num; i++)
 		i40e_notify_vf_link_status(dev, &pf->vfs[i]);
 }
-
+/* 处理中断 */
 static void
 i40e_dev_handle_aq_msg(struct rte_eth_dev *dev)
 {
@@ -6725,7 +6738,7 @@ i40e_dev_handle_aq_msg(struct rte_eth_dev *dev)
 
 	pending = 1;
 	while (pending) {
-		ret = i40e_clean_arq_element(hw, &info, &pending);
+		ret = i40e_clean_arq_element(hw, &info, &pending); /* 读取中断类型 */
 
 		if (ret != I40E_SUCCESS) {
 			PMD_DRV_LOG(INFO,
@@ -6745,7 +6758,7 @@ i40e_dev_handle_aq_msg(struct rte_eth_dev *dev)
 					info.msg_buf,
 					info.msg_len);
 			break;
-		case i40e_aqc_opc_get_link_status:
+		case i40e_aqc_opc_get_link_status: /* phy link状态变化 */
 			ret = i40e_dev_link_update(dev, 0);
 			if (!ret)
 				_rte_eth_dev_callback_process(dev,
@@ -6759,7 +6772,7 @@ i40e_dev_handle_aq_msg(struct rte_eth_dev *dev)
 	}
 	rte_free(info.msg_buf);
 }
-
+/* i40e中断处理函数 */
 /**
  * Interrupt handler triggered by NIC  for handling
  * specific interrupt.
@@ -6778,10 +6791,10 @@ i40e_dev_interrupt_handler(void *param)
 	struct rte_eth_dev *dev = (struct rte_eth_dev *)param;
 	struct i40e_hw *hw = I40E_DEV_PRIVATE_TO_HW(dev->data->dev_private);
 	uint32_t icr0;
-
+	/* 禁用中断 */
 	/* Disable interrupt */
 	i40e_pf_disable_irq0(hw);
-
+	/* 读中断状态寄存器 */
 	/* read out interrupt causes */
 	icr0 = I40E_READ_REG(hw, I40E_PFINT_ICR0);
 
@@ -6816,7 +6829,7 @@ i40e_dev_interrupt_handler(void *param)
 
 done:
 	/* Enable interrupt */
-	i40e_pf_enable_irq0(hw);
+	i40e_pf_enable_irq0(hw); /* 启用中断 */
 }
 
 static void
@@ -10441,6 +10454,7 @@ i40e_get_swr_pm_cfg(struct i40e_hw *hw, uint32_t *value)
 	return false;
 }
 
+/* 读取phy特性 */
 static int
 i40e_dev_sync_phy_type(struct i40e_hw *hw)
 {
@@ -10448,7 +10462,7 @@ i40e_dev_sync_phy_type(struct i40e_hw *hw)
 	struct i40e_aq_get_phy_abilities_resp phy_ab;
 	int ret = -ENOTSUP;
 	int retries = 0;
-
+	/* 读取phy特性，结果存放在hw->phy中 */
 	status = i40e_aq_get_phy_capabilities(hw, false, true, &phy_ab,
 					      NULL);
 

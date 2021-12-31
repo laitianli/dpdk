@@ -117,15 +117,15 @@ enum i40e_admin_queue_opc {
 	i40e_aqc_opc_request_resource	= 0x0008,
 	i40e_aqc_opc_release_resource	= 0x0009,
 
-	i40e_aqc_opc_list_func_capabilities	= 0x000A,
-	i40e_aqc_opc_list_dev_capabilities	= 0x000B,
+	i40e_aqc_opc_list_func_capabilities	= 0x000A, /* 读取i40e功能特性列表 */
+	i40e_aqc_opc_list_dev_capabilities	= 0x000B, /* 读取i40e设备特性列表 */
 
 	/* Proxy commands */
 	i40e_aqc_opc_set_proxy_config		= 0x0104,
 	i40e_aqc_opc_set_ns_proxy_table_entry	= 0x0105,
 
 	/* LAA */
-	i40e_aqc_opc_mac_address_read	= 0x0107,
+	i40e_aqc_opc_mac_address_read	= 0x0107, /* 读MAC地址指令 */
 	i40e_aqc_opc_mac_address_write	= 0x0108,
 
 	/* PXE */
@@ -217,7 +217,7 @@ enum i40e_admin_queue_opc {
 	i40e_aqc_opc_set_phy_config		= 0x0601,
 	i40e_aqc_opc_set_mac_config		= 0x0603,
 	i40e_aqc_opc_set_link_restart_an	= 0x0605,
-	i40e_aqc_opc_get_link_status		= 0x0607,
+	i40e_aqc_opc_get_link_status		= 0x0607,/* 获取phy link信息 */
 	i40e_aqc_opc_set_phy_int_mask		= 0x0613,
 	i40e_aqc_opc_get_local_advt_reg		= 0x0614,
 	i40e_aqc_opc_set_local_advt_reg		= 0x0615,

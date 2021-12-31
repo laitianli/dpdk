@@ -1657,7 +1657,7 @@ void i40e_led_set(struct i40e_hw *hw, u32 mode, bool blink)
 }
 
 /* Admin command wrappers */
-
+/* 读取phy特性列表，结果存放在hw->phy中 */
 /**
  * i40e_aq_get_phy_capabilities
  * @hw: pointer to the hw struct
@@ -1731,7 +1731,7 @@ enum i40e_status_code i40e_aq_get_phy_capabilities(struct i40e_hw *hw,
 
 	return status;
 }
-
+/* 配置phy */
 /**
  * i40e_aq_set_phy_config
  * @hw: pointer to the hw struct
@@ -1765,7 +1765,7 @@ enum i40e_status_code i40e_aq_set_phy_config(struct i40e_hw *hw,
 
 	return status;
 }
-
+/* 读取phy特性列表 */
 /**
  * i40e_set_fc
  * @hw: pointer to the hw struct
@@ -1799,7 +1799,7 @@ enum i40e_status_code i40e_set_fc(struct i40e_hw *hw, u8 *aq_failures,
 	default:
 		break;
 	}
-
+	/* 读取phy特性列表 */
 	/* Get the current phy config */
 	status = i40e_aq_get_phy_capabilities(hw, false, false, &abilities,
 					      NULL);
@@ -1833,6 +1833,7 @@ enum i40e_status_code i40e_set_fc(struct i40e_hw *hw, u8 *aq_failures,
 		if (status)
 			*aq_failures |= I40E_SET_FC_AQ_FAIL_SET;
 	}
+	/* 获取网卡的link信息 */
 	/* Update the link info */
 	status = i40e_update_link_info(hw);
 	if (status) {
@@ -1946,7 +1947,7 @@ enum i40e_status_code i40e_aq_set_link_restart_an(struct i40e_hw *hw,
 
 	return status;
 }
-
+/* 读取phy的link信息 */
 /**
  * i40e_aq_get_link_info
  * @hw: pointer to the hw struct
@@ -2675,7 +2676,7 @@ enum i40e_status_code i40e_aq_update_vsi_params(struct i40e_hw *hw,
 
 	return status;
 }
-
+/* 获取交换接口配置，结果保存在？ */
 /**
  * i40e_aq_get_switch_config
  * @hw: pointer to the hardware structure
@@ -2860,7 +2861,7 @@ enum i40e_status_code i40e_get_link_status(struct i40e_hw *hw, bool *link_up)
 
 	return status;
 }
-
+/* 获取phy的link信息，结果保存在hw->phy.link_info中 */
 /**
  * i40e_updatelink_status - update status of the HW network link
  * @hw: pointer to the hw struct
@@ -2893,7 +2894,7 @@ enum i40e_status_code i40e_update_link_info(struct i40e_hw *hw)
 	return status;
 }
 
-
+/* 获取协商后的速率 */
 /**
  * i40e_get_link_speed
  * @hw: pointer to the hw struct
@@ -3694,7 +3695,7 @@ enum i40e_status_code i40e_aq_erase_nvm(struct i40e_hw *hw, u8 module_pointer,
 i40e_aq_erase_nvm_exit:
 	return status;
 }
-
+/* 解析i40e网卡的特性列表 */
 /**
  * i40e_parse_discover_capabilities
  * @hw: pointer to the hw struct
@@ -3851,7 +3852,7 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 				   "HW Capability: RSS table width = %d\n",
 				   p->rss_table_entry_width);
 			break;
-		case I40E_AQ_CAP_ID_RXQ:
+		case I40E_AQ_CAP_ID_RXQ:/* rx queue */
 			p->num_rx_qp = number;
 			p->base_queue = phys_id;
 			i40e_debug(hw, I40E_DEBUG_INIT,
@@ -3860,7 +3861,7 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 				   "HW Capability: base_queue = %d\n",
 				   p->base_queue);
 			break;
-		case I40E_AQ_CAP_ID_TXQ:
+		case I40E_AQ_CAP_ID_TXQ: /* tx queue */
 			p->num_tx_qp = number;
 			p->base_queue = phys_id;
 			i40e_debug(hw, I40E_DEBUG_INIT,
@@ -3869,14 +3870,14 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 				   "HW Capability: base_queue = %d\n",
 				   p->base_queue);
 			break;
-		case I40E_AQ_CAP_ID_MSIX:
+		case I40E_AQ_CAP_ID_MSIX:	/* msix中断数 */
 			p->num_msix_vectors = number;
 			i40e_debug(hw, I40E_DEBUG_INIT,
 				   "HW Capability: MSIX vector count = %d\n",
 				   p->num_msix_vectors);
 			break;
 		case I40E_AQ_CAP_ID_VF_MSIX:
-			p->num_msix_vectors_vf = number;
+			p->num_msix_vectors_vf = number; /* 虚拟网卡的mxix中断个数 */
 			i40e_debug(hw, I40E_DEBUG_INIT,
 				   "HW Capability: MSIX VF vector count = %d\n",
 				   p->num_msix_vectors_vf);
@@ -3915,7 +3916,7 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 			i40e_debug(hw, I40E_DEBUG_INIT,
 				   "HW Capability: iWARP = %d\n", p->iwarp);
 			break;
-		case I40E_AQ_CAP_ID_LED:
+		case I40E_AQ_CAP_ID_LED: /* led */
 			if (phys_id < I40E_HW_CAP_MAX_GPIO)
 				p->led[phys_id] = true;
 			i40e_debug(hw, I40E_DEBUG_INIT,
@@ -3939,7 +3940,7 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 				   "HW Capability: MDIO port mode = %d\n",
 				   p->mdio_port_mode);
 			break;
-		case I40E_AQ_CAP_ID_1588:
+		case I40E_AQ_CAP_ID_1588: /* 是否支持1588 */
 			if (number == 1)
 				p->ieee_1588 = true;
 			i40e_debug(hw, I40E_DEBUG_INIT,
@@ -4048,7 +4049,7 @@ STATIC void i40e_parse_discover_capabilities(struct i40e_hw *hw, void *buff,
 	 */
 	p->rx_buf_chain_len = I40E_MAX_CHAINED_RX_BUFFERS;
 }
-
+/* i40e网卡特性列表解析，存放到i40e_hw->dev_caps/func_caps */
 /**
  * i40e_aq_discover_capabilities
  * @hw: pointer to the hw struct
@@ -4076,19 +4077,19 @@ enum i40e_status_code i40e_aq_discover_capabilities(struct i40e_hw *hw,
 		status = I40E_ERR_PARAM;
 		goto exit;
 	}
-
+	/* 1.配置读操作指令格式 */
 	i40e_fill_default_direct_cmd_desc(&desc, list_type_opc);
 
 	desc.flags |= CPU_TO_LE16((u16)I40E_AQ_FLAG_BUF);
 	if (buff_size > I40E_AQ_LARGE_BUF)
 		desc.flags |= CPU_TO_LE16((u16)I40E_AQ_FLAG_LB);
-
+	/* 2.读取特性列表 */
 	status = i40e_asq_send_command(hw, &desc, buff, buff_size, cmd_details);
 	*data_size = LE16_TO_CPU(desc.datalen);
 
 	if (status)
 		goto exit;
-
+	/* 3.解析特性列表 */
 	i40e_parse_discover_capabilities(hw, buff, LE32_TO_CPU(cmd->count),
 					 list_type_opc);
 
