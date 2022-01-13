@@ -399,7 +399,7 @@ rte_is_power_of_2(uint32_t n)
 {
 	return n && !(n & (n - 1));
 }
-
+/* 返回x的下一个是2幂的值，如: x=14,返回16 */
 /**
  * Aligns input parameter to the next power of 2
  *
@@ -493,7 +493,7 @@ rte_align64prevpow2(uint64_t v)
 	})
 
 /*********** Other general functions / macros ********/
-
+/* 返回v低位第一个为1的位数 */
 /**
  * Searches the input parameter for the least significant set bit
  * (starting from zero).
@@ -534,7 +534,7 @@ rte_bsf32_safe(uint64_t v, uint32_t *pos)
 	*pos = rte_bsf32(v);
 	return 1;
 }
-
+/* 计算log2,如：log2(16)=4 */
 /**
  * Return the rounded-up log2 of a integer.
  *
@@ -707,6 +707,7 @@ rte_log2_u64(uint64_t v)
 /** Number of elements in the array. */
 #define	RTE_DIM(a)	(sizeof (a) / sizeof ((a)[0]))
 
+/* 将大小为字符串转成数值类型 */
 /**
  * Converts a numeric string to the equivalent uint64_t value.
  * As well as straight number conversion, also recognises the suffixes
