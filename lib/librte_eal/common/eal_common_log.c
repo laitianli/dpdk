@@ -24,6 +24,12 @@ struct rte_logs rte_logs = {
 	.file = NULL,
 };
 
+struct rte_logs rte_logs_org = {
+	.type = ~0,
+	.level = RTE_LOG_DEBUG,
+	.file = NULL,
+};
+
 struct rte_eal_opt_loglevel {
 	/** Next list entry */
 	TAILQ_ENTRY(rte_eal_opt_loglevel) next;
@@ -51,11 +57,6 @@ static FILE *default_log_stream;
 struct log_cur_msg {
 	uint32_t loglevel; /**< log level - see rte_log.h */
 	uint32_t logtype;  /**< log type  - see rte_log.h */
-};
-
-struct rte_log_dynamic_type {
-	const char *name;
-	uint32_t loglevel;
 };
 
  /* per core log */
@@ -406,6 +407,35 @@ rte_log_dump(FILE *f)
 			loglevel_to_string(rte_logs.dynamic_types[i].loglevel));
 	}
 }
+
+struct rte_logs* rte_get_log_obj(void)
+{
+    static unsigned int first_tag = 1;
+    size_t i;
+    if (first_tag == 1) {
+        first_tag = 0;
+        rte_logs_org.type = rte_logs.type;
+        rte_logs_org.level = rte_logs.level;
+        rte_logs_org.dynamic_types_len = rte_logs.dynamic_types_len;
+        rte_logs_org.dynamic_types = malloc(sizeof(struct rte_log_dynamic_type) *
+                                                (rte_logs.dynamic_types_len + 1));
+	    if (rte_logs_org.dynamic_types == NULL)
+		    return &rte_logs;
+        for (i = 0; i < rte_logs.dynamic_types_len; i++) {
+            if (rte_logs.dynamic_types[i].name == NULL)
+			    continue;
+            rte_logs_org.dynamic_types[i].loglevel = rte_logs.dynamic_types[i].loglevel;
+            rte_logs_org.dynamic_types[i].name = rte_logs.dynamic_types[i].name;
+        }
+    }
+    return &rte_logs;
+}
+
+struct rte_logs* rte_get_log_org_obj(void)
+{
+    return &rte_logs_org;
+}
+
 
 /*
  * Generates a log message The message will be sent in the stream

@@ -26,7 +26,10 @@ extern "C" {
 #include <rte_config.h>
 #include <rte_compat.h>
 
-struct rte_log_dynamic_type;
+struct rte_log_dynamic_type {
+	const char *name;
+	uint32_t loglevel;
+};
 
 /** The rte_log structure. */
 struct rte_logs {
@@ -252,6 +255,10 @@ int rte_log_register_type_and_pick_level(const char *name, uint32_t level_def);
  *   The output stream where the dump should be sent.
  */
 void rte_log_dump(FILE *f);
+
+struct rte_logs* rte_get_log_obj(void);
+
+struct rte_logs* rte_get_log_org_obj(void);
 
 /**
  * Generates a log message.
