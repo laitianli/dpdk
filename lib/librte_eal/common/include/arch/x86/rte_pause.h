@@ -14,7 +14,7 @@ extern "C" {
 #include <emmintrin.h>
 static inline void rte_pause(void)
 {
-	_mm_pause();
+    _mm_pause();
 }
 
 #ifdef __cplusplus

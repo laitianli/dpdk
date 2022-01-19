@@ -23,18 +23,18 @@
  * and read the contents.
  */
 struct rte_keepalive_shm {
-	/** IPC semaphore. Posted when a core dies */
-	sem_t core_died;
+    /** IPC semaphore. Posted when a core dies */
+    sem_t core_died;
 
-	/**
-	 * Relayed status of each core.
-	 */
-	enum rte_keepalive_state core_state[RTE_KEEPALIVE_MAXCORES];
+    /**
+     * Relayed status of each core.
+     */
+    enum rte_keepalive_state core_state[RTE_KEEPALIVE_MAXCORES];
 
-	/**
-	 * Last-seen-alive timestamps for the cores
-	 */
-	uint64_t core_last_seen_times[RTE_KEEPALIVE_MAXCORES];
+    /**
+     * Last-seen-alive timestamps for the cores
+     */
+    uint64_t core_last_seen_times[RTE_KEEPALIVE_MAXCORES];
 };
 
 /**
@@ -56,8 +56,8 @@ struct rte_keepalive_shm *rte_keepalive_shm_create(void);
  *  Last seen timestamp for core
  */
 void rte_keepalive_relayed_state(struct rte_keepalive_shm *shm,
-	const int id_core, const enum rte_keepalive_state core_state,
-	uint64_t last_alive);
+    const int id_core, const enum rte_keepalive_state core_state,
+    uint64_t last_alive);
 
 /** Shutdown cleanup of shared host memory keepalive object.
  * @param *shm

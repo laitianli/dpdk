@@ -11,16 +11,16 @@
 
 
 uint16_t eth_ark_xmit_pkts_noop(void *vtxq,
-				struct rte_mbuf **tx_pkts,
-				uint16_t nb_pkts);
+                struct rte_mbuf **tx_pkts,
+                uint16_t nb_pkts);
 uint16_t eth_ark_xmit_pkts(void *vtxq,
-			   struct rte_mbuf **tx_pkts,
-			   uint16_t nb_pkts);
+               struct rte_mbuf **tx_pkts,
+               uint16_t nb_pkts);
 int eth_ark_tx_queue_setup(struct rte_eth_dev *dev,
-			   uint16_t queue_idx,
-			   uint16_t nb_desc,
-			   unsigned int socket_id,
-			   const struct rte_eth_txconf *tx_conf);
+               uint16_t queue_idx,
+               uint16_t nb_desc,
+               unsigned int socket_id,
+               const struct rte_eth_txconf *tx_conf);
 void eth_ark_tx_queue_release(void *vtx_queue);
 int eth_ark_tx_queue_stop(struct rte_eth_dev *dev, uint16_t queue_id);
 int eth_ark_tx_queue_start(struct rte_eth_dev *dev, uint16_t queue_id);

@@ -15,11 +15,11 @@ extern "C" {
 
 static inline void rte_pause(void)
 {
-	/* Set hardware multi-threading low priority */
-	asm volatile("or 1,1,1");
-	/* Set hardware multi-threading medium priority */
-	asm volatile("or 2,2,2");
-	rte_compiler_barrier();
+    /* Set hardware multi-threading low priority */
+    asm volatile("or 1,1,1");
+    /* Set hardware multi-threading medium priority */
+    asm volatile("or 2,2,2");
+    rte_compiler_barrier();
 }
 
 #ifdef __cplusplus

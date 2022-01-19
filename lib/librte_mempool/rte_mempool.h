@@ -64,16 +64,16 @@ extern "C" {
  * A structure that stores the mempool statistics (per-lcore).
  */
 struct rte_mempool_debug_stats {
-	uint64_t put_bulk;         /**< Number of puts. */
-	uint64_t put_objs;         /**< Number of objects successfully put. */
-	uint64_t get_success_bulk; /**< Successful allocation number. */
-	uint64_t get_success_objs; /**< Objects successfully allocated. */
-	uint64_t get_fail_bulk;    /**< Failed allocation number. */
-	uint64_t get_fail_objs;    /**< Objects that failed to be allocated. */
-	/** Successful allocation number of contiguous blocks. */
-	uint64_t get_success_blks;
-	/** Failed allocation number of contiguous blocks. */
-	uint64_t get_fail_blks;
+    uint64_t put_bulk;         /**< Number of puts. */
+    uint64_t put_objs;         /**< Number of objects successfully put. */
+    uint64_t get_success_bulk; /**< Successful allocation number. */
+    uint64_t get_success_objs; /**< Objects successfully allocated. */
+    uint64_t get_fail_bulk;    /**< Failed allocation number. */
+    uint64_t get_fail_objs;    /**< Objects that failed to be allocated. */
+    /** Successful allocation number of contiguous blocks. */
+    uint64_t get_success_blks;
+    /** Failed allocation number of contiguous blocks. */
+    uint64_t get_fail_blks;
 } __rte_cache_aligned;
 #endif
 
@@ -81,48 +81,48 @@ struct rte_mempool_debug_stats {
  * A structure that stores a per-core object cache.
  */
 struct rte_mempool_cache {
-	uint32_t size;	      /**< Size of the cache */
-	uint32_t flushthresh; /**< Threshold before we flush excess elements */
-	uint32_t len;	      /**< Current cache count */
-	/*
-	 * Cache is allocated to this size to allow it to overflow in certain
-	 * cases to avoid needless emptying of cache.
-	 */
-	void *objs[RTE_MEMPOOL_CACHE_MAX_SIZE * 3]; /**< Cache objects */
+    uint32_t size;          /**< Size of the cache */
+    uint32_t flushthresh; /**< Threshold before we flush excess elements */
+    uint32_t len;          /**< Current cache count */
+    /*
+     * Cache is allocated to this size to allow it to overflow in certain
+     * cases to avoid needless emptying of cache.
+     */
+    void *objs[RTE_MEMPOOL_CACHE_MAX_SIZE * 3]; /**< Cache objects */
 } __rte_cache_aligned;
 
 /**
  * A structure that stores the size of mempool elements.
  */
 struct rte_mempool_objsz {
-	uint32_t elt_size;     /**< Size of an element. */
-	uint32_t header_size;  /**< Size of header (before elt). */
-	uint32_t trailer_size; /**< Size of trailer (after elt). */
-	uint32_t total_size;
-	/**< Total size of an object (header + elt + trailer). */
+    uint32_t elt_size;     /**< Size of an element. */
+    uint32_t header_size;  /**< Size of header (before elt). */
+    uint32_t trailer_size; /**< Size of trailer (after elt). */
+    uint32_t total_size;
+    /**< Total size of an object (header + elt + trailer). */
 };
 
 /**< Maximum length of a memory pool's name. */
 #define RTE_MEMPOOL_NAMESIZE (RTE_RING_NAMESIZE - \
-			      sizeof(RTE_MEMPOOL_MZ_PREFIX) + 1)
+                  sizeof(RTE_MEMPOOL_MZ_PREFIX) + 1)
 #define RTE_MEMPOOL_MZ_PREFIX "MP_"
 
 /* "MP_<name>" */
-#define	RTE_MEMPOOL_MZ_FORMAT	RTE_MEMPOOL_MZ_PREFIX "%s"
+#define    RTE_MEMPOOL_MZ_FORMAT    RTE_MEMPOOL_MZ_PREFIX "%s"
 
-#define	MEMPOOL_PG_SHIFT_MAX	(sizeof(uintptr_t) * CHAR_BIT - 1)
+#define    MEMPOOL_PG_SHIFT_MAX    (sizeof(uintptr_t) * CHAR_BIT - 1)
 
 /** Mempool over one chunk of physically continuous memory */
-#define	MEMPOOL_PG_NUM_DEFAULT	1
+#define    MEMPOOL_PG_NUM_DEFAULT    1
 
 #ifndef RTE_MEMPOOL_ALIGN
 /**
  * Alignment of elements inside mempool.
  */
-#define RTE_MEMPOOL_ALIGN	RTE_CACHE_LINE_SIZE
+#define RTE_MEMPOOL_ALIGN    RTE_CACHE_LINE_SIZE
 #endif
 
-#define RTE_MEMPOOL_ALIGN_MASK	(RTE_MEMPOOL_ALIGN - 1)
+#define RTE_MEMPOOL_ALIGN_MASK    (RTE_MEMPOOL_ALIGN - 1)
 
 /**
  * Mempool object header structure
@@ -134,15 +134,15 @@ struct rte_mempool_objsz {
  * double-frees.
  */
 struct rte_mempool_objhdr {
-	STAILQ_ENTRY(rte_mempool_objhdr) next; /**< Next in list. */
-	struct rte_mempool *mp;          /**< The mempool owning the object. */
-	RTE_STD_C11
-	union {
-		rte_iova_t iova;         /**< IO address of the object. */
-		phys_addr_t physaddr;    /**< deprecated - Physical address of the object. */
-	};
+    STAILQ_ENTRY(rte_mempool_objhdr) next; /**< Next in list. */
+    struct rte_mempool *mp;          /**< The mempool owning the object. */
+    RTE_STD_C11
+    union {
+        rte_iova_t iova;         /**< IO address of the object. */
+        phys_addr_t physaddr;    /**< deprecated - Physical address of the object. */
+    };
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
-	uint64_t cookie;                 /**< Debug cookie. */
+    uint64_t cookie;                 /**< Debug cookie. */
 #endif
 };
 
@@ -160,7 +160,7 @@ STAILQ_HEAD(rte_mempool_objhdr_list, rte_mempool_objhdr);
  * trailer structure containing a cookie preventing memory corruptions.
  */
 struct rte_mempool_objtlr {
-	uint64_t cookie;                 /**< Debug cookie. */
+    uint64_t cookie;                 /**< Debug cookie. */
 };
 
 #endif
@@ -174,7 +174,7 @@ STAILQ_HEAD(rte_mempool_memhdr_list, rte_mempool_memhdr);
  * Callback used to free a memory chunk
  */
 typedef void (rte_mempool_memchunk_free_cb_t)(struct rte_mempool_memhdr *memhdr,
-	void *opaque);
+    void *opaque);
 
 /**
  * Mempool objects memory header structure
@@ -183,17 +183,17 @@ typedef void (rte_mempool_memchunk_free_cb_t)(struct rte_mempool_memhdr *memhdr,
  * and physically contiguous.
  */
 struct rte_mempool_memhdr {
-	STAILQ_ENTRY(rte_mempool_memhdr) next; /**< Next in list. */
-	struct rte_mempool *mp;  /**< The mempool owning the chunk */
-	void *addr;              /**< Virtual address of the chunk */
-	RTE_STD_C11
-	union {
-		rte_iova_t iova;       /**< IO address of the chunk */
-		phys_addr_t phys_addr; /**< Physical address of the chunk */
-	};
-	size_t len;              /**< length of the chunk */
-	rte_mempool_memchunk_free_cb_t *free_cb; /**< Free callback */
-	void *opaque;            /**< Argument passed to the free callback */
+    STAILQ_ENTRY(rte_mempool_memhdr) next; /**< Next in list. */
+    struct rte_mempool *mp;  /**< The mempool owning the chunk */
+    void *addr;              /**< Virtual address of the chunk */
+    RTE_STD_C11
+    union {
+        rte_iova_t iova;       /**< IO address of the chunk */
+        phys_addr_t phys_addr; /**< Physical address of the chunk */
+    };
+    size_t len;              /**< length of the chunk */
+    rte_mempool_memchunk_free_cb_t *free_cb; /**< Free callback */
+    void *opaque;            /**< Argument passed to the free callback */
 };
 
 /**
@@ -206,57 +206,57 @@ struct rte_mempool_memhdr {
  * a number of cases when something small is added.
  */
 struct rte_mempool_info {
-	/** Number of objects in the contiguous block */
-	unsigned int contig_block_size;
+    /** Number of objects in the contiguous block */
+    unsigned int contig_block_size;
 } __rte_cache_aligned;
 
 /**
  * The RTE mempool structure.
  */
 struct rte_mempool {
-	/*
-	 * Note: this field kept the RTE_MEMZONE_NAMESIZE size due to ABI
-	 * compatibility requirements, it could be changed to
-	 * RTE_MEMPOOL_NAMESIZE next time the ABI changes
-	 */
-	char name[RTE_MEMZONE_NAMESIZE]; /**< Name of mempool. */
-	RTE_STD_C11
-	union {
-		void *pool_data;         /**< Ring or pool to store objects. */
-		uint64_t pool_id;        /**< External mempool identifier. */
-	};
-	void *pool_config;               /**< optional args for ops alloc. */
-	const struct rte_memzone *mz;    /**< Memzone where pool is alloc'd. */
-	unsigned int flags;              /**< Flags of the mempool. */
-	int socket_id;                   /**< Socket id passed at create. */
-	uint32_t size;                   /**< Max size of the mempool. */
-	uint32_t cache_size;
-	/**< Size of per-lcore default local cache. */
+    /*
+     * Note: this field kept the RTE_MEMZONE_NAMESIZE size due to ABI
+     * compatibility requirements, it could be changed to
+     * RTE_MEMPOOL_NAMESIZE next time the ABI changes
+     */
+    char name[RTE_MEMZONE_NAMESIZE]; /**< Name of mempool. */
+    RTE_STD_C11
+    union {
+        void *pool_data;         /**< Ring or pool to store objects. */
+        uint64_t pool_id;        /**< External mempool identifier. */
+    };
+    void *pool_config;               /**< optional args for ops alloc. */
+    const struct rte_memzone *mz;    /**< Memzone where pool is alloc'd. */
+    unsigned int flags;              /**< Flags of the mempool. */
+    int socket_id;                   /**< Socket id passed at create. */
+    uint32_t size;                   /**< Max size of the mempool. */
+    uint32_t cache_size;
+    /**< Size of per-lcore default local cache. */
 
-	uint32_t elt_size;               /**< Size of an element. */
-	uint32_t header_size;            /**< Size of header (before elt). */
-	uint32_t trailer_size;           /**< Size of trailer (after elt). */
+    uint32_t elt_size;               /**< Size of an element. */
+    uint32_t header_size;            /**< Size of header (before elt). */
+    uint32_t trailer_size;           /**< Size of trailer (after elt). */
 
-	unsigned private_data_size;      /**< Size of private data. */
-	/**
-	 * Index into rte_mempool_ops_table array of mempool ops
-	 * structs, which contain callback function pointers.
-	 * We're using an index here rather than pointers to the callbacks
-	 * to facilitate any secondary processes that may want to use
-	 * this mempool.
-	 */
-	int32_t ops_index;
+    unsigned private_data_size;      /**< Size of private data. */
+    /**
+     * Index into rte_mempool_ops_table array of mempool ops
+     * structs, which contain callback function pointers.
+     * We're using an index here rather than pointers to the callbacks
+     * to facilitate any secondary processes that may want to use
+     * this mempool.
+     */
+    int32_t ops_index;
 
-	struct rte_mempool_cache *local_cache; /**< Per-lcore local cache */
+    struct rte_mempool_cache *local_cache; /**< Per-lcore local cache */
 
-	uint32_t populated_size;         /**< Number of populated objects. */
-	struct rte_mempool_objhdr_list elt_list; /**< List of objects in pool */
-	uint32_t nb_mem_chunks;          /**< Number of memory chunks */
-	struct rte_mempool_memhdr_list mem_list; /**< List of memory chunks */
+    uint32_t populated_size;         /**< Number of populated objects. */
+    struct rte_mempool_objhdr_list elt_list; /**< List of objects in pool */
+    uint32_t nb_mem_chunks;          /**< Number of memory chunks */
+    struct rte_mempool_memhdr_list mem_list; /**< List of memory chunks */
 
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
-	/** Per-lcore statistics. */
-	struct rte_mempool_debug_stats stats[RTE_MAX_LCORE];
+    /** Per-lcore statistics. */
+    struct rte_mempool_debug_stats stats[RTE_MAX_LCORE];
 #endif
 }  __rte_cache_aligned;
 
@@ -280,19 +280,19 @@ struct rte_mempool {
  */
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
 #define __MEMPOOL_STAT_ADD(mp, name, n) do {                    \
-		unsigned __lcore_id = rte_lcore_id();           \
-		if (__lcore_id < RTE_MAX_LCORE) {               \
-			mp->stats[__lcore_id].name##_objs += n;	\
-			mp->stats[__lcore_id].name##_bulk += 1;	\
-		}                                               \
-	} while(0)
+        unsigned __lcore_id = rte_lcore_id();           \
+        if (__lcore_id < RTE_MAX_LCORE) {               \
+            mp->stats[__lcore_id].name##_objs += n;    \
+            mp->stats[__lcore_id].name##_bulk += 1;    \
+        }                                               \
+    } while(0)
 #define __MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, name, n) do {                    \
-		unsigned int __lcore_id = rte_lcore_id();       \
-		if (__lcore_id < RTE_MAX_LCORE) {               \
-			mp->stats[__lcore_id].name##_blks += n;	\
-			mp->stats[__lcore_id].name##_bulk += 1;	\
-		}                                               \
-	} while (0)
+        unsigned int __lcore_id = rte_lcore_id();       \
+        if (__lcore_id < RTE_MAX_LCORE) {               \
+            mp->stats[__lcore_id].name##_blks += n;    \
+            mp->stats[__lcore_id].name##_bulk += 1;    \
+        }                                               \
+    } while (0)
 #else
 #define __MEMPOOL_STAT_ADD(mp, name, n) do {} while(0)
 #define __MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, name, n) do {} while (0)
@@ -307,14 +307,14 @@ struct rte_mempool {
  *   Size of the per-lcore cache.
  */
 #define MEMPOOL_HEADER_SIZE(mp, cs) \
-	(sizeof(*(mp)) + (((cs) == 0) ? 0 : \
-	(sizeof(struct rte_mempool_cache) * RTE_MAX_LCORE)))
+    (sizeof(*(mp)) + (((cs) == 0) ? 0 : \
+    (sizeof(struct rte_mempool_cache) * RTE_MAX_LCORE)))
 
 /* return the header of a mempool object (internal) */
 static inline struct rte_mempool_objhdr *__mempool_get_header(void *obj)
 {
-	return (struct rte_mempool_objhdr *)RTE_PTR_SUB(obj,
-		sizeof(struct rte_mempool_objhdr));
+    return (struct rte_mempool_objhdr *)RTE_PTR_SUB(obj,
+        sizeof(struct rte_mempool_objhdr));
 }
 
 /**
@@ -328,15 +328,15 @@ static inline struct rte_mempool_objhdr *__mempool_get_header(void *obj)
  */
 static inline struct rte_mempool *rte_mempool_from_obj(void *obj)
 {
-	struct rte_mempool_objhdr *hdr = __mempool_get_header(obj);
-	return hdr->mp;
+    struct rte_mempool_objhdr *hdr = __mempool_get_header(obj);
+    return hdr->mp;
 }
 
 /* return the trailer of a mempool object (internal) */
 static inline struct rte_mempool_objtlr *__mempool_get_trailer(void *obj)
 {
-	struct rte_mempool *mp = rte_mempool_from_obj(obj);
-	return (struct rte_mempool_objtlr *)RTE_PTR_ADD(obj, mp->elt_size);
+    struct rte_mempool *mp = rte_mempool_from_obj(obj);
+    return (struct rte_mempool_objtlr *)RTE_PTR_ADD(obj, mp->elt_size);
 }
 
 /**
@@ -354,11 +354,11 @@ static inline struct rte_mempool_objtlr *__mempool_get_trailer(void *obj)
  *   - 2: just check that cookie is valid (free or allocated)
  */
 void rte_mempool_check_cookies(const struct rte_mempool *mp,
-	void * const *obj_table_const, unsigned n, int free);
+    void * const *obj_table_const, unsigned n, int free);
 
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
 #define __mempool_check_cookies(mp, obj_table_const, n, free) \
-	rte_mempool_check_cookies(mp, obj_table_const, n, free)
+    rte_mempool_check_cookies(mp, obj_table_const, n, free)
 #else
 #define __mempool_check_cookies(mp, obj_table_const, n, free) do {} while(0)
 #endif /* RTE_LIBRTE_MEMPOOL_DEBUG */
@@ -382,17 +382,17 @@ void rte_mempool_check_cookies(const struct rte_mempool *mp,
  *   - 2: just check that cookie is valid (free or allocated)
  */
 void rte_mempool_contig_blocks_check_cookies(const struct rte_mempool *mp,
-	void * const *first_obj_table_const, unsigned int n, int free);
+    void * const *first_obj_table_const, unsigned int n, int free);
 
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
 #define __mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
-					      free) \
-	rte_mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
-						free)
+                          free) \
+    rte_mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
+                        free)
 #else
 #define __mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
-					      free) \
-	do {} while (0)
+                          free) \
+    do {} while (0)
 #endif /* RTE_LIBRTE_MEMPOOL_DEBUG */
 
 #define RTE_MEMPOOL_OPS_NAMESIZE 32 /**< Max length of ops struct name. */
@@ -418,13 +418,13 @@ typedef void (*rte_mempool_free_t)(struct rte_mempool *mp);
  * Enqueue an object into the external pool.
  */
 typedef int (*rte_mempool_enqueue_t)(struct rte_mempool *mp,
-		void * const *obj_table, unsigned int n);
+        void * const *obj_table, unsigned int n);
 
 /**
  * Dequeue an object from the external pool.
  */
 typedef int (*rte_mempool_dequeue_t)(struct rte_mempool *mp,
-		void **obj_table, unsigned int n);
+        void **obj_table, unsigned int n);
 
 /**
  * @warning
@@ -433,7 +433,7 @@ typedef int (*rte_mempool_dequeue_t)(struct rte_mempool *mp,
  * Dequeue a number of contiguous object blocks from the external pool.
  */
 typedef int (*rte_mempool_dequeue_contig_blocks_t)(struct rte_mempool *mp,
-		 void **first_obj_table, unsigned int n);
+         void **first_obj_table, unsigned int n);
 
 /**
  * Return the number of available objects in the external pool.
@@ -464,8 +464,8 @@ typedef unsigned (*rte_mempool_get_count)(const struct rte_mempool *mp);
  *   Required memory size.
  */
 typedef ssize_t (*rte_mempool_calc_mem_size_t)(const struct rte_mempool *mp,
-		uint32_t obj_num,  uint32_t pg_shift,
-		size_t *min_chunk_size, size_t *align);
+        uint32_t obj_num,  uint32_t pg_shift,
+        size_t *min_chunk_size, size_t *align);
 
 /**
  * @warning
@@ -507,8 +507,8 @@ typedef ssize_t (*rte_mempool_calc_mem_size_t)(const struct rte_mempool *mp,
  */
 __rte_experimental
 ssize_t rte_mempool_op_calc_mem_size_helper(const struct rte_mempool *mp,
-		uint32_t obj_num, uint32_t pg_shift, size_t chunk_reserve,
-		size_t *min_chunk_size, size_t *align);
+        uint32_t obj_num, uint32_t pg_shift, size_t chunk_reserve,
+        size_t *min_chunk_size, size_t *align);
 
 /**
  * Default way to calculate memory size required to store given number of
@@ -518,8 +518,8 @@ ssize_t rte_mempool_op_calc_mem_size_helper(const struct rte_mempool *mp,
  * 0, min_chunk_size, align).
  */
 ssize_t rte_mempool_op_calc_mem_size_default(const struct rte_mempool *mp,
-		uint32_t obj_num, uint32_t pg_shift,
-		size_t *min_chunk_size, size_t *align);
+        uint32_t obj_num, uint32_t pg_shift,
+        size_t *min_chunk_size, size_t *align);
 
 /**
  * Function to be called for each populated object.
@@ -534,7 +534,7 @@ ssize_t rte_mempool_op_calc_mem_size_default(const struct rte_mempool *mp,
  *   Input/output virtual address of the object or RTE_BAD_IOVA.
  */
 typedef void (rte_mempool_populate_obj_cb_t)(struct rte_mempool *mp,
-		void *opaque, void *vaddr, rte_iova_t iova);
+        void *opaque, void *vaddr, rte_iova_t iova);
 
 /**
  * Populate memory pool objects using provided memory chunk.
@@ -565,9 +565,9 @@ typedef void (rte_mempool_populate_obj_cb_t)(struct rte_mempool *mp,
  *   On error, no objects are populated and a negative errno is returned.
  */
 typedef int (*rte_mempool_populate_t)(struct rte_mempool *mp,
-		unsigned int max_objs,
-		void *vaddr, rte_iova_t iova, size_t len,
-		rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
+        unsigned int max_objs,
+        void *vaddr, rte_iova_t iova, size_t len,
+        rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
 
 /**
  * Align objects on addresses multiple of total_elt_sz.
@@ -611,9 +611,9 @@ typedef int (*rte_mempool_populate_t)(struct rte_mempool *mp,
  */
 __rte_experimental
 int rte_mempool_op_populate_helper(struct rte_mempool *mp,
-		unsigned int flags, unsigned int max_objs,
-		void *vaddr, rte_iova_t iova, size_t len,
-		rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
+        unsigned int flags, unsigned int max_objs,
+        void *vaddr, rte_iova_t iova, size_t len,
+        rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
 
 /**
  * Default way to populate memory pool object using provided memory chunk.
@@ -622,9 +622,9 @@ int rte_mempool_op_populate_helper(struct rte_mempool *mp,
  * len, obj_cb, obj_cb_arg).
  */
 int rte_mempool_op_populate_default(struct rte_mempool *mp,
-		unsigned int max_objs,
-		void *vaddr, rte_iova_t iova, size_t len,
-		rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
+        unsigned int max_objs,
+        void *vaddr, rte_iova_t iova, size_t len,
+        rte_mempool_populate_obj_cb_t *obj_cb, void *obj_cb_arg);
 
 /**
  * @warning
@@ -633,35 +633,35 @@ int rte_mempool_op_populate_default(struct rte_mempool *mp,
  * Get some additional information about a mempool.
  */
 typedef int (*rte_mempool_get_info_t)(const struct rte_mempool *mp,
-		struct rte_mempool_info *info);
+        struct rte_mempool_info *info);
 
 
 /** Structure defining mempool operations structure */
 struct rte_mempool_ops {
-	char name[RTE_MEMPOOL_OPS_NAMESIZE]; /**< Name of mempool ops struct. */
-	rte_mempool_alloc_t alloc;       /**< Allocate private data. */
-	rte_mempool_free_t free;         /**< Free the external pool. */
-	rte_mempool_enqueue_t enqueue;   /**< Enqueue an object. */
-	rte_mempool_dequeue_t dequeue;   /**< Dequeue an object. */
-	rte_mempool_get_count get_count; /**< Get qty of available objs. */
-	/**
-	 * Optional callback to calculate memory size required to
-	 * store specified number of objects.
-	 */
-	rte_mempool_calc_mem_size_t calc_mem_size;
-	/**
-	 * Optional callback to populate mempool objects using
-	 * provided memory chunk.
-	 */
-	rte_mempool_populate_t populate;
-	/**
-	 * Get mempool info
-	 */
-	rte_mempool_get_info_t get_info;
-	/**
-	 * Dequeue a number of contiguous object blocks.
-	 */
-	rte_mempool_dequeue_contig_blocks_t dequeue_contig_blocks;
+    char name[RTE_MEMPOOL_OPS_NAMESIZE]; /**< Name of mempool ops struct. */
+    rte_mempool_alloc_t alloc;       /**< Allocate private data. */
+    rte_mempool_free_t free;         /**< Free the external pool. */
+    rte_mempool_enqueue_t enqueue;   /**< Enqueue an object. */
+    rte_mempool_dequeue_t dequeue;   /**< Dequeue an object. */
+    rte_mempool_get_count get_count; /**< Get qty of available objs. */
+    /**
+     * Optional callback to calculate memory size required to
+     * store specified number of objects.
+     */
+    rte_mempool_calc_mem_size_t calc_mem_size;
+    /**
+     * Optional callback to populate mempool objects using
+     * provided memory chunk.
+     */
+    rte_mempool_populate_t populate;
+    /**
+     * Get mempool info
+     */
+    rte_mempool_get_info_t get_info;
+    /**
+     * Dequeue a number of contiguous object blocks.
+     */
+    rte_mempool_dequeue_contig_blocks_t dequeue_contig_blocks;
 } __rte_cache_aligned;
 
 #define RTE_MEMPOOL_MAX_OPS_IDX 16  /**< Max registered ops structs */
@@ -676,12 +676,12 @@ struct rte_mempool_ops {
  * This results in us simply having "ops_index" in the mempool struct.
  */
 struct rte_mempool_ops_table {
-	rte_spinlock_t sl;     /**< Spinlock for add/delete. */
-	uint32_t num_ops;      /**< Number of used ops structs in the table. */
-	/**
-	 * Storage for all possible ops structs.
-	 */
-	struct rte_mempool_ops ops[RTE_MEMPOOL_MAX_OPS_IDX];
+    rte_spinlock_t sl;     /**< Spinlock for add/delete. */
+    uint32_t num_ops;      /**< Number of used ops structs in the table. */
+    /**
+     * Storage for all possible ops structs.
+     */
+    struct rte_mempool_ops ops[RTE_MEMPOOL_MAX_OPS_IDX];
 } __rte_cache_aligned;
 
 /** Array of registered ops structs. */
@@ -699,9 +699,9 @@ extern struct rte_mempool_ops_table rte_mempool_ops_table;
 static inline struct rte_mempool_ops *
 rte_mempool_get_ops(int ops_index)
 {
-	RTE_VERIFY((ops_index >= 0) && (ops_index < RTE_MEMPOOL_MAX_OPS_IDX));
+    RTE_VERIFY((ops_index >= 0) && (ops_index < RTE_MEMPOOL_MAX_OPS_IDX));
 
-	return &rte_mempool_ops_table.ops[ops_index];
+    return &rte_mempool_ops_table.ops[ops_index];
 }
 
 /**
@@ -731,12 +731,12 @@ rte_mempool_ops_alloc(struct rte_mempool *mp);
  */
 static inline int
 rte_mempool_ops_dequeue_bulk(struct rte_mempool *mp,
-		void **obj_table, unsigned n)
+        void **obj_table, unsigned n)
 {
-	struct rte_mempool_ops *ops;
+    struct rte_mempool_ops *ops;
 
-	ops = rte_mempool_get_ops(mp->ops_index);
-	return ops->dequeue(mp, obj_table, n);
+    ops = rte_mempool_get_ops(mp->ops_index);
+    return ops->dequeue(mp, obj_table, n);
 }
 
 /**
@@ -754,13 +754,13 @@ rte_mempool_ops_dequeue_bulk(struct rte_mempool *mp,
  */
 static inline int
 rte_mempool_ops_dequeue_contig_blocks(struct rte_mempool *mp,
-		void **first_obj_table, unsigned int n)
+        void **first_obj_table, unsigned int n)
 {
-	struct rte_mempool_ops *ops;
+    struct rte_mempool_ops *ops;
 
-	ops = rte_mempool_get_ops(mp->ops_index);
-	RTE_ASSERT(ops->dequeue_contig_blocks != NULL);
-	return ops->dequeue_contig_blocks(mp, first_obj_table, n);
+    ops = rte_mempool_get_ops(mp->ops_index);
+    RTE_ASSERT(ops->dequeue_contig_blocks != NULL);
+    return ops->dequeue_contig_blocks(mp, first_obj_table, n);
 }
 
 /**
@@ -778,12 +778,12 @@ rte_mempool_ops_dequeue_contig_blocks(struct rte_mempool *mp,
  */
 static inline int
 rte_mempool_ops_enqueue_bulk(struct rte_mempool *mp, void * const *obj_table,
-		unsigned n)
+        unsigned n)
 {
-	struct rte_mempool_ops *ops;
+    struct rte_mempool_ops *ops;
 
-	ops = rte_mempool_get_ops(mp->ops_index);
-	return ops->enqueue(mp, obj_table, n);
+    ops = rte_mempool_get_ops(mp->ops_index);
+    return ops->enqueue(mp, obj_table, n);
 }
 
 /**
@@ -817,8 +817,8 @@ rte_mempool_ops_get_count(const struct rte_mempool *mp);
  *   Required memory size aligned at page boundary.
  */
 ssize_t rte_mempool_ops_calc_mem_size(const struct rte_mempool *mp,
-				      uint32_t obj_num, uint32_t pg_shift,
-				      size_t *min_chunk_size, size_t *align);
+                      uint32_t obj_num, uint32_t pg_shift,
+                      size_t *min_chunk_size, size_t *align);
 
 /**
  * @internal wrapper for mempool_ops populate callback.
@@ -844,9 +844,9 @@ ssize_t rte_mempool_ops_calc_mem_size(const struct rte_mempool *mp,
  *   On error, no objects are populated and a negative errno is returned.
  */
 int rte_mempool_ops_populate(struct rte_mempool *mp, unsigned int max_objs,
-			     void *vaddr, rte_iova_t iova, size_t len,
-			     rte_mempool_populate_obj_cb_t *obj_cb,
-			     void *obj_cb_arg);
+                 void *vaddr, rte_iova_t iova, size_t len,
+                 rte_mempool_populate_obj_cb_t *obj_cb,
+                 void *obj_cb_arg);
 
 /**
  * @warning
@@ -865,7 +865,7 @@ int rte_mempool_ops_populate(struct rte_mempool *mp, unsigned int max_objs,
  */
 __rte_experimental
 int rte_mempool_ops_get_info(const struct rte_mempool *mp,
-			 struct rte_mempool_info *info);
+             struct rte_mempool_info *info);
 
 /**
  * @internal wrapper for mempool_ops free callback.
@@ -895,7 +895,7 @@ rte_mempool_ops_free(struct rte_mempool *mp);
  */
 int
 rte_mempool_set_ops_byname(struct rte_mempool *mp, const char *name,
-		void *pool_config);
+        void *pool_config);
 
 /**
  * Register mempool operations.
@@ -921,11 +921,11 @@ int rte_sort_mempool_ops(void);
  * Note that the rte_mempool_register_ops fails silently here when
  * more than RTE_MEMPOOL_MAX_OPS_IDX is registered.
  */
-#define MEMPOOL_REGISTER_OPS(ops)				\
-	RTE_INIT(mp_hdlr_init_##ops)				\
-	{							\
-		rte_mempool_register_ops(&ops);			\
-	}
+#define MEMPOOL_REGISTER_OPS(ops)                \
+    RTE_INIT(mp_hdlr_init_##ops)                \
+    {                            \
+        rte_mempool_register_ops(&ops);            \
+    }
 
 /**
  * An object callback function for mempool.
@@ -933,7 +933,7 @@ int rte_sort_mempool_ops(void);
  * Used by rte_mempool_create() and rte_mempool_obj_iter().
  */
 typedef void (rte_mempool_obj_cb_t)(struct rte_mempool *mp,
-		void *opaque, void *obj, unsigned obj_idx);
+        void *opaque, void *obj, unsigned obj_idx);
 typedef rte_mempool_obj_cb_t rte_mempool_obj_ctor_t; /* compat */
 
 /**
@@ -942,8 +942,8 @@ typedef rte_mempool_obj_cb_t rte_mempool_obj_ctor_t; /* compat */
  * Used by rte_mempool_mem_iter().
  */
 typedef void (rte_mempool_mem_cb_t)(struct rte_mempool *mp,
-		void *opaque, struct rte_mempool_memhdr *memhdr,
-		unsigned mem_idx);
+        void *opaque, struct rte_mempool_memhdr *memhdr,
+        unsigned mem_idx);
 
 /**
  * A mempool constructor callback function.
@@ -1034,10 +1034,10 @@ typedef void (rte_mempool_ctor_t)(struct rte_mempool *, void *);
  */
 struct rte_mempool *
 rte_mempool_create(const char *name, unsigned n, unsigned elt_size,
-		   unsigned cache_size, unsigned private_data_size,
-		   rte_mempool_ctor_t *mp_init, void *mp_init_arg,
-		   rte_mempool_obj_cb_t *obj_init, void *obj_init_arg,
-		   int socket_id, unsigned flags);
+           unsigned cache_size, unsigned private_data_size,
+           rte_mempool_ctor_t *mp_init, void *mp_init_arg,
+           rte_mempool_obj_cb_t *obj_init, void *obj_init_arg,
+           int socket_id, unsigned flags);
 
 /**
  * Create an empty mempool
@@ -1075,8 +1075,8 @@ rte_mempool_create(const char *name, unsigned n, unsigned elt_size,
  */
 struct rte_mempool *
 rte_mempool_create_empty(const char *name, unsigned n, unsigned elt_size,
-	unsigned cache_size, unsigned private_data_size,
-	int socket_id, unsigned flags);
+    unsigned cache_size, unsigned private_data_size,
+    int socket_id, unsigned flags);
 /**
  * Free a mempool
  *
@@ -1118,8 +1118,8 @@ rte_mempool_free(struct rte_mempool *mp);
  *   mempool and a negative errno is returned.
  */
 int rte_mempool_populate_iova(struct rte_mempool *mp, char *vaddr,
-	rte_iova_t iova, size_t len, rte_mempool_memchunk_free_cb_t *free_cb,
-	void *opaque);
+    rte_iova_t iova, size_t len, rte_mempool_memchunk_free_cb_t *free_cb,
+    void *opaque);
 
 /**
  * Add virtually contiguous memory for objects in the pool at init
@@ -1146,8 +1146,8 @@ int rte_mempool_populate_iova(struct rte_mempool *mp, char *vaddr,
  */
 int
 rte_mempool_populate_virt(struct rte_mempool *mp, char *addr,
-	size_t len, size_t pg_sz, rte_mempool_memchunk_free_cb_t *free_cb,
-	void *opaque);
+    size_t len, size_t pg_sz, rte_mempool_memchunk_free_cb_t *free_cb,
+    void *opaque);
 
 /**
  * Add memory for objects in the pool at init
@@ -1195,7 +1195,7 @@ int rte_mempool_populate_anon(struct rte_mempool *mp);
  *   Number of objects iterated.
  */
 uint32_t rte_mempool_obj_iter(struct rte_mempool *mp,
-	rte_mempool_obj_cb_t *obj_cb, void *obj_cb_arg);
+    rte_mempool_obj_cb_t *obj_cb, void *obj_cb_arg);
 
 /**
  * Call a function for each mempool memory chunk
@@ -1213,7 +1213,7 @@ uint32_t rte_mempool_obj_iter(struct rte_mempool *mp,
  *   Number of memory chunks iterated.
  */
 uint32_t rte_mempool_mem_iter(struct rte_mempool *mp,
-	rte_mempool_mem_cb_t *mem_cb, void *mem_cb_arg);
+    rte_mempool_mem_cb_t *mem_cb, void *mem_cb_arg);
 
 /**
  * Dump the status of the mempool to a file.
@@ -1264,13 +1264,13 @@ rte_mempool_cache_free(struct rte_mempool_cache *cache);
 static __rte_always_inline struct rte_mempool_cache *
 rte_mempool_default_cache(struct rte_mempool *mp, unsigned lcore_id)
 {
-	if (mp->cache_size == 0)
-		return NULL;
+    if (mp->cache_size == 0)
+        return NULL;
 
-	if (lcore_id >= RTE_MAX_LCORE)
-		return NULL;
+    if (lcore_id >= RTE_MAX_LCORE)
+        return NULL;
 
-	return &mp->local_cache[lcore_id];
+    return &mp->local_cache[lcore_id];
 }
 
 /**
@@ -1283,14 +1283,14 @@ rte_mempool_default_cache(struct rte_mempool *mp, unsigned lcore_id)
  */
 static __rte_always_inline void
 rte_mempool_cache_flush(struct rte_mempool_cache *cache,
-			struct rte_mempool *mp)
+            struct rte_mempool *mp)
 {
-	if (cache == NULL)
-		cache = rte_mempool_default_cache(mp, rte_lcore_id());
-	if (cache == NULL || cache->len == 0)
-		return;
-	rte_mempool_ops_enqueue_bulk(mp, cache->objs, cache->len);
-	cache->len = 0;
+    if (cache == NULL)
+        cache = rte_mempool_default_cache(mp, rte_lcore_id());
+    if (cache == NULL || cache->len == 0)
+        return;
+    rte_mempool_ops_enqueue_bulk(mp, cache->objs, cache->len);
+    cache->len = 0;
 }
 
 /**
@@ -1307,47 +1307,47 @@ rte_mempool_cache_flush(struct rte_mempool_cache *cache,
  */
 static __rte_always_inline void
 __mempool_generic_put(struct rte_mempool *mp, void * const *obj_table,
-		      unsigned int n, struct rte_mempool_cache *cache)
+              unsigned int n, struct rte_mempool_cache *cache)
 {
-	void **cache_objs;
+    void **cache_objs;
 
-	/* increment stat now, adding in mempool always success */
-	__MEMPOOL_STAT_ADD(mp, put, n);
+    /* increment stat now, adding in mempool always success */
+    __MEMPOOL_STAT_ADD(mp, put, n);
 
-	/* No cache provided or if put would overflow mem allocated for cache */
-	if (unlikely(cache == NULL || n > RTE_MEMPOOL_CACHE_MAX_SIZE))
-		goto ring_enqueue;
+    /* No cache provided or if put would overflow mem allocated for cache */
+    if (unlikely(cache == NULL || n > RTE_MEMPOOL_CACHE_MAX_SIZE))
+        goto ring_enqueue;
 
-	cache_objs = &cache->objs[cache->len];
+    cache_objs = &cache->objs[cache->len];
 
-	/*
-	 * The cache follows the following algorithm
-	 *   1. Add the objects to the cache
-	 *   2. Anything greater than the cache min value (if it crosses the
-	 *   cache flush threshold) is flushed to the ring.
-	 */
+    /*
+     * The cache follows the following algorithm
+     *   1. Add the objects to the cache
+     *   2. Anything greater than the cache min value (if it crosses the
+     *   cache flush threshold) is flushed to the ring.
+     */
 
-	/* Add elements back into the cache */
-	rte_memcpy(&cache_objs[0], obj_table, sizeof(void *) * n);
+    /* Add elements back into the cache */
+    rte_memcpy(&cache_objs[0], obj_table, sizeof(void *) * n);
 
-	cache->len += n;
+    cache->len += n;
 
-	if (cache->len >= cache->flushthresh) {
-		rte_mempool_ops_enqueue_bulk(mp, &cache->objs[cache->size],
-				cache->len - cache->size);
-		cache->len = cache->size;
-	}
+    if (cache->len >= cache->flushthresh) {
+        rte_mempool_ops_enqueue_bulk(mp, &cache->objs[cache->size],
+                cache->len - cache->size);
+        cache->len = cache->size;
+    }
 
-	return;
+    return;
 
 ring_enqueue:
 
-	/* push remaining objects in ring */
+    /* push remaining objects in ring */
 #ifdef RTE_LIBRTE_MEMPOOL_DEBUG
-	if (rte_mempool_ops_enqueue_bulk(mp, obj_table, n) < 0)
-		rte_panic("cannot put objects in mempool\n");
+    if (rte_mempool_ops_enqueue_bulk(mp, obj_table, n) < 0)
+        rte_panic("cannot put objects in mempool\n");
 #else
-	rte_mempool_ops_enqueue_bulk(mp, obj_table, n);
+    rte_mempool_ops_enqueue_bulk(mp, obj_table, n);
 #endif
 }
 
@@ -1366,10 +1366,10 @@ ring_enqueue:
  */
 static __rte_always_inline void
 rte_mempool_generic_put(struct rte_mempool *mp, void * const *obj_table,
-			unsigned int n, struct rte_mempool_cache *cache)
+            unsigned int n, struct rte_mempool_cache *cache)
 {
-	__mempool_check_cookies(mp, obj_table, n, 0);
-	__mempool_generic_put(mp, obj_table, n, cache);
+    __mempool_check_cookies(mp, obj_table, n, 0);
+    __mempool_generic_put(mp, obj_table, n, cache);
 }
 
 /**
@@ -1388,11 +1388,11 @@ rte_mempool_generic_put(struct rte_mempool *mp, void * const *obj_table,
  */
 static __rte_always_inline void
 rte_mempool_put_bulk(struct rte_mempool *mp, void * const *obj_table,
-		     unsigned int n)
+             unsigned int n)
 {
-	struct rte_mempool_cache *cache;
-	cache = rte_mempool_default_cache(mp, rte_lcore_id());
-	rte_mempool_generic_put(mp, obj_table, n, cache);
+    struct rte_mempool_cache *cache;
+    cache = rte_mempool_default_cache(mp, rte_lcore_id());
+    rte_mempool_generic_put(mp, obj_table, n, cache);
 }
 
 /**
@@ -1410,7 +1410,7 @@ rte_mempool_put_bulk(struct rte_mempool *mp, void * const *obj_table,
 static __rte_always_inline void
 rte_mempool_put(struct rte_mempool *mp, void *obj)
 {
-	rte_mempool_put_bulk(mp, &obj, 1);
+    rte_mempool_put_bulk(mp, &obj, 1);
 }
 
 /**
@@ -1429,60 +1429,60 @@ rte_mempool_put(struct rte_mempool *mp, void *obj)
  */
 static __rte_always_inline int
 __mempool_generic_get(struct rte_mempool *mp, void **obj_table,
-		      unsigned int n, struct rte_mempool_cache *cache)
+              unsigned int n, struct rte_mempool_cache *cache)
 {
-	int ret;
-	uint32_t index, len;
-	void **cache_objs;
+    int ret;
+    uint32_t index, len;
+    void **cache_objs;
 
-	/* No cache provided or cannot be satisfied from cache */
-	if (unlikely(cache == NULL || n >= cache->size))
-		goto ring_dequeue;
+    /* No cache provided or cannot be satisfied from cache */
+    if (unlikely(cache == NULL || n >= cache->size))
+        goto ring_dequeue;
 
-	cache_objs = cache->objs;
+    cache_objs = cache->objs;
 
-	/* Can this be satisfied from the cache? */
-	if (cache->len < n) {
-		/* No. Backfill the cache first, and then fill from it */
-		uint32_t req = n + (cache->size - cache->len);
+    /* Can this be satisfied from the cache? */
+    if (cache->len < n) {
+        /* No. Backfill the cache first, and then fill from it */
+        uint32_t req = n + (cache->size - cache->len);
 
-		/* How many do we require i.e. number to fill the cache + the request */
-		ret = rte_mempool_ops_dequeue_bulk(mp,
-			&cache->objs[cache->len], req);
-		if (unlikely(ret < 0)) {
-			/*
-			 * In the off chance that we are buffer constrained,
-			 * where we are not able to allocate cache + n, go to
-			 * the ring directly. If that fails, we are truly out of
-			 * buffers.
-			 */
-			goto ring_dequeue;
-		}
+        /* How many do we require i.e. number to fill the cache + the request */
+        ret = rte_mempool_ops_dequeue_bulk(mp,
+            &cache->objs[cache->len], req);
+        if (unlikely(ret < 0)) {
+            /*
+             * In the off chance that we are buffer constrained,
+             * where we are not able to allocate cache + n, go to
+             * the ring directly. If that fails, we are truly out of
+             * buffers.
+             */
+            goto ring_dequeue;
+        }
 
-		cache->len += req;
-	}
+        cache->len += req;
+    }
 
-	/* Now fill in the response ... */
-	for (index = 0, len = cache->len - 1; index < n; ++index, len--, obj_table++)
-		*obj_table = cache_objs[len];
+    /* Now fill in the response ... */
+    for (index = 0, len = cache->len - 1; index < n; ++index, len--, obj_table++)
+        *obj_table = cache_objs[len];
 
-	cache->len -= n;
+    cache->len -= n;
 
-	__MEMPOOL_STAT_ADD(mp, get_success, n);
+    __MEMPOOL_STAT_ADD(mp, get_success, n);
 
-	return 0;
+    return 0;
 
 ring_dequeue:
 
-	/* get remaining objects from ring */
-	ret = rte_mempool_ops_dequeue_bulk(mp, obj_table, n);
+    /* get remaining objects from ring */
+    ret = rte_mempool_ops_dequeue_bulk(mp, obj_table, n);
 
-	if (ret < 0)
-		__MEMPOOL_STAT_ADD(mp, get_fail, n);
-	else
-		__MEMPOOL_STAT_ADD(mp, get_success, n);
+    if (ret < 0)
+        __MEMPOOL_STAT_ADD(mp, get_fail, n);
+    else
+        __MEMPOOL_STAT_ADD(mp, get_success, n);
 
-	return ret;
+    return ret;
 }
 
 /**
@@ -1507,13 +1507,13 @@ ring_dequeue:
  */
 static __rte_always_inline int
 rte_mempool_generic_get(struct rte_mempool *mp, void **obj_table,
-			unsigned int n, struct rte_mempool_cache *cache)
+            unsigned int n, struct rte_mempool_cache *cache)
 {
-	int ret;
-	ret = __mempool_generic_get(mp, obj_table, n, cache);
-	if (ret == 0)
-		__mempool_check_cookies(mp, obj_table, n, 1);
-	return ret;
+    int ret;
+    ret = __mempool_generic_get(mp, obj_table, n, cache);
+    if (ret == 0)
+        __mempool_check_cookies(mp, obj_table, n, 1);
+    return ret;
 }
 
 /**
@@ -1541,9 +1541,9 @@ rte_mempool_generic_get(struct rte_mempool *mp, void **obj_table,
 static __rte_always_inline int
 rte_mempool_get_bulk(struct rte_mempool *mp, void **obj_table, unsigned int n)
 {
-	struct rte_mempool_cache *cache;
-	cache = rte_mempool_default_cache(mp, rte_lcore_id());
-	return rte_mempool_generic_get(mp, obj_table, n, cache);
+    struct rte_mempool_cache *cache;
+    cache = rte_mempool_default_cache(mp, rte_lcore_id());
+    return rte_mempool_generic_get(mp, obj_table, n, cache);
 }
 
 /**
@@ -1569,7 +1569,7 @@ rte_mempool_get_bulk(struct rte_mempool *mp, void **obj_table, unsigned int n)
 static __rte_always_inline int
 rte_mempool_get(struct rte_mempool *mp, void **obj_p)
 {
-	return rte_mempool_get_bulk(mp, obj_p, 1);
+    return rte_mempool_get_bulk(mp, obj_p, 1);
 }
 
 /**
@@ -1599,20 +1599,20 @@ rte_mempool_get(struct rte_mempool *mp, void **obj_p)
 static __rte_always_inline int
 __rte_experimental
 rte_mempool_get_contig_blocks(struct rte_mempool *mp,
-			      void **first_obj_table, unsigned int n)
+                  void **first_obj_table, unsigned int n)
 {
-	int ret;
+    int ret;
 
-	ret = rte_mempool_ops_dequeue_contig_blocks(mp, first_obj_table, n);
-	if (ret == 0) {
-		__MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, get_success, n);
-		__mempool_contig_blocks_check_cookies(mp, first_obj_table, n,
-						      1);
-	} else {
-		__MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, get_fail, n);
-	}
+    ret = rte_mempool_ops_dequeue_contig_blocks(mp, first_obj_table, n);
+    if (ret == 0) {
+        __MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, get_success, n);
+        __mempool_contig_blocks_check_cookies(mp, first_obj_table, n,
+                              1);
+    } else {
+        __MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, get_fail, n);
+    }
 
-	return ret;
+    return ret;
 }
 
 /**
@@ -1660,7 +1660,7 @@ rte_mempool_in_use_count(const struct rte_mempool *mp);
 static inline int
 rte_mempool_full(const struct rte_mempool *mp)
 {
-	return !!(rte_mempool_avail_count(mp) == mp->size);
+    return !!(rte_mempool_avail_count(mp) == mp->size);
 }
 
 /**
@@ -1679,7 +1679,7 @@ rte_mempool_full(const struct rte_mempool *mp)
 static inline int
 rte_mempool_empty(const struct rte_mempool *mp)
 {
-	return !!(rte_mempool_avail_count(mp) == 0);
+    return !!(rte_mempool_avail_count(mp) == 0);
 }
 
 /**
@@ -1695,10 +1695,10 @@ rte_mempool_empty(const struct rte_mempool *mp)
 static inline rte_iova_t
 rte_mempool_virt2iova(const void *elt)
 {
-	const struct rte_mempool_objhdr *hdr;
-	hdr = (const struct rte_mempool_objhdr *)RTE_PTR_SUB(elt,
-		sizeof(*hdr));
-	return hdr->iova;
+    const struct rte_mempool_objhdr *hdr;
+    hdr = (const struct rte_mempool_objhdr *)RTE_PTR_SUB(elt,
+        sizeof(*hdr));
+    return hdr->iova;
 }
 
 /**
@@ -1723,8 +1723,8 @@ void rte_mempool_audit(struct rte_mempool *mp);
  */
 static inline void *rte_mempool_get_priv(struct rte_mempool *mp)
 {
-	return (char *)mp +
-		MEMPOOL_HEADER_SIZE(mp, mp->cache_size);
+    return (char *)mp +
+        MEMPOOL_HEADER_SIZE(mp, mp->cache_size);
 }
 
 /**
@@ -1767,7 +1767,7 @@ struct rte_mempool *rte_mempool_lookup(const char *name);
  *   Total size of the mempool object.
  */
 uint32_t rte_mempool_calc_obj_size(uint32_t elt_size, uint32_t flags,
-	struct rte_mempool_objsz *sz);
+    struct rte_mempool_objsz *sz);
 
 /**
  * Walk list of all memory pools
@@ -1778,7 +1778,7 @@ uint32_t rte_mempool_calc_obj_size(uint32_t elt_size, uint32_t flags,
  *   Argument passed to iterator
  */
 void rte_mempool_walk(void (*func)(struct rte_mempool *, void *arg),
-		      void *arg);
+              void *arg);
 
 /**
  * @warning

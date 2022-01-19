@@ -21,7 +21,7 @@ extern "C" {
 
 /* Power Management Environment State */
 enum power_management_env {PM_ENV_NOT_SET, PM_ENV_ACPI_CPUFREQ, PM_ENV_KVM_VM,
-		PM_ENV_PSTATE_CPUFREQ};
+        PM_ENV_PSTATE_CPUFREQ};
 
 /**
  * Set the default power management implementation. If this is not called prior
@@ -95,7 +95,7 @@ int rte_power_exit(unsigned int lcore_id);
  *  The number of available frequencies.
  */
 typedef uint32_t (*rte_power_freqs_t)(unsigned int lcore_id, uint32_t *freqs,
-		uint32_t num);
+        uint32_t num);
 
 extern rte_power_freqs_t rte_power_freqs;
 
@@ -253,15 +253,15 @@ extern rte_power_freq_change_t rte_power_freq_disable_turbo;
  * Power capabilities summary.
  */
 struct rte_power_core_capabilities {
-	RTE_STD_C11
-	union {
-		uint64_t capabilities;
-		RTE_STD_C11
-		struct {
-			uint64_t turbo:1;	/**< Turbo can be enabled. */
-			uint64_t priority:1;	/**< SST-BF high freq core */
-		};
-	};
+    RTE_STD_C11
+    union {
+        uint64_t capabilities;
+        RTE_STD_C11
+        struct {
+            uint64_t turbo:1;    /**< Turbo can be enabled. */
+            uint64_t priority:1;    /**< SST-BF high freq core */
+        };
+    };
 };
 
 /**
@@ -279,7 +279,7 @@ struct rte_power_core_capabilities {
  *  - Negative on error.
  */
 typedef int (*rte_power_get_capabilities_t)(unsigned int lcore_id,
-		struct rte_power_core_capabilities *caps);
+        struct rte_power_core_capabilities *caps);
 
 extern rte_power_get_capabilities_t rte_power_get_capabilities;
 

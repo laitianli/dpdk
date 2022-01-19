@@ -24,46 +24,46 @@ extern "C" {
 static inline void
 rte_spinlock_lock(rte_spinlock_t *sl)
 {
-	int lock_val = 1;
-	asm volatile (
-			"1:\n"
-			"xchg %[locked], %[lv]\n"
-			"test %[lv], %[lv]\n"
-			"jz 3f\n"
-			"2:\n"
-			"pause\n"
-			"cmpl $0, %[locked]\n"
-			"jnz 2b\n"
-			"jmp 1b\n"
-			"3:\n"
-			: [locked] "=m" (sl->locked), [lv] "=q" (lock_val)
-			: "[lv]" (lock_val)
-			: "memory");
+    int lock_val = 1;
+    asm volatile (
+            "1:\n"
+            "xchg %[locked], %[lv]\n"
+            "test %[lv], %[lv]\n"
+            "jz 3f\n"
+            "2:\n"
+            "pause\n"
+            "cmpl $0, %[locked]\n"
+            "jnz 2b\n"
+            "jmp 1b\n"
+            "3:\n"
+            : [locked] "=m" (sl->locked), [lv] "=q" (lock_val)
+            : "[lv]" (lock_val)
+            : "memory");
 }
 
 static inline void
 rte_spinlock_unlock (rte_spinlock_t *sl)
 {
-	int unlock_val = 0;
-	asm volatile (
-			"xchg %[locked], %[ulv]\n"
-			: [locked] "=m" (sl->locked), [ulv] "=q" (unlock_val)
-			: "[ulv]" (unlock_val)
-			: "memory");
+    int unlock_val = 0;
+    asm volatile (
+            "xchg %[locked], %[ulv]\n"
+            : [locked] "=m" (sl->locked), [ulv] "=q" (unlock_val)
+            : "[ulv]" (unlock_val)
+            : "memory");
 }
 
 static inline int
 rte_spinlock_trylock (rte_spinlock_t *sl)
 {
-	int lockval = 1;
+    int lockval = 1;
 
-	asm volatile (
-			"xchg %[locked], %[lockval]"
-			: [locked] "=m" (sl->locked), [lockval] "=q" (lockval)
-			: "[lockval]" (lockval)
-			: "memory");
+    asm volatile (
+            "xchg %[locked], %[lockval]"
+            : [locked] "=m" (sl->locked), [lockval] "=q" (lockval)
+            : "[lockval]" (lockval)
+            : "memory");
 
-	return lockval == 0;
+    return lockval == 0;
 }
 #endif
 
@@ -71,106 +71,106 @@ extern uint8_t rte_rtm_supported;
 
 static inline int rte_tm_supported(void)
 {
-	return rte_rtm_supported;
+    return rte_rtm_supported;
 }
 
 static inline int
 rte_try_tm(volatile int *lock)
 {
-	int i, retries;
+    int i, retries;
 
-	if (!rte_rtm_supported)
-		return 0;
+    if (!rte_rtm_supported)
+        return 0;
 
-	retries = RTE_RTM_MAX_RETRIES;
+    retries = RTE_RTM_MAX_RETRIES;
 
-	while (likely(retries--)) {
+    while (likely(retries--)) {
 
-		unsigned int status = rte_xbegin();
+        unsigned int status = rte_xbegin();
 
-		if (likely(RTE_XBEGIN_STARTED == status)) {
-			if (unlikely(*lock))
-				rte_xabort(RTE_XABORT_LOCK_BUSY);
-			else
-				return 1;
-		}
-		while (*lock)
-			rte_pause();
+        if (likely(RTE_XBEGIN_STARTED == status)) {
+            if (unlikely(*lock))
+                rte_xabort(RTE_XABORT_LOCK_BUSY);
+            else
+                return 1;
+        }
+        while (*lock)
+            rte_pause();
 
-		if ((status & RTE_XABORT_CONFLICT) ||
-		   ((status & RTE_XABORT_EXPLICIT) &&
-		    (RTE_XABORT_CODE(status) == RTE_XABORT_LOCK_BUSY))) {
-			/* add a small delay before retrying, basing the
-			 * delay on the number of times we've already tried,
-			 * to give a back-off type of behaviour. We
-			 * randomize trycount by taking bits from the tsc count
-			 */
-			int try_count = RTE_RTM_MAX_RETRIES - retries;
-			int pause_count = (rte_rdtsc() & 0x7) | 1;
-			pause_count <<= try_count;
-			for (i = 0; i < pause_count; i++)
-				rte_pause();
-			continue;
-		}
+        if ((status & RTE_XABORT_CONFLICT) ||
+           ((status & RTE_XABORT_EXPLICIT) &&
+            (RTE_XABORT_CODE(status) == RTE_XABORT_LOCK_BUSY))) {
+            /* add a small delay before retrying, basing the
+             * delay on the number of times we've already tried,
+             * to give a back-off type of behaviour. We
+             * randomize trycount by taking bits from the tsc count
+             */
+            int try_count = RTE_RTM_MAX_RETRIES - retries;
+            int pause_count = (rte_rdtsc() & 0x7) | 1;
+            pause_count <<= try_count;
+            for (i = 0; i < pause_count; i++)
+                rte_pause();
+            continue;
+        }
 
-		if ((status & RTE_XABORT_RETRY) == 0) /* do not retry */
-			break;
-	}
-	return 0;
+        if ((status & RTE_XABORT_RETRY) == 0) /* do not retry */
+            break;
+    }
+    return 0;
 }
 
 static inline void
 rte_spinlock_lock_tm(rte_spinlock_t *sl)
 {
-	if (likely(rte_try_tm(&sl->locked)))
-		return;
+    if (likely(rte_try_tm(&sl->locked)))
+        return;
 
-	rte_spinlock_lock(sl); /* fall-back */
+    rte_spinlock_lock(sl); /* fall-back */
 }
 
 static inline int
 rte_spinlock_trylock_tm(rte_spinlock_t *sl)
 {
-	if (likely(rte_try_tm(&sl->locked)))
-		return 1;
+    if (likely(rte_try_tm(&sl->locked)))
+        return 1;
 
-	return rte_spinlock_trylock(sl);
+    return rte_spinlock_trylock(sl);
 }
 
 static inline void
 rte_spinlock_unlock_tm(rte_spinlock_t *sl)
 {
-	if (unlikely(sl->locked))
-		rte_spinlock_unlock(sl);
-	else
-		rte_xend();
+    if (unlikely(sl->locked))
+        rte_spinlock_unlock(sl);
+    else
+        rte_xend();
 }
 
 static inline void
 rte_spinlock_recursive_lock_tm(rte_spinlock_recursive_t *slr)
 {
-	if (likely(rte_try_tm(&slr->sl.locked)))
-		return;
+    if (likely(rte_try_tm(&slr->sl.locked)))
+        return;
 
-	rte_spinlock_recursive_lock(slr); /* fall-back */
+    rte_spinlock_recursive_lock(slr); /* fall-back */
 }
 
 static inline void
 rte_spinlock_recursive_unlock_tm(rte_spinlock_recursive_t *slr)
 {
-	if (unlikely(slr->sl.locked))
-		rte_spinlock_recursive_unlock(slr);
-	else
-		rte_xend();
+    if (unlikely(slr->sl.locked))
+        rte_spinlock_recursive_unlock(slr);
+    else
+        rte_xend();
 }
 
 static inline int
 rte_spinlock_recursive_trylock_tm(rte_spinlock_recursive_t *slr)
 {
-	if (likely(rte_try_tm(&slr->sl.locked)))
-		return 1;
+    if (likely(rte_try_tm(&slr->sl.locked)))
+        return 1;
 
-	return rte_spinlock_recursive_trylock(slr);
+    return rte_spinlock_recursive_trylock(slr);
 }
 
 

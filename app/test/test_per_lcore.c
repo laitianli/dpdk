@@ -37,72 +37,72 @@ static RTE_DEFINE_PER_LCORE(unsigned, test) = 0x12345678;
 static int
 assign_vars(__attribute__((unused)) void *arg)
 {
-	if (RTE_PER_LCORE(test) != 0x12345678)
-		return -1;
-	RTE_PER_LCORE(test) = rte_lcore_id();
-	return 0;
+    if (RTE_PER_LCORE(test) != 0x12345678)
+        return -1;
+    RTE_PER_LCORE(test) = rte_lcore_id();
+    return 0;
 }
 
 static int
 display_vars(__attribute__((unused)) void *arg)
 {
-	unsigned lcore_id = rte_lcore_id();
-	unsigned var = RTE_PER_LCORE(test);
-	unsigned socket_id = rte_lcore_to_socket_id(lcore_id);
+    unsigned lcore_id = rte_lcore_id();
+    unsigned var = RTE_PER_LCORE(test);
+    unsigned socket_id = rte_lcore_to_socket_id(lcore_id);
 
-	printf("on socket %u, on core %u, variable is %u\n", socket_id, lcore_id, var);
-	if (lcore_id != var)
-		return -1;
+    printf("on socket %u, on core %u, variable is %u\n", socket_id, lcore_id, var);
+    if (lcore_id != var)
+        return -1;
 
-	RTE_PER_LCORE(test) = 0x12345678;
-	return 0;
+    RTE_PER_LCORE(test) = 0x12345678;
+    return 0;
 }
 
 static int
 test_per_lcore_delay(__attribute__((unused)) void *arg)
 {
-	rte_delay_ms(100);
-	printf("wait 100ms on lcore %u\n", rte_lcore_id());
+    rte_delay_ms(100);
+    printf("wait 100ms on lcore %u\n", rte_lcore_id());
 
-	return 0;
+    return 0;
 }
 
 static int
 test_per_lcore(void)
 {
-	unsigned lcore_id;
-	int ret;
+    unsigned lcore_id;
+    int ret;
 
-	rte_eal_mp_remote_launch(assign_vars, NULL, SKIP_MASTER);
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		if (rte_eal_wait_lcore(lcore_id) < 0)
-			return -1;
-	}
+    rte_eal_mp_remote_launch(assign_vars, NULL, SKIP_MASTER);
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        if (rte_eal_wait_lcore(lcore_id) < 0)
+            return -1;
+    }
 
-	rte_eal_mp_remote_launch(display_vars, NULL, SKIP_MASTER);
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		if (rte_eal_wait_lcore(lcore_id) < 0)
-			return -1;
-	}
+    rte_eal_mp_remote_launch(display_vars, NULL, SKIP_MASTER);
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        if (rte_eal_wait_lcore(lcore_id) < 0)
+            return -1;
+    }
 
-	/* test if it could do remote launch twice at the same time or not */
-	ret = rte_eal_mp_remote_launch(test_per_lcore_delay, NULL, SKIP_MASTER);
-	if (ret < 0) {
-		printf("It fails to do remote launch but it should able to do\n");
-		return -1;
-	}
-	/* it should not be able to launch a lcore which is running */
-	ret = rte_eal_mp_remote_launch(test_per_lcore_delay, NULL, SKIP_MASTER);
-	if (ret == 0) {
-		printf("It does remote launch successfully but it should not at this time\n");
-		return -1;
-	}
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		if (rte_eal_wait_lcore(lcore_id) < 0)
-			return -1;
-	}
+    /* test if it could do remote launch twice at the same time or not */
+    ret = rte_eal_mp_remote_launch(test_per_lcore_delay, NULL, SKIP_MASTER);
+    if (ret < 0) {
+        printf("It fails to do remote launch but it should able to do\n");
+        return -1;
+    }
+    /* it should not be able to launch a lcore which is running */
+    ret = rte_eal_mp_remote_launch(test_per_lcore_delay, NULL, SKIP_MASTER);
+    if (ret == 0) {
+        printf("It does remote launch successfully but it should not at this time\n");
+        return -1;
+    }
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        if (rte_eal_wait_lcore(lcore_id) < 0)
+            return -1;
+    }
 
-	return 0;
+    return 0;
 }
 
 REGISTER_TEST_COMMAND(per_lcore_autotest, test_per_lcore);

@@ -7,48 +7,48 @@
 #define T4_MSG_H
 
 enum {
-	CPL_ACT_OPEN_REQ      = 0x3,
-	CPL_SET_TCB_FIELD     = 0x5,
-	CPL_ABORT_REQ         = 0xA,
-	CPL_ABORT_RPL         = 0xB,
-	CPL_L2T_WRITE_REQ     = 0x12,
-	CPL_TID_RELEASE       = 0x1A,
-	CPL_L2T_WRITE_RPL     = 0x23,
-	CPL_ACT_OPEN_RPL      = 0x25,
-	CPL_ABORT_RPL_RSS     = 0x2D,
-	CPL_SET_TCB_RPL       = 0x3A,
-	CPL_ACT_OPEN_REQ6     = 0x83,
-	CPL_SGE_EGR_UPDATE    = 0xA5,
-	CPL_FW4_MSG           = 0xC0,
-	CPL_FW6_MSG           = 0xE0,
-	CPL_TX_PKT_LSO        = 0xED,
-	CPL_TX_PKT_XT         = 0xEE,
+    CPL_ACT_OPEN_REQ      = 0x3,
+    CPL_SET_TCB_FIELD     = 0x5,
+    CPL_ABORT_REQ         = 0xA,
+    CPL_ABORT_RPL         = 0xB,
+    CPL_L2T_WRITE_REQ     = 0x12,
+    CPL_TID_RELEASE       = 0x1A,
+    CPL_L2T_WRITE_RPL     = 0x23,
+    CPL_ACT_OPEN_RPL      = 0x25,
+    CPL_ABORT_RPL_RSS     = 0x2D,
+    CPL_SET_TCB_RPL       = 0x3A,
+    CPL_ACT_OPEN_REQ6     = 0x83,
+    CPL_SGE_EGR_UPDATE    = 0xA5,
+    CPL_FW4_MSG           = 0xC0,
+    CPL_FW6_MSG           = 0xE0,
+    CPL_TX_PKT_LSO        = 0xED,
+    CPL_TX_PKT_XT         = 0xEE,
 };
 
 enum CPL_error {
-	CPL_ERR_NONE               = 0,
-	CPL_ERR_TCAM_FULL          = 3,
+    CPL_ERR_NONE               = 0,
+    CPL_ERR_TCAM_FULL          = 3,
 };
 
 enum {
-	ULP_MODE_NONE          = 0,
-	ULP_MODE_TCPDDP        = 5,
+    ULP_MODE_NONE          = 0,
+    ULP_MODE_TCPDDP        = 5,
 };
 
 enum {
-	CPL_ABORT_SEND_RST = 0,
-	CPL_ABORT_NO_RST,
+    CPL_ABORT_SEND_RST = 0,
+    CPL_ABORT_NO_RST,
 };
 
 enum {                     /* TX_PKT_XT checksum types */
-	TX_CSUM_TCPIP  = 8,
-	TX_CSUM_UDPIP  = 9,
-	TX_CSUM_TCPIP6 = 10,
+    TX_CSUM_TCPIP  = 8,
+    TX_CSUM_UDPIP  = 9,
+    TX_CSUM_TCPIP6 = 10,
 };
 
 union opcode_tid {
-	__be32 opcode_tid;
-	__u8 opcode;
+    __be32 opcode_tid;
+    __u8 opcode;
 };
 
 #define S_CPL_OPCODE    24
@@ -73,24 +73,24 @@ union opcode_tid {
 #define V_TID_QID(x) ((x) << S_TID_QID)
 
 struct rss_header {
-	__u8 opcode;
+    __u8 opcode;
 #if RTE_BYTE_ORDER == RTE_LITTLE_ENDIAN
-	__u8 channel:2;
-	__u8 filter_hit:1;
-	__u8 filter_tid:1;
-	__u8 hash_type:2;
-	__u8 ipv6:1;
-	__u8 send2fw:1;
+    __u8 channel:2;
+    __u8 filter_hit:1;
+    __u8 filter_tid:1;
+    __u8 hash_type:2;
+    __u8 ipv6:1;
+    __u8 send2fw:1;
 #else
-	__u8 send2fw:1;
-	__u8 ipv6:1;
-	__u8 hash_type:2;
-	__u8 filter_tid:1;
-	__u8 filter_hit:1;
-	__u8 channel:2;
+    __u8 send2fw:1;
+    __u8 ipv6:1;
+    __u8 hash_type:2;
+    __u8 filter_tid:1;
+    __u8 filter_hit:1;
+    __u8 channel:2;
 #endif
-	__be16 qid;
-	__be32 hash_val;
+    __be16 qid;
+    __be32 hash_val;
 };
 
 #if defined(RSS_HDR_VLD) || defined(CHELSIO_FW)
@@ -101,9 +101,9 @@ struct rss_header {
 
 #ifndef CHELSIO_FW
 struct work_request_hdr {
-	__be32 wr_hi;
-	__be32 wr_mid;
-	__be64 wr_lo;
+    __be32 wr_hi;
+    __be32 wr_mid;
+    __be64 wr_lo;
 };
 
 #define WR_HDR struct work_request_hdr wr
@@ -171,44 +171,44 @@ struct work_request_hdr {
 #define F_T5_OPT_2_VALID    V_T5_OPT_2_VALID(1U)
 
 struct cpl_t6_act_open_req {
-	WR_HDR;
-	union opcode_tid ot;
-	__be16 local_port;
-	__be16 peer_port;
-	__be32 local_ip;
-	__be32 peer_ip;
-	__be64 opt0;
-	__be32 rsvd;
-	__be32 opt2;
-	__be64 params;
-	__be32 rsvd2;
-	__be32 opt3;
+    WR_HDR;
+    union opcode_tid ot;
+    __be16 local_port;
+    __be16 peer_port;
+    __be32 local_ip;
+    __be32 peer_ip;
+    __be64 opt0;
+    __be32 rsvd;
+    __be32 opt2;
+    __be64 params;
+    __be32 rsvd2;
+    __be32 opt3;
 };
 
 struct cpl_t6_act_open_req6 {
-	WR_HDR;
-	union opcode_tid ot;
-	__be16 local_port;
-	__be16 peer_port;
-	__be64 local_ip_hi;
-	__be64 local_ip_lo;
-	__be64 peer_ip_hi;
-	__be64 peer_ip_lo;
-	__be64 opt0;
-	__be32 rsvd;
-	__be32 opt2;
-	__be64 params;
-	__be32 rsvd2;
-	__be32 opt3;
+    WR_HDR;
+    union opcode_tid ot;
+    __be16 local_port;
+    __be16 peer_port;
+    __be64 local_ip_hi;
+    __be64 local_ip_lo;
+    __be64 peer_ip_hi;
+    __be64 peer_ip_lo;
+    __be64 opt0;
+    __be32 rsvd;
+    __be32 opt2;
+    __be64 params;
+    __be32 rsvd2;
+    __be32 opt3;
 };
 
-#define S_FILTER_TUPLE	24
+#define S_FILTER_TUPLE    24
 #define V_FILTER_TUPLE(x) ((x) << S_FILTER_TUPLE)
 
 struct cpl_act_open_rpl {
-	RSS_HDR
-	union opcode_tid ot;
-	__be32 atid_status;
+    RSS_HDR
+    union opcode_tid ot;
+    __be32 atid_status;
 };
 
 /* cpl_act_open_rpl.atid_status fields */
@@ -221,12 +221,12 @@ struct cpl_act_open_rpl {
 #define G_AOPEN_ATID(x) (((x) >> S_AOPEN_ATID) & M_AOPEN_ATID)
 
 struct cpl_set_tcb_field {
-	WR_HDR;
-	union opcode_tid ot;
-	__be16 reply_ctrl;
-	__be16 word_cookie;
-	__be64 mask;
-	__be64 val;
+    WR_HDR;
+    union opcode_tid ot;
+    __be16 reply_ctrl;
+    __be16 word_cookie;
+    __be64 mask;
+    __be64 val;
 };
 
 /* cpl_set_tcb_field.word_cookie fields */
@@ -244,64 +244,64 @@ struct cpl_set_tcb_field {
 #define V_NO_REPLY(x) ((x) << S_NO_REPLY)
 
 struct cpl_set_tcb_rpl {
-	RSS_HDR
-	union opcode_tid ot;
-	__be16 rsvd;
-	__u8   cookie;
-	__u8   status;
-	__be64 oldval;
+    RSS_HDR
+    union opcode_tid ot;
+    __be16 rsvd;
+    __u8   cookie;
+    __u8   status;
+    __be64 oldval;
 };
 
 /* cpl_abort_req status command code
  */
 struct cpl_abort_req {
-	WR_HDR;
-	union opcode_tid ot;
-	__be32 rsvd0;
-	__u8  rsvd1;
-	__u8  cmd;
-	__u8  rsvd2[6];
+    WR_HDR;
+    union opcode_tid ot;
+    __be32 rsvd0;
+    __u8  rsvd1;
+    __u8  cmd;
+    __u8  rsvd2[6];
 };
 
 struct cpl_abort_rpl_rss {
-	RSS_HDR
-	union opcode_tid ot;
-	__u8  rsvd[3];
-	__u8  status;
+    RSS_HDR
+    union opcode_tid ot;
+    __u8  rsvd[3];
+    __u8  status;
 };
 
 struct cpl_abort_rpl {
-	WR_HDR;
-	union opcode_tid ot;
-	__be32 rsvd0;
-	__u8  rsvd1;
-	__u8  cmd;
-	__u8  rsvd2[6];
+    WR_HDR;
+    union opcode_tid ot;
+    __be32 rsvd0;
+    __u8  rsvd1;
+    __u8  cmd;
+    __u8  rsvd2[6];
 };
 
 struct cpl_tid_release {
-	WR_HDR;
-	union opcode_tid ot;
-	__be32 rsvd;
+    WR_HDR;
+    union opcode_tid ot;
+    __be32 rsvd;
 };
 
 struct cpl_tx_data {
-	union opcode_tid ot;
-	__be32 len;
-	__be32 rsvd;
-	__be32 flags;
+    union opcode_tid ot;
+    __be32 len;
+    __be32 rsvd;
+    __be32 flags;
 };
 
 struct cpl_tx_pkt_core {
-	__be32 ctrl0;
-	__be16 pack;
-	__be16 len;
-	__be64 ctrl1;
+    __be32 ctrl0;
+    __be16 pack;
+    __be16 len;
+    __be64 ctrl1;
 };
 
 struct cpl_tx_pkt {
-	WR_HDR;
-	struct cpl_tx_pkt_core c;
+    WR_HDR;
+    struct cpl_tx_pkt_core c;
 };
 
 /* cpl_tx_pkt_core.ctrl0 fields */
@@ -335,7 +335,7 @@ struct cpl_tx_pkt {
 #define M_T6_TXPKT_ETHHDR_LEN    0xFF
 #define V_T6_TXPKT_ETHHDR_LEN(x) ((__u64)(x) << S_T6_TXPKT_ETHHDR_LEN)
 #define G_T6_TXPKT_ETHHDR_LEN(x) \
-	(((x) >> S_T6_TXPKT_ETHHDR_LEN) & M_T6_TXPKT_ETHHDR_LEN)
+    (((x) >> S_T6_TXPKT_ETHHDR_LEN) & M_T6_TXPKT_ETHHDR_LEN)
 
 #define S_TXPKT_CSUM_TYPE    40
 #define M_TXPKT_CSUM_TYPE    0xF
@@ -360,18 +360,18 @@ struct cpl_tx_pkt {
 #define F_TXPKT_L4CSUM_DIS    V_TXPKT_L4CSUM_DIS(1ULL)
 
 struct cpl_tx_pkt_lso_core {
-	__be32 lso_ctrl;
-	__be16 ipid_ofst;
-	__be16 mss;
-	__be32 seqno_offset;
-	__be32 len;
-	/* encapsulated CPL (TX_PKT, TX_PKT_XT or TX_DATA) follows here */
+    __be32 lso_ctrl;
+    __be16 ipid_ofst;
+    __be16 mss;
+    __be32 seqno_offset;
+    __be32 len;
+    /* encapsulated CPL (TX_PKT, TX_PKT_XT or TX_DATA) follows here */
 };
 
 struct cpl_tx_pkt_lso {
-	WR_HDR;
-	struct cpl_tx_pkt_lso_core c;
-	/* encapsulated CPL (TX_PKT, TX_PKT_XT or TX_DATA) follows here */
+    WR_HDR;
+    struct cpl_tx_pkt_lso_core c;
+    /* encapsulated CPL (TX_PKT, TX_PKT_XT or TX_DATA) follows here */
 };
 
 /* cpl_tx_pkt_lso_core.lso_ctrl fields */
@@ -407,42 +407,42 @@ struct cpl_tx_pkt_lso {
 #define V_LSO_OPCODE(x) ((x) << S_LSO_OPCODE)
 #define G_LSO_OPCODE(x) (((x) >> S_LSO_OPCODE) & M_LSO_OPCODE)
 
-#define S_LSO_T5_XFER_SIZE	   0
+#define S_LSO_T5_XFER_SIZE       0
 #define M_LSO_T5_XFER_SIZE    0xFFFFFFF
 #define V_LSO_T5_XFER_SIZE(x) ((x) << S_LSO_T5_XFER_SIZE)
 #define G_LSO_T5_XFER_SIZE(x) (((x) >> S_LSO_T5_XFER_SIZE) & M_LSO_T5_XFER_SIZE)
 
 struct cpl_rx_pkt {
-	RSS_HDR;
-	__u8 opcode;
+    RSS_HDR;
+    __u8 opcode;
 #if RTE_BYTE_ORDER == RTE_LITTLE_ENDIAN
-	__u8 iff:4;
-	__u8 csum_calc:1;
-	__u8 ipmi_pkt:1;
-	__u8 vlan_ex:1;
-	__u8 ip_frag:1;
+    __u8 iff:4;
+    __u8 csum_calc:1;
+    __u8 ipmi_pkt:1;
+    __u8 vlan_ex:1;
+    __u8 ip_frag:1;
 #else
-	__u8 ip_frag:1;
-	__u8 vlan_ex:1;
-	__u8 ipmi_pkt:1;
-	__u8 csum_calc:1;
-	__u8 iff:4;
+    __u8 ip_frag:1;
+    __u8 vlan_ex:1;
+    __u8 ipmi_pkt:1;
+    __u8 csum_calc:1;
+    __u8 iff:4;
 #endif
-	__be16 csum;
-	__be16 vlan;
-	__be16 len;
-	__be32 l2info;
-	__be16 hdr_len;
-	__be16 err_vec;
+    __be16 csum;
+    __be16 vlan;
+    __be16 len;
+    __be32 l2info;
+    __be16 hdr_len;
+    __be16 err_vec;
 };
 
 struct cpl_l2t_write_req {
-	WR_HDR;
-	union opcode_tid ot;
-	__be16 params;
-	__be16 l2t_idx;
-	__be16 vlan;
-	__u8   dst_mac[6];
+    WR_HDR;
+    union opcode_tid ot;
+    __be16 params;
+    __be16 l2t_idx;
+    __be16 vlan;
+    __u8   dst_mac[6];
 };
 
 /* cpl_l2t_write_req.params fields */
@@ -459,10 +459,10 @@ struct cpl_l2t_write_req {
 #define V_L2T_W_NOREPLY(x) ((x) << S_L2T_W_NOREPLY)
 
 struct cpl_l2t_write_rpl {
-	RSS_HDR
-	union opcode_tid ot;
-	__u8 status;
-	__u8 rsvd[3];
+    RSS_HDR
+    union opcode_tid ot;
+    __u8 status;
+    __u8 rsvd[3];
 };
 
 /* rx_pkt.l2info fields */
@@ -494,41 +494,41 @@ struct cpl_l2t_write_rpl {
 #define M_T6_COMPR_RXERR_VEC    0x3F
 #define V_T6_COMPR_RXERR_VEC(x) ((x) << S_T6_COMPR_RXERR_VEC)
 #define G_T6_COMPR_RXERR_VEC(x) \
-	(((x) >> S_T6_COMPR_RXERR_VEC) & M_T6_COMPR_RXERR_VEC)
+    (((x) >> S_T6_COMPR_RXERR_VEC) & M_T6_COMPR_RXERR_VEC)
 
 /* cpl_fw*.type values */
 enum {
-	FW_TYPE_RSSCPL = 4,
+    FW_TYPE_RSSCPL = 4,
 };
 
 struct cpl_fw4_msg {
-	RSS_HDR;
-	u8 opcode;
-	u8 type;
-	__be16 rsvd0;
-	__be32 rsvd1;
-	__be64 data[2];
+    RSS_HDR;
+    u8 opcode;
+    u8 type;
+    __be16 rsvd0;
+    __be32 rsvd1;
+    __be64 data[2];
 };
 
 struct cpl_fw6_msg {
-	RSS_HDR;
-	u8 opcode;
-	u8 type;
-	__be16 rsvd0;
-	__be32 rsvd1;
-	__be64 data[4];
+    RSS_HDR;
+    u8 opcode;
+    u8 type;
+    __be16 rsvd0;
+    __be32 rsvd1;
+    __be64 data[4];
 };
 
 /* ULP_TX opcodes */
 enum {
-	ULP_TX_PKT = 4
+    ULP_TX_PKT = 4
 };
 
 enum {
-	ULP_TX_SC_NOOP = 0x80,
-	ULP_TX_SC_IMM  = 0x81,
-	ULP_TX_SC_DSGL = 0x82,
-	ULP_TX_SC_ISGL = 0x83
+    ULP_TX_SC_NOOP = 0x80,
+    ULP_TX_SC_IMM  = 0x81,
+    ULP_TX_SC_DSGL = 0x82,
+    ULP_TX_SC_ISGL = 0x83
 };
 
 #define S_ULPTX_CMD    24
@@ -540,24 +540,24 @@ enum {
 #define F_ULP_TX_SC_MORE  V_ULP_TX_SC_MORE(1U)
 
 struct ulptx_sge_pair {
-	__be32 len[2];
-	__be64 addr[2];
+    __be32 len[2];
+    __be64 addr[2];
 };
 
 struct ulptx_sgl {
-	__be32 cmd_nsge;
-	__be32 len0;
-	__be64 addr0;
+    __be32 cmd_nsge;
+    __be32 len0;
+    __be64 addr0;
 
 #if !(defined C99_NOT_SUPPORTED)
-	struct ulptx_sge_pair sge[0];
+    struct ulptx_sge_pair sge[0];
 #endif
 
 };
 
 struct ulptx_idata {
-	__be32 cmd_more;
-	__be32 len;
+    __be32 cmd_more;
+    __be32 len;
 };
 
 #define S_ULPTX_NSGE    0
@@ -565,8 +565,8 @@ struct ulptx_idata {
 #define V_ULPTX_NSGE(x) ((x) << S_ULPTX_NSGE)
 
 struct ulp_txpkt {
-	__be32 cmd_dest;
-	__be32 len;
+    __be32 cmd_dest;
+    __be32 len;
 };
 
 /* ulp_txpkt.cmd_dest fields */
@@ -574,7 +574,7 @@ struct ulp_txpkt {
 #define M_ULP_TXPKT_DEST    0x3
 #define V_ULP_TXPKT_DEST(x) ((x) << S_ULP_TXPKT_DEST)
 
-#define S_ULP_TXPKT_FID	    4
+#define S_ULP_TXPKT_FID        4
 #define M_ULP_TXPKT_FID     0x7ff
 #define V_ULP_TXPKT_FID(x)  ((x) << S_ULP_TXPKT_FID)
 

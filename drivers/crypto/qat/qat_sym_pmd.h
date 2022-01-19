@@ -13,7 +13,7 @@
 #include "qat_device.h"
 
 /** Intel(R) QAT Symmetric Crypto PMD driver name */
-#define CRYPTODEV_NAME_QAT_SYM_PMD	crypto_qat
+#define CRYPTODEV_NAME_QAT_SYM_PMD    crypto_qat
 
 extern uint8_t cryptodev_qat_driver_id;
 
@@ -22,12 +22,12 @@ extern uint8_t cryptodev_qat_driver_id;
  * there can be one of these on each qat_pci_device (VF).
  */
 struct qat_sym_dev_private {
-	struct qat_pci_device *qat_dev;
-	/**< The qat pci device hosting the service */
-	uint8_t sym_dev_id;
-	/**< Device instance for this rte_cryptodev */
-	const struct rte_cryptodev_capabilities *qat_dev_capabilities;
-	/* QAT device symmetric crypto capabilities */
+    struct qat_pci_device *qat_dev;
+    /**< The qat pci device hosting the service */
+    uint8_t sym_dev_id;
+    /**< Device instance for this rte_cryptodev */
+    const struct rte_cryptodev_capabilities *qat_dev_capabilities;
+    /* QAT device symmetric crypto capabilities */
 };
 
 int

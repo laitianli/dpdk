@@ -16,22 +16,22 @@ virtual_ethdev_init(void);
 
 int
 virtual_ethdev_create(const char *name, struct rte_ether_addr *mac_addr,
-		uint8_t socket_id, uint8_t isr_support);
+        uint8_t socket_id, uint8_t isr_support);
 
 void
 virtual_ethdev_set_link_status(uint16_t port_id, uint8_t link_status);
 
 void
 virtual_ethdev_simulate_link_status_interrupt(uint16_t port_id,
-		uint8_t link_status);
+        uint8_t link_status);
 
 int
 virtual_ethdev_add_mbufs_to_rx_queue(uint16_t port_id,
-		struct rte_mbuf **pkts_burst, int burst_length);
+        struct rte_mbuf **pkts_burst, int burst_length);
 
 int
 virtual_ethdev_get_mbufs_from_tx_queue(uint16_t port_id,
-		struct rte_mbuf **pkt_burst, int burst_length);
+        struct rte_mbuf **pkt_burst, int burst_length);
 
 /** Control methods for the dev_ops functions pointer to control the behavior
  *  of the Virtual PMD */
@@ -47,11 +47,11 @@ virtual_ethdev_configure_fn_set_success(uint16_t port_id, uint8_t success);
 
 void
 virtual_ethdev_rx_queue_setup_fn_set_success(uint16_t port_id,
-					      uint8_t success);
+                          uint8_t success);
 
 void
 virtual_ethdev_tx_queue_setup_fn_set_success(uint16_t port_id,
-					      uint8_t success);
+                          uint8_t success);
 
 void
 virtual_ethdev_link_update_fn_set_success(uint16_t port_id, uint8_t success);
@@ -68,7 +68,7 @@ virtual_ethdev_tx_burst_fn_set_success(uint16_t port_id, uint8_t success);
  * burst */
 void
 virtual_ethdev_tx_burst_fn_set_tx_pkt_fail_count(uint16_t port_id,
-		uint8_t packet_fail_count);
+        uint8_t packet_fail_count);
 
 #ifdef __cplusplus
 }

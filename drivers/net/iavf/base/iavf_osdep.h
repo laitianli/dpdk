@@ -96,61 +96,61 @@ typedef uint64_t        u64;
 #define iavf_usec_delay(x) rte_delay_us_sleep(x)
 #define iavf_msec_delay(x) iavf_usec_delay(1000 * (x))
 
-#define IAVF_PCI_REG(reg)		rte_read32(reg)
+#define IAVF_PCI_REG(reg)        rte_read32(reg)
 #define IAVF_PCI_REG_ADDR(a, reg) \
-	((volatile uint32_t *)((char *)(a)->hw_addr + (reg)))
+    ((volatile uint32_t *)((char *)(a)->hw_addr + (reg)))
 
-#define IAVF_PCI_REG_WRITE(reg, value)		\
-	rte_write32((rte_cpu_to_le_32(value)), reg)
-#define IAVF_PCI_REG_WRITE_RELAXED(reg, value)	\
-	rte_write32_relaxed((rte_cpu_to_le_32(value)), reg)
+#define IAVF_PCI_REG_WRITE(reg, value)        \
+    rte_write32((rte_cpu_to_le_32(value)), reg)
+#define IAVF_PCI_REG_WRITE_RELAXED(reg, value)    \
+    rte_write32_relaxed((rte_cpu_to_le_32(value)), reg)
 static inline
 uint32_t iavf_read_addr(volatile void *addr)
 {
-	return rte_le_to_cpu_32(IAVF_PCI_REG(addr));
+    return rte_le_to_cpu_32(IAVF_PCI_REG(addr));
 }
 
 #define IAVF_READ_REG(hw, reg) \
-	iavf_read_addr(IAVF_PCI_REG_ADDR((hw), (reg)))
+    iavf_read_addr(IAVF_PCI_REG_ADDR((hw), (reg)))
 #define IAVF_WRITE_REG(hw, reg, value) \
-	IAVF_PCI_REG_WRITE(IAVF_PCI_REG_ADDR((hw), (reg)), (value))
+    IAVF_PCI_REG_WRITE(IAVF_PCI_REG_ADDR((hw), (reg)), (value))
 #define IAVF_WRITE_FLUSH(a) \
-	IAVF_READ_REG(a, IAVFGEN_RSTAT)
+    IAVF_READ_REG(a, IAVFGEN_RSTAT)
 
 #define rd32(a, reg) iavf_read_addr(IAVF_PCI_REG_ADDR((a), (reg)))
 #define wr32(a, reg, value) \
-	IAVF_PCI_REG_WRITE(IAVF_PCI_REG_ADDR((a), (reg)), (value))
+    IAVF_PCI_REG_WRITE(IAVF_PCI_REG_ADDR((a), (reg)), (value))
 
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
 
 #define iavf_debug(h, m, s, ...)                                \
 do {                                                            \
-	if (((m) & (h)->debug_mask))                            \
-		PMD_DRV_LOG_RAW(DEBUG, "iavf %02x.%x " s,       \
-			(h)->bus.device, (h)->bus.func,         \
-					##__VA_ARGS__);         \
+    if (((m) & (h)->debug_mask))                            \
+        PMD_DRV_LOG_RAW(DEBUG, "iavf %02x.%x " s,       \
+            (h)->bus.device, (h)->bus.func,         \
+                    ##__VA_ARGS__);         \
 } while (0)
 
 /* memory allocation tracking */
 struct iavf_dma_mem {
-	void *va;
-	u64 pa;
-	u32 size;
-	const void *zone;
+    void *va;
+    u64 pa;
+    u32 size;
+    const void *zone;
 } __attribute__((packed));
 
 struct iavf_virt_mem {
-	void *va;
-	u32 size;
+    void *va;
+    u32 size;
 } __attribute__((packed));
 
 /* SW spinlock */
 struct iavf_spinlock {
-	rte_spinlock_t spinlock;
+    rte_spinlock_t spinlock;
 };
 
 #define iavf_allocate_dma_mem(h, m, unused, s, a) \
-			iavf_allocate_dma_mem_d(h, m, s, a)
+            iavf_allocate_dma_mem_d(h, m, s, a)
 #define iavf_free_dma_mem(h, m) iavf_free_dma_mem_d(h, m)
 
 #define iavf_allocate_virt_mem(h, m, s) iavf_allocate_virt_mem_d(h, m, s)
@@ -159,19 +159,19 @@ struct iavf_spinlock {
 static inline void
 iavf_init_spinlock_d(struct iavf_spinlock *sp)
 {
-	rte_spinlock_init(&sp->spinlock);
+    rte_spinlock_init(&sp->spinlock);
 }
 
 static inline void
 iavf_acquire_spinlock_d(struct iavf_spinlock *sp)
 {
-	rte_spinlock_lock(&sp->spinlock);
+    rte_spinlock_lock(&sp->spinlock);
 }
 
 static inline void
 iavf_release_spinlock_d(struct iavf_spinlock *sp)
 {
-	rte_spinlock_unlock(&sp->spinlock);
+    rte_spinlock_unlock(&sp->spinlock);
 }
 
 static inline void

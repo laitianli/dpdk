@@ -61,24 +61,24 @@ struct port_info *ports;
 static int
 init_mbuf_pools(void)
 {
-	const unsigned int num_mbufs_server =
-		RTE_MP_RX_DESC_DEFAULT * ports->num_ports;
-	const unsigned int num_mbufs_client =
-		num_clients * (CLIENT_QUEUE_RINGSIZE +
-			       RTE_MP_TX_DESC_DEFAULT * ports->num_ports);
-	const unsigned int num_mbufs_mp_cache =
-		(num_clients + 1) * MBUF_CACHE_SIZE;
-	const unsigned int num_mbufs =
-		num_mbufs_server + num_mbufs_client + num_mbufs_mp_cache;
+    const unsigned int num_mbufs_server =
+        RTE_MP_RX_DESC_DEFAULT * ports->num_ports;
+    const unsigned int num_mbufs_client =
+        num_clients * (CLIENT_QUEUE_RINGSIZE +
+                   RTE_MP_TX_DESC_DEFAULT * ports->num_ports);
+    const unsigned int num_mbufs_mp_cache =
+        (num_clients + 1) * MBUF_CACHE_SIZE;
+    const unsigned int num_mbufs =
+        num_mbufs_server + num_mbufs_client + num_mbufs_mp_cache;
 
-	/* don't pass single-producer/single-consumer flags to mbuf create as it
-	 * seems faster to use a cache instead */
-	printf("Creating mbuf pool '%s' [%u mbufs] ...\n",
-			PKTMBUF_POOL_NAME, num_mbufs);
-	pktmbuf_pool = rte_pktmbuf_pool_create(PKTMBUF_POOL_NAME, num_mbufs,
-		MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE, rte_socket_id());
+    /* don't pass single-producer/single-consumer flags to mbuf create as it
+     * seems faster to use a cache instead */
+    printf("Creating mbuf pool '%s' [%u mbufs] ...\n",
+            PKTMBUF_POOL_NAME, num_mbufs);
+    pktmbuf_pool = rte_pktmbuf_pool_create(PKTMBUF_POOL_NAME, num_mbufs,
+        MBUF_CACHE_SIZE, 0, RTE_MBUF_DEFAULT_BUF_SIZE, rte_socket_id());
 
-	return pktmbuf_pool == NULL; /* 0  on success */
+    return pktmbuf_pool == NULL; /* 0  on success */
 }
 
 /**
@@ -91,57 +91,57 @@ init_mbuf_pools(void)
 static int
 init_port(uint16_t port_num)
 {
-	/* for port configuration all features are off by default */
-	const struct rte_eth_conf port_conf = {
-		.rxmode = {
-			.mq_mode = ETH_MQ_RX_RSS
-		}
-	};
-	const uint16_t rx_rings = 1, tx_rings = num_clients;
-	uint16_t rx_ring_size = RTE_MP_RX_DESC_DEFAULT;
-	uint16_t tx_ring_size = RTE_MP_TX_DESC_DEFAULT;
+    /* for port configuration all features are off by default */
+    const struct rte_eth_conf port_conf = {
+        .rxmode = {
+            .mq_mode = ETH_MQ_RX_RSS
+        }
+    };
+    const uint16_t rx_rings = 1, tx_rings = num_clients;
+    uint16_t rx_ring_size = RTE_MP_RX_DESC_DEFAULT;
+    uint16_t tx_ring_size = RTE_MP_TX_DESC_DEFAULT;
 
-	uint16_t q;
-	int retval;
+    uint16_t q;
+    int retval;
 
-	printf("Port %u init ... ", port_num);
-	fflush(stdout);
+    printf("Port %u init ... ", port_num);
+    fflush(stdout);
 
-	/* Standard DPDK port initialisation - config port, then set up
-	 * rx and tx rings */
-	if ((retval = rte_eth_dev_configure(port_num, rx_rings, tx_rings,
-		&port_conf)) != 0)
-		return retval;
+    /* Standard DPDK port initialisation - config port, then set up
+     * rx and tx rings */
+    if ((retval = rte_eth_dev_configure(port_num, rx_rings, tx_rings,
+        &port_conf)) != 0)
+        return retval;
 
-	retval = rte_eth_dev_adjust_nb_rx_tx_desc(port_num, &rx_ring_size,
-			&tx_ring_size);
-	if (retval != 0)
-		return retval;
+    retval = rte_eth_dev_adjust_nb_rx_tx_desc(port_num, &rx_ring_size,
+            &tx_ring_size);
+    if (retval != 0)
+        return retval;
 
-	for (q = 0; q < rx_rings; q++) {
-		retval = rte_eth_rx_queue_setup(port_num, q, rx_ring_size,
-				rte_eth_dev_socket_id(port_num),
-				NULL, pktmbuf_pool);
-		if (retval < 0) return retval;
-	}
+    for (q = 0; q < rx_rings; q++) {
+        retval = rte_eth_rx_queue_setup(port_num, q, rx_ring_size,
+                rte_eth_dev_socket_id(port_num),
+                NULL, pktmbuf_pool);
+        if (retval < 0) return retval;
+    }
 
-	for ( q = 0; q < tx_rings; q ++ ) {
-		retval = rte_eth_tx_queue_setup(port_num, q, tx_ring_size,
-				rte_eth_dev_socket_id(port_num),
-				NULL);
-		if (retval < 0) return retval;
-	}
+    for ( q = 0; q < tx_rings; q ++ ) {
+        retval = rte_eth_tx_queue_setup(port_num, q, tx_ring_size,
+                rte_eth_dev_socket_id(port_num),
+                NULL);
+        if (retval < 0) return retval;
+    }
 
-	retval = rte_eth_promiscuous_enable(port_num);
-	if (retval < 0)
-		return retval;
+    retval = rte_eth_promiscuous_enable(port_num);
+    if (retval < 0)
+        return retval;
 
-	retval  = rte_eth_dev_start(port_num);
-	if (retval < 0) return retval;
+    retval  = rte_eth_dev_start(port_num);
+    if (retval < 0) return retval;
 
-	printf( "done: \n");
+    printf( "done: \n");
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -152,27 +152,27 @@ init_port(uint16_t port_num)
 static int
 init_shm_rings(void)
 {
-	unsigned i;
-	unsigned socket_id;
-	const char * q_name;
-	const unsigned ringsize = CLIENT_QUEUE_RINGSIZE;
+    unsigned i;
+    unsigned socket_id;
+    const char * q_name;
+    const unsigned ringsize = CLIENT_QUEUE_RINGSIZE;
 
-	clients = rte_malloc("client details",
-		sizeof(*clients) * num_clients, 0);
-	if (clients == NULL)
-		rte_exit(EXIT_FAILURE, "Cannot allocate memory for client program details\n");
+    clients = rte_malloc("client details",
+        sizeof(*clients) * num_clients, 0);
+    if (clients == NULL)
+        rte_exit(EXIT_FAILURE, "Cannot allocate memory for client program details\n");
 
-	for (i = 0; i < num_clients; i++) {
-		/* Create an RX queue for each client */
-		socket_id = rte_socket_id();
-		q_name = get_rx_queue_name(i);
-		clients[i].rx_q = rte_ring_create(q_name,
-				ringsize, socket_id,
-				RING_F_SP_ENQ | RING_F_SC_DEQ ); /* single prod, single cons */
-		if (clients[i].rx_q == NULL)
-			rte_exit(EXIT_FAILURE, "Cannot create rx ring queue for client %u\n", i);
-	}
-	return 0;
+    for (i = 0; i < num_clients; i++) {
+        /* Create an RX queue for each client */
+        socket_id = rte_socket_id();
+        q_name = get_rx_queue_name(i);
+        clients[i].rx_q = rte_ring_create(q_name,
+                ringsize, socket_id,
+                RING_F_SP_ENQ | RING_F_SC_DEQ ); /* single prod, single cons */
+        if (clients[i].rx_q == NULL)
+            rte_exit(EXIT_FAILURE, "Cannot create rx ring queue for client %u\n", i);
+    }
+    return 0;
 }
 
 /* Check the link status of all ports in up to 9s, and print them finally */
@@ -181,62 +181,62 @@ check_all_ports_link_status(uint16_t port_num, uint32_t port_mask)
 {
 #define CHECK_INTERVAL 100 /* 100ms */
 #define MAX_CHECK_TIME 90 /* 9s (90 * 100ms) in total */
-	uint16_t portid;
-	uint8_t count, all_ports_up, print_flag = 0;
-	struct rte_eth_link link;
-	int ret;
+    uint16_t portid;
+    uint8_t count, all_ports_up, print_flag = 0;
+    struct rte_eth_link link;
+    int ret;
 
-	printf("\nChecking link status");
-	fflush(stdout);
-	for (count = 0; count <= MAX_CHECK_TIME; count++) {
-		all_ports_up = 1;
-		for (portid = 0; portid < port_num; portid++) {
-			if ((port_mask & (1 << ports->id[portid])) == 0)
-				continue;
-			memset(&link, 0, sizeof(link));
-			ret = rte_eth_link_get_nowait(ports->id[portid], &link);
-			if (ret < 0) {
-				all_ports_up = 0;
-				if (print_flag == 1)
-					printf("Port %u link get failed: %s\n",
-						portid, rte_strerror(-ret));
-				continue;
-			}
-			/* print link status if flag set */
-			if (print_flag == 1) {
-				if (link.link_status)
-					printf("Port %d Link Up - speed %u "
-						"Mbps - %s\n", ports->id[portid],
-						(unsigned)link.link_speed,
-				(link.link_duplex == ETH_LINK_FULL_DUPLEX) ?
-					("full-duplex") : ("half-duplex\n"));
-				else
-					printf("Port %d Link Down\n",
-						(uint8_t)ports->id[portid]);
-				continue;
-			}
-			/* clear all_ports_up flag if any link down */
-			if (link.link_status == ETH_LINK_DOWN) {
-				all_ports_up = 0;
-				break;
-			}
-		}
-		/* after finally printing all link status, get out */
-		if (print_flag == 1)
-			break;
+    printf("\nChecking link status");
+    fflush(stdout);
+    for (count = 0; count <= MAX_CHECK_TIME; count++) {
+        all_ports_up = 1;
+        for (portid = 0; portid < port_num; portid++) {
+            if ((port_mask & (1 << ports->id[portid])) == 0)
+                continue;
+            memset(&link, 0, sizeof(link));
+            ret = rte_eth_link_get_nowait(ports->id[portid], &link);
+            if (ret < 0) {
+                all_ports_up = 0;
+                if (print_flag == 1)
+                    printf("Port %u link get failed: %s\n",
+                        portid, rte_strerror(-ret));
+                continue;
+            }
+            /* print link status if flag set */
+            if (print_flag == 1) {
+                if (link.link_status)
+                    printf("Port %d Link Up - speed %u "
+                        "Mbps - %s\n", ports->id[portid],
+                        (unsigned)link.link_speed,
+                (link.link_duplex == ETH_LINK_FULL_DUPLEX) ?
+                    ("full-duplex") : ("half-duplex\n"));
+                else
+                    printf("Port %d Link Down\n",
+                        (uint8_t)ports->id[portid]);
+                continue;
+            }
+            /* clear all_ports_up flag if any link down */
+            if (link.link_status == ETH_LINK_DOWN) {
+                all_ports_up = 0;
+                break;
+            }
+        }
+        /* after finally printing all link status, get out */
+        if (print_flag == 1)
+            break;
 
-		if (all_ports_up == 0) {
-			printf(".");
-			fflush(stdout);
-			rte_delay_ms(CHECK_INTERVAL);
-		}
+        if (all_ports_up == 0) {
+            printf(".");
+            fflush(stdout);
+            rte_delay_ms(CHECK_INTERVAL);
+        }
 
-		/* set the print_flag if all ports up or timeout */
-		if (all_ports_up == 1 || count == (MAX_CHECK_TIME - 1)) {
-			print_flag = 1;
-			printf("done\n");
-		}
-	}
+        /* set the print_flag if all ports up or timeout */
+        if (all_ports_up == 1 || count == (MAX_CHECK_TIME - 1)) {
+            print_flag = 1;
+            printf("done\n");
+        }
+    }
 }
 
 /**
@@ -246,47 +246,47 @@ check_all_ports_link_status(uint16_t port_num, uint32_t port_mask)
 int
 init(int argc, char *argv[])
 {
-	int retval;
-	const struct rte_memzone *mz;
-	uint16_t i;
+    int retval;
+    const struct rte_memzone *mz;
+    uint16_t i;
 
-	/* init EAL, parsing EAL args */
-	retval = rte_eal_init(argc, argv);
-	if (retval < 0)
-		return -1;
-	argc -= retval;
-	argv += retval;
+    /* init EAL, parsing EAL args */
+    retval = rte_eal_init(argc, argv);
+    if (retval < 0)
+        return -1;
+    argc -= retval;
+    argv += retval;
 
-	/* set up array for port data */
-	mz = rte_memzone_reserve(MZ_PORT_INFO, sizeof(*ports),
-				rte_socket_id(), NO_FLAGS);
-	if (mz == NULL)
-		rte_exit(EXIT_FAILURE, "Cannot reserve memory zone for port information\n");
-	memset(mz->addr, 0, sizeof(*ports));
-	ports = mz->addr;
+    /* set up array for port data */
+    mz = rte_memzone_reserve(MZ_PORT_INFO, sizeof(*ports),
+                rte_socket_id(), NO_FLAGS);
+    if (mz == NULL)
+        rte_exit(EXIT_FAILURE, "Cannot reserve memory zone for port information\n");
+    memset(mz->addr, 0, sizeof(*ports));
+    ports = mz->addr;
 
-	/* parse additional, application arguments */
-	retval = parse_app_args(argc, argv);
-	if (retval != 0)
-		return -1;
+    /* parse additional, application arguments */
+    retval = parse_app_args(argc, argv);
+    if (retval != 0)
+        return -1;
 
-	/* initialise mbuf pools */
-	retval = init_mbuf_pools();
-	if (retval != 0)
-		rte_exit(EXIT_FAILURE, "Cannot create needed mbuf pools\n");
+    /* initialise mbuf pools */
+    retval = init_mbuf_pools();
+    if (retval != 0)
+        rte_exit(EXIT_FAILURE, "Cannot create needed mbuf pools\n");
 
-	/* now initialise the ports we will use */
-	for (i = 0; i < ports->num_ports; i++) {
-		retval = init_port(ports->id[i]);
-		if (retval != 0)
-			rte_exit(EXIT_FAILURE, "Cannot initialise port %u\n",
-					(unsigned)i);
-	}
+    /* now initialise the ports we will use */
+    for (i = 0; i < ports->num_ports; i++) {
+        retval = init_port(ports->id[i]);
+        if (retval != 0)
+            rte_exit(EXIT_FAILURE, "Cannot initialise port %u\n",
+                    (unsigned)i);
+    }
 
-	check_all_ports_link_status(ports->num_ports, (~0x0));
+    check_all_ports_link_status(ports->num_ports, (~0x0));
 
-	/* initialise the client queues/rings for inter-eu comms */
-	init_shm_rings();
+    /* initialise the client queues/rings for inter-eu comms */
+    init_shm_rings();
 
-	return 0;
+    return 0;
 }

@@ -28,7 +28,7 @@
  * The rte_spinlock_t type.
  */
 typedef struct {
-	volatile int locked; /**< lock status 0 = unlocked, 1 = locked */
+    volatile int locked; /**< lock status 0 = unlocked, 1 = locked */
 } rte_spinlock_t;
 
 /**
@@ -45,7 +45,7 @@ typedef struct {
 static inline void
 rte_spinlock_init(rte_spinlock_t *sl)
 {
-	sl->locked = 0;
+    sl->locked = 0;
 }
 
 /**
@@ -61,14 +61,14 @@ rte_spinlock_lock(rte_spinlock_t *sl);
 static inline void
 rte_spinlock_lock(rte_spinlock_t *sl)
 {
-	int exp = 0;
+    int exp = 0;
 
-	while (!__atomic_compare_exchange_n(&sl->locked, &exp, 1, 0,
-				__ATOMIC_ACQUIRE, __ATOMIC_RELAXED)) {
-		while (__atomic_load_n(&sl->locked, __ATOMIC_RELAXED))
-			rte_pause();
-		exp = 0;
-	}
+    while (!__atomic_compare_exchange_n(&sl->locked, &exp, 1, 0,
+                __ATOMIC_ACQUIRE, __ATOMIC_RELAXED)) {
+        while (__atomic_load_n(&sl->locked, __ATOMIC_RELAXED))
+            rte_pause();
+        exp = 0;
+    }
 }
 #endif
 
@@ -85,7 +85,7 @@ rte_spinlock_unlock (rte_spinlock_t *sl);
 static inline void
 rte_spinlock_unlock (rte_spinlock_t *sl)
 {
-	__atomic_store_n(&sl->locked, 0, __ATOMIC_RELEASE);
+    __atomic_store_n(&sl->locked, 0, __ATOMIC_RELEASE);
 }
 #endif
 
@@ -104,10 +104,10 @@ rte_spinlock_trylock (rte_spinlock_t *sl);
 static inline int
 rte_spinlock_trylock (rte_spinlock_t *sl)
 {
-	int exp = 0;
-	return __atomic_compare_exchange_n(&sl->locked, &exp, 1,
-				0, /* disallow spurious failure */
-				__ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+    int exp = 0;
+    return __atomic_compare_exchange_n(&sl->locked, &exp, 1,
+                0, /* disallow spurious failure */
+                __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
 }
 #endif
 
@@ -121,7 +121,7 @@ rte_spinlock_trylock (rte_spinlock_t *sl)
  */
 static inline int rte_spinlock_is_locked (rte_spinlock_t *sl)
 {
-	return __atomic_load_n(&sl->locked, __ATOMIC_ACQUIRE);
+    return __atomic_load_n(&sl->locked, __ATOMIC_ACQUIRE);
 }
 
 /**
@@ -181,9 +181,9 @@ rte_spinlock_trylock_tm(rte_spinlock_t *sl);
  * The rte_spinlock_recursive_t type.
  */
 typedef struct {
-	rte_spinlock_t sl; /**< the actual spinlock */
-	volatile int user; /**< core id using lock, -1 for unused */
-	volatile int count; /**< count of time this lock has been called */
+    rte_spinlock_t sl; /**< the actual spinlock */
+    volatile int user; /**< core id using lock, -1 for unused */
+    volatile int count; /**< count of time this lock has been called */
 } rte_spinlock_recursive_t;
 
 /**
@@ -199,9 +199,9 @@ typedef struct {
  */
 static inline void rte_spinlock_recursive_init(rte_spinlock_recursive_t *slr)
 {
-	rte_spinlock_init(&slr->sl);
-	slr->user = -1;
-	slr->count = 0;
+    rte_spinlock_init(&slr->sl);
+    slr->user = -1;
+    slr->count = 0;
 }
 
 /**
@@ -212,13 +212,13 @@ static inline void rte_spinlock_recursive_init(rte_spinlock_recursive_t *slr)
  */
 static inline void rte_spinlock_recursive_lock(rte_spinlock_recursive_t *slr)
 {
-	int id = rte_gettid();
+    int id = rte_gettid();
 
-	if (slr->user != id) {
-		rte_spinlock_lock(&slr->sl);
-		slr->user = id;
-	}
-	slr->count++;
+    if (slr->user != id) {
+        rte_spinlock_lock(&slr->sl);
+        slr->user = id;
+    }
+    slr->count++;
 }
 /**
  * Release the recursive spinlock.
@@ -228,10 +228,10 @@ static inline void rte_spinlock_recursive_lock(rte_spinlock_recursive_t *slr)
  */
 static inline void rte_spinlock_recursive_unlock(rte_spinlock_recursive_t *slr)
 {
-	if (--(slr->count) == 0) {
-		slr->user = -1;
-		rte_spinlock_unlock(&slr->sl);
-	}
+    if (--(slr->count) == 0) {
+        slr->user = -1;
+        rte_spinlock_unlock(&slr->sl);
+    }
 
 }
 
@@ -245,15 +245,15 @@ static inline void rte_spinlock_recursive_unlock(rte_spinlock_recursive_t *slr)
  */
 static inline int rte_spinlock_recursive_trylock(rte_spinlock_recursive_t *slr)
 {
-	int id = rte_gettid();
+    int id = rte_gettid();
 
-	if (slr->user != id) {
-		if (rte_spinlock_trylock(&slr->sl) == 0)
-			return 0;
-		slr->user = id;
-	}
-	slr->count++;
-	return 1;
+    if (slr->user != id) {
+        if (rte_spinlock_trylock(&slr->sl) == 0)
+            return 0;
+        slr->user = id;
+    }
+    slr->count++;
+    return 1;
 }
 
 
@@ -271,7 +271,7 @@ static inline int rte_spinlock_recursive_trylock(rte_spinlock_recursive_t *slr)
  *   A pointer to the recursive spinlock.
  */
 static inline void rte_spinlock_recursive_lock_tm(
-	rte_spinlock_recursive_t *slr);
+    rte_spinlock_recursive_t *slr);
 
 /**
  * Commit hardware memory transaction or release the recursive spinlock
@@ -281,7 +281,7 @@ static inline void rte_spinlock_recursive_lock_tm(
  *   A pointer to the recursive spinlock.
  */
 static inline void rte_spinlock_recursive_unlock_tm(
-	rte_spinlock_recursive_t *slr);
+    rte_spinlock_recursive_t *slr);
 
 /**
  * Try to execute critical section in a hardware memory transaction,
@@ -300,6 +300,6 @@ static inline void rte_spinlock_recursive_unlock_tm(
  *   or lock is successfully taken; 0 otherwise.
  */
 static inline int rte_spinlock_recursive_trylock_tm(
-	rte_spinlock_recursive_t *slr);
+    rte_spinlock_recursive_t *slr);
 
 #endif /* _RTE_SPINLOCK_H_ */

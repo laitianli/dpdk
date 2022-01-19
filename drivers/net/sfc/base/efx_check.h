@@ -5,7 +5,7 @@
  */
 
 #ifndef _SYS_EFX_CHECK_H
-#define	_SYS_EFX_CHECK_H
+#define    _SYS_EFX_CHECK_H
 
 #include "efsys.h"
 
@@ -18,8 +18,8 @@
  */
 
 /* Check family options for EF10 architecture controllers. */
-#define	EFX_OPTS_EF10()	\
-	(EFSYS_OPT_HUNTINGTON || EFSYS_OPT_MEDFORD || EFSYS_OPT_MEDFORD2)
+#define    EFX_OPTS_EF10()    \
+    (EFSYS_OPT_HUNTINGTON || EFSYS_OPT_MEDFORD || EFSYS_OPT_MEDFORD2)
 
 #ifdef EFSYS_OPT_FALCON
 # error "FALCON is obsolete and is not supported."
@@ -170,7 +170,7 @@
 #if EFSYS_OPT_NAMES
 /* Support printable names for statistics */
 # if !(EFSYS_OPT_LOOPBACK || EFSYS_OPT_MAC_STATS || EFSYS_OPT_MCDI || \
-	EFSYS_MON_STATS || EFSYS_OPT_PHY_STATS || EFSYS_OPT_QSTATS)
+    EFSYS_MON_STATS || EFSYS_OPT_PHY_STATS || EFSYS_OPT_QSTATS)
 #  error "NAMES requires LOOPBACK or xxxSTATS or MCDI"
 # endif
 #endif /* EFSYS_OPT_NAMES */

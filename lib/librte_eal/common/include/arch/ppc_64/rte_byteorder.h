@@ -22,7 +22,7 @@ extern "C" {
  */
 static inline uint16_t rte_arch_bswap16(uint16_t _x)
 {
-	return (_x >> 8) | ((_x << 8) & 0xff00);
+    return (_x >> 8) | ((_x << 8) & 0xff00);
 }
 
 /*
@@ -32,8 +32,8 @@ static inline uint16_t rte_arch_bswap16(uint16_t _x)
  */
 static inline uint32_t rte_arch_bswap32(uint32_t _x)
 {
-	return (_x >> 24) | ((_x >> 8) & 0xff00) | ((_x << 8) & 0xff0000) |
-		((_x << 24) & 0xff000000);
+    return (_x >> 24) | ((_x >> 8) & 0xff00) | ((_x << 8) & 0xff0000) |
+        ((_x << 24) & 0xff000000);
 }
 
 /*
@@ -44,32 +44,32 @@ static inline uint32_t rte_arch_bswap32(uint32_t _x)
 /* 64-bit mode */
 static inline uint64_t rte_arch_bswap64(uint64_t _x)
 {
-	return (_x >> 56) | ((_x >> 40) & 0xff00) | ((_x >> 24) & 0xff0000) |
-		((_x >> 8) & 0xff000000) | ((_x << 8) & (0xffULL << 32)) |
-		((_x << 24) & (0xffULL << 40)) |
-		((_x << 40) & (0xffULL << 48)) | ((_x << 56));
+    return (_x >> 56) | ((_x >> 40) & 0xff00) | ((_x >> 24) & 0xff0000) |
+        ((_x >> 8) & 0xff000000) | ((_x << 8) & (0xffULL << 32)) |
+        ((_x << 24) & (0xffULL << 40)) |
+        ((_x << 40) & (0xffULL << 48)) | ((_x << 56));
 }
 
 #ifndef RTE_FORCE_INTRINSICS
-#define rte_bswap16(x) ((uint16_t)(__builtin_constant_p(x) ?		\
-				   rte_constant_bswap16(x) :		\
-				   rte_arch_bswap16(x)))
+#define rte_bswap16(x) ((uint16_t)(__builtin_constant_p(x) ?        \
+                   rte_constant_bswap16(x) :        \
+                   rte_arch_bswap16(x)))
 
-#define rte_bswap32(x) ((uint32_t)(__builtin_constant_p(x) ?		\
-				   rte_constant_bswap32(x) :		\
-				   rte_arch_bswap32(x)))
+#define rte_bswap32(x) ((uint32_t)(__builtin_constant_p(x) ?        \
+                   rte_constant_bswap32(x) :        \
+                   rte_arch_bswap32(x)))
 
-#define rte_bswap64(x) ((uint64_t)(__builtin_constant_p(x) ?		\
-				   rte_constant_bswap64(x) :		\
-				   rte_arch_bswap64(x)))
+#define rte_bswap64(x) ((uint64_t)(__builtin_constant_p(x) ?        \
+                   rte_constant_bswap64(x) :        \
+                   rte_arch_bswap64(x)))
 #else
 /*
  * __builtin_bswap16 is only available gcc 4.8 and upwards
  */
 #if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8)
-#define rte_bswap16(x) ((uint16_t)(__builtin_constant_p(x) ?		\
-				   rte_constant_bswap16(x) :		\
-				   rte_arch_bswap16(x)))
+#define rte_bswap16(x) ((uint16_t)(__builtin_constant_p(x) ?        \
+                   rte_constant_bswap16(x) :        \
+                   rte_arch_bswap16(x)))
 #endif
 #endif
 

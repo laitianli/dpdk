@@ -5,94 +5,94 @@
 #ifndef _HINIC_PMD_RX_H_
 #define _HINIC_PMD_RX_H_
 
-#define HINIC_DEFAULT_RX_FREE_THRESH	32
+#define HINIC_DEFAULT_RX_FREE_THRESH    32
 
 #define HINIC_RSS_OFFLOAD_ALL ( \
-	ETH_RSS_IPV4 | \
-	ETH_RSS_FRAG_IPV4 |\
-	ETH_RSS_NONFRAG_IPV4_TCP | \
-	ETH_RSS_NONFRAG_IPV4_UDP | \
-	ETH_RSS_IPV6 | \
-	ETH_RSS_FRAG_IPV6 | \
-	ETH_RSS_NONFRAG_IPV6_TCP | \
-	ETH_RSS_NONFRAG_IPV6_UDP | \
-	ETH_RSS_IPV6_EX | \
-	ETH_RSS_IPV6_TCP_EX | \
-	ETH_RSS_IPV6_UDP_EX)
+    ETH_RSS_IPV4 | \
+    ETH_RSS_FRAG_IPV4 |\
+    ETH_RSS_NONFRAG_IPV4_TCP | \
+    ETH_RSS_NONFRAG_IPV4_UDP | \
+    ETH_RSS_IPV6 | \
+    ETH_RSS_FRAG_IPV6 | \
+    ETH_RSS_NONFRAG_IPV6_TCP | \
+    ETH_RSS_NONFRAG_IPV6_UDP | \
+    ETH_RSS_IPV6_EX | \
+    ETH_RSS_IPV6_TCP_EX | \
+    ETH_RSS_IPV6_UDP_EX)
 
 enum rq_completion_fmt {
-	RQ_COMPLETE_SGE = 1
+    RQ_COMPLETE_SGE = 1
 };
 
 struct hinic_rq_ctrl {
-	u32	ctrl_fmt;
+    u32    ctrl_fmt;
 };
 
 struct hinic_rq_cqe {
-	u32 status;
-	u32 vlan_len;
-	u32 offload_type;
-	u32 rss_hash;
+    u32 status;
+    u32 vlan_len;
+    u32 offload_type;
+    u32 rss_hash;
 
-	u32 rsvd[4];
+    u32 rsvd[4];
 } __rte_cache_aligned;
 
 struct hinic_rq_cqe_sect {
-	struct hinic_sge	sge;
-	u32			rsvd;
+    struct hinic_sge    sge;
+    u32            rsvd;
 };
 
 struct hinic_rq_bufdesc {
-	u32	addr_high;
-	u32	addr_low;
+    u32    addr_high;
+    u32    addr_low;
 };
 
 struct hinic_rq_wqe {
-	struct hinic_rq_ctrl		ctrl;
-	u32				rsvd;
-	struct hinic_rq_cqe_sect	cqe_sect;
-	struct hinic_rq_bufdesc		buf_desc;
+    struct hinic_rq_ctrl        ctrl;
+    u32                rsvd;
+    struct hinic_rq_cqe_sect    cqe_sect;
+    struct hinic_rq_bufdesc        buf_desc;
 };
 
 struct hinic_rxq_stats {
-	u64 packets;
-	u64 bytes;
-	u64 rx_nombuf;
-	u64 errors;
-	u64 rx_discards;
-	u64 burst_pkts;
+    u64 packets;
+    u64 bytes;
+    u64 rx_nombuf;
+    u64 errors;
+    u64 rx_discards;
+    u64 burst_pkts;
 };
 
 /* Attention, Do not add any member in hinic_rx_info
  * as rxq bulk rearm mode will write mbuf in rx_info
  */
 struct hinic_rx_info {
-	struct rte_mbuf *mbuf;
+    struct rte_mbuf *mbuf;
 };
 
 struct hinic_rxq {
-	struct hinic_wq *wq;
-	volatile u16 *pi_virt_addr;
+    struct hinic_wq *wq;
+    volatile u16 *pi_virt_addr;
 
-	u16 port_id;
-	u16 q_id;
-	u16 q_depth;
-	u16 buf_len;
+    u16 port_id;
+    u16 q_id;
+    u16 q_depth;
+    u16 buf_len;
 
-	u16 rx_free_thresh;
-	u16 rxinfo_align_end;
+    u16 rx_free_thresh;
+    u16 rxinfo_align_end;
 
-	unsigned long status;
-	struct hinic_rxq_stats rxq_stats;
+    unsigned long status;
+    struct hinic_rxq_stats rxq_stats;
 
-	struct hinic_nic_dev *nic_dev;
+    struct hinic_nic_dev *nic_dev;
 
-	struct hinic_rx_info	*rx_info;
-	volatile struct hinic_rq_cqe *rx_cqe;
+    struct hinic_rx_info    *rx_info;
+    volatile struct hinic_rq_cqe *rx_cqe;
 
-	dma_addr_t cqe_start_paddr;
-	void *cqe_start_vaddr;
-	struct rte_mempool *mb_pool;
+    dma_addr_t cqe_start_paddr;
+    void *cqe_start_vaddr;
+    struct rte_mempool *mb_pool;
 };
 
 int hinic_setup_rx_resources(struct hinic_rxq *rxq);

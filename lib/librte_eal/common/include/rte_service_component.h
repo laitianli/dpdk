@@ -24,20 +24,20 @@ typedef int32_t (*rte_service_func)(void *args);
  * function to run one iteration of the service, a userdata pointer, flags etc.
  */
 struct rte_service_spec {
-	/** The name of the service. This should be used by the application to
-	 * understand what purpose this service provides.
-	 */
-	char name[RTE_SERVICE_NAME_MAX];
-	/** The callback to invoke to run one iteration of the service. */
-	rte_service_func callback;
-	/** The userdata pointer provided to the service callback. */
-	void *callback_userdata;
-	/** Flags to indicate the capabilities of this service. See defines in
-	 * the public header file for values of RTE_SERVICE_CAP_*
-	 */
-	uint32_t capabilities;
-	/** NUMA socket ID that this service is affinitized to */
-	int socket_id;
+    /** The name of the service. This should be used by the application to
+     * understand what purpose this service provides.
+     */
+    char name[RTE_SERVICE_NAME_MAX];
+    /** The callback to invoke to run one iteration of the service. */
+    rte_service_func callback;
+    /** The userdata pointer provided to the service callback. */
+    void *callback_userdata;
+    /** Flags to indicate the capabilities of this service. See defines in
+     * the public header file for values of RTE_SERVICE_CAP_*
+     */
+    uint32_t capabilities;
+    /** NUMA socket ID that this service is affinitized to */
+    int socket_id;
 };
 
 /**
@@ -65,7 +65,7 @@ struct rte_service_spec {
  *         set)
  */
 int32_t rte_service_component_register(const struct rte_service_spec *spec,
-		uint32_t *service_id);
+        uint32_t *service_id);
 
 /**
  * Unregister a service component.

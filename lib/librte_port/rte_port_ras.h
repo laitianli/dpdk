@@ -36,12 +36,12 @@ extern "C" {
 
 /** ring_writer_ipv4_ras port parameters */
 struct rte_port_ring_writer_ras_params {
-	/** Underlying single consumer ring that has to be pre-initialized. */
-	struct rte_ring *ring;
+    /** Underlying single consumer ring that has to be pre-initialized. */
+    struct rte_ring *ring;
 
-	/** Recommended burst size to ring. The actual burst size can be bigger
-	or smaller than this value. */
-	uint32_t tx_burst_sz;
+    /** Recommended burst size to ring. The actual burst size can be bigger
+    or smaller than this value. */
+    uint32_t tx_burst_sz;
 };
 
 #define rte_port_ring_writer_ipv4_ras_params rte_port_ring_writer_ras_params

@@ -48,21 +48,21 @@ extern "C" {
  * table of these IDs for each device that it supports.
  */
 struct rte_pci_id {
-	uint32_t class_id;            /**< Class ID or RTE_CLASS_ANY_ID. */
-	uint16_t vendor_id;           /**< Vendor ID or PCI_ANY_ID. */
-	uint16_t device_id;           /**< Device ID or PCI_ANY_ID. */
-	uint16_t subsystem_vendor_id; /**< Subsystem vendor ID or PCI_ANY_ID. */
-	uint16_t subsystem_device_id; /**< Subsystem device ID or PCI_ANY_ID. */
+    uint32_t class_id;            /**< Class ID or RTE_CLASS_ANY_ID. */
+    uint16_t vendor_id;           /**< Vendor ID or PCI_ANY_ID. */
+    uint16_t device_id;           /**< Device ID or PCI_ANY_ID. */
+    uint16_t subsystem_vendor_id; /**< Subsystem vendor ID or PCI_ANY_ID. */
+    uint16_t subsystem_device_id; /**< Subsystem device ID or PCI_ANY_ID. */
 };
 
 /**
  * A structure describing the location of a PCI device.
  */
 struct rte_pci_addr {
-	uint32_t domain;                /**< Device domain */
-	uint8_t bus;                    /**< Device bus */
-	uint8_t devid;                  /**< Device ID */
-	uint8_t function;               /**< Device function. */
+    uint32_t domain;                /**< Device domain */
+    uint8_t bus;                    /**< Device bus */
+    uint8_t devid;                  /**< Device ID */
+    uint8_t function;               /**< Device function. */
 };
 
 /** Any PCI device identifier (vendor, device, ...) */
@@ -73,17 +73,17 @@ struct rte_pci_addr {
  * A structure describing a PCI mapping.
  */
 struct pci_map {
-	void *addr; /* 虚拟地址,从文件：/sys/bus/pci/devices/0000:02:06.0/resource%u解析到 */
-	char *path;
-	uint64_t offset;
-	uint64_t size;
-	uint64_t phaddr; /* 物理地址，从文件：/sys/bus/pci/devices/0000:02:06.0/resource解析到 */
+    void *addr; /* 虚拟地址,从文件：/sys/bus/pci/devices/0000:02:06.0/resource%u解析到 */
+    char *path;
+    uint64_t offset;
+    uint64_t size;
+    uint64_t phaddr; /* 物理地址，从文件：/sys/bus/pci/devices/0000:02:06.0/resource解析到 */
 };
 
 struct pci_msix_table {
-	int bar_index;
-	uint32_t offset;
-	uint32_t size;
+    int bar_index;
+    uint32_t offset;
+    uint32_t size;
 };
 
 /**
@@ -92,13 +92,13 @@ struct pci_msix_table {
  * processes, so save them in a tailq.
  */
 struct mapped_pci_resource {
-	TAILQ_ENTRY(mapped_pci_resource) next;
+    TAILQ_ENTRY(mapped_pci_resource) next;
 
-	struct rte_pci_addr pci_addr;
-	char path[PATH_MAX]; /* /dev/uio%u */
-	int nb_maps;
-	struct pci_map maps[PCI_MAX_RESOURCE];
-	struct pci_msix_table msix_table;
+    struct rte_pci_addr pci_addr;
+    char path[PATH_MAX]; /* /dev/uio%u */
+    int nb_maps;
+    struct pci_map maps[PCI_MAX_RESOURCE];
+    struct pci_msix_table msix_table;
 };
 
 
@@ -111,42 +111,42 @@ TAILQ_HEAD(mapped_pci_res_list, mapped_pci_resource);
  * BDF helpers.
  *
  * @param addr
- *	The PCI Bus-Device-Function address
+ *    The PCI Bus-Device-Function address
  * @param output
- *	The output buffer string
+ *    The output buffer string
  * @param size
- *	The output buffer size
+ *    The output buffer size
  */
 void rte_pci_device_name(const struct rte_pci_addr *addr,
-		     char *output, size_t size);
+             char *output, size_t size);
 
 /**
  * Utility function to compare two PCI device addresses.
  *
  * @param addr
- *	The PCI Bus-Device-Function address to compare
+ *    The PCI Bus-Device-Function address to compare
  * @param addr2
- *	The PCI Bus-Device-Function address to compare
+ *    The PCI Bus-Device-Function address to compare
  * @return
- *	0 on equal PCI address.
- *	Positive on addr is greater than addr2.
- *	Negative on addr is less than addr2, or error.
+ *    0 on equal PCI address.
+ *    Positive on addr is greater than addr2.
+ *    Negative on addr is less than addr2, or error.
  */
 int rte_pci_addr_cmp(const struct rte_pci_addr *addr,
-		     const struct rte_pci_addr *addr2);
+             const struct rte_pci_addr *addr2);
 
 
 /**
  * Utility function to parse a string into a PCI location.
  *
  * @param str
- *	The string to parse
+ *    The string to parse
  * @param addr
- *	The reference to the structure where the location
- *	is stored.
+ *    The reference to the structure where the location
+ *    is stored.
  * @return
- *	0 on success
- *	<0 otherwise
+ *    0 on success
+ *    <0 otherwise
  */
 int rte_pci_addr_parse(const char *str, struct rte_pci_addr *addr);
 
@@ -168,7 +168,7 @@ int rte_pci_addr_parse(const char *str, struct rte_pci_addr *addr);
  *   - On error, the value MAP_FAILED is returned.
  */
 void *pci_map_resource(void *requested_addr, int fd, off_t offset,
-		size_t size, int additional_flags);
+        size_t size, int additional_flags);
 
 /**
  * Unmap a particular resource.

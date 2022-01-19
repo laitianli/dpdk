@@ -28,33 +28,33 @@ extern "C" {
 struct rte_mbuf;
 
 enum {
-	IP_LAST_FRAG_IDX,    /**< index of last fragment */
-	IP_FIRST_FRAG_IDX,   /**< index of first fragment */
-	IP_MIN_FRAG_NUM,     /**< minimum number of fragments */
-	IP_MAX_FRAG_NUM = RTE_LIBRTE_IP_FRAG_MAX_FRAG,
-	/**< maximum number of fragments per packet */
+    IP_LAST_FRAG_IDX,    /**< index of last fragment */
+    IP_FIRST_FRAG_IDX,   /**< index of first fragment */
+    IP_MIN_FRAG_NUM,     /**< minimum number of fragments */
+    IP_MAX_FRAG_NUM = RTE_LIBRTE_IP_FRAG_MAX_FRAG,
+    /**< maximum number of fragments per packet */
 };
 
 /** @internal fragmented mbuf */
 struct ip_frag {
-	uint16_t ofs;          /**< offset into the packet */
-	uint16_t len;          /**< length of fragment */
-	struct rte_mbuf *mb;   /**< fragment mbuf */
+    uint16_t ofs;          /**< offset into the packet */
+    uint16_t len;          /**< length of fragment */
+    struct rte_mbuf *mb;   /**< fragment mbuf */
 };
 
 /** @internal <src addr, dst_addr, id> to uniquely identify fragmented datagram. */
 struct ip_frag_key {
-	uint64_t src_dst[4];
-	/**< src and dst address, only first 8 bytes used for IPv4 */
-	RTE_STD_C11
-	union {
-		uint64_t id_key_len; /**< combined for easy fetch */
-		__extension__
-		struct {
-			uint32_t id;       /**< packet id */
-			uint32_t key_len;  /**< src/dst key length */
-		};
-	};
+    uint64_t src_dst[4];
+    /**< src and dst address, only first 8 bytes used for IPv4 */
+    RTE_STD_C11
+    union {
+        uint64_t id_key_len; /**< combined for easy fetch */
+        __extension__
+        struct {
+            uint32_t id;       /**< packet id */
+            uint32_t key_len;  /**< src/dst key length */
+        };
+    };
 };
 
 /**
@@ -62,13 +62,13 @@ struct ip_frag_key {
  * First two entries in the frags[] array are for the last and first fragments.
  */
 struct ip_frag_pkt {
-	TAILQ_ENTRY(ip_frag_pkt) lru;   /**< LRU list */
-	struct ip_frag_key key;           /**< fragmentation key */
-	uint64_t             start;       /**< creation timestamp */
-	uint32_t             total_size;  /**< expected reassembled size */
-	uint32_t             frag_size;   /**< size of fragments received */
-	uint32_t             last_idx;    /**< index of next entry to fill */
-	struct ip_frag       frags[IP_MAX_FRAG_NUM]; /**< fragments */
+    TAILQ_ENTRY(ip_frag_pkt) lru;   /**< LRU list */
+    struct ip_frag_key key;           /**< fragmentation key */
+    uint64_t             start;       /**< creation timestamp */
+    uint32_t             total_size;  /**< expected reassembled size */
+    uint32_t             frag_size;   /**< size of fragments received */
+    uint32_t             last_idx;    /**< index of next entry to fill */
+    struct ip_frag       frags[IP_MAX_FRAG_NUM]; /**< fragments */
 } __rte_cache_aligned;
 
 #define IP_FRAG_DEATH_ROW_LEN 32 /**< death row size (in packets) */
@@ -78,59 +78,59 @@ struct ip_frag_pkt {
 
 /** mbuf death row (packets to be freed) */
 struct rte_ip_frag_death_row {
-	uint32_t cnt;          /**< number of mbufs currently on death row */
-	struct rte_mbuf *row[IP_FRAG_DEATH_ROW_MBUF_LEN];
-	/**< mbufs to be freed */
+    uint32_t cnt;          /**< number of mbufs currently on death row */
+    struct rte_mbuf *row[IP_FRAG_DEATH_ROW_MBUF_LEN];
+    /**< mbufs to be freed */
 };
 
 TAILQ_HEAD(ip_pkt_list, ip_frag_pkt); /**< @internal fragments tailq */
 
 /** fragmentation table statistics */
 struct ip_frag_tbl_stat {
-	uint64_t find_num;      /**< total # of find/insert attempts. */
-	uint64_t add_num;       /**< # of add ops. */
-	uint64_t del_num;       /**< # of del ops. */
-	uint64_t reuse_num;     /**< # of reuse (del/add) ops. */
-	uint64_t fail_total;    /**< total # of add failures. */
-	uint64_t fail_nospace;  /**< # of 'no space' add failures. */
+    uint64_t find_num;      /**< total # of find/insert attempts. */
+    uint64_t add_num;       /**< # of add ops. */
+    uint64_t del_num;       /**< # of del ops. */
+    uint64_t reuse_num;     /**< # of reuse (del/add) ops. */
+    uint64_t fail_total;    /**< total # of add failures. */
+    uint64_t fail_nospace;  /**< # of 'no space' add failures. */
 } __rte_cache_aligned;
 
 /** fragmentation table */
 struct rte_ip_frag_tbl {
-	uint64_t             max_cycles;      /**< ttl for table entries. */
-	uint32_t             entry_mask;      /**< hash value mask. */
-	uint32_t             max_entries;     /**< max entries allowed. */
-	uint32_t             use_entries;     /**< entries in use. */
-	uint32_t             bucket_entries;  /**< hash associativity. */
-	uint32_t             nb_entries;      /**< total size of the table. */
-	uint32_t             nb_buckets;      /**< num of associativity lines. */
-	struct ip_frag_pkt *last;         /**< last used entry. */
-	struct ip_pkt_list lru;           /**< LRU list for table entries. */
-	struct ip_frag_tbl_stat stat;     /**< statistics counters. */
-	__extension__ struct ip_frag_pkt pkt[0]; /**< hash table. */
+    uint64_t             max_cycles;      /**< ttl for table entries. */
+    uint32_t             entry_mask;      /**< hash value mask. */
+    uint32_t             max_entries;     /**< max entries allowed. */
+    uint32_t             use_entries;     /**< entries in use. */
+    uint32_t             bucket_entries;  /**< hash associativity. */
+    uint32_t             nb_entries;      /**< total size of the table. */
+    uint32_t             nb_buckets;      /**< num of associativity lines. */
+    struct ip_frag_pkt *last;         /**< last used entry. */
+    struct ip_pkt_list lru;           /**< LRU list for table entries. */
+    struct ip_frag_tbl_stat stat;     /**< statistics counters. */
+    __extension__ struct ip_frag_pkt pkt[0]; /**< hash table. */
 };
 
 /** IPv6 fragment extension header */
-#define	RTE_IPV6_EHDR_MF_SHIFT			0
-#define	RTE_IPV6_EHDR_MF_MASK			1
-#define	RTE_IPV6_EHDR_FO_SHIFT			3
-#define	RTE_IPV6_EHDR_FO_MASK			(~((1 << RTE_IPV6_EHDR_FO_SHIFT) - 1))
-#define	RTE_IPV6_EHDR_FO_ALIGN			(1 << RTE_IPV6_EHDR_FO_SHIFT)
+#define    RTE_IPV6_EHDR_MF_SHIFT            0
+#define    RTE_IPV6_EHDR_MF_MASK            1
+#define    RTE_IPV6_EHDR_FO_SHIFT            3
+#define    RTE_IPV6_EHDR_FO_MASK            (~((1 << RTE_IPV6_EHDR_FO_SHIFT) - 1))
+#define    RTE_IPV6_EHDR_FO_ALIGN            (1 << RTE_IPV6_EHDR_FO_SHIFT)
 
-#define RTE_IPV6_FRAG_USED_MASK			\
-	(RTE_IPV6_EHDR_MF_MASK | RTE_IPV6_EHDR_FO_MASK)
+#define RTE_IPV6_FRAG_USED_MASK            \
+    (RTE_IPV6_EHDR_MF_MASK | RTE_IPV6_EHDR_FO_MASK)
 
-#define RTE_IPV6_GET_MF(x)				((x) & RTE_IPV6_EHDR_MF_MASK)
-#define RTE_IPV6_GET_FO(x)				((x) >> RTE_IPV6_EHDR_FO_SHIFT)
+#define RTE_IPV6_GET_MF(x)                ((x) & RTE_IPV6_EHDR_MF_MASK)
+#define RTE_IPV6_GET_FO(x)                ((x) >> RTE_IPV6_EHDR_FO_SHIFT)
 
-#define RTE_IPV6_SET_FRAG_DATA(fo, mf)	\
-	(((fo) & RTE_IPV6_EHDR_FO_MASK) | ((mf) & RTE_IPV6_EHDR_MF_MASK))
+#define RTE_IPV6_SET_FRAG_DATA(fo, mf)    \
+    (((fo) & RTE_IPV6_EHDR_FO_MASK) | ((mf) & RTE_IPV6_EHDR_MF_MASK))
 
 struct ipv6_extension_fragment {
-	uint8_t next_header;            /**< Next header type */
-	uint8_t reserved;               /**< Reserved */
-	uint16_t frag_data;             /**< All fragmentation data */
-	uint32_t id;                    /**< Packet ID */
+    uint8_t next_header;            /**< Next header type */
+    uint8_t reserved;               /**< Reserved */
+    uint16_t frag_data;             /**< All fragmentation data */
+    uint32_t id;                    /**< Packet ID */
 } __attribute__((__packed__));
 
 
@@ -155,8 +155,8 @@ struct ipv6_extension_fragment {
  *   The pointer to the new allocated fragmentation table, on success. NULL on error.
  */
 struct rte_ip_frag_tbl * rte_ip_frag_table_create(uint32_t bucket_num,
-		uint32_t bucket_entries,  uint32_t max_entries,
-		uint64_t max_cycles, int socket_id);
+        uint32_t bucket_entries,  uint32_t max_entries,
+        uint64_t max_cycles, int socket_id);
 
 /**
  * Free allocated IP fragmentation table.
@@ -190,11 +190,11 @@ rte_ip_frag_table_destroy(struct rte_ip_frag_tbl *tbl);
  */
 int32_t
 rte_ipv6_fragment_packet(struct rte_mbuf *pkt_in,
-		struct rte_mbuf **pkts_out,
-		uint16_t nb_pkts_out,
-		uint16_t mtu_size,
-		struct rte_mempool *pool_direct,
-		struct rte_mempool *pool_indirect);
+        struct rte_mbuf **pkts_out,
+        uint16_t nb_pkts_out,
+        uint16_t mtu_size,
+        struct rte_mempool *pool_direct,
+        struct rte_mempool *pool_indirect);
 
 /**
  * This function implements reassembly of fragmented IPv6 packets.
@@ -218,9 +218,9 @@ rte_ipv6_fragment_packet(struct rte_mbuf *pkt_in,
  *   - not all fragments of the packet are collected yet.
  */
 struct rte_mbuf *rte_ipv6_frag_reassemble_packet(struct rte_ip_frag_tbl *tbl,
-		struct rte_ip_frag_death_row *dr,
-		struct rte_mbuf *mb, uint64_t tms, struct rte_ipv6_hdr *ip_hdr,
-		struct ipv6_extension_fragment *frag_hdr);
+        struct rte_ip_frag_death_row *dr,
+        struct rte_mbuf *mb, uint64_t tms, struct rte_ipv6_hdr *ip_hdr,
+        struct ipv6_extension_fragment *frag_hdr);
 
 /**
  * Return a pointer to the packet's fragment header, if found.
@@ -236,11 +236,11 @@ struct rte_mbuf *rte_ipv6_frag_reassemble_packet(struct rte_ip_frag_tbl *tbl,
 static inline struct ipv6_extension_fragment *
 rte_ipv6_frag_get_ipv6_fragment_header(struct rte_ipv6_hdr *hdr)
 {
-	if (hdr->proto == IPPROTO_FRAGMENT) {
-		return (struct ipv6_extension_fragment *) ++hdr;
-	}
-	else
-		return NULL;
+    if (hdr->proto == IPPROTO_FRAGMENT) {
+        return (struct ipv6_extension_fragment *) ++hdr;
+    }
+    else
+        return NULL;
 }
 
 /**
@@ -267,10 +267,10 @@ rte_ipv6_frag_get_ipv6_fragment_header(struct rte_ipv6_hdr *hdr)
  *   Otherwise - (-1) * errno.
  */
 int32_t rte_ipv4_fragment_packet(struct rte_mbuf *pkt_in,
-			struct rte_mbuf **pkts_out,
-			uint16_t nb_pkts_out, uint16_t mtu_size,
-			struct rte_mempool *pool_direct,
-			struct rte_mempool *pool_indirect);
+            struct rte_mbuf **pkts_out,
+            uint16_t nb_pkts_out, uint16_t mtu_size,
+            struct rte_mempool *pool_direct,
+            struct rte_mempool *pool_indirect);
 
 /**
  * This function implements reassembly of fragmented IPv4 packets.
@@ -292,8 +292,8 @@ int32_t rte_ipv4_fragment_packet(struct rte_mbuf *pkt_in,
  *   - not all fragments of the packet are collected yet.
  */
 struct rte_mbuf * rte_ipv4_frag_reassemble_packet(struct rte_ip_frag_tbl *tbl,
-		struct rte_ip_frag_death_row *dr,
-		struct rte_mbuf *mb, uint64_t tms, struct rte_ipv4_hdr *ip_hdr);
+        struct rte_ip_frag_death_row *dr,
+        struct rte_mbuf *mb, uint64_t tms, struct rte_ipv4_hdr *ip_hdr);
 
 /**
  * Check if the IPv4 packet is fragmented
@@ -306,13 +306,13 @@ struct rte_mbuf * rte_ipv4_frag_reassemble_packet(struct rte_ip_frag_tbl *tbl,
 static inline int
 rte_ipv4_frag_pkt_is_fragmented(const struct rte_ipv4_hdr *hdr)
 {
-	uint16_t flag_offset, ip_flag, ip_ofs;
+    uint16_t flag_offset, ip_flag, ip_ofs;
 
-	flag_offset = rte_be_to_cpu_16(hdr->fragment_offset);
-	ip_ofs = (uint16_t)(flag_offset & RTE_IPV4_HDR_OFFSET_MASK);
-	ip_flag = (uint16_t)(flag_offset & RTE_IPV4_HDR_MF_FLAG);
+    flag_offset = rte_be_to_cpu_16(hdr->fragment_offset);
+    ip_ofs = (uint16_t)(flag_offset & RTE_IPV4_HDR_OFFSET_MASK);
+    ip_flag = (uint16_t)(flag_offset & RTE_IPV4_HDR_MF_FLAG);
 
-	return ip_flag != 0 || ip_ofs  != 0;
+    return ip_flag != 0 || ip_ofs  != 0;
 }
 
 /**
@@ -324,7 +324,7 @@ rte_ipv4_frag_pkt_is_fragmented(const struct rte_ipv4_hdr *hdr)
  *   How many buffers to prefetch before freeing.
  */
 void rte_ip_frag_free_death_row(struct rte_ip_frag_death_row *dr,
-		uint32_t prefetch);
+        uint32_t prefetch);
 
 
 /**
@@ -351,7 +351,7 @@ rte_ip_frag_table_statistics_dump(FILE * f, const struct rte_ip_frag_tbl *tbl);
 __rte_experimental
 void
 rte_frag_table_del_expired_entries(struct rte_ip_frag_tbl *tbl,
-	struct rte_ip_frag_death_row *dr, uint64_t tms);
+    struct rte_ip_frag_death_row *dr, uint64_t tms);
 
 #ifdef __cplusplus
 }

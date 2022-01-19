@@ -59,11 +59,11 @@ extern "C" {
 
 /** Input port actions. */
 enum rte_port_in_action_type {
-	/** Filter selected input packets. */
-	RTE_PORT_IN_ACTION_FLTR = 0,
+    /** Filter selected input packets. */
+    RTE_PORT_IN_ACTION_FLTR = 0,
 
-	/**  Load balance. */
-	RTE_PORT_IN_ACTION_LB,
+    /**  Load balance. */
+    RTE_PORT_IN_ACTION_LB,
 };
 
 /**
@@ -74,36 +74,36 @@ enum rte_port_in_action_type {
 
 /** Filter action configuration (per action profile). */
 struct rte_port_in_action_fltr_config {
-	/** Key offset within the input packet buffer. Offset 0 points to the
-	 * first byte of the MBUF structure.
-	 */
-	uint32_t key_offset;
+    /** Key offset within the input packet buffer. Offset 0 points to the
+     * first byte of the MBUF structure.
+     */
+    uint32_t key_offset;
 
-	/** Key mask. */
-	uint8_t key_mask[RTE_PORT_IN_ACTION_FLTR_KEY_SIZE];
+    /** Key mask. */
+    uint8_t key_mask[RTE_PORT_IN_ACTION_FLTR_KEY_SIZE];
 
-	/** Key value. */
-	uint8_t key[RTE_PORT_IN_ACTION_FLTR_KEY_SIZE];
+    /** Key value. */
+    uint8_t key[RTE_PORT_IN_ACTION_FLTR_KEY_SIZE];
 
-	/** When non-zero, all the input packets that match the *key* (with the
-	 * *key_mask* applied) are sent to the pipeline output port *port_id*.
-	 * When zero, all the input packets that do NOT match the *key* (with
-	 * *key_mask* applied) are sent to the pipeline output port *port_id*.
-	 */
-	int filter_on_match;
+    /** When non-zero, all the input packets that match the *key* (with the
+     * *key_mask* applied) are sent to the pipeline output port *port_id*.
+     * When zero, all the input packets that do NOT match the *key* (with
+     * *key_mask* applied) are sent to the pipeline output port *port_id*.
+     */
+    int filter_on_match;
 
-	/** Pipeline output port ID to send the filtered input packets to.
-	 * Can be updated later.
-	 *
-	 * @see struct rte_port_in_action_fltr_params
-	 */
-	uint32_t port_id;
+    /** Pipeline output port ID to send the filtered input packets to.
+     * Can be updated later.
+     *
+     * @see struct rte_port_in_action_fltr_params
+     */
+    uint32_t port_id;
 };
 
 /** Filter action parameters (per action). */
 struct rte_port_in_action_fltr_params {
-	/** Pipeline output port ID to send the filtered input packets to. */
-	uint32_t port_id;
+    /** Pipeline output port ID to send the filtered input packets to. */
+    uint32_t port_id;
 };
 
 /**
@@ -120,43 +120,43 @@ struct rte_port_in_action_fltr_params {
 
 /** Load balance action configuration (per action profile). */
 struct rte_port_in_action_lb_config {
-	/** Key size (number of bytes). */
-	uint32_t key_size;
+    /** Key size (number of bytes). */
+    uint32_t key_size;
 
-	/** Key offset within the input packet buffer. Offset 0 points to the
-	 * first byte of the MBUF structure.
-	 */
-	uint32_t key_offset;
+    /** Key offset within the input packet buffer. Offset 0 points to the
+     * first byte of the MBUF structure.
+     */
+    uint32_t key_offset;
 
-	/** Key mask(*key_size* bytes are valid). */
-	uint8_t key_mask[RTE_PORT_IN_ACTION_LB_KEY_SIZE_MAX];
+    /** Key mask(*key_size* bytes are valid). */
+    uint8_t key_mask[RTE_PORT_IN_ACTION_LB_KEY_SIZE_MAX];
 
-	/** Hash function. */
-	rte_table_hash_op_hash f_hash;
+    /** Hash function. */
+    rte_table_hash_op_hash f_hash;
 
-	/** Seed value for *f_hash*. */
-	uint64_t seed;
+    /** Seed value for *f_hash*. */
+    uint64_t seed;
 
-	/** Table defining the weight of each pipeline output port. The weights
-	 * are set in 1/RTE_PORT_IN_ACTION_LB_TABLE_SIZE increments. To assign a
-	 * weight of N/RTE_PORT_IN_ACTION_LB_TABLE_SIZE to a given output port
-	 * (0 <= N <= RTE_PORT_IN_ACTION_LB_TABLE_SIZE), the output port needs
-	 * to show up exactly N times in this table. Can be updated later.
-	 *
-	 * @see struct rte_port_in_action_lb_params
-	 */
-	uint32_t port_id[RTE_PORT_IN_ACTION_LB_TABLE_SIZE];
+    /** Table defining the weight of each pipeline output port. The weights
+     * are set in 1/RTE_PORT_IN_ACTION_LB_TABLE_SIZE increments. To assign a
+     * weight of N/RTE_PORT_IN_ACTION_LB_TABLE_SIZE to a given output port
+     * (0 <= N <= RTE_PORT_IN_ACTION_LB_TABLE_SIZE), the output port needs
+     * to show up exactly N times in this table. Can be updated later.
+     *
+     * @see struct rte_port_in_action_lb_params
+     */
+    uint32_t port_id[RTE_PORT_IN_ACTION_LB_TABLE_SIZE];
 };
 
 /** Load balance action parameters (per action). */
 struct rte_port_in_action_lb_params {
-	/** Table defining the weight of each pipeline output port. The weights
-	 * are set in 1/RTE_PORT_IN_ACTION_LB_TABLE_SIZE increments. To assign a
-	 * weight of N/RTE_PORT_IN_ACTION_LB_TABLE_SIZE to a given output port
-	 * (0 <= N <= RTE_PORT_IN_ACTION_LB_TABLE_SIZE), the output port needs
-	 * to show up exactly N times in this table.
-	 */
-	uint32_t port_id[RTE_PORT_IN_ACTION_LB_TABLE_SIZE];
+    /** Table defining the weight of each pipeline output port. The weights
+     * are set in 1/RTE_PORT_IN_ACTION_LB_TABLE_SIZE increments. To assign a
+     * weight of N/RTE_PORT_IN_ACTION_LB_TABLE_SIZE to a given output port
+     * (0 <= N <= RTE_PORT_IN_ACTION_LB_TABLE_SIZE), the output port needs
+     * to show up exactly N times in this table.
+     */
+    uint32_t port_id[RTE_PORT_IN_ACTION_LB_TABLE_SIZE];
 };
 
 /**
@@ -206,9 +206,9 @@ rte_port_in_action_profile_free(struct rte_port_in_action_profile *profile);
 __rte_experimental
 int
 rte_port_in_action_profile_action_register(
-	struct rte_port_in_action_profile *profile,
-	enum rte_port_in_action_type type,
-	void *action_config);
+    struct rte_port_in_action_profile *profile,
+    enum rte_port_in_action_type type,
+    void *action_config);
 
 /**
  * Input port action profile freeze.
@@ -252,7 +252,7 @@ struct rte_port_in_action;
 __rte_experimental
 struct rte_port_in_action *
 rte_port_in_action_create(struct rte_port_in_action_profile *profile,
-	uint32_t socket_id);
+    uint32_t socket_id);
 
 /**
  * Input port action free.
@@ -279,7 +279,7 @@ rte_port_in_action_free(struct rte_port_in_action *action);
 __rte_experimental
 int
 rte_port_in_action_params_get(struct rte_port_in_action *action,
-	struct rte_pipeline_port_in_params *params);
+    struct rte_pipeline_port_in_params *params);
 
 /**
  * Input port action apply.
@@ -299,8 +299,8 @@ rte_port_in_action_params_get(struct rte_port_in_action *action,
 __rte_experimental
 int
 rte_port_in_action_apply(struct rte_port_in_action *action,
-	enum rte_port_in_action_type type,
-	void *action_params);
+    enum rte_port_in_action_type type,
+    void *action_params);
 
 #ifdef __cplusplus
 }

@@ -35,95 +35,95 @@ extern "C" {
 
 /* Processor Power State */
 enum freq_val {
-	LOW,
-	MED,
-	HGH,
-	NUM_FREQ = NUM_FREQS
+    LOW,
+    MED,
+    HGH,
+    NUM_FREQ = NUM_FREQS
 };
 
 
 /* Queue Polling State */
 enum queue_state {
-	TRAINING, /* NO TRAFFIC */
-	MED_NORMAL,   /* MED */
-	HGH_BUSY,     /* HIGH */
-	LOW_PURGE,    /* LOW */
+    TRAINING, /* NO TRAFFIC */
+    MED_NORMAL,   /* MED */
+    HGH_BUSY,     /* HIGH */
+    LOW_PURGE,    /* LOW */
 };
 
 /* Queue Stats */
 struct freq_threshold {
 
-	uint64_t base_edpi;
-	bool trained;
-	uint32_t threshold_percent;
-	uint32_t cur_train_iter;
+    uint64_t base_edpi;
+    bool trained;
+    uint32_t threshold_percent;
+    uint32_t cur_train_iter;
 };
 
 /* Each Worker Thread Empty Poll Stats */
 struct priority_worker {
 
-	/* Current dequeue and throughput counts */
-	/* These 2 are written to by the worker threads */
-	/* So keep them on their own cache line */
-	uint64_t empty_dequeues;
-	uint64_t num_dequeue_pkts;
+    /* Current dequeue and throughput counts */
+    /* These 2 are written to by the worker threads */
+    /* So keep them on their own cache line */
+    uint64_t empty_dequeues;
+    uint64_t num_dequeue_pkts;
 
-	enum queue_state queue_state;
+    enum queue_state queue_state;
 
-	uint64_t empty_dequeues_prev;
-	uint64_t num_dequeue_pkts_prev;
+    uint64_t empty_dequeues_prev;
+    uint64_t num_dequeue_pkts_prev;
 
-	/* Used for training only */
-	struct freq_threshold thresh[NUM_FREQ];
-	enum freq_val cur_freq;
+    /* Used for training only */
+    struct freq_threshold thresh[NUM_FREQ];
+    enum freq_val cur_freq;
 
-	/* bucket arrays to calculate the averages */
-	/* edpi mean empty poll counter difference per interval */
-	uint64_t edpi_av[BINS_AV];
-	/* empty poll counter */
-	uint32_t ec;
-	/* ppi mean valid poll counter per interval */
-	uint64_t ppi_av[BINS_AV];
-	/* valid poll counter */
-	uint32_t pc;
+    /* bucket arrays to calculate the averages */
+    /* edpi mean empty poll counter difference per interval */
+    uint64_t edpi_av[BINS_AV];
+    /* empty poll counter */
+    uint32_t ec;
+    /* ppi mean valid poll counter per interval */
+    uint64_t ppi_av[BINS_AV];
+    /* valid poll counter */
+    uint32_t pc;
 
-	uint32_t lcore_id;
-	uint32_t iter_counter;
-	uint32_t threshold_ctr;
-	uint32_t display_ctr;
-	uint8_t  dev_id;
+    uint32_t lcore_id;
+    uint32_t iter_counter;
+    uint32_t threshold_ctr;
+    uint32_t display_ctr;
+    uint8_t  dev_id;
 
 } __rte_cache_aligned;
 
 
 struct stats_data {
 
-	struct priority_worker wrk_stats[NUM_NODES];
+    struct priority_worker wrk_stats[NUM_NODES];
 
-	/* flag to stop rx threads processing packets until training over */
-	bool start_rx;
+    /* flag to stop rx threads processing packets until training over */
+    bool start_rx;
 
 };
 
 /* Empty Poll Parameters */
 struct ep_params {
 
-	/* Timer related stuff */
-	uint64_t interval_ticks;
-	uint32_t max_train_iter;
+    /* Timer related stuff */
+    uint64_t interval_ticks;
+    uint32_t max_train_iter;
 
-	struct rte_timer timer0;
-	struct stats_data wrk_data;
+    struct rte_timer timer0;
+    struct stats_data wrk_data;
 };
 
 
 /* Sample App Init information */
 struct ep_policy {
 
-	uint64_t med_base_edpi;
-	uint64_t hgh_base_edpi;
+    uint64_t med_base_edpi;
+    uint64_t hgh_base_edpi;
 
-	enum queue_state state;
+    enum queue_state state;
 };
 
 
@@ -145,7 +145,7 @@ struct ep_policy {
 __rte_experimental
 int
 rte_power_empty_poll_stat_init(struct ep_params **eptr, uint8_t *freq_tlb,
-		struct ep_policy *policy);
+        struct ep_policy *policy);
 
 /**
  * Free the resource hold by power management system.

@@ -25,39 +25,39 @@ extern "C" {
 #include <linux/virtio_ring.h>
 #include <linux/virtio_net.h>
 
-#define RTE_VHOST_USER_CLIENT		(1ULL << 0)
-#define RTE_VHOST_USER_NO_RECONNECT	(1ULL << 1)
-#define RTE_VHOST_USER_DEQUEUE_ZERO_COPY	(1ULL << 2)
-#define RTE_VHOST_USER_IOMMU_SUPPORT	(1ULL << 3)
-#define RTE_VHOST_USER_POSTCOPY_SUPPORT		(1ULL << 4)
+#define RTE_VHOST_USER_CLIENT        (1ULL << 0)
+#define RTE_VHOST_USER_NO_RECONNECT    (1ULL << 1)
+#define RTE_VHOST_USER_DEQUEUE_ZERO_COPY    (1ULL << 2)
+#define RTE_VHOST_USER_IOMMU_SUPPORT    (1ULL << 3)
+#define RTE_VHOST_USER_POSTCOPY_SUPPORT        (1ULL << 4)
 /* support mbuf with external buffer attached */
-#define RTE_VHOST_USER_EXTBUF_SUPPORT	(1ULL << 5)
+#define RTE_VHOST_USER_EXTBUF_SUPPORT    (1ULL << 5)
 /* support only linear buffers (no chained mbufs) */
-#define RTE_VHOST_USER_LINEARBUF_SUPPORT	(1ULL << 6)
+#define RTE_VHOST_USER_LINEARBUF_SUPPORT    (1ULL << 6)
 
 /** Protocol features. */
 #ifndef VHOST_USER_PROTOCOL_F_MQ
-#define VHOST_USER_PROTOCOL_F_MQ	0
+#define VHOST_USER_PROTOCOL_F_MQ    0
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_LOG_SHMFD
-#define VHOST_USER_PROTOCOL_F_LOG_SHMFD	1
+#define VHOST_USER_PROTOCOL_F_LOG_SHMFD    1
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_RARP
-#define VHOST_USER_PROTOCOL_F_RARP	2
+#define VHOST_USER_PROTOCOL_F_RARP    2
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_REPLY_ACK
-#define VHOST_USER_PROTOCOL_F_REPLY_ACK	3
+#define VHOST_USER_PROTOCOL_F_REPLY_ACK    3
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_NET_MTU
-#define VHOST_USER_PROTOCOL_F_NET_MTU	4
+#define VHOST_USER_PROTOCOL_F_NET_MTU    4
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_SLAVE_REQ
-#define VHOST_USER_PROTOCOL_F_SLAVE_REQ	5
+#define VHOST_USER_PROTOCOL_F_SLAVE_REQ    5
 #endif
 
 #ifndef VHOST_USER_PROTOCOL_F_CRYPTO_SESSION
@@ -82,7 +82,7 @@ extern "C" {
 
 /** Indicate whether protocol features negotiation is supported. */
 #ifndef VHOST_USER_F_PROTOCOL_FEATURES
-#define VHOST_USER_F_PROTOCOL_FEATURES	30
+#define VHOST_USER_F_PROTOCOL_FEATURES    30
 #endif
 
 /**
@@ -90,119 +90,119 @@ extern "C" {
  * addresses in QEMUs memory file.
  */
 struct rte_vhost_mem_region {
-	uint64_t guest_phys_addr;
-	uint64_t guest_user_addr;
-	uint64_t host_user_addr;
-	uint64_t size;
-	void	 *mmap_addr;
-	uint64_t mmap_size;
-	int fd;
+    uint64_t guest_phys_addr;
+    uint64_t guest_user_addr;
+    uint64_t host_user_addr;
+    uint64_t size;
+    void     *mmap_addr;
+    uint64_t mmap_size;
+    int fd;
 };
 
 /**
  * Memory structure includes region and mapping information.
  */
 struct rte_vhost_memory {
-	uint32_t nregions;
-	struct rte_vhost_mem_region regions[];
+    uint32_t nregions;
+    struct rte_vhost_mem_region regions[];
 };
 
 struct rte_vhost_inflight_desc_split {
-	uint8_t inflight;
-	uint8_t padding[5];
-	uint16_t next;
-	uint64_t counter;
+    uint8_t inflight;
+    uint8_t padding[5];
+    uint16_t next;
+    uint64_t counter;
 };
 
 struct rte_vhost_inflight_info_split {
-	uint64_t features;
-	uint16_t version;
-	uint16_t desc_num;
-	uint16_t last_inflight_io;
-	uint16_t used_idx;
-	struct rte_vhost_inflight_desc_split desc[0];
+    uint64_t features;
+    uint16_t version;
+    uint16_t desc_num;
+    uint16_t last_inflight_io;
+    uint16_t used_idx;
+    struct rte_vhost_inflight_desc_split desc[0];
 };
 
 struct rte_vhost_inflight_desc_packed {
-	uint8_t inflight;
-	uint8_t padding;
-	uint16_t next;
-	uint16_t last;
-	uint16_t num;
-	uint64_t counter;
-	uint16_t id;
-	uint16_t flags;
-	uint32_t len;
-	uint64_t addr;
+    uint8_t inflight;
+    uint8_t padding;
+    uint16_t next;
+    uint16_t last;
+    uint16_t num;
+    uint64_t counter;
+    uint16_t id;
+    uint16_t flags;
+    uint32_t len;
+    uint64_t addr;
 };
 
 struct rte_vhost_inflight_info_packed {
-	uint64_t features;
-	uint16_t version;
-	uint16_t desc_num;
-	uint16_t free_head;
-	uint16_t old_free_head;
-	uint16_t used_idx;
-	uint16_t old_used_idx;
-	uint8_t used_wrap_counter;
-	uint8_t old_used_wrap_counter;
-	uint8_t padding[7];
-	struct rte_vhost_inflight_desc_packed desc[0];
+    uint64_t features;
+    uint16_t version;
+    uint16_t desc_num;
+    uint16_t free_head;
+    uint16_t old_free_head;
+    uint16_t used_idx;
+    uint16_t old_used_idx;
+    uint8_t used_wrap_counter;
+    uint8_t old_used_wrap_counter;
+    uint8_t padding[7];
+    struct rte_vhost_inflight_desc_packed desc[0];
 };
 
 struct rte_vhost_resubmit_desc {
-	uint16_t index;
-	uint64_t counter;
+    uint16_t index;
+    uint64_t counter;
 };
 
 struct rte_vhost_resubmit_info {
-	struct rte_vhost_resubmit_desc *resubmit_list;
-	uint16_t resubmit_num;
+    struct rte_vhost_resubmit_desc *resubmit_list;
+    uint16_t resubmit_num;
 };
 
 struct rte_vhost_ring_inflight {
-	union {
-		struct rte_vhost_inflight_info_split *inflight_split;
-		struct rte_vhost_inflight_info_packed *inflight_packed;
-	};
+    union {
+        struct rte_vhost_inflight_info_split *inflight_split;
+        struct rte_vhost_inflight_info_packed *inflight_packed;
+    };
 
-	struct rte_vhost_resubmit_info *resubmit_inflight;
+    struct rte_vhost_resubmit_info *resubmit_inflight;
 };
 
 struct rte_vhost_vring {
-	union {
-		struct vring_desc *desc;
-		struct vring_packed_desc *desc_packed;
-	};
-	union {
-		struct vring_avail *avail;
-		struct vring_packed_desc_event *driver_event;
-	};
-	union {
-		struct vring_used *used;
-		struct vring_packed_desc_event *device_event;
-	};
-	uint64_t		log_guest_addr;
+    union {
+        struct vring_desc *desc;
+        struct vring_packed_desc *desc_packed;
+    };
+    union {
+        struct vring_avail *avail;
+        struct vring_packed_desc_event *driver_event;
+    };
+    union {
+        struct vring_used *used;
+        struct vring_packed_desc_event *device_event;
+    };
+    uint64_t        log_guest_addr;
 
-	/** Deprecated, use rte_vhost_vring_call() instead. */
-	int			callfd;
+    /** Deprecated, use rte_vhost_vring_call() instead. */
+    int            callfd;
 
-	int			kickfd;
-	uint16_t		size;
+    int            kickfd;
+    uint16_t        size;
 };
 
 /**
  * Possible results of the vhost user message handling callbacks
  */
 enum rte_vhost_msg_result {
-	/* Message handling failed */
-	RTE_VHOST_MSG_RESULT_ERR = -1,
-	/* Message handling successful */
-	RTE_VHOST_MSG_RESULT_OK =  0,
-	/* Message handling successful and reply prepared */
-	RTE_VHOST_MSG_RESULT_REPLY =  1,
-	/* Message not handled */
-	RTE_VHOST_MSG_RESULT_NOT_HANDLED,
+    /* Message handling failed */
+    RTE_VHOST_MSG_RESULT_ERR = -1,
+    /* Message handling successful */
+    RTE_VHOST_MSG_RESULT_OK =  0,
+    /* Message handling successful and reply prepared */
+    RTE_VHOST_MSG_RESULT_REPLY =  1,
+    /* Message not handled */
+    RTE_VHOST_MSG_RESULT_NOT_HANDLED,
 };
 
 /**
@@ -225,41 +225,41 @@ typedef enum rte_vhost_msg_result (*rte_vhost_msg_handle)(int vid, void *msg);
  * Optional vhost user message handlers.
  */
 struct rte_vhost_user_extern_ops {
-	/* Called prior to the master message handling. */
-	rte_vhost_msg_handle pre_msg_handle;
-	/* Called after the master message handling. */
-	rte_vhost_msg_handle post_msg_handle;
+    /* Called prior to the master message handling. */
+    rte_vhost_msg_handle pre_msg_handle;
+    /* Called after the master message handling. */
+    rte_vhost_msg_handle post_msg_handle;
 };
 
 /**
  * Device and vring operations.
  */
 struct vhost_device_ops {
-	int (*new_device)(int vid);		/**< Add device. */
-	void (*destroy_device)(int vid);	/**< Remove device. */
+    int (*new_device)(int vid);        /**< Add device. */
+    void (*destroy_device)(int vid);    /**< Remove device. */
 
-	int (*vring_state_changed)(int vid, uint16_t queue_id, int enable);	/**< triggered when a vring is enabled or disabled */
+    int (*vring_state_changed)(int vid, uint16_t queue_id, int enable);    /**< triggered when a vring is enabled or disabled */
 
-	/**
-	 * Features could be changed after the feature negotiation.
-	 * For example, VHOST_F_LOG_ALL will be set/cleared at the
-	 * start/end of live migration, respectively. This callback
-	 * is used to inform the application on such change.
-	 */
-	int (*features_changed)(int vid, uint64_t features);
+    /**
+     * Features could be changed after the feature negotiation.
+     * For example, VHOST_F_LOG_ALL will be set/cleared at the
+     * start/end of live migration, respectively. This callback
+     * is used to inform the application on such change.
+     */
+    int (*features_changed)(int vid, uint64_t features);
 
-	int (*new_connection)(int vid);
-	void (*destroy_connection)(int vid);
+    int (*new_connection)(int vid);
+    void (*destroy_connection)(int vid);
 
-	/**
-	 * This callback gets called each time a guest gets notified
-	 * about waiting packets. This is the interrupt handling trough
-	 * the eventfd_write(callfd), which can be used for counting these
-	 * "slow" syscalls.
-	 */
-	void (*guest_notified)(int vid);
+    /**
+     * This callback gets called each time a guest gets notified
+     * about waiting packets. This is the interrupt handling trough
+     * the eventfd_write(callfd), which can be used for counting these
+     * "slow" syscalls.
+     */
+    void (*guest_notified)(int vid);
 
-	void *reserved[1]; /**< Reserved for future extension */
+    void *reserved[1]; /**< Reserved for future extension */
 };
 
 /**
@@ -281,19 +281,19 @@ __rte_deprecated
 static __rte_always_inline uint64_t
 rte_vhost_gpa_to_vva(struct rte_vhost_memory *mem, uint64_t gpa)
 {
-	struct rte_vhost_mem_region *reg;
-	uint32_t i;
+    struct rte_vhost_mem_region *reg;
+    uint32_t i;
 
-	for (i = 0; i < mem->nregions; i++) {
-		reg = &mem->regions[i];
-		if (gpa >= reg->guest_phys_addr &&
-		    gpa <  reg->guest_phys_addr + reg->size) {
-			return gpa - reg->guest_phys_addr +
-			       reg->host_user_addr;
-		}
-	}
+    for (i = 0; i < mem->nregions; i++) {
+        reg = &mem->regions[i];
+        if (gpa >= reg->guest_phys_addr &&
+            gpa <  reg->guest_phys_addr + reg->size) {
+            return gpa - reg->guest_phys_addr +
+                   reg->host_user_addr;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -315,29 +315,29 @@ rte_vhost_gpa_to_vva(struct rte_vhost_memory *mem, uint64_t gpa)
 __rte_experimental
 static __rte_always_inline uint64_t
 rte_vhost_va_from_guest_pa(struct rte_vhost_memory *mem,
-						   uint64_t gpa, uint64_t *len)
+                           uint64_t gpa, uint64_t *len)
 {
-	struct rte_vhost_mem_region *r;
-	uint32_t i;
+    struct rte_vhost_mem_region *r;
+    uint32_t i;
 
-	for (i = 0; i < mem->nregions; i++) {
-		r = &mem->regions[i];
-		if (gpa >= r->guest_phys_addr &&
-		    gpa <  r->guest_phys_addr + r->size) {
+    for (i = 0; i < mem->nregions; i++) {
+        r = &mem->regions[i];
+        if (gpa >= r->guest_phys_addr &&
+            gpa <  r->guest_phys_addr + r->size) {
 
-			if (unlikely(*len > r->guest_phys_addr + r->size - gpa))
-				*len = r->guest_phys_addr + r->size - gpa;
+            if (unlikely(*len > r->guest_phys_addr + r->size - gpa))
+                *len = r->guest_phys_addr + r->size - gpa;
 
-			return gpa - r->guest_phys_addr +
-			       r->host_user_addr;
-		}
-	}
-	*len = 0;
+            return gpa - r->guest_phys_addr +
+                   r->host_user_addr;
+        }
+    }
+    *len = 0;
 
-	return 0;
+    return 0;
 }
 
-#define RTE_VHOST_NEED_LOG(features)	((features) & (1ULL << VHOST_F_LOG_ALL))
+#define RTE_VHOST_NEED_LOG(features)    ((features) & (1ULL << VHOST_F_LOG_ALL))
 
 /**
  * Log the memory write start with given address.
@@ -378,7 +378,7 @@ void rte_vhost_log_write(int vid, uint64_t addr, uint64_t len);
  *  the length to write
  */
 void rte_vhost_log_used_vring(int vid, uint16_t vring_idx,
-			      uint64_t offset, uint64_t len);
+                  uint64_t offset, uint64_t len);
 
 int rte_vhost_enable_guest_notification(int vid, uint16_t queue_id, int enable);
 
@@ -497,7 +497,7 @@ int rte_vhost_driver_get_features(const char *path, uint64_t *features);
 __rte_experimental
 int
 rte_vhost_driver_set_protocol_features(const char *path,
-		uint64_t protocol_features);
+        uint64_t protocol_features);
 
 /**
  * Get the protocol feature bits before feature negotiation.
@@ -512,7 +512,7 @@ rte_vhost_driver_set_protocol_features(const char *path,
 __rte_experimental
 int
 rte_vhost_driver_get_protocol_features(const char *path,
-		uint64_t *protocol_features);
+        uint64_t *protocol_features);
 
 /**
  * Get the queue number bits before feature negotiation.
@@ -542,7 +542,7 @@ int rte_vhost_get_negotiated_features(int vid, uint64_t *features);
 
 /* Register callbacks. */
 int rte_vhost_driver_callback_register(const char *path,
-	struct vhost_device_ops const * const ops);
+    struct vhost_device_ops const * const ops);
 
 /**
  *
@@ -660,7 +660,7 @@ struct rte_mempool;
  *  num of packets enqueued
  */
 uint16_t rte_vhost_enqueue_burst(int vid, uint16_t queue_id,
-	struct rte_mbuf **pkts, uint16_t count);
+    struct rte_mbuf **pkts, uint16_t count);
 
 /**
  * This function gets guest buffers from the virtio device TX virtqueue,
@@ -680,7 +680,7 @@ uint16_t rte_vhost_enqueue_burst(int vid, uint16_t queue_id,
  *  num of packets dequeued
  */
 uint16_t rte_vhost_dequeue_burst(int vid, uint16_t queue_id,
-	struct rte_mempool *mbuf_pool, struct rte_mbuf **pkts, uint16_t count);
+    struct rte_mempool *mbuf_pool, struct rte_mbuf **pkts, uint16_t count);
 
 /**
  * Get guest mem table: a list of memory regions.
@@ -711,7 +711,7 @@ int rte_vhost_get_mem_table(int vid, struct rte_vhost_memory **mem);
  *  0 on success, -1 on failure
  */
 int rte_vhost_get_vhost_vring(int vid, uint16_t vring_idx,
-			      struct rte_vhost_vring *vring);
+                  struct rte_vhost_vring *vring);
 
 /**
  * Get guest inflight vring info, including inflight ring and resubmit list.
@@ -728,7 +728,7 @@ int rte_vhost_get_vhost_vring(int vid, uint16_t vring_idx,
 __rte_experimental
 int
 rte_vhost_get_vhost_ring_inflight(int vid, uint16_t vring_idx,
-	struct rte_vhost_ring_inflight *vring);
+    struct rte_vhost_ring_inflight *vring);
 
 /**
  * Set split inflight descriptor.
@@ -748,7 +748,7 @@ rte_vhost_get_vhost_ring_inflight(int vid, uint16_t vring_idx,
 __rte_experimental
 int
 rte_vhost_set_inflight_desc_split(int vid, uint16_t vring_idx,
-	uint16_t idx);
+    uint16_t idx);
 
 /**
  * Set packed inflight descriptor and get corresponding inflight entry
@@ -771,7 +771,7 @@ rte_vhost_set_inflight_desc_split(int vid, uint16_t vring_idx,
 __rte_experimental
 int
 rte_vhost_set_inflight_desc_packed(int vid, uint16_t vring_idx,
-	uint16_t head, uint16_t last, uint16_t *inflight_entry);
+    uint16_t head, uint16_t last, uint16_t *inflight_entry);
 
 /**
  * Save the head of list that the last batch of used descriptors.
@@ -788,7 +788,7 @@ rte_vhost_set_inflight_desc_packed(int vid, uint16_t vring_idx,
 __rte_experimental
 int
 rte_vhost_set_last_inflight_io_split(int vid,
-	uint16_t vring_idx, uint16_t idx);
+    uint16_t vring_idx, uint16_t idx);
 
 /**
  * Update the inflight free_head, used_idx and used_wrap_counter.
@@ -808,7 +808,7 @@ rte_vhost_set_last_inflight_io_split(int vid,
 __rte_experimental
 int
 rte_vhost_set_last_inflight_io_packed(int vid,
-	uint16_t vring_idx, uint16_t head);
+    uint16_t vring_idx, uint16_t head);
 
 /**
  * Clear the split inflight status.
@@ -827,7 +827,7 @@ rte_vhost_set_last_inflight_io_packed(int vid,
 __rte_experimental
 int
 rte_vhost_clr_inflight_desc_split(int vid, uint16_t vring_idx,
-	uint16_t last_used_idx, uint16_t idx);
+    uint16_t last_used_idx, uint16_t idx);
 
 /**
  * Clear the packed inflight status.
@@ -844,7 +844,7 @@ rte_vhost_clr_inflight_desc_split(int vid, uint16_t vring_idx,
 __rte_experimental
 int
 rte_vhost_clr_inflight_desc_packed(int vid, uint16_t vring_idx,
-	uint16_t head);
+    uint16_t head);
 
 /**
  * Notify the guest that used descriptors have been added to the vring.  This
@@ -904,7 +904,7 @@ rte_vhost_get_log_base(int vid, uint64_t *log_base, uint64_t *log_size);
 __rte_experimental
 int
 rte_vhost_get_vring_base(int vid, uint16_t queue_id,
-		uint16_t *last_avail_idx, uint16_t *last_used_idx);
+        uint16_t *last_avail_idx, uint16_t *last_used_idx);
 
 /**
  * Get last_avail/last_used of the vhost virtqueue
@@ -927,7 +927,7 @@ rte_vhost_get_vring_base(int vid, uint16_t queue_id,
 __rte_experimental
 int
 rte_vhost_get_vring_base_from_inflight(int vid,
-	uint16_t queue_id, uint16_t *last_avail_idx, uint16_t *last_used_idx);
+    uint16_t queue_id, uint16_t *last_avail_idx, uint16_t *last_used_idx);
 
 /**
  * Set last_avail/used_idx of the vhost virtqueue
@@ -946,7 +946,7 @@ rte_vhost_get_vring_base_from_inflight(int vid,
 __rte_experimental
 int
 rte_vhost_set_vring_base(int vid, uint16_t queue_id,
-		uint16_t last_avail_idx, uint16_t last_used_idx);
+        uint16_t last_avail_idx, uint16_t last_used_idx);
 
 /**
  * Register external message handling callbacks
@@ -963,7 +963,7 @@ rte_vhost_set_vring_base(int vid, uint16_t queue_id,
 __rte_experimental
 int
 rte_vhost_extern_callback_register(int vid,
-		struct rte_vhost_user_extern_ops const * const ops, void *ctx);
+        struct rte_vhost_user_extern_ops const * const ops, void *ctx);
 
 /**
  * Get vdpa device id for vhost device.

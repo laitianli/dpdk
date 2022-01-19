@@ -31,22 +31,22 @@ extern "C" {
  * Structure to pass FPGA 4G FEC configuration.
  */
 struct fpga_lte_fec_conf {
-	/**< 1 if PF is used for dataplane, 0 for VFs */
-	bool pf_mode_en;
-	/**< Number of UL queues per VF */
-	uint8_t vf_ul_queues_number[FPGA_LTE_FEC_NUM_VFS];
-	/**< Number of DL queues per VF */
-	uint8_t vf_dl_queues_number[FPGA_LTE_FEC_NUM_VFS];
-	/**< UL bandwidth. Needed for schedule algorithm */
-	uint8_t ul_bandwidth;
-	/**< DL bandwidth. Needed for schedule algorithm */
-	uint8_t dl_bandwidth;
-	/**< UL Load Balance */
-	uint8_t ul_load_balance;
-	/**< DL Load Balance */
-	uint8_t dl_load_balance;
-	/**< FLR timeout value */
-	uint16_t flr_time_out;
+    /**< 1 if PF is used for dataplane, 0 for VFs */
+    bool pf_mode_en;
+    /**< Number of UL queues per VF */
+    uint8_t vf_ul_queues_number[FPGA_LTE_FEC_NUM_VFS];
+    /**< Number of DL queues per VF */
+    uint8_t vf_dl_queues_number[FPGA_LTE_FEC_NUM_VFS];
+    /**< UL bandwidth. Needed for schedule algorithm */
+    uint8_t ul_bandwidth;
+    /**< DL bandwidth. Needed for schedule algorithm */
+    uint8_t dl_bandwidth;
+    /**< UL Load Balance */
+    uint8_t ul_load_balance;
+    /**< DL Load Balance */
+    uint8_t dl_load_balance;
+    /**< FLR timeout value */
+    uint16_t flr_time_out;
 };
 
 /**
@@ -65,7 +65,7 @@ struct fpga_lte_fec_conf {
 __rte_experimental
 int
 fpga_lte_fec_configure(const char *dev_name,
-		const struct fpga_lte_fec_conf *conf);
+        const struct fpga_lte_fec_conf *conf);
 
 #ifdef __cplusplus
 }

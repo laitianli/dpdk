@@ -9,11 +9,11 @@
 
 int
 thread_pipeline_enable(uint32_t thread_id,
-	const char *pipeline_name);
+    const char *pipeline_name);
 
 int
 thread_pipeline_disable(uint32_t thread_id,
-	const char *pipeline_name);
+    const char *pipeline_name);
 
 int
 thread_init(void);

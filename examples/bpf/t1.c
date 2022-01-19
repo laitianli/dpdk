@@ -36,21 +36,21 @@
 uint64_t
 entry(void *pkt)
 {
-	struct ether_header *ether_header = (void *)pkt;
+    struct ether_header *ether_header = (void *)pkt;
 
-	if (ether_header->ether_type != htons(0x0800))
-		return 0;
+    if (ether_header->ether_type != htons(0x0800))
+        return 0;
 
-	struct iphdr *iphdr = (void *)(ether_header + 1);
-	if (iphdr->protocol != 17 || (iphdr->frag_off & 0x1ffff) != 0 ||
-			iphdr->daddr != htonl(0x1020304))
-		return 0;
+    struct iphdr *iphdr = (void *)(ether_header + 1);
+    if (iphdr->protocol != 17 || (iphdr->frag_off & 0x1ffff) != 0 ||
+            iphdr->daddr != htonl(0x1020304))
+        return 0;
 
-	int hlen = iphdr->ihl * 4;
-	struct udphdr *udphdr = (void *)iphdr + hlen;
+    int hlen = iphdr->ihl * 4;
+    struct udphdr *udphdr = (void *)iphdr + hlen;
 
-	if (udphdr->dest != htons(5000))
-		return 0;
+    if (udphdr->dest != htons(5000))
+        return 0;
 
-	return 1;
+    return 1;
 }

@@ -22,20 +22,20 @@
 
 int main(int argc, char **argv)
 {
-	int ret;
-	struct cmdline *cl;
+    int ret;
+    struct cmdline *cl;
 
-	ret = rte_eal_init(argc, argv);
-	if (ret < 0)
-		rte_panic("Cannot init EAL\n");
+    ret = rte_eal_init(argc, argv);
+    if (ret < 0)
+        rte_panic("Cannot init EAL\n");
 
-	cl = cmdline_stdin_new(main_ctx, "example> ");
-	if (cl == NULL)
-		rte_panic("Cannot create cmdline instance\n");
-	cmdline_interact(cl);
-	cmdline_stdin_exit(cl);
+    cl = cmdline_stdin_new(main_ctx, "example> ");
+    if (cl == NULL)
+        rte_panic("Cannot create cmdline instance\n");
+    cmdline_interact(cl);
+    cmdline_stdin_exit(cl);
 
-	rte_eal_cleanup();
+    rte_eal_cleanup();
 
-	return 0;
+    return 0;
 }

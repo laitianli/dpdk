@@ -15,30 +15,30 @@
 #define CXGBE_FLOW_POLL_CNT 100 /* Max number of times to poll */
 
 struct chrte_fparse {
-	int (*fptr)(const void *mask, /* currently supported mask */
-		    const struct rte_flow_item *item, /* user input */
-		    struct ch_filter_specification *fs, /* where to parse */
-		    struct rte_flow_error *e);
-	const void *dmask; /* Specify what is supported by chelsio by default*/
+    int (*fptr)(const void *mask, /* currently supported mask */
+            const struct rte_flow_item *item, /* user input */
+            struct ch_filter_specification *fs, /* where to parse */
+            struct rte_flow_error *e);
+    const void *dmask; /* Specify what is supported by chelsio by default*/
 };
 
 struct rte_flow {
-	struct filter_entry *f;
-	struct ch_filter_specification fs; /* temp, to create filter */
-	struct chrte_fparse *item_parser;
-	/*
-	 * filter_entry doesn't store user priority.
-	 * Post creation of filter this will indicate the
-	 * flow index (fidx) for both hash and tcam filters
-	 */
-	unsigned int fidx;
-	struct rte_eth_dev *dev;
+    struct filter_entry *f;
+    struct ch_filter_specification fs; /* temp, to create filter */
+    struct chrte_fparse *item_parser;
+    /*
+     * filter_entry doesn't store user priority.
+     * Post creation of filter this will indicate the
+     * flow index (fidx) for both hash and tcam filters
+     */
+    unsigned int fidx;
+    struct rte_eth_dev *dev;
 };
 
 int
 cxgbe_dev_filter_ctrl(struct rte_eth_dev *dev,
-		      enum rte_filter_type filter_type,
-		      enum rte_filter_op filter_op,
-		      void *arg);
+              enum rte_filter_type filter_type,
+              enum rte_filter_op filter_op,
+              void *arg);
 
 #endif /* _CXGBE_FLOW_H_ */

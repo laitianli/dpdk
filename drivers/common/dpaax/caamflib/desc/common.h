@@ -31,15 +31,15 @@
  *           functions where it is used.
  */
 struct alginfo {
-	uint32_t algtype;
-	uint32_t keylen;
-	uint64_t key;
-	uint32_t key_enc_flags;
-	enum rta_data_type key_type;
-	uint16_t algmode;
+    uint32_t algtype;
+    uint32_t keylen;
+    uint64_t key;
+    uint32_t key_enc_flags;
+    enum rta_data_type key_type;
+    uint16_t algmode;
 };
 
-#define INLINE_KEY(alginfo)	inline_flags(alginfo->key_type)
+#define INLINE_KEY(alginfo)    inline_flags(alginfo->key_type)
 
 /**
  * rta_inline_query() - Provide indications on which data items can be inlined
@@ -61,26 +61,26 @@ struct alginfo {
  */
 static inline int
 rta_inline_query(unsigned int sd_base_len,
-		 unsigned int jd_len,
-		 unsigned int *data_len,
-		 uint32_t *inl_mask,
-		 unsigned int count)
+         unsigned int jd_len,
+         unsigned int *data_len,
+         uint32_t *inl_mask,
+         unsigned int count)
 {
-	int rem_bytes = (int)(CAAM_DESC_BYTES_MAX - sd_base_len - jd_len);
-	unsigned int i;
+    int rem_bytes = (int)(CAAM_DESC_BYTES_MAX - sd_base_len - jd_len);
+    unsigned int i;
 
-	*inl_mask = 0;
-	for (i = 0; (i < count) && (rem_bytes > 0); i++) {
-		if (rem_bytes - (int)(data_len[i] +
-			(count - i - 1) * CAAM_PTR_SZ) >= 0) {
-			rem_bytes -= data_len[i];
-			*inl_mask |= (1 << i);
-		} else {
-			rem_bytes -= CAAM_PTR_SZ;
-		}
-	}
+    *inl_mask = 0;
+    for (i = 0; (i < count) && (rem_bytes > 0); i++) {
+        if (rem_bytes - (int)(data_len[i] +
+            (count - i - 1) * CAAM_PTR_SZ) >= 0) {
+            rem_bytes -= data_len[i];
+            *inl_mask |= (1 << i);
+        } else {
+            rem_bytes -= CAAM_PTR_SZ;
+        }
+    }
 
-	return (rem_bytes >= 0) ? 0 : -1;
+    return (rem_bytes >= 0) ? 0 : -1;
 }
 
 /**
@@ -90,9 +90,9 @@ rta_inline_query(unsigned int sd_base_len,
  * @protinfo: protocol Information
  */
 struct protcmd {
-	uint32_t optype;
-	uint32_t protid;
-	uint16_t protinfo;
+    uint32_t optype;
+    uint32_t protid;
+    uint16_t protinfo;
 };
 
 #endif /* __DESC_COMMON_H__ */

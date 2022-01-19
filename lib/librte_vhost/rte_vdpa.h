@@ -19,72 +19,72 @@
 #define MAX_VDPA_NAME_LEN 128
 
 enum vdpa_addr_type {
-	PCI_ADDR,
-	VDPA_ADDR_MAX
+    PCI_ADDR,
+    VDPA_ADDR_MAX
 };
 
 /**
  * vdpa device address
  */
 struct rte_vdpa_dev_addr {
-	/** vdpa address type */
-	enum vdpa_addr_type type;
+    /** vdpa address type */
+    enum vdpa_addr_type type;
 
-	/** vdpa pci address */
-	union {
-		uint8_t __dummy[64];
-		struct rte_pci_addr pci_addr;
-	};
+    /** vdpa pci address */
+    union {
+        uint8_t __dummy[64];
+        struct rte_pci_addr pci_addr;
+    };
 };
 
 /**
  * vdpa device operations
  */
 struct rte_vdpa_dev_ops {
-	/** Get capabilities of this device */
-	int (*get_queue_num)(int did, uint32_t *queue_num);
+    /** Get capabilities of this device */
+    int (*get_queue_num)(int did, uint32_t *queue_num);
 
-	/** Get supported features of this device */
-	int (*get_features)(int did, uint64_t *features);
+    /** Get supported features of this device */
+    int (*get_features)(int did, uint64_t *features);
 
-	/** Get supported protocol features of this device */
-	int (*get_protocol_features)(int did, uint64_t *protocol_features);
+    /** Get supported protocol features of this device */
+    int (*get_protocol_features)(int did, uint64_t *protocol_features);
 
-	/** Driver configure/close the device */
-	int (*dev_conf)(int vid);
-	int (*dev_close)(int vid);
+    /** Driver configure/close the device */
+    int (*dev_conf)(int vid);
+    int (*dev_close)(int vid);
 
-	/** Enable/disable this vring */
-	int (*set_vring_state)(int vid, int vring, int state);
+    /** Enable/disable this vring */
+    int (*set_vring_state)(int vid, int vring, int state);
 
-	/** Set features when changed */
-	int (*set_features)(int vid);
+    /** Set features when changed */
+    int (*set_features)(int vid);
 
-	/** Destination operations when migration done */
-	int (*migration_done)(int vid);
+    /** Destination operations when migration done */
+    int (*migration_done)(int vid);
 
-	/** Get the vfio group fd */
-	int (*get_vfio_group_fd)(int vid);
+    /** Get the vfio group fd */
+    int (*get_vfio_group_fd)(int vid);
 
-	/** Get the vfio device fd */
-	int (*get_vfio_device_fd)(int vid);
+    /** Get the vfio device fd */
+    int (*get_vfio_device_fd)(int vid);
 
-	/** Get the notify area info of the queue */
-	int (*get_notify_area)(int vid, int qid,
-			uint64_t *offset, uint64_t *size);
+    /** Get the notify area info of the queue */
+    int (*get_notify_area)(int vid, int qid,
+            uint64_t *offset, uint64_t *size);
 
-	/** Reserved for future extension */
-	void *reserved[5];
+    /** Reserved for future extension */
+    void *reserved[5];
 };
 
 /**
  * vdpa device structure includes device address and device operations.
  */
 struct rte_vdpa_device {
-	/** vdpa device address */
-	struct rte_vdpa_dev_addr addr;
-	/** vdpa device operations */
-	struct rte_vdpa_dev_ops *ops;
+    /** vdpa device address */
+    struct rte_vdpa_dev_addr addr;
+    /** vdpa device operations */
+    struct rte_vdpa_dev_ops *ops;
 } __rte_cache_aligned;
 
 /**
@@ -103,7 +103,7 @@ struct rte_vdpa_device {
 __rte_experimental
 int
 rte_vdpa_register_device(struct rte_vdpa_dev_addr *addr,
-		struct rte_vdpa_dev_ops *ops);
+        struct rte_vdpa_dev_ops *ops);
 
 /**
  * @warning

@@ -68,16 +68,16 @@ extern "C" {
 extern const char *cmdline_vt100_commands[];
 
 enum cmdline_vt100_parser_state {
-	CMDLINE_VT100_INIT,
-	CMDLINE_VT100_ESCAPE,
-	CMDLINE_VT100_ESCAPE_CSI
+    CMDLINE_VT100_INIT,
+    CMDLINE_VT100_ESCAPE,
+    CMDLINE_VT100_ESCAPE_CSI
 };
 
 #define CMDLINE_VT100_BUF_SIZE 8
 struct cmdline_vt100 {
-	uint8_t bufpos;
-	char buf[CMDLINE_VT100_BUF_SIZE];
-	enum cmdline_vt100_parser_state state;
+    uint8_t bufpos;
+    char buf[CMDLINE_VT100_BUF_SIZE];
+    enum cmdline_vt100_parser_state state;
 };
 
 /**

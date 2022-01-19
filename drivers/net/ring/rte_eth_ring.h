@@ -30,11 +30,11 @@ extern "C" {
  *    the port number of the newly created the ethdev or -1 on error.
  */
 int rte_eth_from_rings(const char *name,
-		struct rte_ring * const rx_queues[],
-		const unsigned nb_rx_queues,
-		struct rte_ring *const tx_queues[],
-		const unsigned nb_tx_queues,
-		const unsigned numa_node);
+        struct rte_ring * const rx_queues[],
+        const unsigned nb_rx_queues,
+        struct rte_ring *const tx_queues[],
+        const unsigned nb_tx_queues,
+        const unsigned numa_node);
 
 /**
  * Create a new ethdev port from a ring

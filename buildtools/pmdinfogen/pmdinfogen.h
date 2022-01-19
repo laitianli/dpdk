@@ -79,46 +79,46 @@
 #define CONVERT_NATIVE(fend, width, x) ({ \
 typeof(x) ___x; \
 if ((fend) == ELFDATA2LSB) \
-	___x = le##width##toh(x); \
+    ___x = le##width##toh(x); \
 else \
-	___x = be##width##toh(x); \
-	___x; \
+    ___x = be##width##toh(x); \
+    ___x; \
 })
 
 #define TO_NATIVE(fend, width, x) CONVERT_NATIVE(fend, width, x)
 
 enum opt_params {
-	PMD_PARAM_STRING = 0,
-	PMD_KMOD_DEP,
-	PMD_OPT_MAX
+    PMD_PARAM_STRING = 0,
+    PMD_KMOD_DEP,
+    PMD_OPT_MAX
 };
 
 struct pmd_driver {
-	Elf_Sym *name_sym;
-	const char *name;
-	struct rte_pci_id *pci_tbl;
-	struct pmd_driver *next;
+    Elf_Sym *name_sym;
+    const char *name;
+    struct rte_pci_id *pci_tbl;
+    struct pmd_driver *next;
 
-	const char *opt_vals[PMD_OPT_MAX];
+    const char *opt_vals[PMD_OPT_MAX];
 };
 
 struct elf_info {
-	unsigned long size;
-	Elf_Ehdr     *hdr;
-	Elf_Shdr     *sechdrs;
-	Elf_Sym      *symtab_start;
-	Elf_Sym      *symtab_stop;
-	char         *strtab;
+    unsigned long size;
+    Elf_Ehdr     *hdr;
+    Elf_Shdr     *sechdrs;
+    Elf_Sym      *symtab_start;
+    Elf_Sym      *symtab_stop;
+    char         *strtab;
 
-	/* support for 32bit section numbers */
+    /* support for 32bit section numbers */
 
-	unsigned int num_sections; /* max_secindex + 1 */
-	unsigned int secindex_strings;
-	/* if Nth symbol table entry has .st_shndx = SHN_XINDEX,
-	 * take shndx from symtab_shndx_start[N] instead
-	 */
-	Elf32_Word   *symtab_shndx_start;
-	Elf32_Word   *symtab_shndx_stop;
+    unsigned int num_sections; /* max_secindex + 1 */
+    unsigned int secindex_strings;
+    /* if Nth symbol table entry has .st_shndx = SHN_XINDEX,
+     * take shndx from symtab_shndx_start[N] instead
+     */
+    Elf32_Word   *symtab_shndx_start;
+    Elf32_Word   *symtab_shndx_stop;
 
-	struct pmd_driver *drivers;
+    struct pmd_driver *drivers;
 };

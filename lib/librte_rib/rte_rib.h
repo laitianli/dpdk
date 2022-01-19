@@ -17,10 +17,10 @@
  * rte_rib_get_nxt() flags
  */
 enum {
-	/** flag to get all subroutes in a RIB tree */
-	RTE_RIB_GET_NXT_ALL,
-	/** flag to get first matched subroutes in a RIB tree */
-	RTE_RIB_GET_NXT_COVER
+    /** flag to get all subroutes in a RIB tree */
+    RTE_RIB_GET_NXT_ALL,
+    /** flag to get first matched subroutes in a RIB tree */
+    RTE_RIB_GET_NXT_COVER
 };
 
 struct rte_rib;
@@ -28,14 +28,14 @@ struct rte_rib_node;
 
 /** RIB configuration structure */
 struct rte_rib_conf {
-	/**
-	 * Size of extension block inside rte_rib_node.
-	 * This space could be used to store additional user
-	 * defined data.
-	 */
-	size_t	ext_sz;
-	/* size of rte_rib_node's pool */
-	int	max_nodes;
+    /**
+     * Size of extension block inside rte_rib_node.
+     * This space could be used to store additional user
+     * defined data.
+     */
+    size_t    ext_sz;
+    /* size of rte_rib_node's pool */
+    int    max_nodes;
 };
 
 /**
@@ -50,7 +50,7 @@ struct rte_rib_conf {
 static inline uint32_t
 rte_rib_depth_to_mask(uint8_t depth)
 {
-	return (uint32_t)(UINT64_MAX << (32 - depth));
+    return (uint32_t)(UINT64_MAX << (32 - depth));
 }
 
 /**
@@ -125,7 +125,7 @@ rte_rib_lookup_exact(struct rte_rib *rib, uint32_t ip, uint8_t depth);
 __rte_experimental
 struct rte_rib_node *
 rte_rib_get_nxt(struct rte_rib *rib, uint32_t ip, uint8_t depth,
-	struct rte_rib_node *last, int flag);
+    struct rte_rib_node *last, int flag);
 
 /**
  * Remove prefix from the RIB

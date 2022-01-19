@@ -22,8 +22,8 @@
 static unsigned long
 getauxval(unsigned long type __rte_unused)
 {
-	errno = ENOTSUP;
-	return 0;
+    errno = ENOTSUP;
+    return 0;
 }
 #endif
 
@@ -43,42 +43,42 @@ typedef Elf32_auxv_t Internal_Elfx_auxv_t;
 static unsigned long
 _rte_cpu_getauxval(unsigned long type, const char *str)
 {
-	unsigned long val;
+    unsigned long val;
 
-	errno = 0;
-	val = getauxval(type);
+    errno = 0;
+    val = getauxval(type);
 
-	if (!val && (errno == ENOTSUP || errno == ENOENT)) {
-		int auxv_fd = open("/proc/self/auxv", O_RDONLY);
-		Internal_Elfx_auxv_t auxv;
+    if (!val && (errno == ENOTSUP || errno == ENOENT)) {
+        int auxv_fd = open("/proc/self/auxv", O_RDONLY);
+        Internal_Elfx_auxv_t auxv;
 
-		if (auxv_fd == -1)
-			return 0;
+        if (auxv_fd == -1)
+            return 0;
 
-		errno = ENOENT;
-		while (read(auxv_fd, &auxv, sizeof(auxv)) == sizeof(auxv)) {
-			if (auxv.a_type == type) {
-				errno = 0;
-				val = auxv.a_un.a_val;
-				if (str)
-					val = strcmp((const char *)val, str);
-				break;
-			}
-		}
-		close(auxv_fd);
-	}
+        errno = ENOENT;
+        while (read(auxv_fd, &auxv, sizeof(auxv)) == sizeof(auxv)) {
+            if (auxv.a_type == type) {
+                errno = 0;
+                val = auxv.a_un.a_val;
+                if (str)
+                    val = strcmp((const char *)val, str);
+                break;
+            }
+        }
+        close(auxv_fd);
+    }
 
-	return val;
+    return val;
 }
 
 unsigned long
 rte_cpu_getauxval(unsigned long type)
 {
-	return _rte_cpu_getauxval(type, NULL);
+    return _rte_cpu_getauxval(type, NULL);
 }
 
 int
 rte_cpu_strcmp_auxval(unsigned long type, const char *str)
 {
-	return _rte_cpu_getauxval(type, str);
+    return _rte_cpu_getauxval(type, str);
 }

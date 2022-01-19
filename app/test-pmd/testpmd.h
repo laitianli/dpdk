@@ -48,7 +48,7 @@
 #define DEF_MBUF_CACHE 250
 
 #define RTE_CACHE_LINE_SIZE_ROUNDUP(size) \
-	(RTE_CACHE_LINE_SIZE * ((size + RTE_CACHE_LINE_SIZE - 1) / RTE_CACHE_LINE_SIZE))
+    (RTE_CACHE_LINE_SIZE * ((size + RTE_CACHE_LINE_SIZE - 1) / RTE_CACHE_LINE_SIZE))
 
 #define NUMA_NO_CONFIG 0xFF
 #define UMA_NO_CONFIG  0xFF
@@ -59,25 +59,25 @@ typedef uint16_t queueid_t;
 typedef uint16_t streamid_t;
 
 #if defined RTE_LIBRTE_PMD_SOFTNIC
-#define SOFTNIC			1
+#define SOFTNIC            1
 #else
-#define SOFTNIC			0
+#define SOFTNIC            0
 #endif
 
 enum {
-	PORT_TOPOLOGY_PAIRED,
-	PORT_TOPOLOGY_CHAINED,
-	PORT_TOPOLOGY_LOOP,
+    PORT_TOPOLOGY_PAIRED,
+    PORT_TOPOLOGY_CHAINED,
+    PORT_TOPOLOGY_LOOP,
 };
 
 enum {
-	MP_ALLOC_NATIVE, /**< allocate and populate mempool natively */
-	MP_ALLOC_ANON,
-	/**< allocate mempool natively, but populate using anonymous memory */
-	MP_ALLOC_XMEM,
-	/**< allocate and populate mempool using anonymous memory */
-	MP_ALLOC_XMEM_HUGE
-	/**< allocate and populate mempool using anonymous hugepage memory */
+    MP_ALLOC_NATIVE, /**< allocate and populate mempool natively */
+    MP_ALLOC_ANON,
+    /**< allocate mempool natively, but populate using anonymous memory */
+    MP_ALLOC_XMEM,
+    /**< allocate and populate mempool using anonymous memory */
+    MP_ALLOC_XMEM_HUGE
+    /**< allocate and populate mempool using anonymous hugepage memory */
 };
 
 #ifdef RTE_TEST_PMD_RECORD_BURST_STATS
@@ -86,14 +86,14 @@ enum {
  * that are recorded for each forwarding stream.
  */
 struct pkt_burst_stats {
-	unsigned int pkt_burst_spread[MAX_PKT_BURST];
+    unsigned int pkt_burst_spread[MAX_PKT_BURST];
 };
 #endif
 
 /** Information for a given RSS type. */
 struct rss_type_info {
-	const char *str; /**< Type name. */
-	uint64_t rss_type; /**< Type value. */
+    const char *str; /**< Type name. */
+    uint64_t rss_type; /**< Type value. */
 };
 
 /**
@@ -108,41 +108,41 @@ extern const struct rss_type_info rss_type_table[];
  * port/queue and a transmit port/queue.
  */
 struct fwd_stream {
-	/* "read-only" data */
-	portid_t   rx_port;   /**< port to poll for received packets */
-	queueid_t  rx_queue;  /**< RX queue to poll on "rx_port" */
-	portid_t   tx_port;   /**< forwarding port of received packets */
-	queueid_t  tx_queue;  /**< TX queue to send forwarded packets */
-	streamid_t peer_addr; /**< index of peer ethernet address of packets */
+    /* "read-only" data */
+    portid_t   rx_port;   /**< port to poll for received packets */
+    queueid_t  rx_queue;  /**< RX queue to poll on "rx_port" */
+    portid_t   tx_port;   /**< forwarding port of received packets */
+    queueid_t  tx_queue;  /**< TX queue to send forwarded packets */
+    streamid_t peer_addr; /**< index of peer ethernet address of packets */
 
-	unsigned int retry_enabled;
+    unsigned int retry_enabled;
 
-	/* "read-write" results */
-	uint64_t rx_packets;  /**< received packets */
-	uint64_t tx_packets;  /**< received packets transmitted */
-	uint64_t fwd_dropped; /**< received packets not forwarded */
-	uint64_t rx_bad_ip_csum ; /**< received packets has bad ip checksum */
-	uint64_t rx_bad_l4_csum ; /**< received packets has bad l4 checksum */
-	uint64_t rx_bad_outer_l4_csum;
-	/**< received packets has bad outer l4 checksum */
-	unsigned int gro_times;	/**< GRO operation times */
+    /* "read-write" results */
+    uint64_t rx_packets;  /**< received packets */
+    uint64_t tx_packets;  /**< received packets transmitted */
+    uint64_t fwd_dropped; /**< received packets not forwarded */
+    uint64_t rx_bad_ip_csum ; /**< received packets has bad ip checksum */
+    uint64_t rx_bad_l4_csum ; /**< received packets has bad l4 checksum */
+    uint64_t rx_bad_outer_l4_csum;
+    /**< received packets has bad outer l4 checksum */
+    unsigned int gro_times;    /**< GRO operation times */
 #ifdef RTE_TEST_PMD_RECORD_CORE_CYCLES
-	uint64_t     core_cycles; /**< used for RX and TX processing */
+    uint64_t     core_cycles; /**< used for RX and TX processing */
 #endif
 #ifdef RTE_TEST_PMD_RECORD_BURST_STATS
-	struct pkt_burst_stats rx_burst_stats;
-	struct pkt_burst_stats tx_burst_stats;
+    struct pkt_burst_stats rx_burst_stats;
+    struct pkt_burst_stats tx_burst_stats;
 #endif
 };
 
 /** Descriptor for a single flow. */
 struct port_flow {
-	struct port_flow *next; /**< Next flow in list. */
-	struct port_flow *tmp; /**< Temporary linking. */
-	uint32_t id; /**< Flow rule ID. */
-	struct rte_flow *flow; /**< Opaque flow object returned by PMD. */
-	struct rte_flow_conv_rule rule; /* Saved flow rule description. */
-	uint8_t data[]; /**< Storage for flow rule description */
+    struct port_flow *next; /**< Next flow in list. */
+    struct port_flow *tmp; /**< Temporary linking. */
+    uint32_t id; /**< Flow rule ID. */
+    struct rte_flow *flow; /**< Opaque flow object returned by PMD. */
+    struct rte_flow_conv_rule rule; /* Saved flow rule description. */
+    uint8_t data[]; /**< Storage for flow rule description */
 };
 
 #ifdef SOFTNIC
@@ -150,8 +150,8 @@ struct port_flow {
  * The data structure associate with softnic port
  */
 struct softnic_port {
-	uint32_t default_tm_hierarchy_enable; /**< default tm hierarchy */
-	struct fwd_lcore **fwd_lcore_arg; /**< softnic fwd core parameters */
+    uint32_t default_tm_hierarchy_enable; /**< default tm hierarchy */
+    struct fwd_lcore **fwd_lcore_arg; /**< softnic fwd core parameters */
 };
 #endif
 
@@ -159,40 +159,40 @@ struct softnic_port {
  * The data structure associated with each port.
  */
 struct rte_port {
-	struct rte_eth_dev_info dev_info;   /**< PCI info + driver name */
-	struct rte_eth_conf     dev_conf;   /**< Port configuration. */
-	struct rte_ether_addr       eth_addr;   /**< Port ethernet address */
-	struct rte_eth_stats    stats;      /**< Last port statistics */
-	unsigned int            socket_id;  /**< For NUMA support */
-	uint16_t		parse_tunnel:1; /**< Parse internal headers */
-	uint16_t                tso_segsz;  /**< Segmentation offload MSS for non-tunneled packets. */
-	uint16_t                tunnel_tso_segsz; /**< Segmentation offload MSS for tunneled pkts. */
-	uint16_t                tx_vlan_id;/**< The tag ID */
-	uint16_t                tx_vlan_id_outer;/**< The outer tag ID */
-	uint8_t                 tx_queue_stats_mapping_enabled;
-	uint8_t                 rx_queue_stats_mapping_enabled;
-	volatile uint16_t        port_status;    /**< port started or not */
-	uint8_t                 need_setup;     /**< port just attached */
-	uint8_t                 need_reconfig;  /**< need reconfiguring port or not */
-	uint8_t                 need_reconfig_queues; /**< need reconfiguring queues or not */
-	uint8_t                 rss_flag;   /**< enable rss or not */
-	uint8_t                 dcb_flag;   /**< enable dcb */
-	uint16_t                nb_rx_desc[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue rx desc number */
-	uint16_t                nb_tx_desc[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue tx desc number */
-	struct rte_eth_rxconf   rx_conf[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue rx configuration */
-	struct rte_eth_txconf   tx_conf[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue tx configuration */
-	struct rte_ether_addr   *mc_addr_pool; /**< pool of multicast addrs */
-	uint32_t                mc_addr_nb; /**< nb. of addr. in mc_addr_pool */
-	uint8_t                 slave_flag; /**< bonding slave port */
-	struct port_flow        *flow_list; /**< Associated flows. */
-	const struct rte_eth_rxtx_callback *rx_dump_cb[RTE_MAX_QUEUES_PER_PORT+1];
-	const struct rte_eth_rxtx_callback *tx_dump_cb[RTE_MAX_QUEUES_PER_PORT+1];
+    struct rte_eth_dev_info dev_info;   /**< PCI info + driver name */
+    struct rte_eth_conf     dev_conf;   /**< Port configuration. */
+    struct rte_ether_addr       eth_addr;   /**< Port ethernet address */
+    struct rte_eth_stats    stats;      /**< Last port statistics */
+    unsigned int            socket_id;  /**< For NUMA support */
+    uint16_t        parse_tunnel:1; /**< Parse internal headers */
+    uint16_t                tso_segsz;  /**< Segmentation offload MSS for non-tunneled packets. */
+    uint16_t                tunnel_tso_segsz; /**< Segmentation offload MSS for tunneled pkts. */
+    uint16_t                tx_vlan_id;/**< The tag ID */
+    uint16_t                tx_vlan_id_outer;/**< The outer tag ID */
+    uint8_t                 tx_queue_stats_mapping_enabled;
+    uint8_t                 rx_queue_stats_mapping_enabled;
+    volatile uint16_t        port_status;    /**< port started or not */
+    uint8_t                 need_setup;     /**< port just attached */
+    uint8_t                 need_reconfig;  /**< need reconfiguring port or not */
+    uint8_t                 need_reconfig_queues; /**< need reconfiguring queues or not */
+    uint8_t                 rss_flag;   /**< enable rss or not */
+    uint8_t                 dcb_flag;   /**< enable dcb */
+    uint16_t                nb_rx_desc[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue rx desc number */
+    uint16_t                nb_tx_desc[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue tx desc number */
+    struct rte_eth_rxconf   rx_conf[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue rx configuration */
+    struct rte_eth_txconf   tx_conf[RTE_MAX_QUEUES_PER_PORT+1]; /**< per queue tx configuration */
+    struct rte_ether_addr   *mc_addr_pool; /**< pool of multicast addrs */
+    uint32_t                mc_addr_nb; /**< nb. of addr. in mc_addr_pool */
+    uint8_t                 slave_flag; /**< bonding slave port */
+    struct port_flow        *flow_list; /**< Associated flows. */
+    const struct rte_eth_rxtx_callback *rx_dump_cb[RTE_MAX_QUEUES_PER_PORT+1];
+    const struct rte_eth_rxtx_callback *tx_dump_cb[RTE_MAX_QUEUES_PER_PORT+1];
 #ifdef SOFTNIC
-	struct softnic_port     softport;  /**< softnic params */
+    struct softnic_port     softport;  /**< softnic params */
 #endif
-	/**< metadata value to insert in Tx packets. */
-	uint32_t		tx_metadata;
-	const struct rte_eth_rxtx_callback *tx_set_md_cb[RTE_MAX_QUEUES_PER_PORT+1];
+    /**< metadata value to insert in Tx packets. */
+    uint32_t        tx_metadata;
+    const struct rte_eth_rxtx_callback *tx_set_md_cb[RTE_MAX_QUEUES_PER_PORT+1];
 };
 
 /**
@@ -203,14 +203,14 @@ struct rte_port {
  * CPU id. configuration table.
  */
 struct fwd_lcore {
-	struct rte_gso_ctx gso_ctx;     /**< GSO context */
-	struct rte_mempool *mbp; /**< The mbuf pool to use by this core */
-	void *gro_ctx;		/**< GRO context */
-	streamid_t stream_idx;   /**< index of 1st stream in "fwd_streams" */
-	streamid_t stream_nb;    /**< number of streams in "fwd_streams" */
-	lcoreid_t  cpuid_idx;    /**< index of logical core in CPU id table */
-	queueid_t  tx_queue;     /**< TX queue to send forwarded packets */
-	volatile char stopped;   /**< stop forwarding when set */
+    struct rte_gso_ctx gso_ctx;     /**< GSO context */
+    struct rte_mempool *mbp; /**< The mbuf pool to use by this core */
+    void *gro_ctx;        /**< GRO context */
+    streamid_t stream_idx;   /**< index of 1st stream in "fwd_streams" */
+    streamid_t stream_nb;    /**< number of streams in "fwd_streams" */
+    lcoreid_t  cpuid_idx;    /**< index of logical core in CPU id table */
+    queueid_t  tx_queue;     /**< TX queue to send forwarded packets */
+    volatile char stopped;   /**< stop forwarding when set */
 };
 
 /*
@@ -233,10 +233,10 @@ typedef void (*port_fwd_end_t)(portid_t pi);
 typedef void (*packet_fwd_t)(struct fwd_stream *fs);
 
 struct fwd_engine {
-	const char       *fwd_mode_name; /**< Forwarding mode name. */
-	port_fwd_begin_t port_fwd_begin; /**< NULL if nothing special to do. */
-	port_fwd_end_t   port_fwd_end;   /**< NULL if nothing special to do. */
-	packet_fwd_t     packet_fwd;     /**< Mandatory. */
+    const char       *fwd_mode_name; /**< Forwarding mode name. */
+    port_fwd_begin_t port_fwd_begin; /**< NULL if nothing special to do. */
+    port_fwd_end_t   port_fwd_end;   /**< NULL if nothing special to do. */
+    packet_fwd_t     packet_fwd;     /**< Mandatory. */
 };
 
 #define BURST_TX_WAIT_US 1
@@ -273,10 +273,10 @@ extern uint16_t mempool_flags;
  *
  */
 struct fwd_config {
-	struct fwd_engine *fwd_eng; /**< Packet forwarding mode. */
-	streamid_t nb_fwd_streams;  /**< Nb. of forward streams to process. */
-	lcoreid_t  nb_fwd_lcores;   /**< Nb. of logical cores to launch. */
-	portid_t   nb_fwd_ports;    /**< Nb. of ports involved. */
+    struct fwd_engine *fwd_eng; /**< Packet forwarding mode. */
+    streamid_t nb_fwd_streams;  /**< Nb. of forward streams to process. */
+    lcoreid_t  nb_fwd_lcores;   /**< Nb. of logical cores to launch. */
+    portid_t   nb_fwd_ports;    /**< Nb. of ports involved. */
 };
 
 /**
@@ -284,17 +284,17 @@ struct fwd_config {
  */
 enum dcb_mode_enable
 {
-	DCB_VT_ENABLED,
-	DCB_ENABLED
+    DCB_VT_ENABLED,
+    DCB_ENABLED
 };
 
 #define MAX_TX_QUEUE_STATS_MAPPINGS 1024 /* MAX_PORT of 32 @ 32 tx_queues/port */
 #define MAX_RX_QUEUE_STATS_MAPPINGS 4096 /* MAX_PORT of 32 @ 128 rx_queues/port */
 
 struct queue_stats_mappings {
-	portid_t port_id;
-	uint16_t queue_id;
-	uint8_t stats_counter_id;
+    portid_t port_id;
+    uint16_t queue_id;
+    uint8_t stats_counter_id;
 } __rte_cache_aligned;
 
 extern struct queue_stats_mappings tx_queue_stats_mappings_array[];
@@ -432,9 +432,9 @@ extern uint16_t tx_pkt_seg_lengths[RTE_MAX_SEGS_PER_PKT]; /**< Seg. lengths */
 extern uint8_t  tx_pkt_nb_segs; /**< Number of segments in TX packets */
 
 enum tx_pkt_split {
-	TX_PKT_SPLIT_OFF,
-	TX_PKT_SPLIT_ON,
-	TX_PKT_SPLIT_RND,
+    TX_PKT_SPLIT_OFF,
+    TX_PKT_SPLIT_ON,
+    TX_PKT_SPLIT_RND,
 };
 
 extern enum tx_pkt_split tx_pkt_split;
@@ -472,156 +472,156 @@ extern uint32_t burst_tx_retry_num;  /**< Burst tx retry number for mac-retry. *
 
 #define GRO_DEFAULT_ITEM_NUM_PER_FLOW 32
 #define GRO_DEFAULT_FLOW_NUM (RTE_GRO_MAX_BURST_ITEM_NUM / \
-		GRO_DEFAULT_ITEM_NUM_PER_FLOW)
+        GRO_DEFAULT_ITEM_NUM_PER_FLOW)
 
 #define GRO_DEFAULT_FLUSH_CYCLES 1
 #define GRO_MAX_FLUSH_CYCLES 4
 
 struct gro_status {
-	struct rte_gro_param param;
-	uint8_t enable;
+    struct rte_gro_param param;
+    uint8_t enable;
 };
 extern struct gro_status gro_ports[RTE_MAX_ETHPORTS];
 extern uint8_t gro_flush_cycles;
 
 #define GSO_MAX_PKT_BURST 2048
 struct gso_status {
-	uint8_t enable;
+    uint8_t enable;
 };
 extern struct gso_status gso_ports[RTE_MAX_ETHPORTS];
 extern uint16_t gso_max_segment_size;
 
 /* VXLAN encap/decap parameters. */
 struct vxlan_encap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
-	uint32_t select_tos_ttl:1;
-	uint8_t vni[3];
-	rte_be16_t udp_src;
-	rte_be16_t udp_dst;
-	rte_be32_t ipv4_src;
-	rte_be32_t ipv4_dst;
-	uint8_t ipv6_src[16];
-	uint8_t ipv6_dst[16];
-	rte_be16_t vlan_tci;
-	uint8_t ip_tos;
-	uint8_t ip_ttl;
-	uint8_t eth_src[RTE_ETHER_ADDR_LEN];
-	uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
+    uint32_t select_tos_ttl:1;
+    uint8_t vni[3];
+    rte_be16_t udp_src;
+    rte_be16_t udp_dst;
+    rte_be32_t ipv4_src;
+    rte_be32_t ipv4_dst;
+    uint8_t ipv6_src[16];
+    uint8_t ipv6_dst[16];
+    rte_be16_t vlan_tci;
+    uint8_t ip_tos;
+    uint8_t ip_ttl;
+    uint8_t eth_src[RTE_ETHER_ADDR_LEN];
+    uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
 };
 
 extern struct vxlan_encap_conf vxlan_encap_conf;
 
 /* NVGRE encap/decap parameters. */
 struct nvgre_encap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
-	uint8_t tni[3];
-	rte_be32_t ipv4_src;
-	rte_be32_t ipv4_dst;
-	uint8_t ipv6_src[16];
-	uint8_t ipv6_dst[16];
-	rte_be16_t vlan_tci;
-	uint8_t eth_src[RTE_ETHER_ADDR_LEN];
-	uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
+    uint8_t tni[3];
+    rte_be32_t ipv4_src;
+    rte_be32_t ipv4_dst;
+    uint8_t ipv6_src[16];
+    uint8_t ipv6_dst[16];
+    rte_be16_t vlan_tci;
+    uint8_t eth_src[RTE_ETHER_ADDR_LEN];
+    uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
 };
 
 extern struct nvgre_encap_conf nvgre_encap_conf;
 
 /* L2 encap parameters. */
 struct l2_encap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
-	rte_be16_t vlan_tci;
-	uint8_t eth_src[RTE_ETHER_ADDR_LEN];
-	uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
+    rte_be16_t vlan_tci;
+    uint8_t eth_src[RTE_ETHER_ADDR_LEN];
+    uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
 };
 extern struct l2_encap_conf l2_encap_conf;
 
 /* L2 decap parameters. */
 struct l2_decap_conf {
-	uint32_t select_vlan:1;
+    uint32_t select_vlan:1;
 };
 extern struct l2_decap_conf l2_decap_conf;
 
 /* MPLSoGRE encap parameters. */
 struct mplsogre_encap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
-	uint8_t label[3];
-	rte_be32_t ipv4_src;
-	rte_be32_t ipv4_dst;
-	uint8_t ipv6_src[16];
-	uint8_t ipv6_dst[16];
-	rte_be16_t vlan_tci;
-	uint8_t eth_src[RTE_ETHER_ADDR_LEN];
-	uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
+    uint8_t label[3];
+    rte_be32_t ipv4_src;
+    rte_be32_t ipv4_dst;
+    uint8_t ipv6_src[16];
+    uint8_t ipv6_dst[16];
+    rte_be16_t vlan_tci;
+    uint8_t eth_src[RTE_ETHER_ADDR_LEN];
+    uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
 };
 extern struct mplsogre_encap_conf mplsogre_encap_conf;
 
 /* MPLSoGRE decap parameters. */
 struct mplsogre_decap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
 };
 extern struct mplsogre_decap_conf mplsogre_decap_conf;
 
 /* MPLSoUDP encap parameters. */
 struct mplsoudp_encap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
-	uint8_t label[3];
-	rte_be16_t udp_src;
-	rte_be16_t udp_dst;
-	rte_be32_t ipv4_src;
-	rte_be32_t ipv4_dst;
-	uint8_t ipv6_src[16];
-	uint8_t ipv6_dst[16];
-	rte_be16_t vlan_tci;
-	uint8_t eth_src[RTE_ETHER_ADDR_LEN];
-	uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
+    uint8_t label[3];
+    rte_be16_t udp_src;
+    rte_be16_t udp_dst;
+    rte_be32_t ipv4_src;
+    rte_be32_t ipv4_dst;
+    uint8_t ipv6_src[16];
+    uint8_t ipv6_dst[16];
+    rte_be16_t vlan_tci;
+    uint8_t eth_src[RTE_ETHER_ADDR_LEN];
+    uint8_t eth_dst[RTE_ETHER_ADDR_LEN];
 };
 extern struct mplsoudp_encap_conf mplsoudp_encap_conf;
 
 /* MPLSoUDP decap parameters. */
 struct mplsoudp_decap_conf {
-	uint32_t select_ipv4:1;
-	uint32_t select_vlan:1;
+    uint32_t select_ipv4:1;
+    uint32_t select_vlan:1;
 };
 extern struct mplsoudp_decap_conf mplsoudp_decap_conf;
 
 static inline unsigned int
 lcore_num(void)
 {
-	unsigned int i;
+    unsigned int i;
 
-	for (i = 0; i < RTE_MAX_LCORE; ++i)
-		if (fwd_lcores_cpuids[i] == rte_lcore_id())
-			return i;
+    for (i = 0; i < RTE_MAX_LCORE; ++i)
+        if (fwd_lcores_cpuids[i] == rte_lcore_id())
+            return i;
 
-	rte_panic("lcore_id of current thread not found in fwd_lcores_cpuids\n");
+    rte_panic("lcore_id of current thread not found in fwd_lcores_cpuids\n");
 }
 
 static inline struct fwd_lcore *
 current_fwd_lcore(void)
 {
-	return fwd_lcores[lcore_num()];
+    return fwd_lcores[lcore_num()];
 }
 
 /* Mbuf Pools */
 static inline void
 mbuf_poolname_build(unsigned int sock_id, char* mp_name, int name_size)
 {
-	snprintf(mp_name, name_size, "mbuf_pool_socket_%u", sock_id);
+    snprintf(mp_name, name_size, "mbuf_pool_socket_%u", sock_id);
 }
 
 static inline struct rte_mempool *
 mbuf_pool_find(unsigned int sock_id)
 {
-	char pool_name[RTE_MEMPOOL_NAMESIZE];
+    char pool_name[RTE_MEMPOOL_NAMESIZE];
 
-	mbuf_poolname_build(sock_id, pool_name, sizeof(pool_name));
-	return rte_mempool_lookup((const char *)pool_name);
+    mbuf_poolname_build(sock_id, pool_name, sizeof(pool_name));
+    return rte_mempool_lookup((const char *)pool_name);
 }
 
 /**
@@ -630,63 +630,63 @@ mbuf_pool_find(unsigned int sock_id)
 static inline uint32_t
 port_pci_reg_read(struct rte_port *port, uint32_t reg_off)
 {
-	const struct rte_pci_device *pci_dev;
-	const struct rte_bus *bus;
-	void *reg_addr;
-	uint32_t reg_v;
+    const struct rte_pci_device *pci_dev;
+    const struct rte_bus *bus;
+    void *reg_addr;
+    uint32_t reg_v;
 
-	if (!port->dev_info.device) {
-		printf("Invalid device\n");
-		return 0;
-	}
+    if (!port->dev_info.device) {
+        printf("Invalid device\n");
+        return 0;
+    }
 
-	bus = rte_bus_find_by_device(port->dev_info.device);
-	if (bus && !strcmp(bus->name, "pci")) {
-		pci_dev = RTE_DEV_TO_PCI(port->dev_info.device);
-	} else {
-		printf("Not a PCI device\n");
-		return 0;
-	}
+    bus = rte_bus_find_by_device(port->dev_info.device);
+    if (bus && !strcmp(bus->name, "pci")) {
+        pci_dev = RTE_DEV_TO_PCI(port->dev_info.device);
+    } else {
+        printf("Not a PCI device\n");
+        return 0;
+    }
 
-	reg_addr = ((char *)pci_dev->mem_resource[0].addr + reg_off);
-	reg_v = *((volatile uint32_t *)reg_addr);
-	return rte_le_to_cpu_32(reg_v);
+    reg_addr = ((char *)pci_dev->mem_resource[0].addr + reg_off);
+    reg_v = *((volatile uint32_t *)reg_addr);
+    return rte_le_to_cpu_32(reg_v);
 }
 
 #define port_id_pci_reg_read(pt_id, reg_off) \
-	port_pci_reg_read(&ports[(pt_id)], (reg_off))
+    port_pci_reg_read(&ports[(pt_id)], (reg_off))
 
 static inline void
 port_pci_reg_write(struct rte_port *port, uint32_t reg_off, uint32_t reg_v)
 {
-	const struct rte_pci_device *pci_dev;
-	const struct rte_bus *bus;
-	void *reg_addr;
+    const struct rte_pci_device *pci_dev;
+    const struct rte_bus *bus;
+    void *reg_addr;
 
-	if (!port->dev_info.device) {
-		printf("Invalid device\n");
-		return;
-	}
+    if (!port->dev_info.device) {
+        printf("Invalid device\n");
+        return;
+    }
 
-	bus = rte_bus_find_by_device(port->dev_info.device);
-	if (bus && !strcmp(bus->name, "pci")) {
-		pci_dev = RTE_DEV_TO_PCI(port->dev_info.device);
-	} else {
-		printf("Not a PCI device\n");
-		return;
-	}
+    bus = rte_bus_find_by_device(port->dev_info.device);
+    if (bus && !strcmp(bus->name, "pci")) {
+        pci_dev = RTE_DEV_TO_PCI(port->dev_info.device);
+    } else {
+        printf("Not a PCI device\n");
+        return;
+    }
 
-	reg_addr = ((char *)pci_dev->mem_resource[0].addr + reg_off);
-	*((volatile uint32_t *)reg_addr) = rte_cpu_to_le_32(reg_v);
+    reg_addr = ((char *)pci_dev->mem_resource[0].addr + reg_off);
+    *((volatile uint32_t *)reg_addr) = rte_cpu_to_le_32(reg_v);
 }
 
 #define port_id_pci_reg_write(pt_id, reg_off, reg_value) \
-	port_pci_reg_write(&ports[(pt_id)], (reg_off), (reg_value))
+    port_pci_reg_write(&ports[(pt_id)], (reg_off), (reg_value))
 
 /* Prototypes */
 unsigned int parse_item_list(char* str, const char* item_name,
-			unsigned int max_items,
-			unsigned int *parsed_items, int check_unique_values);
+            unsigned int max_items,
+            unsigned int *parsed_items, int check_unique_values);
 void launch_args_parse(int argc, char** argv);
 void cmdline_read_from_file(const char *filename);
 void prompt(void);
@@ -717,25 +717,25 @@ void set_fwd_eth_peer(portid_t port_id, char *peer_addr);
 void port_mtu_set(portid_t port_id, uint16_t mtu);
 void port_reg_bit_display(portid_t port_id, uint32_t reg_off, uint8_t bit_pos);
 void port_reg_bit_set(portid_t port_id, uint32_t reg_off, uint8_t bit_pos,
-		      uint8_t bit_v);
+              uint8_t bit_v);
 void port_reg_bit_field_display(portid_t port_id, uint32_t reg_off,
-				uint8_t bit1_pos, uint8_t bit2_pos);
+                uint8_t bit1_pos, uint8_t bit2_pos);
 void port_reg_bit_field_set(portid_t port_id, uint32_t reg_off,
-			    uint8_t bit1_pos, uint8_t bit2_pos, uint32_t value);
+                uint8_t bit1_pos, uint8_t bit2_pos, uint32_t value);
 void port_reg_display(portid_t port_id, uint32_t reg_off);
 void port_reg_set(portid_t port_id, uint32_t reg_off, uint32_t value);
 int port_flow_validate(portid_t port_id,
-		       const struct rte_flow_attr *attr,
-		       const struct rte_flow_item *pattern,
-		       const struct rte_flow_action *actions);
+               const struct rte_flow_attr *attr,
+               const struct rte_flow_item *pattern,
+               const struct rte_flow_action *actions);
 int port_flow_create(portid_t port_id,
-		     const struct rte_flow_attr *attr,
-		     const struct rte_flow_item *pattern,
-		     const struct rte_flow_action *actions);
+             const struct rte_flow_attr *attr,
+             const struct rte_flow_item *pattern,
+             const struct rte_flow_action *actions);
 int port_flow_destroy(portid_t port_id, uint32_t n, const uint32_t *rule);
 int port_flow_flush(portid_t port_id);
 int port_flow_query(portid_t port_id, uint32_t rule,
-		    const struct rte_flow_action *action);
+            const struct rte_flow_action *action);
 void port_flow_list(portid_t port_id, uint32_t n, const uint32_t *group);
 int port_flow_isolate(portid_t port_id, int set);
 
@@ -760,7 +760,7 @@ void rx_vlan_qinq_strip_set(portid_t port_id, int on);
 int rx_vft_set(portid_t port_id, uint16_t vlan_id, int on);
 void vlan_extend_set(portid_t port_id, int on);
 void vlan_tpid_set(portid_t port_id, enum rte_vlan_type vlan_type,
-		   uint16_t tp_id);
+           uint16_t tp_id);
 void tx_vlan_set(portid_t port_id, uint16_t vlan_id);
 void tx_qinq_set(portid_t port_id, uint16_t vlan_id, uint16_t vlan_id_outer);
 void tx_vlan_reset(portid_t port_id);
@@ -790,8 +790,8 @@ void clear_port_slave_flag(portid_t slave_pid);
 uint8_t port_is_bonding_slave(portid_t slave_pid);
 
 int init_port_dcb_config(portid_t pid, enum dcb_mode_enable dcb_mode,
-		     enum rte_eth_nb_tcs num_tcs,
-		     uint8_t pfc_en);
+             enum rte_eth_nb_tcs num_tcs,
+             uint8_t pfc_en);
 int start_port(portid_t pid);
 void stop_port(portid_t pid);
 void close_port(portid_t pid);
@@ -805,22 +805,22 @@ int port_is_started(portid_t port_id);
 void pmd_test_exit(void);
 void fdir_get_infos(portid_t port_id);
 void fdir_set_flex_mask(portid_t port_id,
-			   struct rte_eth_fdir_flex_mask *cfg);
+               struct rte_eth_fdir_flex_mask *cfg);
 void fdir_set_flex_payload(portid_t port_id,
-			   struct rte_eth_flex_payload_cfg *cfg);
+               struct rte_eth_flex_payload_cfg *cfg);
 void port_rss_reta_info(portid_t port_id,
-			struct rte_eth_rss_reta_entry64 *reta_conf,
-			uint16_t nb_entries);
+            struct rte_eth_rss_reta_entry64 *reta_conf,
+            uint16_t nb_entries);
 
 void set_vf_traffic(portid_t port_id, uint8_t is_rx, uint16_t vf, uint8_t on);
 
 int set_queue_rate_limit(portid_t port_id, uint16_t queue_idx, uint16_t rate);
 int set_vf_rate_limit(portid_t port_id, uint16_t vf, uint16_t rate,
-				uint64_t q_msk);
+                uint64_t q_msk);
 
 void port_rss_hash_conf_show(portid_t port_id, int show_rss_key);
 void port_rss_hash_key_update(portid_t port_id, char rss_type[],
-			      uint8_t *hash_key, uint hash_key_len);
+                  uint8_t *hash_key, uint hash_key_len);
 int rx_queue_id_is_invalid(queueid_t rxq_id);
 int tx_queue_id_is_invalid(queueid_t txq_id);
 void setup_gro(const char *onoff, portid_t port_id);
@@ -828,12 +828,12 @@ void setup_gro_flush_cycles(uint8_t cycles);
 void show_gro(portid_t port_id);
 void setup_gso(const char *mode, portid_t port_id);
 int eth_dev_info_get_print_err(uint16_t port_id,
-			struct rte_eth_dev_info *dev_info);
+            struct rte_eth_dev_info *dev_info);
 void eth_set_promisc_mode(uint16_t port_id, int enable);
 void eth_set_allmulticast_mode(uint16_t port, int enable);
 int eth_link_get_nowait_print_err(uint16_t port_id, struct rte_eth_link *link);
 int eth_macaddr_get_print_err(uint16_t port_id,
-			struct rte_ether_addr *mac_addr);
+            struct rte_ether_addr *mac_addr);
 
 
 /* Functions to manage the set of filtered Multicast MAC addresses */
@@ -848,8 +848,8 @@ int close_file(uint8_t *buf);
 void port_queue_region_info_display(portid_t port_id, void *buf);
 
 enum print_warning {
-	ENABLED_WARN = 0,
-	DISABLED_WARN
+    ENABLED_WARN = 0,
+    DISABLED_WARN
 };
 int port_id_is_invalid(portid_t port_id, enum print_warning warning);
 void print_valid_ports(void);
@@ -863,11 +863,11 @@ queueid_t get_allowed_max_nb_hairpinq(portid_t *pid);
 int check_nb_hairpinq(queueid_t hairpinq);
 
 uint16_t dump_rx_pkts(uint16_t port_id, uint16_t queue, struct rte_mbuf *pkts[],
-		      uint16_t nb_pkts, __rte_unused uint16_t max_pkts,
-		      __rte_unused void *user_param);
+              uint16_t nb_pkts, __rte_unused uint16_t max_pkts,
+              __rte_unused void *user_param);
 
 uint16_t dump_tx_pkts(uint16_t port_id, uint16_t queue, struct rte_mbuf *pkts[],
-		      uint16_t nb_pkts, __rte_unused void *user_param);
+              uint16_t nb_pkts, __rte_unused void *user_param);
 
 void add_rx_dump_callbacks(portid_t portid);
 void remove_rx_dump_callbacks(portid_t portid);
@@ -876,8 +876,8 @@ void remove_tx_dump_callbacks(portid_t portid);
 void configure_rxtx_dump_callbacks(uint16_t verbose);
 
 uint16_t tx_pkt_set_md(uint16_t port_id, __rte_unused uint16_t queue,
-		       struct rte_mbuf *pkts[], uint16_t nb_pkts,
-		       __rte_unused void *user_param);
+               struct rte_mbuf *pkts[], uint16_t nb_pkts,
+               __rte_unused void *user_param);
 void add_tx_md_callback(portid_t portid);
 void remove_tx_md_callback(portid_t portid);
 
@@ -894,13 +894,13 @@ void remove_tx_md_callback(portid_t portid);
 #define RTE_CPU_TO_BE_16(cpu_16_v) (cpu_16_v)
 #else
 #define RTE_BE_TO_CPU_16(be_16_v) \
-	(uint16_t) ((((be_16_v) & 0xFF) << 8) | ((be_16_v) >> 8))
+    (uint16_t) ((((be_16_v) & 0xFF) << 8) | ((be_16_v) >> 8))
 #define RTE_CPU_TO_BE_16(cpu_16_v) \
-	(uint16_t) ((((cpu_16_v) & 0xFF) << 8) | ((cpu_16_v) >> 8))
+    (uint16_t) ((((cpu_16_v) & 0xFF) << 8) | ((cpu_16_v) >> 8))
 #endif
 #endif /* __GCC__ */
 
 #define TESTPMD_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, testpmd_logtype, "testpmd: " fmt, ## args)
+    rte_log(RTE_LOG_ ## level, testpmd_logtype, "testpmd: " fmt, ## args)
 
 #endif /* _TESTPMD_H_ */

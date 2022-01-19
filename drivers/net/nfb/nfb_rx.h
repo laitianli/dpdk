@@ -16,18 +16,18 @@
 #define NFB_TIMESTAMP_FLAG (1 << 0)
 
 struct ndp_rx_queue {
-	struct nfb_device *nfb;	     /* nfb dev structure */
-	struct ndp_queue *queue;     /* rx queue */
-	uint16_t rx_queue_id;	     /* index */
-	uint8_t in_port;	     /* port */
-	uint8_t flags;               /* setup flags */
+    struct nfb_device *nfb;         /* nfb dev structure */
+    struct ndp_queue *queue;     /* rx queue */
+    uint16_t rx_queue_id;         /* index */
+    uint8_t in_port;         /* port */
+    uint8_t flags;               /* setup flags */
 
-	struct rte_mempool *mb_pool; /* memory pool to allocate packets */
-	uint16_t buf_size;           /* mbuf size */
+    struct rte_mempool *mb_pool; /* memory pool to allocate packets */
+    uint16_t buf_size;           /* mbuf size */
 
-	volatile uint64_t rx_pkts;   /* packets read */
-	volatile uint64_t rx_bytes;  /* bytes read */
-	volatile uint64_t err_pkts;  /* erroneous packets */
+    volatile uint64_t rx_pkts;   /* packets read */
+    volatile uint64_t rx_bytes;  /* bytes read */
+    volatile uint64_t err_pkts;  /* erroneous packets */
 };
 
 /**
@@ -48,10 +48,10 @@ struct ndp_rx_queue {
  */
 int
 nfb_eth_rx_queue_init(struct nfb_device *nfb,
-	uint16_t rx_queue_id,
-	uint16_t port_id,
-	struct rte_mempool *mb_pool,
-	struct ndp_rx_queue *rxq);
+    uint16_t rx_queue_id,
+    uint16_t port_id,
+    struct rte_mempool *mb_pool,
+    struct ndp_rx_queue *rxq);
 
 /**
  * DPDK callback to setup a RX queue for use.
@@ -74,11 +74,11 @@ nfb_eth_rx_queue_init(struct nfb_device *nfb,
  */
 int
 nfb_eth_rx_queue_setup(struct rte_eth_dev *dev,
-	uint16_t rx_queue_id,
-	uint16_t nb_rx_desc __rte_unused,
-	unsigned int socket_id,
-	const struct rte_eth_rxconf *rx_conf __rte_unused,
-	struct rte_mempool *mb_pool);
+    uint16_t rx_queue_id,
+    uint16_t nb_rx_desc __rte_unused,
+    unsigned int socket_id,
+    const struct rte_eth_rxconf *rx_conf __rte_unused,
+    struct rte_mempool *mb_pool);
 
 /**
  * DPDK callback to release a RX queue.
@@ -128,96 +128,96 @@ nfb_eth_rx_queue_stop(struct rte_eth_dev *dev, uint16_t rxq_id);
  */
 static __rte_always_inline uint16_t
 nfb_eth_ndp_rx(void *queue,
-	struct rte_mbuf **bufs,
-	uint16_t nb_pkts)
+    struct rte_mbuf **bufs,
+    uint16_t nb_pkts)
 {
-	struct ndp_rx_queue *ndp = queue;
-	uint8_t timestamping_enabled;
-	uint16_t packet_size;
-	uint64_t num_bytes = 0;
-	uint16_t num_rx;
-	unsigned int i;
+    struct ndp_rx_queue *ndp = queue;
+    uint8_t timestamping_enabled;
+    uint16_t packet_size;
+    uint64_t num_bytes = 0;
+    uint16_t num_rx;
+    unsigned int i;
 
-	const uint16_t buf_size = ndp->buf_size;
+    const uint16_t buf_size = ndp->buf_size;
 
-	struct rte_mbuf *mbuf;
-	struct ndp_packet packets[nb_pkts];
+    struct rte_mbuf *mbuf;
+    struct ndp_packet packets[nb_pkts];
 
-	struct rte_mbuf *mbufs[nb_pkts];
+    struct rte_mbuf *mbufs[nb_pkts];
 
-	if (unlikely(ndp->queue == NULL || nb_pkts == 0)) {
-		RTE_LOG(ERR, PMD, "RX invalid arguments!\n");
-		return 0;
-	}
+    if (unlikely(ndp->queue == NULL || nb_pkts == 0)) {
+        RTE_LOG(ERR, PMD, "RX invalid arguments!\n");
+        return 0;
+    }
 
-	timestamping_enabled = ndp->flags & NFB_TIMESTAMP_FLAG;
+    timestamping_enabled = ndp->flags & NFB_TIMESTAMP_FLAG;
 
-	/* returns either all or nothing */
-	i = rte_pktmbuf_alloc_bulk(ndp->mb_pool, mbufs, nb_pkts);
-	if (unlikely(i != 0))
-		return 0;
+    /* returns either all or nothing */
+    i = rte_pktmbuf_alloc_bulk(ndp->mb_pool, mbufs, nb_pkts);
+    if (unlikely(i != 0))
+        return 0;
 
-	num_rx = ndp_rx_burst_get(ndp->queue, packets, nb_pkts);
+    num_rx = ndp_rx_burst_get(ndp->queue, packets, nb_pkts);
 
-	if (unlikely(num_rx != nb_pkts)) {
-		for (i = num_rx; i < nb_pkts; i++)
-			rte_pktmbuf_free(mbufs[i]);
-	}
+    if (unlikely(num_rx != nb_pkts)) {
+        for (i = num_rx; i < nb_pkts; i++)
+            rte_pktmbuf_free(mbufs[i]);
+    }
 
-	nb_pkts = num_rx;
+    nb_pkts = num_rx;
 
-	num_rx = 0;
-	/*
-	 * Reads the given number of packets from NDP queue given
-	 * by queue and copies the packet data into a newly allocated mbuf
-	 * to return.
-	 */
-	for (i = 0; i < nb_pkts; ++i) {
-		mbuf = mbufs[i];
+    num_rx = 0;
+    /*
+     * Reads the given number of packets from NDP queue given
+     * by queue and copies the packet data into a newly allocated mbuf
+     * to return.
+     */
+    for (i = 0; i < nb_pkts; ++i) {
+        mbuf = mbufs[i];
 
-		/* get the space available for data in the mbuf */
-		packet_size = packets[i].data_length;
+        /* get the space available for data in the mbuf */
+        packet_size = packets[i].data_length;
 
-		if (likely(packet_size <= buf_size)) {
-			/* NDP packet will fit in one mbuf, go ahead and copy */
-			rte_memcpy(rte_pktmbuf_mtod(mbuf, void *),
-				packets[i].data, packet_size);
+        if (likely(packet_size <= buf_size)) {
+            /* NDP packet will fit in one mbuf, go ahead and copy */
+            rte_memcpy(rte_pktmbuf_mtod(mbuf, void *),
+                packets[i].data, packet_size);
 
-			mbuf->data_len = (uint16_t)packet_size;
+            mbuf->data_len = (uint16_t)packet_size;
 
-			mbuf->pkt_len = packet_size;
-			mbuf->port = ndp->in_port;
-			mbuf->ol_flags = 0;
+            mbuf->pkt_len = packet_size;
+            mbuf->port = ndp->in_port;
+            mbuf->ol_flags = 0;
 
-			if (timestamping_enabled) {
-				/* nanoseconds */
-				mbuf->timestamp =
-					rte_le_to_cpu_32(*((uint32_t *)
-					(packets[i].header + 4)));
-				mbuf->timestamp <<= 32;
-				/* seconds */
-				mbuf->timestamp |=
-					rte_le_to_cpu_32(*((uint32_t *)
-					(packets[i].header + 8)));
-				mbuf->ol_flags |= PKT_RX_TIMESTAMP;
-			}
+            if (timestamping_enabled) {
+                /* nanoseconds */
+                mbuf->timestamp =
+                    rte_le_to_cpu_32(*((uint32_t *)
+                    (packets[i].header + 4)));
+                mbuf->timestamp <<= 32;
+                /* seconds */
+                mbuf->timestamp |=
+                    rte_le_to_cpu_32(*((uint32_t *)
+                    (packets[i].header + 8)));
+                mbuf->ol_flags |= PKT_RX_TIMESTAMP;
+            }
 
-			bufs[num_rx++] = mbuf;
-			num_bytes += packet_size;
-		} else {
-			/*
-			 * NDP packet will not fit in one mbuf,
-			 * scattered mode is not enabled, drop packet
-			 */
-			rte_pktmbuf_free(mbuf);
-		}
-	}
+            bufs[num_rx++] = mbuf;
+            num_bytes += packet_size;
+        } else {
+            /*
+             * NDP packet will not fit in one mbuf,
+             * scattered mode is not enabled, drop packet
+             */
+            rte_pktmbuf_free(mbuf);
+        }
+    }
 
-	ndp_rx_burst_put(ndp->queue);
+    ndp_rx_burst_put(ndp->queue);
 
-	ndp->rx_pkts += num_rx;
-	ndp->rx_bytes += num_bytes;
-	return num_rx;
+    ndp->rx_pkts += num_rx;
+    ndp->rx_bytes += num_bytes;
+    return num_rx;
 }
 
 #endif /* _NFB_RX_H_ */

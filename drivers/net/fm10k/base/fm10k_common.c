@@ -13,138 +13,138 @@
  **/
 STATIC s32 fm10k_get_bus_info_generic(struct fm10k_hw *hw)
 {
-	u16 link_cap, link_status, device_cap, device_control;
+    u16 link_cap, link_status, device_cap, device_control;
 
-	DEBUGFUNC("fm10k_get_bus_info_generic");
+    DEBUGFUNC("fm10k_get_bus_info_generic");
 
-	/* Get the maximum link width and speed from PCIe config space */
-	link_cap = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_LINK_CAP);
+    /* Get the maximum link width and speed from PCIe config space */
+    link_cap = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_LINK_CAP);
 
-	switch (link_cap & FM10K_PCIE_LINK_WIDTH) {
-	case FM10K_PCIE_LINK_WIDTH_1:
-		hw->bus_caps.width = fm10k_bus_width_pcie_x1;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_2:
-		hw->bus_caps.width = fm10k_bus_width_pcie_x2;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_4:
-		hw->bus_caps.width = fm10k_bus_width_pcie_x4;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_8:
-		hw->bus_caps.width = fm10k_bus_width_pcie_x8;
-		break;
-	default:
-		hw->bus_caps.width = fm10k_bus_width_unknown;
-		break;
-	}
+    switch (link_cap & FM10K_PCIE_LINK_WIDTH) {
+    case FM10K_PCIE_LINK_WIDTH_1:
+        hw->bus_caps.width = fm10k_bus_width_pcie_x1;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_2:
+        hw->bus_caps.width = fm10k_bus_width_pcie_x2;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_4:
+        hw->bus_caps.width = fm10k_bus_width_pcie_x4;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_8:
+        hw->bus_caps.width = fm10k_bus_width_pcie_x8;
+        break;
+    default:
+        hw->bus_caps.width = fm10k_bus_width_unknown;
+        break;
+    }
 
-	switch (link_cap & FM10K_PCIE_LINK_SPEED) {
-	case FM10K_PCIE_LINK_SPEED_2500:
-		hw->bus_caps.speed = fm10k_bus_speed_2500;
-		break;
-	case FM10K_PCIE_LINK_SPEED_5000:
-		hw->bus_caps.speed = fm10k_bus_speed_5000;
-		break;
-	case FM10K_PCIE_LINK_SPEED_8000:
-		hw->bus_caps.speed = fm10k_bus_speed_8000;
-		break;
-	default:
-		hw->bus_caps.speed = fm10k_bus_speed_unknown;
-		break;
-	}
+    switch (link_cap & FM10K_PCIE_LINK_SPEED) {
+    case FM10K_PCIE_LINK_SPEED_2500:
+        hw->bus_caps.speed = fm10k_bus_speed_2500;
+        break;
+    case FM10K_PCIE_LINK_SPEED_5000:
+        hw->bus_caps.speed = fm10k_bus_speed_5000;
+        break;
+    case FM10K_PCIE_LINK_SPEED_8000:
+        hw->bus_caps.speed = fm10k_bus_speed_8000;
+        break;
+    default:
+        hw->bus_caps.speed = fm10k_bus_speed_unknown;
+        break;
+    }
 
-	/* Get the PCIe maximum payload size for the PCIe function */
-	device_cap = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_DEV_CAP);
+    /* Get the PCIe maximum payload size for the PCIe function */
+    device_cap = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_DEV_CAP);
 
-	switch (device_cap & FM10K_PCIE_DEV_CAP_PAYLOAD) {
-	case FM10K_PCIE_DEV_CAP_PAYLOAD_128:
-		hw->bus_caps.payload = fm10k_bus_payload_128;
-		break;
-	case FM10K_PCIE_DEV_CAP_PAYLOAD_256:
-		hw->bus_caps.payload = fm10k_bus_payload_256;
-		break;
-	case FM10K_PCIE_DEV_CAP_PAYLOAD_512:
-		hw->bus_caps.payload = fm10k_bus_payload_512;
-		break;
-	default:
-		hw->bus_caps.payload = fm10k_bus_payload_unknown;
-		break;
-	}
+    switch (device_cap & FM10K_PCIE_DEV_CAP_PAYLOAD) {
+    case FM10K_PCIE_DEV_CAP_PAYLOAD_128:
+        hw->bus_caps.payload = fm10k_bus_payload_128;
+        break;
+    case FM10K_PCIE_DEV_CAP_PAYLOAD_256:
+        hw->bus_caps.payload = fm10k_bus_payload_256;
+        break;
+    case FM10K_PCIE_DEV_CAP_PAYLOAD_512:
+        hw->bus_caps.payload = fm10k_bus_payload_512;
+        break;
+    default:
+        hw->bus_caps.payload = fm10k_bus_payload_unknown;
+        break;
+    }
 
-	/* Get the negotiated link width and speed from PCIe config space */
-	link_status = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_LINK_STATUS);
+    /* Get the negotiated link width and speed from PCIe config space */
+    link_status = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_LINK_STATUS);
 
-	switch (link_status & FM10K_PCIE_LINK_WIDTH) {
-	case FM10K_PCIE_LINK_WIDTH_1:
-		hw->bus.width = fm10k_bus_width_pcie_x1;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_2:
-		hw->bus.width = fm10k_bus_width_pcie_x2;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_4:
-		hw->bus.width = fm10k_bus_width_pcie_x4;
-		break;
-	case FM10K_PCIE_LINK_WIDTH_8:
-		hw->bus.width = fm10k_bus_width_pcie_x8;
-		break;
-	default:
-		hw->bus.width = fm10k_bus_width_unknown;
-		break;
-	}
+    switch (link_status & FM10K_PCIE_LINK_WIDTH) {
+    case FM10K_PCIE_LINK_WIDTH_1:
+        hw->bus.width = fm10k_bus_width_pcie_x1;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_2:
+        hw->bus.width = fm10k_bus_width_pcie_x2;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_4:
+        hw->bus.width = fm10k_bus_width_pcie_x4;
+        break;
+    case FM10K_PCIE_LINK_WIDTH_8:
+        hw->bus.width = fm10k_bus_width_pcie_x8;
+        break;
+    default:
+        hw->bus.width = fm10k_bus_width_unknown;
+        break;
+    }
 
-	switch (link_status & FM10K_PCIE_LINK_SPEED) {
-	case FM10K_PCIE_LINK_SPEED_2500:
-		hw->bus.speed = fm10k_bus_speed_2500;
-		break;
-	case FM10K_PCIE_LINK_SPEED_5000:
-		hw->bus.speed = fm10k_bus_speed_5000;
-		break;
-	case FM10K_PCIE_LINK_SPEED_8000:
-		hw->bus.speed = fm10k_bus_speed_8000;
-		break;
-	default:
-		hw->bus.speed = fm10k_bus_speed_unknown;
-		break;
-	}
+    switch (link_status & FM10K_PCIE_LINK_SPEED) {
+    case FM10K_PCIE_LINK_SPEED_2500:
+        hw->bus.speed = fm10k_bus_speed_2500;
+        break;
+    case FM10K_PCIE_LINK_SPEED_5000:
+        hw->bus.speed = fm10k_bus_speed_5000;
+        break;
+    case FM10K_PCIE_LINK_SPEED_8000:
+        hw->bus.speed = fm10k_bus_speed_8000;
+        break;
+    default:
+        hw->bus.speed = fm10k_bus_speed_unknown;
+        break;
+    }
 
-	/* Get the negotiated PCIe maximum payload size for the PCIe function */
-	device_control = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_DEV_CTRL);
+    /* Get the negotiated PCIe maximum payload size for the PCIe function */
+    device_control = FM10K_READ_PCI_WORD(hw, FM10K_PCIE_DEV_CTRL);
 
-	switch (device_control & FM10K_PCIE_DEV_CTRL_PAYLOAD) {
-	case FM10K_PCIE_DEV_CTRL_PAYLOAD_128:
-		hw->bus.payload = fm10k_bus_payload_128;
-		break;
-	case FM10K_PCIE_DEV_CTRL_PAYLOAD_256:
-		hw->bus.payload = fm10k_bus_payload_256;
-		break;
-	case FM10K_PCIE_DEV_CTRL_PAYLOAD_512:
-		hw->bus.payload = fm10k_bus_payload_512;
-		break;
-	default:
-		hw->bus.payload = fm10k_bus_payload_unknown;
-		break;
-	}
+    switch (device_control & FM10K_PCIE_DEV_CTRL_PAYLOAD) {
+    case FM10K_PCIE_DEV_CTRL_PAYLOAD_128:
+        hw->bus.payload = fm10k_bus_payload_128;
+        break;
+    case FM10K_PCIE_DEV_CTRL_PAYLOAD_256:
+        hw->bus.payload = fm10k_bus_payload_256;
+        break;
+    case FM10K_PCIE_DEV_CTRL_PAYLOAD_512:
+        hw->bus.payload = fm10k_bus_payload_512;
+        break;
+    default:
+        hw->bus.payload = fm10k_bus_payload_unknown;
+        break;
+    }
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 u16 fm10k_get_pcie_msix_count_generic(struct fm10k_hw *hw)
 {
-	u16 msix_count;
+    u16 msix_count;
 
-	DEBUGFUNC("fm10k_get_pcie_msix_count_generic");
+    DEBUGFUNC("fm10k_get_pcie_msix_count_generic");
 
-	/* read in value from MSI-X capability register */
-	msix_count = FM10K_READ_PCI_WORD(hw, FM10K_PCI_MSIX_MSG_CTRL);
-	msix_count &= FM10K_PCI_MSIX_MSG_CTRL_TBL_SZ_MASK;
+    /* read in value from MSI-X capability register */
+    msix_count = FM10K_READ_PCI_WORD(hw, FM10K_PCI_MSIX_MSG_CTRL);
+    msix_count &= FM10K_PCI_MSIX_MSG_CTRL_TBL_SZ_MASK;
 
-	/* MSI-X count is zero-based in HW */
-	msix_count++;
+    /* MSI-X count is zero-based in HW */
+    msix_count++;
 
-	if (msix_count > FM10K_MAX_MSIX_VECTORS)
-		msix_count = FM10K_MAX_MSIX_VECTORS;
+    if (msix_count > FM10K_MAX_MSIX_VECTORS)
+        msix_count = FM10K_MAX_MSIX_VECTORS;
 
-	return msix_count;
+    return msix_count;
 }
 
 /**
@@ -155,17 +155,17 @@ u16 fm10k_get_pcie_msix_count_generic(struct fm10k_hw *hw)
  **/
 s32 fm10k_init_ops_generic(struct fm10k_hw *hw)
 {
-	struct fm10k_mac_info *mac = &hw->mac;
+    struct fm10k_mac_info *mac = &hw->mac;
 
-	DEBUGFUNC("fm10k_init_ops_generic");
+    DEBUGFUNC("fm10k_init_ops_generic");
 
-	/* MAC */
-	mac->ops.get_bus_info = &fm10k_get_bus_info_generic;
+    /* MAC */
+    mac->ops.get_bus_info = &fm10k_get_bus_info_generic;
 
-	/* initialize GLORT state to avoid any false hits */
-	mac->dglort_map = FM10K_DGLORTMAP_NONE;
+    /* initialize GLORT state to avoid any false hits */
+    mac->dglort_map = FM10K_DGLORTMAP_NONE;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -177,12 +177,12 @@ s32 fm10k_init_ops_generic(struct fm10k_hw *hw)
  **/
 s32 fm10k_start_hw_generic(struct fm10k_hw *hw)
 {
-	DEBUGFUNC("fm10k_start_hw_generic");
+    DEBUGFUNC("fm10k_start_hw_generic");
 
-	/* set flag indicating we are beginning Tx */
-	hw->mac.tx_ready = true;
+    /* set flag indicating we are beginning Tx */
+    hw->mac.tx_ready = true;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -193,53 +193,53 @@ s32 fm10k_start_hw_generic(struct fm10k_hw *hw)
  **/
 s32 fm10k_disable_queues_generic(struct fm10k_hw *hw, u16 q_cnt)
 {
-	u32 reg;
-	u16 i, time;
+    u32 reg;
+    u16 i, time;
 
-	DEBUGFUNC("fm10k_disable_queues_generic");
+    DEBUGFUNC("fm10k_disable_queues_generic");
 
-	/* clear tx_ready to prevent any false hits for reset */
-	hw->mac.tx_ready = false;
+    /* clear tx_ready to prevent any false hits for reset */
+    hw->mac.tx_ready = false;
 
-	if (FM10K_REMOVED(hw->hw_addr))
-		return FM10K_SUCCESS;
+    if (FM10K_REMOVED(hw->hw_addr))
+        return FM10K_SUCCESS;
 
-	/* clear the enable bit for all rings */
-	for (i = 0; i < q_cnt; i++) {
-		reg = FM10K_READ_REG(hw, FM10K_TXDCTL(i));
-		FM10K_WRITE_REG(hw, FM10K_TXDCTL(i),
-				reg & ~FM10K_TXDCTL_ENABLE);
-		reg = FM10K_READ_REG(hw, FM10K_RXQCTL(i));
-		FM10K_WRITE_REG(hw, FM10K_RXQCTL(i),
-				reg & ~FM10K_RXQCTL_ENABLE);
-	}
+    /* clear the enable bit for all rings */
+    for (i = 0; i < q_cnt; i++) {
+        reg = FM10K_READ_REG(hw, FM10K_TXDCTL(i));
+        FM10K_WRITE_REG(hw, FM10K_TXDCTL(i),
+                reg & ~FM10K_TXDCTL_ENABLE);
+        reg = FM10K_READ_REG(hw, FM10K_RXQCTL(i));
+        FM10K_WRITE_REG(hw, FM10K_RXQCTL(i),
+                reg & ~FM10K_RXQCTL_ENABLE);
+    }
 
-	FM10K_WRITE_FLUSH(hw);
-	usec_delay(1);
+    FM10K_WRITE_FLUSH(hw);
+    usec_delay(1);
 
-	/* loop through all queues to verify that they are all disabled */
-	for (i = 0, time = FM10K_QUEUE_DISABLE_TIMEOUT; time;) {
-		/* if we are at end of rings all rings are disabled */
-		if (i == q_cnt)
-			return FM10K_SUCCESS;
+    /* loop through all queues to verify that they are all disabled */
+    for (i = 0, time = FM10K_QUEUE_DISABLE_TIMEOUT; time;) {
+        /* if we are at end of rings all rings are disabled */
+        if (i == q_cnt)
+            return FM10K_SUCCESS;
 
-		/* if queue enables cleared, then move to next ring pair */
-		reg = FM10K_READ_REG(hw, FM10K_TXDCTL(i));
-		if (!~reg || !(reg & FM10K_TXDCTL_ENABLE)) {
-			reg = FM10K_READ_REG(hw, FM10K_RXQCTL(i));
-			if (!~reg || !(reg & FM10K_RXQCTL_ENABLE)) {
-				i++;
-				continue;
-			}
-		}
+        /* if queue enables cleared, then move to next ring pair */
+        reg = FM10K_READ_REG(hw, FM10K_TXDCTL(i));
+        if (!~reg || !(reg & FM10K_TXDCTL_ENABLE)) {
+            reg = FM10K_READ_REG(hw, FM10K_RXQCTL(i));
+            if (!~reg || !(reg & FM10K_RXQCTL_ENABLE)) {
+                i++;
+                continue;
+            }
+        }
 
-		/* decrement time and wait 1 usec */
-		time--;
-		if (time)
-			usec_delay(1);
-	}
+        /* decrement time and wait 1 usec */
+        time--;
+        if (time)
+            usec_delay(1);
+    }
 
-	return FM10K_ERR_REQUESTS_PENDING;
+    return FM10K_ERR_REQUESTS_PENDING;
 }
 
 /**
@@ -249,9 +249,9 @@ s32 fm10k_disable_queues_generic(struct fm10k_hw *hw, u16 q_cnt)
  **/
 s32 fm10k_stop_hw_generic(struct fm10k_hw *hw)
 {
-	DEBUGFUNC("fm10k_stop_hw_generic");
+    DEBUGFUNC("fm10k_stop_hw_generic");
 
-	return fm10k_disable_queues_generic(hw, hw->mac.max_queues);
+    return fm10k_disable_queues_generic(hw, hw->mac.max_queues);
 }
 
 /**
@@ -263,16 +263,16 @@ s32 fm10k_stop_hw_generic(struct fm10k_hw *hw)
  *  between the base and the current value.
  *  **/
 u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
-			    struct fm10k_hw_stat *stat)
+                struct fm10k_hw_stat *stat)
 {
-	u32 delta = FM10K_READ_REG(hw, addr) - stat->base_l;
+    u32 delta = FM10K_READ_REG(hw, addr) - stat->base_l;
 
-	DEBUGFUNC("fm10k_read_hw_stats_32b");
+    DEBUGFUNC("fm10k_read_hw_stats_32b");
 
-	if (FM10K_REMOVED(hw->hw_addr))
-		stat->base_h = 0;
+    if (FM10K_REMOVED(hw->hw_addr))
+        stat->base_h = 0;
 
-	return delta;
+    return delta;
 }
 
 /**
@@ -286,28 +286,28 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
  *  values stored in registers and values stored in the statistic counters.
  *  **/
 STATIC u64 fm10k_read_hw_stats_48b(struct fm10k_hw *hw, u32 addr,
-				   struct fm10k_hw_stat *stat)
+                   struct fm10k_hw_stat *stat)
 {
-	u32 count_l;
-	u32 count_h;
-	u32 count_tmp;
-	u64 delta;
+    u32 count_l;
+    u32 count_h;
+    u32 count_tmp;
+    u64 delta;
 
-	DEBUGFUNC("fm10k_read_hw_stats_48b");
+    DEBUGFUNC("fm10k_read_hw_stats_48b");
 
-	count_h = FM10K_READ_REG(hw, addr + 1);
+    count_h = FM10K_READ_REG(hw, addr + 1);
 
-	/* Check for overflow */
-	do {
-		count_tmp = count_h;
-		count_l = FM10K_READ_REG(hw, addr);
-		count_h = FM10K_READ_REG(hw, addr + 1);
-	} while (count_h != count_tmp);
+    /* Check for overflow */
+    do {
+        count_tmp = count_h;
+        count_l = FM10K_READ_REG(hw, addr);
+        count_h = FM10K_READ_REG(hw, addr + 1);
+    } while (count_h != count_tmp);
 
-	delta = ((u64)(count_h - stat->base_h) << 32) + count_l;
-	delta -= stat->base_l;
+    delta = ((u64)(count_h - stat->base_h) << 32) + count_l;
+    delta -= stat->base_l;
 
-	return delta & FM10K_48_BIT_MASK;
+    return delta & FM10K_48_BIT_MASK;
 }
 
 /**
@@ -320,17 +320,17 @@ STATIC u64 fm10k_read_hw_stats_48b(struct fm10k_hw *hw, u32 addr,
  **/
 STATIC void fm10k_update_hw_base_48b(struct fm10k_hw_stat *stat, u64 delta)
 {
-	DEBUGFUNC("fm10k_update_hw_base_48b");
+    DEBUGFUNC("fm10k_update_hw_base_48b");
 
-	if (!delta)
-		return;
+    if (!delta)
+        return;
 
-	/* update lower 32 bits */
-	delta += stat->base_l;
-	stat->base_l = (u32)delta;
+    /* update lower 32 bits */
+    delta += stat->base_l;
+    stat->base_l = (u32)delta;
 
-	/* update upper 32 bits */
-	stat->base_h += (u32)(delta >> 32);
+    /* update upper 32 bits */
+    stat->base_h += (u32)(delta >> 32);
 }
 
 /**
@@ -343,47 +343,47 @@ STATIC void fm10k_update_hw_base_48b(struct fm10k_hw_stat *stat, u64 delta)
  *  hardware.
  **/
 STATIC void fm10k_update_hw_stats_tx_q(struct fm10k_hw *hw,
-				       struct fm10k_hw_stats_q *q,
-				       u32 idx)
+                       struct fm10k_hw_stats_q *q,
+                       u32 idx)
 {
-	u32 id_tx, id_tx_prev, tx_packets;
-	u64 tx_bytes = 0;
+    u32 id_tx, id_tx_prev, tx_packets;
+    u64 tx_bytes = 0;
 
-	DEBUGFUNC("fm10k_update_hw_stats_tx_q");
+    DEBUGFUNC("fm10k_update_hw_stats_tx_q");
 
-	/* Retrieve TX Owner Data */
-	id_tx = FM10K_READ_REG(hw, FM10K_TXQCTL(idx));
+    /* Retrieve TX Owner Data */
+    id_tx = FM10K_READ_REG(hw, FM10K_TXQCTL(idx));
 
-	/* Process TX Ring */
-	do {
-		tx_packets = fm10k_read_hw_stats_32b(hw, FM10K_QPTC(idx),
-						     &q->tx_packets);
+    /* Process TX Ring */
+    do {
+        tx_packets = fm10k_read_hw_stats_32b(hw, FM10K_QPTC(idx),
+                             &q->tx_packets);
 
-		if (tx_packets)
-			tx_bytes = fm10k_read_hw_stats_48b(hw,
-							   FM10K_QBTC_L(idx),
-							   &q->tx_bytes);
+        if (tx_packets)
+            tx_bytes = fm10k_read_hw_stats_48b(hw,
+                               FM10K_QBTC_L(idx),
+                               &q->tx_bytes);
 
-		/* Re-Check Owner Data */
-		id_tx_prev = id_tx;
-		id_tx = FM10K_READ_REG(hw, FM10K_TXQCTL(idx));
-	} while ((id_tx ^ id_tx_prev) & FM10K_TXQCTL_ID_MASK);
+        /* Re-Check Owner Data */
+        id_tx_prev = id_tx;
+        id_tx = FM10K_READ_REG(hw, FM10K_TXQCTL(idx));
+    } while ((id_tx ^ id_tx_prev) & FM10K_TXQCTL_ID_MASK);
 
-	/* drop non-ID bits and set VALID ID bit */
-	id_tx &= FM10K_TXQCTL_ID_MASK;
-	id_tx |= FM10K_STAT_VALID;
+    /* drop non-ID bits and set VALID ID bit */
+    id_tx &= FM10K_TXQCTL_ID_MASK;
+    id_tx |= FM10K_STAT_VALID;
 
-	/* update packet counts */
-	if (q->tx_stats_idx == id_tx) {
-		q->tx_packets.count += tx_packets;
-		q->tx_bytes.count += tx_bytes;
-	}
+    /* update packet counts */
+    if (q->tx_stats_idx == id_tx) {
+        q->tx_packets.count += tx_packets;
+        q->tx_bytes.count += tx_bytes;
+    }
 
-	/* update bases and record ID */
-	fm10k_update_hw_base_32b(&q->tx_packets, tx_packets);
-	fm10k_update_hw_base_48b(&q->tx_bytes, tx_bytes);
+    /* update bases and record ID */
+    fm10k_update_hw_base_32b(&q->tx_packets, tx_packets);
+    fm10k_update_hw_base_48b(&q->tx_bytes, tx_bytes);
 
-	q->tx_stats_idx = id_tx;
+    q->tx_stats_idx = id_tx;
 }
 
 /**
@@ -396,52 +396,52 @@ STATIC void fm10k_update_hw_stats_tx_q(struct fm10k_hw *hw,
  *  hardware.
  **/
 STATIC void fm10k_update_hw_stats_rx_q(struct fm10k_hw *hw,
-				       struct fm10k_hw_stats_q *q,
-				       u32 idx)
+                       struct fm10k_hw_stats_q *q,
+                       u32 idx)
 {
-	u32 id_rx, id_rx_prev, rx_packets, rx_drops;
-	u64 rx_bytes = 0;
+    u32 id_rx, id_rx_prev, rx_packets, rx_drops;
+    u64 rx_bytes = 0;
 
-	DEBUGFUNC("fm10k_update_hw_stats_rx_q");
+    DEBUGFUNC("fm10k_update_hw_stats_rx_q");
 
-	/* Retrieve RX Owner Data */
-	id_rx = FM10K_READ_REG(hw, FM10K_RXQCTL(idx));
+    /* Retrieve RX Owner Data */
+    id_rx = FM10K_READ_REG(hw, FM10K_RXQCTL(idx));
 
-	/* Process RX Ring */
-	do {
-		rx_drops = fm10k_read_hw_stats_32b(hw, FM10K_QPRDC(idx),
-						   &q->rx_drops);
+    /* Process RX Ring */
+    do {
+        rx_drops = fm10k_read_hw_stats_32b(hw, FM10K_QPRDC(idx),
+                           &q->rx_drops);
 
-		rx_packets = fm10k_read_hw_stats_32b(hw, FM10K_QPRC(idx),
-						     &q->rx_packets);
+        rx_packets = fm10k_read_hw_stats_32b(hw, FM10K_QPRC(idx),
+                             &q->rx_packets);
 
-		if (rx_packets)
-			rx_bytes = fm10k_read_hw_stats_48b(hw,
-							   FM10K_QBRC_L(idx),
-							   &q->rx_bytes);
+        if (rx_packets)
+            rx_bytes = fm10k_read_hw_stats_48b(hw,
+                               FM10K_QBRC_L(idx),
+                               &q->rx_bytes);
 
-		/* Re-Check Owner Data */
-		id_rx_prev = id_rx;
-		id_rx = FM10K_READ_REG(hw, FM10K_RXQCTL(idx));
-	} while ((id_rx ^ id_rx_prev) & FM10K_RXQCTL_ID_MASK);
+        /* Re-Check Owner Data */
+        id_rx_prev = id_rx;
+        id_rx = FM10K_READ_REG(hw, FM10K_RXQCTL(idx));
+    } while ((id_rx ^ id_rx_prev) & FM10K_RXQCTL_ID_MASK);
 
-	/* drop non-ID bits and set VALID ID bit */
-	id_rx &= FM10K_RXQCTL_ID_MASK;
-	id_rx |= FM10K_STAT_VALID;
+    /* drop non-ID bits and set VALID ID bit */
+    id_rx &= FM10K_RXQCTL_ID_MASK;
+    id_rx |= FM10K_STAT_VALID;
 
-	/* update packet counts */
-	if (q->rx_stats_idx == id_rx) {
-		q->rx_drops.count += rx_drops;
-		q->rx_packets.count += rx_packets;
-		q->rx_bytes.count += rx_bytes;
-	}
+    /* update packet counts */
+    if (q->rx_stats_idx == id_rx) {
+        q->rx_drops.count += rx_drops;
+        q->rx_packets.count += rx_packets;
+        q->rx_bytes.count += rx_bytes;
+    }
 
-	/* update bases and record ID */
-	fm10k_update_hw_base_32b(&q->rx_drops, rx_drops);
-	fm10k_update_hw_base_32b(&q->rx_packets, rx_packets);
-	fm10k_update_hw_base_48b(&q->rx_bytes, rx_bytes);
+    /* update bases and record ID */
+    fm10k_update_hw_base_32b(&q->rx_drops, rx_drops);
+    fm10k_update_hw_base_32b(&q->rx_packets, rx_packets);
+    fm10k_update_hw_base_48b(&q->rx_bytes, rx_bytes);
 
-	q->rx_stats_idx = id_rx;
+    q->rx_stats_idx = id_rx;
 }
 
 /**
@@ -455,16 +455,16 @@ STATIC void fm10k_update_hw_stats_rx_q(struct fm10k_hw *hw,
  *  hardware.
  **/
 void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
-			     u32 idx, u32 count)
+                 u32 idx, u32 count)
 {
-	u32 i;
+    u32 i;
 
-	DEBUGFUNC("fm10k_update_hw_stats_q");
+    DEBUGFUNC("fm10k_update_hw_stats_q");
 
-	for (i = 0; i < count; i++, idx++, q++) {
-		fm10k_update_hw_stats_tx_q(hw, q, idx);
-		fm10k_update_hw_stats_rx_q(hw, q, idx);
-	}
+    for (i = 0; i < count; i++, idx++, q++) {
+        fm10k_update_hw_stats_tx_q(hw, q, idx);
+        fm10k_update_hw_stats_rx_q(hw, q, idx);
+    }
 }
 
 /**
@@ -479,12 +479,12 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
  **/
 void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
 {
-	u32 i;
+    u32 i;
 
-	for (i = 0; i < count; i++, idx++, q++) {
-		q->rx_stats_idx = 0;
-		q->tx_stats_idx = 0;
-	}
+    for (i = 0; i < count; i++, idx++, q++) {
+        q->rx_stats_idx = 0;
+        q->tx_stats_idx = 0;
+    }
 }
 
 /**
@@ -497,54 +497,54 @@ void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
  **/
 s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready)
 {
-	struct fm10k_mbx_info *mbx = &hw->mbx;
-	struct fm10k_mac_info *mac = &hw->mac;
-	s32 ret_val = FM10K_SUCCESS;
-	u32 txdctl = FM10K_READ_REG(hw, FM10K_TXDCTL(0));
+    struct fm10k_mbx_info *mbx = &hw->mbx;
+    struct fm10k_mac_info *mac = &hw->mac;
+    s32 ret_val = FM10K_SUCCESS;
+    u32 txdctl = FM10K_READ_REG(hw, FM10K_TXDCTL(0));
 
-	DEBUGFUNC("fm10k_get_host_state_generic");
+    DEBUGFUNC("fm10k_get_host_state_generic");
 
-	/* process upstream mailbox in case interrupts were disabled */
-	mbx->ops.process(hw, mbx);
+    /* process upstream mailbox in case interrupts were disabled */
+    mbx->ops.process(hw, mbx);
 
-	/* If Tx is no longer enabled link should come down */
-	if (!(~txdctl) || !(txdctl & FM10K_TXDCTL_ENABLE))
-		mac->get_host_state = true;
+    /* If Tx is no longer enabled link should come down */
+    if (!(~txdctl) || !(txdctl & FM10K_TXDCTL_ENABLE))
+        mac->get_host_state = true;
 
-	/* exit if not checking for link, or link cannot be changed */
-	if (!mac->get_host_state || !(~txdctl))
-		goto out;
+    /* exit if not checking for link, or link cannot be changed */
+    if (!mac->get_host_state || !(~txdctl))
+        goto out;
 
-	/* if we somehow dropped the Tx enable we should reset */
-	if (mac->tx_ready && !(txdctl & FM10K_TXDCTL_ENABLE)) {
-		ret_val = FM10K_ERR_RESET_REQUESTED;
-		goto out;
-	}
+    /* if we somehow dropped the Tx enable we should reset */
+    if (mac->tx_ready && !(txdctl & FM10K_TXDCTL_ENABLE)) {
+        ret_val = FM10K_ERR_RESET_REQUESTED;
+        goto out;
+    }
 
-	/* if Mailbox timed out we should request reset */
-	if (!mbx->timeout) {
-		ret_val = FM10K_ERR_RESET_REQUESTED;
-		goto out;
-	}
+    /* if Mailbox timed out we should request reset */
+    if (!mbx->timeout) {
+        ret_val = FM10K_ERR_RESET_REQUESTED;
+        goto out;
+    }
 
-	/* verify Mailbox is still valid */
-	if (!mbx->ops.tx_ready(mbx, FM10K_VFMBX_MSG_MTU))
-		goto out;
+    /* verify Mailbox is still valid */
+    if (!mbx->ops.tx_ready(mbx, FM10K_VFMBX_MSG_MTU))
+        goto out;
 
-	/* interface cannot receive traffic without logical ports */
-	if (mac->dglort_map == FM10K_DGLORTMAP_NONE) {
-		if (mac->ops.request_lport_map)
-			ret_val = mac->ops.request_lport_map(hw);
+    /* interface cannot receive traffic without logical ports */
+    if (mac->dglort_map == FM10K_DGLORTMAP_NONE) {
+        if (mac->ops.request_lport_map)
+            ret_val = mac->ops.request_lport_map(hw);
 
-		goto out;
-	}
+        goto out;
+    }
 
-	/* if we passed all the tests above then the switch is ready and we no
-	 * longer need to check for link
-	 */
-	mac->get_host_state = false;
+    /* if we passed all the tests above then the switch is ready and we no
+     * longer need to check for link
+     */
+    mac->get_host_state = false;
 
 out:
-	*host_ready = !mac->get_host_state;
-	return ret_val;
+    *host_ready = !mac->get_host_state;
+    return ret_val;
 }

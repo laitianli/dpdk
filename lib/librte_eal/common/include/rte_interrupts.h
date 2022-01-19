@@ -30,7 +30,7 @@ typedef void (*rte_intr_callback_fn)(void *cb_arg);
  * Can be used to close fd and free cb_arg.
  */
 typedef void (*rte_intr_unregister_callback_fn)(struct rte_intr_handle *intr_handle,
-						void *cb_arg);
+                        void *cb_arg);
 
 #include "rte_eal_interrupts.h"
 
@@ -49,7 +49,7 @@ typedef void (*rte_intr_unregister_callback_fn)(struct rte_intr_handle *intr_han
  *  - On failure, a negative value.
  */
 int rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
-				rte_intr_callback_fn cb, void *cb_arg);
+                rte_intr_callback_fn cb, void *cb_arg);
 
 /**
  * It unregisters the callback according to the specified interrupt handle.
@@ -67,7 +67,7 @@ int rte_intr_callback_register(const struct rte_intr_handle *intr_handle,
  *  - On failure, a negative value.
  */
 int rte_intr_callback_unregister(const struct rte_intr_handle *intr_handle,
-				rte_intr_callback_fn cb, void *cb_arg);
+                rte_intr_callback_fn cb, void *cb_arg);
 
 /**
  * Unregister the callback according to the specified interrupt handle,
@@ -91,8 +91,8 @@ int rte_intr_callback_unregister(const struct rte_intr_handle *intr_handle,
 __rte_experimental
 int
 rte_intr_callback_unregister_pending(const struct rte_intr_handle *intr_handle,
-				rte_intr_callback_fn cb_fn, void *cb_arg,
-				rte_intr_unregister_callback_fn ucb_fn);
+                rte_intr_callback_fn cb_fn, void *cb_arg,
+                rte_intr_unregister_callback_fn ucb_fn);
 
 /**
  * It enables the interrupt for the specified handle.

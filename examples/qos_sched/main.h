@@ -48,12 +48,12 @@ extern "C" {
 #endif
 
 #define MAX_DATA_STREAMS (APP_MAX_LCORE/2)
-#define MAX_SCHED_SUBPORTS		8
-#define MAX_SCHED_PIPES		4096
-#define MAX_SCHED_PIPE_PROFILES		256
+#define MAX_SCHED_SUBPORTS        8
+#define MAX_SCHED_PIPES        4096
+#define MAX_SCHED_PIPE_PROFILES        256
 
 #ifndef APP_COLLECT_STAT
-#define APP_COLLECT_STAT		1
+#define APP_COLLECT_STAT        1
 #endif
 
 #if APP_COLLECT_STAT
@@ -67,71 +67,71 @@ extern "C" {
 
 struct thread_stat
 {
-	uint64_t nb_rx;
-	uint64_t nb_drop;
+    uint64_t nb_rx;
+    uint64_t nb_drop;
 };
 
 
 struct thread_conf
 {
-	uint32_t counter;
-	uint32_t n_mbufs;
-	struct rte_mbuf **m_table;
+    uint32_t counter;
+    uint32_t n_mbufs;
+    struct rte_mbuf **m_table;
 
-	uint16_t rx_port;
-	uint16_t tx_port;
-	uint16_t rx_queue;
-	uint16_t tx_queue;
-	struct rte_ring *rx_ring;
-	struct rte_ring *tx_ring;
-	struct rte_sched_port *sched_port;
+    uint16_t rx_port;
+    uint16_t tx_port;
+    uint16_t rx_queue;
+    uint16_t tx_queue;
+    struct rte_ring *rx_ring;
+    struct rte_ring *tx_ring;
+    struct rte_sched_port *sched_port;
 
 #if APP_COLLECT_STAT
-	struct thread_stat stat;
+    struct thread_stat stat;
 #endif
 } __rte_cache_aligned;
 
 
 struct flow_conf
 {
-	uint32_t rx_core;
-	uint32_t wt_core;
-	uint32_t tx_core;
-	uint16_t rx_port;
-	uint16_t tx_port;
-	uint16_t rx_queue;
-	uint16_t tx_queue;
-	struct rte_ring *rx_ring;
-	struct rte_ring *tx_ring;
-	struct rte_sched_port *sched_port;
-	struct rte_mempool *mbuf_pool;
+    uint32_t rx_core;
+    uint32_t wt_core;
+    uint32_t tx_core;
+    uint16_t rx_port;
+    uint16_t tx_port;
+    uint16_t rx_queue;
+    uint16_t tx_queue;
+    struct rte_ring *rx_ring;
+    struct rte_ring *tx_ring;
+    struct rte_sched_port *sched_port;
+    struct rte_mempool *mbuf_pool;
 
-	struct thread_conf rx_thread;
-	struct thread_conf wt_thread;
-	struct thread_conf tx_thread;
+    struct thread_conf rx_thread;
+    struct thread_conf wt_thread;
+    struct thread_conf tx_thread;
 };
 
 
 struct ring_conf
 {
-	uint32_t rx_size;
-	uint32_t ring_size;
-	uint32_t tx_size;
+    uint32_t rx_size;
+    uint32_t ring_size;
+    uint32_t tx_size;
 };
 
 struct burst_conf
 {
-	uint16_t rx_burst;
-	uint16_t ring_burst;
-	uint16_t qos_dequeue;
-	uint16_t tx_burst;
+    uint16_t rx_burst;
+    uint16_t ring_burst;
+    uint16_t qos_dequeue;
+    uint16_t tx_burst;
 };
 
 struct ring_thresh
 {
-	uint8_t pthresh; /**< Ring prefetch threshold. */
-	uint8_t hthresh; /**< Ring host threshold. */
-	uint8_t wthresh; /**< Ring writeback threshold. */
+    uint8_t pthresh; /**< Ring prefetch threshold. */
+    uint8_t hthresh; /**< Ring host threshold. */
+    uint8_t wthresh; /**< Ring writeback threshold. */
 };
 
 extern uint8_t interactive;
@@ -167,9 +167,9 @@ void app_stat(void);
 int subport_stat(uint16_t port_id, uint32_t subport_id);
 int pipe_stat(uint16_t port_id, uint32_t subport_id, uint32_t pipe_id);
 int qavg_q(uint16_t port_id, uint32_t subport_id, uint32_t pipe_id,
-	   uint8_t tc, uint8_t q);
+       uint8_t tc, uint8_t q);
 int qavg_tcpipe(uint16_t port_id, uint32_t subport_id, uint32_t pipe_id,
-		uint8_t tc);
+        uint8_t tc);
 int qavg_pipe(uint16_t port_id, uint32_t subport_id, uint32_t pipe_id);
 int qavg_tcsubport(uint16_t port_id, uint32_t subport_id, uint8_t tc);
 int qavg_subport(uint16_t port_id, uint32_t subport_id);

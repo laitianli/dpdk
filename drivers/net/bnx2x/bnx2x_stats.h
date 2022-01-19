@@ -403,8 +403,8 @@ struct bnx2x_fw_port_stats_old {
 /* sum[hi:lo] += add[hi:lo] */
 #define ADD_64(s_hi, a_hi, s_lo, a_lo)          \
     do {                                        \
-	s_lo += a_lo;                           \
-	s_hi += a_hi + ((s_lo < a_lo) ? 1 : 0); \
+    s_lo += a_lo;                           \
+    s_hi += a_hi + ((s_lo < a_lo) ? 1 : 0); \
     } while (0)
 
 #define LE32_0 ((uint32_t) 0)
@@ -412,192 +412,192 @@ struct bnx2x_fw_port_stats_old {
 
 /* The _force is for cases where high value is 0 */
 #define ADD_64_LE(s_hi, a_hi_le, s_lo, a_lo_le) \
-	ADD_64(s_hi, le32toh(a_hi_le),          \
-	       s_lo, le32toh(a_lo_le))
+    ADD_64(s_hi, le32toh(a_hi_le),          \
+           s_lo, le32toh(a_lo_le))
 
 #define ADD_64_LE16(s_hi, a_hi_le, s_lo, a_lo_le) \
-	ADD_64(s_hi, le16toh(a_hi_le),            \
-	       s_lo, le16toh(a_lo_le))
+    ADD_64(s_hi, le16toh(a_hi_le),            \
+           s_lo, le16toh(a_lo_le))
 
 /* difference = minuend - subtrahend */
 #define DIFF_64(d_hi, m_hi, s_hi, d_lo, m_lo, s_lo)  \
     do {                                             \
-	if (m_lo < s_lo) {                           \
-	    /* underflow */                          \
-	    d_hi = m_hi - s_hi;                      \
-	    if (d_hi > 0) {                          \
-		/* we can 'loan' 1 */                \
-		d_hi--;                              \
-		d_lo = m_lo + (UINT_MAX - s_lo) + 1; \
-	    } else {                                 \
-		/* m_hi <= s_hi */                   \
-		d_hi = 0;                            \
-		d_lo = 0;                            \
-	    }                                        \
-	} else {                                     \
-	    /* m_lo >= s_lo */                       \
-	    if (m_hi < s_hi) {                       \
-		d_hi = 0;                            \
-		d_lo = 0;                            \
-	    } else {                                 \
-		/* m_hi >= s_hi */                   \
-		d_hi = m_hi - s_hi;                  \
-		d_lo = m_lo - s_lo;                  \
-	    }                                        \
-	}                                            \
+    if (m_lo < s_lo) {                           \
+        /* underflow */                          \
+        d_hi = m_hi - s_hi;                      \
+        if (d_hi > 0) {                          \
+        /* we can 'loan' 1 */                \
+        d_hi--;                              \
+        d_lo = m_lo + (UINT_MAX - s_lo) + 1; \
+        } else {                                 \
+        /* m_hi <= s_hi */                   \
+        d_hi = 0;                            \
+        d_lo = 0;                            \
+        }                                        \
+    } else {                                     \
+        /* m_lo >= s_lo */                       \
+        if (m_hi < s_hi) {                       \
+        d_hi = 0;                            \
+        d_lo = 0;                            \
+        } else {                                 \
+        /* m_hi >= s_hi */                   \
+        d_hi = m_hi - s_hi;                  \
+        d_lo = m_lo - s_lo;                  \
+        }                                        \
+    }                                            \
     } while (0)
 
 #define UPDATE_STAT64(s, t)                                      \
     do {                                                         \
-	DIFF_64(diff.hi, new->s##_hi, pstats->mac_stx[0].t##_hi, \
-	    diff.lo, new->s##_lo, pstats->mac_stx[0].t##_lo);    \
-	pstats->mac_stx[0].t##_hi = new->s##_hi;                 \
-	pstats->mac_stx[0].t##_lo = new->s##_lo;                 \
-	ADD_64(pstats->mac_stx[1].t##_hi, diff.hi,               \
-	       pstats->mac_stx[1].t##_lo, diff.lo);              \
+    DIFF_64(diff.hi, new->s##_hi, pstats->mac_stx[0].t##_hi, \
+        diff.lo, new->s##_lo, pstats->mac_stx[0].t##_lo);    \
+    pstats->mac_stx[0].t##_hi = new->s##_hi;                 \
+    pstats->mac_stx[0].t##_lo = new->s##_lo;                 \
+    ADD_64(pstats->mac_stx[1].t##_hi, diff.hi,               \
+           pstats->mac_stx[1].t##_lo, diff.lo);              \
     } while (0)
 
 #define UPDATE_STAT64_NIG(s, t)                    \
     do {                                           \
-	DIFF_64(diff.hi, new->s##_hi, old->s##_hi, \
-	    diff.lo, new->s##_lo, old->s##_lo);    \
-	ADD_64(estats->t##_hi, diff.hi,            \
-	       estats->t##_lo, diff.lo);           \
+    DIFF_64(diff.hi, new->s##_hi, old->s##_hi, \
+        diff.lo, new->s##_lo, old->s##_lo);    \
+    ADD_64(estats->t##_hi, diff.hi,            \
+           estats->t##_lo, diff.lo);           \
     } while (0)
 
 /* sum[hi:lo] += add */
 #define ADD_EXTEND_64(s_hi, s_lo, a) \
     do {                             \
-	s_lo += a;                   \
-	s_hi += (s_lo < a) ? 1 : 0;  \
+    s_lo += a;                   \
+    s_hi += (s_lo < a) ? 1 : 0;  \
     } while (0)
 
 #define ADD_STAT64(diff, t)                                \
     do {                                                   \
-	ADD_64(pstats->mac_stx[1].t##_hi, new->diff##_hi,  \
-	       pstats->mac_stx[1].t##_lo, new->diff##_lo); \
+    ADD_64(pstats->mac_stx[1].t##_hi, new->diff##_hi,  \
+           pstats->mac_stx[1].t##_lo, new->diff##_lo); \
     } while (0)
 
 #define UPDATE_EXTEND_STAT(s)                    \
     do {                                         \
-	ADD_EXTEND_64(pstats->mac_stx[1].s##_hi, \
-		  pstats->mac_stx[1].s##_lo,     \
-		  new->s);                       \
+    ADD_EXTEND_64(pstats->mac_stx[1].s##_hi, \
+          pstats->mac_stx[1].s##_lo,     \
+          new->s);                       \
     } while (0)
 
 #define UPDATE_EXTEND_TSTAT_X(s, t, size)                    \
     do {                                                     \
-	diff = le##size##toh(tclient->s) -                   \
-	       le##size##toh(old_tclient->s);                \
-	old_tclient->s = tclient->s;                         \
-	ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff); \
+    diff = le##size##toh(tclient->s) -                   \
+           le##size##toh(old_tclient->s);                \
+    old_tclient->s = tclient->s;                         \
+    ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff); \
     } while (0)
 
 #define UPDATE_EXTEND_TSTAT(s, t) UPDATE_EXTEND_TSTAT_X(s, t, 32)
 
 #define UPDATE_EXTEND_E_TSTAT(s, t, size)                    \
     do {                                                     \
-	UPDATE_EXTEND_TSTAT_X(s, t, size);                   \
-	ADD_EXTEND_64(estats->t##_hi, estats->t##_lo, diff); \
+    UPDATE_EXTEND_TSTAT_X(s, t, size);                   \
+    ADD_EXTEND_64(estats->t##_hi, estats->t##_lo, diff); \
     } while (0)
 
 #define UPDATE_EXTEND_USTAT(s, t)                             \
     do {                                                      \
-	diff = le32toh(uclient->s) - le32toh(old_uclient->s); \
-	old_uclient->s = uclient->s;                          \
-	ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
+    diff = le32toh(uclient->s) - le32toh(old_uclient->s); \
+    old_uclient->s = uclient->s;                          \
+    ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
     } while (0)
 
 #define UPDATE_EXTEND_E_USTAT(s, t)                          \
     do {                                                     \
-	UPDATE_EXTEND_USTAT(s, t);                           \
-	ADD_EXTEND_64(estats->t##_hi, estats->t##_lo, diff); \
+    UPDATE_EXTEND_USTAT(s, t);                           \
+    ADD_EXTEND_64(estats->t##_hi, estats->t##_lo, diff); \
     } while (0)
 
 #define UPDATE_EXTEND_XSTAT(s, t)                             \
     do {                                                      \
-	diff = le32toh(xclient->s) - le32toh(old_xclient->s); \
-	old_xclient->s = xclient->s;                          \
-	ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
+    diff = le32toh(xclient->s) - le32toh(old_xclient->s); \
+    old_xclient->s = xclient->s;                          \
+    ADD_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
     } while (0)
 
 #define UPDATE_QSTAT(s, t)                                   \
     do {                                                     \
-	qstats->t##_hi = qstats_old->t##_hi + le32toh(s.hi); \
-	qstats->t##_lo = qstats_old->t##_lo + le32toh(s.lo); \
+    qstats->t##_hi = qstats_old->t##_hi + le32toh(s.hi); \
+    qstats->t##_lo = qstats_old->t##_lo + le32toh(s.lo); \
     } while (0)
 
 #define UPDATE_QSTAT_OLD(f)        \
     do {                           \
-	qstats_old->f = qstats->f; \
+    qstats_old->f = qstats->f; \
     } while (0)
 
 #define UPDATE_ESTAT_QSTAT_64(s)                        \
     do {                                                \
-	ADD_64(estats->s##_hi, qstats->s##_hi,          \
-	       estats->s##_lo, qstats->s##_lo);         \
-	SUB_64(estats->s##_hi, qstats_old->s##_hi_old,  \
-	       estats->s##_lo, qstats_old->s##_lo_old); \
-	qstats_old->s##_hi_old = qstats->s##_hi;        \
-	qstats_old->s##_lo_old = qstats->s##_lo;        \
+    ADD_64(estats->s##_hi, qstats->s##_hi,          \
+           estats->s##_lo, qstats->s##_lo);         \
+    SUB_64(estats->s##_hi, qstats_old->s##_hi_old,  \
+           estats->s##_lo, qstats_old->s##_lo_old); \
+    qstats_old->s##_hi_old = qstats->s##_hi;        \
+    qstats_old->s##_lo_old = qstats->s##_lo;        \
     } while (0)
 
 #define UPDATE_ESTAT_QSTAT(s)             \
     do {                                  \
-	estats->s += qstats->s;           \
-	estats->s -= qstats_old->s##_old; \
-	qstats_old->s##_old = qstats->s;  \
+    estats->s += qstats->s;           \
+    estats->s -= qstats_old->s##_old; \
+    qstats_old->s##_old = qstats->s;  \
     } while (0)
 
 #define UPDATE_FSTAT_QSTAT(s)                       \
     do {                                            \
-	ADD_64(fstats->s##_hi, qstats->s##_hi,      \
-	       fstats->s##_lo, qstats->s##_lo);     \
-	SUB_64(fstats->s##_hi, qstats_old->s##_hi,  \
-	       fstats->s##_lo, qstats_old->s##_lo); \
-	estats->s##_hi = fstats->s##_hi;            \
-	estats->s##_lo = fstats->s##_lo;            \
-	qstats_old->s##_hi = qstats->s##_hi;        \
-	qstats_old->s##_lo = qstats->s##_lo;        \
+    ADD_64(fstats->s##_hi, qstats->s##_hi,      \
+           fstats->s##_lo, qstats->s##_lo);     \
+    SUB_64(fstats->s##_hi, qstats_old->s##_hi,  \
+           fstats->s##_lo, qstats_old->s##_lo); \
+    estats->s##_hi = fstats->s##_hi;            \
+    estats->s##_lo = fstats->s##_lo;            \
+    qstats_old->s##_hi = qstats->s##_hi;        \
+    qstats_old->s##_lo = qstats->s##_lo;        \
     } while (0)
 
 #define UPDATE_FW_STAT(s)                           \
     do {                                            \
-	estats->s = le32toh(tport->s) + fwstats->s; \
+    estats->s = le32toh(tport->s) + fwstats->s; \
     } while (0)
 
 #define UPDATE_FW_STAT_OLD(f)   \
     do {                        \
-	fwstats->f = estats->f; \
+    fwstats->f = estats->f; \
     } while (0)
 
 #define UPDATE_ESTAT(s, t)                          \
     do {                                            \
-	SUB_64(estats->s##_hi, estats_old->t##_hi,  \
-	       estats->s##_lo, estats_old->t##_lo); \
-	ADD_64(estats->s##_hi, estats->t##_hi,      \
-	       estats->s##_lo, estats->t##_lo);     \
-	estats_old->t##_hi = estats->t##_hi;        \
-	estats_old->t##_lo = estats->t##_lo;        \
+    SUB_64(estats->s##_hi, estats_old->t##_hi,  \
+           estats->s##_lo, estats_old->t##_lo); \
+    ADD_64(estats->s##_hi, estats->t##_hi,      \
+           estats->s##_lo, estats->t##_lo);     \
+    estats_old->t##_hi = estats->t##_hi;        \
+    estats_old->t##_lo = estats->t##_lo;        \
     } while (0)
 
 /* minuend -= subtrahend */
 #define SUB_64(m_hi, s_hi, m_lo, s_lo)               \
     do {                                             \
-	DIFF_64(m_hi, m_hi, s_hi, m_lo, m_lo, s_lo); \
+    DIFF_64(m_hi, m_hi, s_hi, m_lo, m_lo, s_lo); \
     } while (0)
 
 /* minuend[hi:lo] -= subtrahend */
 #define SUB_EXTEND_64(m_hi, m_lo, s)    \
     do {                                \
-	uint32_t s_hi = 0;              \
-	SUB_64(m_hi, s_hi, m_lo, s);    \
+    uint32_t s_hi = 0;              \
+    SUB_64(m_hi, s_hi, m_lo, s);    \
     } while (0)
 
 #define SUB_EXTEND_USTAT(s, t)                                \
     do {                                                      \
-	diff = le32toh(uclient->s) - le32toh(old_uclient->s); \
-	SUB_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
+    diff = le32toh(uclient->s) - le32toh(old_uclient->s); \
+    SUB_EXTEND_64(qstats->t##_hi, qstats->t##_lo, diff);  \
     } while (0)
 
 struct bnx2x_softc;

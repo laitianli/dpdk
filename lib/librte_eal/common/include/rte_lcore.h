@@ -50,7 +50,7 @@ enum rte_lcore_role_t rte_eal_lcore_role(unsigned int lcore_id);
 static inline unsigned
 rte_lcore_id(void)
 {
-	return RTE_PER_LCORE(_lcore_id);
+    return RTE_PER_LCORE(_lcore_id);
 }
 
 /**
@@ -192,18 +192,18 @@ unsigned int rte_get_next_lcore(unsigned int i, int skip_master, int wrap);
 /**
  * Macro to browse all running lcores.
  */
-#define RTE_LCORE_FOREACH(i)						\
-	for (i = rte_get_next_lcore(-1, 0, 0);				\
-	     i<RTE_MAX_LCORE;						\
-	     i = rte_get_next_lcore(i, 0, 0))
+#define RTE_LCORE_FOREACH(i)                        \
+    for (i = rte_get_next_lcore(-1, 0, 0);                \
+         i<RTE_MAX_LCORE;                        \
+         i = rte_get_next_lcore(i, 0, 0))
 
 /**
  * Macro to browse all running lcores except the master lcore.
  */
-#define RTE_LCORE_FOREACH_SLAVE(i)					\
-	for (i = rte_get_next_lcore(-1, 1, 0);				\
-	     i<RTE_MAX_LCORE;						\
-	     i = rte_get_next_lcore(i, 1, 0))
+#define RTE_LCORE_FOREACH_SLAVE(i)                    \
+    for (i = rte_get_next_lcore(-1, 1, 0);                \
+         i<RTE_MAX_LCORE;                        \
+         i = rte_get_next_lcore(i, 1, 0))
 
 /**
  * Set core affinity of the current thread.
@@ -264,8 +264,8 @@ int rte_thread_setname(pthread_t id, const char *name);
  */
 int
 rte_ctrl_thread_create(pthread_t *thread, const char *name,
-		const pthread_attr_t *attr,
-		void *(*start_routine)(void *), void *arg);
+        const pthread_attr_t *attr,
+        void *(*start_routine)(void *), void *arg);
 
 /**
  * Test if the core supplied has a specific role

@@ -79,11 +79,11 @@ typedef uint16_t member_set_t;
 extern int librte_member_logtype;
 
 #define RTE_MEMBER_LOG(level, ...) \
-	rte_log(RTE_LOG_ ## level, \
-		librte_member_logtype, \
-		RTE_FMT("%s(): " RTE_FMT_HEAD(__VA_ARGS__,), \
-			__func__, \
-			RTE_FMT_TAIL(__VA_ARGS__,)))
+    rte_log(RTE_LOG_ ## level, \
+        librte_member_logtype, \
+        RTE_FMT("%s(): " RTE_FMT_HEAD(__VA_ARGS__,), \
+            __func__, \
+            RTE_FMT_TAIL(__VA_ARGS__,)))
 
 /** @internal setsummary structure. */
 struct rte_member_setsum;
@@ -103,47 +103,47 @@ struct rte_member_parameters;
  * Define different set summary types
  */
 enum rte_member_setsum_type {
-	RTE_MEMBER_TYPE_HT = 0,  /**< Hash table based set summary. */
-	RTE_MEMBER_TYPE_VBF,     /**< Vector of bloom filters. */
-	RTE_MEMBER_NUM_TYPE
+    RTE_MEMBER_TYPE_HT = 0,  /**< Hash table based set summary. */
+    RTE_MEMBER_TYPE_VBF,     /**< Vector of bloom filters. */
+    RTE_MEMBER_NUM_TYPE
 };
 
 /** @internal compare function for different arch. */
 enum rte_member_sig_compare_function {
-	RTE_MEMBER_COMPARE_SCALAR = 0,
-	RTE_MEMBER_COMPARE_AVX2,
-	RTE_MEMBER_COMPARE_NUM
+    RTE_MEMBER_COMPARE_SCALAR = 0,
+    RTE_MEMBER_COMPARE_AVX2,
+    RTE_MEMBER_COMPARE_NUM
 };
 
 /** @internal setsummary structure. */
 struct rte_member_setsum {
-	enum rte_member_setsum_type type; /* Type of the set summary. */
-	uint32_t key_len;		/* Length of key. */
-	uint32_t prim_hash_seed;	/* Primary hash function seed. */
-	uint32_t sec_hash_seed;		/* Secondary hash function seed. */
+    enum rte_member_setsum_type type; /* Type of the set summary. */
+    uint32_t key_len;        /* Length of key. */
+    uint32_t prim_hash_seed;    /* Primary hash function seed. */
+    uint32_t sec_hash_seed;        /* Secondary hash function seed. */
 
-	/* Hash table based. */
-	uint32_t bucket_cnt;		/* Number of buckets. */
-	uint32_t bucket_mask;		/* Bit mask to get bucket index. */
-	/* For runtime selecting AVX, scalar, etc for signature comparison. */
-	enum rte_member_sig_compare_function sig_cmp_fn;
-	uint8_t cache;			/* If it is cache mode for ht based. */
+    /* Hash table based. */
+    uint32_t bucket_cnt;        /* Number of buckets. */
+    uint32_t bucket_mask;        /* Bit mask to get bucket index. */
+    /* For runtime selecting AVX, scalar, etc for signature comparison. */
+    enum rte_member_sig_compare_function sig_cmp_fn;
+    uint8_t cache;            /* If it is cache mode for ht based. */
 
-	/* Vector bloom filter. */
-	uint32_t num_set;		/* Number of set (bf) in vbf. */
-	uint32_t bits;			/* Number of bits in each bf. */
-	uint32_t bit_mask;	/* Bit mask to get bit location in bf. */
-	uint32_t num_hashes;	/* Number of hash values to index bf. */
+    /* Vector bloom filter. */
+    uint32_t num_set;        /* Number of set (bf) in vbf. */
+    uint32_t bits;            /* Number of bits in each bf. */
+    uint32_t bit_mask;    /* Bit mask to get bit location in bf. */
+    uint32_t num_hashes;    /* Number of hash values to index bf. */
 
-	uint32_t mul_shift;  /* vbf internal variable used during bit test. */
-	uint32_t div_shift;  /* vbf internal variable used during bit test. */
+    uint32_t mul_shift;  /* vbf internal variable used during bit test. */
+    uint32_t div_shift;  /* vbf internal variable used during bit test. */
 
-	void *table;	/* This is the handler of hash table or vBF array. */
+    void *table;    /* This is the handler of hash table or vBF array. */
 
 
-	/* Second cache line should start here. */
-	uint32_t socket_id;          /* NUMA Socket ID for memory. */
-	char name[RTE_MEMBER_NAMESIZE]; /* Name of this set summary. */
+    /* Second cache line should start here. */
+    uint32_t socket_id;          /* NUMA Socket ID for memory. */
+    char name[RTE_MEMBER_NAMESIZE]; /* Name of this set summary. */
 } __rte_cache_aligned;
 
 /**
@@ -156,113 +156,113 @@ struct rte_member_setsum {
  *
  */
 struct rte_member_parameters {
-	const char *name;			/**< Name of the hash. */
+    const char *name;            /**< Name of the hash. */
 
-	/**
-	 * User to specify the type of the setsummary from one of
-	 * rte_member_setsum_type.
-	 *
-	 * HT based setsummary is implemented like a hash table. User should use
-	 * this type when there are many sets.
-	 *
-	 * vBF setsummary is a vector of bloom filters. It is used when number
-	 * of sets is not big (less than 32 for current implementation).
-	 */
-	enum rte_member_setsum_type type;
+    /**
+     * User to specify the type of the setsummary from one of
+     * rte_member_setsum_type.
+     *
+     * HT based setsummary is implemented like a hash table. User should use
+     * this type when there are many sets.
+     *
+     * vBF setsummary is a vector of bloom filters. It is used when number
+     * of sets is not big (less than 32 for current implementation).
+     */
+    enum rte_member_setsum_type type;
 
-	/**
-	 * is_cache is only used for HT based setsummary.
-	 *
-	 * If it is HT based setsummary, user to specify the subtype or mode
-	 * of the setsummary. It could be cache, or non-cache mode.
-	 * Set is_cache to be 1 if to use as cache mode.
-	 *
-	 * For cache mode, keys can be evicted out of the HT setsummary. Keys
-	 * with the same signature and map to the same bucket
-	 * will overwrite each other in the setsummary table.
-	 * This mode is useful for the case that the set-summary only
-	 * needs to keep record of the recently inserted keys. Both
-	 * false-negative and false-positive could happen.
-	 *
-	 * For non-cache mode, keys cannot be evicted out of the cache. So for
-	 * this mode the setsummary will become full eventually. Keys with the
-	 * same signature but map to the same bucket will still occupy multiple
-	 * entries. This mode does not give false-negative result.
-	 */
-	uint8_t is_cache;
+    /**
+     * is_cache is only used for HT based setsummary.
+     *
+     * If it is HT based setsummary, user to specify the subtype or mode
+     * of the setsummary. It could be cache, or non-cache mode.
+     * Set is_cache to be 1 if to use as cache mode.
+     *
+     * For cache mode, keys can be evicted out of the HT setsummary. Keys
+     * with the same signature and map to the same bucket
+     * will overwrite each other in the setsummary table.
+     * This mode is useful for the case that the set-summary only
+     * needs to keep record of the recently inserted keys. Both
+     * false-negative and false-positive could happen.
+     *
+     * For non-cache mode, keys cannot be evicted out of the cache. So for
+     * this mode the setsummary will become full eventually. Keys with the
+     * same signature but map to the same bucket will still occupy multiple
+     * entries. This mode does not give false-negative result.
+     */
+    uint8_t is_cache;
 
-	/**
-	 * For HT setsummary, num_keys equals to the number of entries of the
-	 * table. When the number of keys inserted in the HT setsummary
-	 * approaches this number, eviction could happen. For cache mode,
-	 * keys could be evicted out of the table. For non-cache mode, keys will
-	 * be evicted to other buckets like cuckoo hash. The table will also
-	 * likely to become full before the number of inserted keys equal to the
-	 * total number of entries.
-	 *
-	 * For vBF, num_keys equal to the expected number of keys that will
-	 * be inserted into the vBF. The implementation assumes the keys are
-	 * evenly distributed to each BF in vBF. This is used to calculate the
-	 * number of bits we need for each BF. User does not specify the size of
-	 * each BF directly because the optimal size depends on the num_keys
-	 * and false positive rate.
-	 */
-	uint32_t num_keys;
+    /**
+     * For HT setsummary, num_keys equals to the number of entries of the
+     * table. When the number of keys inserted in the HT setsummary
+     * approaches this number, eviction could happen. For cache mode,
+     * keys could be evicted out of the table. For non-cache mode, keys will
+     * be evicted to other buckets like cuckoo hash. The table will also
+     * likely to become full before the number of inserted keys equal to the
+     * total number of entries.
+     *
+     * For vBF, num_keys equal to the expected number of keys that will
+     * be inserted into the vBF. The implementation assumes the keys are
+     * evenly distributed to each BF in vBF. This is used to calculate the
+     * number of bits we need for each BF. User does not specify the size of
+     * each BF directly because the optimal size depends on the num_keys
+     * and false positive rate.
+     */
+    uint32_t num_keys;
 
-	/**
-	 * The length of key is used for hash calculation. Since key is not
-	 * stored in set-summary, large key does not require more memory space.
-	 */
-	uint32_t key_len;
+    /**
+     * The length of key is used for hash calculation. Since key is not
+     * stored in set-summary, large key does not require more memory space.
+     */
+    uint32_t key_len;
 
-	/**
-	 * num_set is only used for vBF, but not used for HT setsummary.
-	 *
-	 * num_set is equal to the number of BFs in vBF. For current
-	 * implementation, it only supports 1,2,4,8,16,32 BFs in one vBF set
-	 * summary. If other number of sets are needed, for example 5, the user
-	 * should allocate the minimum available value that larger than 5,
-	 * which is 8.
-	 */
-	uint32_t num_set;
+    /**
+     * num_set is only used for vBF, but not used for HT setsummary.
+     *
+     * num_set is equal to the number of BFs in vBF. For current
+     * implementation, it only supports 1,2,4,8,16,32 BFs in one vBF set
+     * summary. If other number of sets are needed, for example 5, the user
+     * should allocate the minimum available value that larger than 5,
+     * which is 8.
+     */
+    uint32_t num_set;
 
-	/**
-	 * false_positive_rate is only used for vBF, but not used for HT
-	 * setsummary.
-	 *
-	 * For vBF, false_positive_rate is the user-defined false positive rate
-	 * given expected number of inserted keys (num_keys). It is used to
-	 * calculate the total number of bits for each BF, and the number of
-	 * hash values used during lookup and insertion. For details please
-	 * refer to vBF implementation and membership library documentation.
-	 *
-	 * For HT, This parameter is not directly set by users.
-	 * HT setsummary's false positive rate is in the order of:
-	 * false_pos = (1/bucket_count)*(1/2^16), since we use 16-bit signature.
-	 * This is because two keys needs to map to same bucket and same
-	 * signature to have a collision (false positive). bucket_count is equal
-	 * to number of entries (num_keys) divided by entry count per bucket
-	 * (RTE_MEMBER_BUCKET_ENTRIES). Thus, the false_positive_rate is not
-	 * directly set by users for HT mode.
-	 */
-	float false_positive_rate;
+    /**
+     * false_positive_rate is only used for vBF, but not used for HT
+     * setsummary.
+     *
+     * For vBF, false_positive_rate is the user-defined false positive rate
+     * given expected number of inserted keys (num_keys). It is used to
+     * calculate the total number of bits for each BF, and the number of
+     * hash values used during lookup and insertion. For details please
+     * refer to vBF implementation and membership library documentation.
+     *
+     * For HT, This parameter is not directly set by users.
+     * HT setsummary's false positive rate is in the order of:
+     * false_pos = (1/bucket_count)*(1/2^16), since we use 16-bit signature.
+     * This is because two keys needs to map to same bucket and same
+     * signature to have a collision (false positive). bucket_count is equal
+     * to number of entries (num_keys) divided by entry count per bucket
+     * (RTE_MEMBER_BUCKET_ENTRIES). Thus, the false_positive_rate is not
+     * directly set by users for HT mode.
+     */
+    float false_positive_rate;
 
-	/**
-	 * We use two seeds to calculate two independent hashes for each key.
-	 *
-	 * For HT type, one hash is used as signature, and the other is used
-	 * for bucket location.
-	 * For vBF type, these two hashes and their combinations are used as
-	 * hash locations to index the bit array.
-	 */
-	uint32_t prim_hash_seed;
+    /**
+     * We use two seeds to calculate two independent hashes for each key.
+     *
+     * For HT type, one hash is used as signature, and the other is used
+     * for bucket location.
+     * For vBF type, these two hashes and their combinations are used as
+     * hash locations to index the bit array.
+     */
+    uint32_t prim_hash_seed;
 
-	/**
-	 * The secondary seed should be a different value from the primary seed.
-	 */
-	uint32_t sec_hash_seed;
+    /**
+     * The secondary seed should be a different value from the primary seed.
+     */
+    uint32_t sec_hash_seed;
 
-	int socket_id;			/**< NUMA Socket ID for memory. */
+    int socket_id;            /**< NUMA Socket ID for memory. */
 };
 
 /**
@@ -314,7 +314,7 @@ rte_member_create(const struct rte_member_parameters *params);
  */
 int
 rte_member_lookup(const struct rte_member_setsum *setsum, const void *key,
-			member_set_t *set_id);
+            member_set_t *set_id);
 
 /**
  * @warning
@@ -338,8 +338,8 @@ rte_member_lookup(const struct rte_member_setsum *setsum, const void *key,
  */
 int
 rte_member_lookup_bulk(const struct rte_member_setsum *setsum,
-			const void **keys, uint32_t num_keys,
-			member_set_t *set_ids);
+            const void **keys, uint32_t num_keys,
+            member_set_t *set_ids);
 
 /**
  * @warning
@@ -367,8 +367,8 @@ rte_member_lookup_bulk(const struct rte_member_setsum *setsum,
  */
 int
 rte_member_lookup_multi(const struct rte_member_setsum *setsum,
-		const void *key, uint32_t max_match_per_key,
-		member_set_t *set_id);
+        const void *key, uint32_t max_match_per_key,
+        member_set_t *set_id);
 
 /**
  * @warning
@@ -398,10 +398,10 @@ rte_member_lookup_multi(const struct rte_member_setsum *setsum,
  */
 int
 rte_member_lookup_multi_bulk(const struct rte_member_setsum *setsum,
-		const void **keys, uint32_t num_keys,
-		uint32_t max_match_per_key,
-		uint32_t *match_count,
-		member_set_t *set_ids);
+        const void **keys, uint32_t num_keys,
+        uint32_t max_match_per_key,
+        uint32_t *match_count,
+        member_set_t *set_ids);
 
 /**
  * @warning
@@ -434,7 +434,7 @@ rte_member_lookup_multi_bulk(const struct rte_member_setsum *setsum,
  */
 int
 rte_member_add(const struct rte_member_setsum *setsum, const void *key,
-			member_set_t set_id);
+            member_set_t set_id);
 
 /**
  * @warning
@@ -481,7 +481,7 @@ rte_member_reset(const struct rte_member_setsum *setsum);
  */
 int
 rte_member_delete(const struct rte_member_setsum *setsum, const void *key,
-			member_set_t set_id);
+            member_set_t set_id);
 
 #ifdef __cplusplus
 }

@@ -35,46 +35,46 @@ struct rte_mbuf;
  * Structure which has the function pointers for KNI interface.
  */
 struct rte_kni_ops {
-	uint16_t port_id; /* Port ID */
+    uint16_t port_id; /* Port ID */
 
-	/* Pointer to function of changing MTU */
-	int (*change_mtu)(uint16_t port_id, unsigned int new_mtu);
+    /* Pointer to function of changing MTU */
+    int (*change_mtu)(uint16_t port_id, unsigned int new_mtu);
 
-	/* Pointer to function of configuring network interface */
-	int (*config_network_if)(uint16_t port_id, uint8_t if_up);
+    /* Pointer to function of configuring network interface */
+    int (*config_network_if)(uint16_t port_id, uint8_t if_up);
 
-	/* Pointer to function of configuring mac address */
-	int (*config_mac_address)(uint16_t port_id, uint8_t mac_addr[]);
+    /* Pointer to function of configuring mac address */
+    int (*config_mac_address)(uint16_t port_id, uint8_t mac_addr[]);
 
-	/* Pointer to function of configuring promiscuous mode */
-	int (*config_promiscusity)(uint16_t port_id, uint8_t to_on);
+    /* Pointer to function of configuring promiscuous mode */
+    int (*config_promiscusity)(uint16_t port_id, uint8_t to_on);
 
-	/* Pointer to function of configuring allmulticast mode */
-	int (*config_allmulticast)(uint16_t port_id, uint8_t to_on);
+    /* Pointer to function of configuring allmulticast mode */
+    int (*config_allmulticast)(uint16_t port_id, uint8_t to_on);
 };
 
 /**
  * Structure for configuring KNI device.
  */
 struct rte_kni_conf {
-	/*
-	 * KNI name which will be used in relevant network device.
-	 * Let the name as short as possible, as it will be part of
-	 * memzone name.
-	 */
-	char name[RTE_KNI_NAMESIZE];
-	uint32_t core_id;   /* Core ID to bind kernel thread on */
-	uint16_t group_id;  /* Group ID */
-	unsigned mbuf_size; /* mbuf size */
-	struct rte_pci_addr addr; /* depreciated */
-	struct rte_pci_id id; /* depreciated */
+    /*
+     * KNI name which will be used in relevant network device.
+     * Let the name as short as possible, as it will be part of
+     * memzone name.
+     */
+    char name[RTE_KNI_NAMESIZE];
+    uint32_t core_id;   /* Core ID to bind kernel thread on */
+    uint16_t group_id;  /* Group ID */
+    unsigned mbuf_size; /* mbuf size */
+    struct rte_pci_addr addr; /* depreciated */
+    struct rte_pci_id id; /* depreciated */
 
-	__extension__
-	uint8_t force_bind : 1; /* Flag to bind kernel thread */
-	uint8_t mac_addr[RTE_ETHER_ADDR_LEN]; /* MAC address assigned to KNI */
-	uint16_t mtu;
-	uint16_t min_mtu;
-	uint16_t max_mtu;
+    __extension__
+    uint8_t force_bind : 1; /* Flag to bind kernel thread */
+    uint8_t mac_addr[RTE_ETHER_ADDR_LEN]; /* MAC address assigned to KNI */
+    uint16_t mtu;
+    uint16_t min_mtu;
+    uint16_t max_mtu;
 };
 
 /**
@@ -118,7 +118,7 @@ int rte_kni_init(unsigned int max_kni_ifaces);
  *  - NULL indicate error.
  */
 struct rte_kni *rte_kni_alloc(struct rte_mempool *pktmbuf_pool,
-		const struct rte_kni_conf *conf, struct rte_kni_ops *ops);
+        const struct rte_kni_conf *conf, struct rte_kni_ops *ops);
 
 /**
  * Release KNI interface according to the context. It will also release the
@@ -167,7 +167,7 @@ int rte_kni_handle_request(struct rte_kni *kni);
  *  The actual number of packets retrieved.
  */
 unsigned rte_kni_rx_burst(struct rte_kni *kni, struct rte_mbuf **mbufs,
-		unsigned num);
+        unsigned num);
 
 /**
  * Send a burst of packets to a KNI interface. The packets to be sent out are
@@ -186,7 +186,7 @@ unsigned rte_kni_rx_burst(struct rte_kni *kni, struct rte_mbuf **mbufs,
  *  The actual number of packets sent.
  */
 unsigned rte_kni_tx_burst(struct rte_kni *kni, struct rte_mbuf **mbufs,
-		unsigned num);
+        unsigned num);
 
 /**
  * Get the KNI context of its name.

@@ -26,11 +26,11 @@ void test_ring_free(struct rte_ring *rxtx);
 
 /* Sample test to forward packet using virtual port id */
 int test_packet_forward(struct rte_mbuf **pbuf, uint16_t portid,
-		uint16_t queue_id);
+        uint16_t queue_id);
 
 /* sample test to allocate buffer for pkts */
 int test_get_mbuf_from_pool(struct rte_mempool **mp, struct rte_mbuf **pbuf,
-		char *poolname);
+        char *poolname);
 
 /* Sample test to create the mempool */
 int test_get_mempool(struct rte_mempool **mp, char *poolname);

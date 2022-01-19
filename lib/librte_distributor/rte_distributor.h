@@ -19,9 +19,9 @@ extern "C" {
 
 /* Type of distribution (burst/single) */
 enum rte_distributor_alg_type {
-	RTE_DIST_ALG_BURST = 0,
-	RTE_DIST_ALG_SINGLE,
-	RTE_DIST_NUM_ALG_TYPES
+    RTE_DIST_ALG_BURST = 0,
+    RTE_DIST_ALG_SINGLE,
+    RTE_DIST_NUM_ALG_TYPES
 };
 
 struct rte_distributor;
@@ -49,8 +49,8 @@ struct rte_mbuf;
  */
 struct rte_distributor *
 rte_distributor_create(const char *name, unsigned int socket_id,
-		unsigned int num_workers,
-		unsigned int alg_type);
+        unsigned int num_workers,
+        unsigned int alg_type);
 
 /*  *** APIS to be called on the distributor lcore ***  */
 /*
@@ -86,7 +86,7 @@ rte_distributor_create(const char *name, unsigned int socket_id,
  */
 int
 rte_distributor_process(struct rte_distributor *d,
-		struct rte_mbuf **mbufs, unsigned int num_mbufs);
+        struct rte_mbuf **mbufs, unsigned int num_mbufs);
 
 /**
  * Get a set of mbufs that have been returned to the distributor by workers
@@ -104,7 +104,7 @@ rte_distributor_process(struct rte_distributor *d,
  */
 int
 rte_distributor_returned_pkts(struct rte_distributor *d,
-		struct rte_mbuf **mbufs, unsigned int max_mbufs);
+        struct rte_mbuf **mbufs, unsigned int max_mbufs);
 
 /**
  * Flush the distributor component, so that there are no in-flight or
@@ -164,8 +164,8 @@ rte_distributor_clear_returns(struct rte_distributor *d);
  */
 int
 rte_distributor_get_pkt(struct rte_distributor *d,
-	unsigned int worker_id, struct rte_mbuf **pkts,
-	struct rte_mbuf **oldpkt, unsigned int retcount);
+    unsigned int worker_id, struct rte_mbuf **pkts,
+    struct rte_mbuf **oldpkt, unsigned int retcount);
 
 /**
  * API called by a worker to return a completed packet without requesting a
@@ -183,7 +183,7 @@ rte_distributor_get_pkt(struct rte_distributor *d,
  */
 int
 rte_distributor_return_pkt(struct rte_distributor *d,
-	unsigned int worker_id, struct rte_mbuf **oldpkt, int num);
+    unsigned int worker_id, struct rte_mbuf **oldpkt, int num);
 
 /**
  * API called by a worker to request a new packet to process.
@@ -209,8 +209,8 @@ rte_distributor_return_pkt(struct rte_distributor *d,
  */
 void
 rte_distributor_request_pkt(struct rte_distributor *d,
-		unsigned int worker_id, struct rte_mbuf **oldpkt,
-		unsigned int count);
+        unsigned int worker_id, struct rte_mbuf **oldpkt,
+        unsigned int count);
 
 /**
  * API called by a worker to check for a new packet that was previously
@@ -232,7 +232,7 @@ rte_distributor_request_pkt(struct rte_distributor *d,
  */
 int
 rte_distributor_poll_pkt(struct rte_distributor *d,
-		unsigned int worker_id, struct rte_mbuf **mbufs);
+        unsigned int worker_id, struct rte_mbuf **mbufs);
 
 #ifdef __cplusplus
 }

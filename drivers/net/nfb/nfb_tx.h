@@ -15,12 +15,12 @@
 #include <rte_malloc.h>
 
 struct ndp_tx_queue {
-	struct nfb_device *nfb;     /* nfb dev structure */
-	struct ndp_queue *queue;    /* tx queue */
-	uint16_t          tx_queue_id;       /* index */
-	volatile uint64_t tx_pkts;  /* packets transmitted */
-	volatile uint64_t tx_bytes; /* bytes transmitted */
-	volatile uint64_t err_pkts; /* erroneous packets */
+    struct nfb_device *nfb;     /* nfb dev structure */
+    struct ndp_queue *queue;    /* tx queue */
+    uint16_t          tx_queue_id;       /* index */
+    volatile uint64_t tx_pkts;  /* packets transmitted */
+    volatile uint64_t tx_bytes; /* bytes transmitted */
+    volatile uint64_t err_pkts; /* erroneous packets */
 };
 
 /**
@@ -44,10 +44,10 @@ struct ndp_tx_queue {
  */
 int
 nfb_eth_tx_queue_setup(struct rte_eth_dev *dev,
-	uint16_t tx_queue_id,
-	uint16_t nb_tx_desc __rte_unused,
-	unsigned int socket_id,
-	const struct rte_eth_txconf *tx_conf __rte_unused);
+    uint16_t tx_queue_id,
+    uint16_t nb_tx_desc __rte_unused,
+    unsigned int socket_id,
+    const struct rte_eth_txconf *tx_conf __rte_unused);
 
 /**
  * Initialize ndp_tx_queue structure
@@ -64,8 +64,8 @@ nfb_eth_tx_queue_setup(struct rte_eth_dev *dev,
  */
 int
 nfb_eth_tx_queue_init(struct nfb_device *nfb,
-	uint16_t tx_queue_id,
-	struct ndp_tx_queue *txq);
+    uint16_t tx_queue_id,
+    struct ndp_tx_queue *txq);
 
 /**
  * DPDK callback to release a RX queue.
@@ -119,76 +119,76 @@ nfb_eth_tx_queue_stop(struct rte_eth_dev *dev, uint16_t txq_id);
  */
 static __rte_always_inline uint16_t
 nfb_eth_ndp_tx(void *queue,
-	struct rte_mbuf **bufs,
-	uint16_t nb_pkts)
+    struct rte_mbuf **bufs,
+    uint16_t nb_pkts)
 {
-	int i;
-	struct rte_mbuf *mbuf;
-	struct ndp_tx_queue *ndp = queue;
-	uint16_t num_tx = 0;
-	uint64_t num_bytes = 0;
+    int i;
+    struct rte_mbuf *mbuf;
+    struct ndp_tx_queue *ndp = queue;
+    uint16_t num_tx = 0;
+    uint64_t num_bytes = 0;
 
-	void *dst;
-	uint32_t pkt_len;
-	uint8_t mbuf_segs;
+    void *dst;
+    uint32_t pkt_len;
+    uint8_t mbuf_segs;
 
-	struct ndp_packet packets[nb_pkts];
+    struct ndp_packet packets[nb_pkts];
 
-	if (unlikely(ndp->queue == NULL || nb_pkts == 0)) {
-		RTE_LOG(ERR, PMD, "TX invalid arguments!\n");
-		return 0;
-	}
+    if (unlikely(ndp->queue == NULL || nb_pkts == 0)) {
+        RTE_LOG(ERR, PMD, "TX invalid arguments!\n");
+        return 0;
+    }
 
-	for (i = 0; i < nb_pkts; i++) {
-		packets[i].data_length = bufs[i]->pkt_len;
-		packets[i].header_length = 0;
-	}
+    for (i = 0; i < nb_pkts; i++) {
+        packets[i].data_length = bufs[i]->pkt_len;
+        packets[i].header_length = 0;
+    }
 
-	num_tx = ndp_tx_burst_get(ndp->queue, packets, nb_pkts);
+    num_tx = ndp_tx_burst_get(ndp->queue, packets, nb_pkts);
 
-	if (unlikely(num_tx != nb_pkts))
-		return 0;
+    if (unlikely(num_tx != nb_pkts))
+        return 0;
 
-	for (i = 0; i < nb_pkts; ++i) {
-		mbuf = bufs[i];
+    for (i = 0; i < nb_pkts; ++i) {
+        mbuf = bufs[i];
 
-		pkt_len = mbuf->pkt_len;
-		mbuf_segs = mbuf->nb_segs;
+        pkt_len = mbuf->pkt_len;
+        mbuf_segs = mbuf->nb_segs;
 
-		num_bytes += pkt_len;
-		if (mbuf_segs == 1) {
-			/*
-			 * non-scattered packet,
-			 * transmit from one mbuf
-			 */
-			rte_memcpy(packets[i].data,
-				rte_pktmbuf_mtod(mbuf, const void *),
-				pkt_len);
-		} else {
-			/* scattered packet, transmit from more mbufs */
-			struct rte_mbuf *m = mbuf;
-			while (m) {
-				dst = packets[i].data;
+        num_bytes += pkt_len;
+        if (mbuf_segs == 1) {
+            /*
+             * non-scattered packet,
+             * transmit from one mbuf
+             */
+            rte_memcpy(packets[i].data,
+                rte_pktmbuf_mtod(mbuf, const void *),
+                pkt_len);
+        } else {
+            /* scattered packet, transmit from more mbufs */
+            struct rte_mbuf *m = mbuf;
+            while (m) {
+                dst = packets[i].data;
 
-				rte_memcpy(dst,
-					rte_pktmbuf_mtod(m,
-					const void *),
-					m->data_len);
-				dst = ((uint8_t *)(dst)) +
-					m->data_len;
-				m = m->next;
-			}
-		}
+                rte_memcpy(dst,
+                    rte_pktmbuf_mtod(m,
+                    const void *),
+                    m->data_len);
+                dst = ((uint8_t *)(dst)) +
+                    m->data_len;
+                m = m->next;
+            }
+        }
 
-		rte_pktmbuf_free(mbuf);
-	}
+        rte_pktmbuf_free(mbuf);
+    }
 
-	ndp_tx_burst_flush(ndp->queue);
+    ndp_tx_burst_flush(ndp->queue);
 
-	ndp->tx_pkts += num_tx;
-	ndp->err_pkts += nb_pkts - num_tx;
-	ndp->tx_bytes += num_bytes;
-	return num_tx;
+    ndp->tx_pkts += num_tx;
+    ndp->err_pkts += nb_pkts - num_tx;
+    ndp->tx_bytes += num_bytes;
+    return num_tx;
 }
 
 #endif /* _NFB_TX_H_ */

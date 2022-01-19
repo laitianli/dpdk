@@ -91,679 +91,679 @@ extern "C" {
  * Node statistics counter type
  */
 enum rte_tm_stats_type {
-	/** Number of packets scheduled from current node. */
-	RTE_TM_STATS_N_PKTS = 1 << 0,
+    /** Number of packets scheduled from current node. */
+    RTE_TM_STATS_N_PKTS = 1 << 0,
 
-	/** Number of bytes scheduled from current node. */
-	RTE_TM_STATS_N_BYTES = 1 << 1,
+    /** Number of bytes scheduled from current node. */
+    RTE_TM_STATS_N_BYTES = 1 << 1,
 
-	/** Number of green packets dropped by current leaf node.  */
-	RTE_TM_STATS_N_PKTS_GREEN_DROPPED = 1 << 2,
+    /** Number of green packets dropped by current leaf node.  */
+    RTE_TM_STATS_N_PKTS_GREEN_DROPPED = 1 << 2,
 
-	/** Number of yellow packets dropped by current leaf node.  */
-	RTE_TM_STATS_N_PKTS_YELLOW_DROPPED = 1 << 3,
+    /** Number of yellow packets dropped by current leaf node.  */
+    RTE_TM_STATS_N_PKTS_YELLOW_DROPPED = 1 << 3,
 
-	/** Number of red packets dropped by current leaf node.  */
-	RTE_TM_STATS_N_PKTS_RED_DROPPED = 1 << 4,
+    /** Number of red packets dropped by current leaf node.  */
+    RTE_TM_STATS_N_PKTS_RED_DROPPED = 1 << 4,
 
-	/** Number of green bytes dropped by current leaf node.  */
-	RTE_TM_STATS_N_BYTES_GREEN_DROPPED = 1 << 5,
+    /** Number of green bytes dropped by current leaf node.  */
+    RTE_TM_STATS_N_BYTES_GREEN_DROPPED = 1 << 5,
 
-	/** Number of yellow bytes dropped by current leaf node.  */
-	RTE_TM_STATS_N_BYTES_YELLOW_DROPPED = 1 << 6,
+    /** Number of yellow bytes dropped by current leaf node.  */
+    RTE_TM_STATS_N_BYTES_YELLOW_DROPPED = 1 << 6,
 
-	/** Number of red bytes dropped by current leaf node.  */
-	RTE_TM_STATS_N_BYTES_RED_DROPPED = 1 << 7,
+    /** Number of red bytes dropped by current leaf node.  */
+    RTE_TM_STATS_N_BYTES_RED_DROPPED = 1 << 7,
 
-	/** Number of packets currently waiting in the packet queue of current
-	 * leaf node.
-	 */
-	RTE_TM_STATS_N_PKTS_QUEUED = 1 << 8,
+    /** Number of packets currently waiting in the packet queue of current
+     * leaf node.
+     */
+    RTE_TM_STATS_N_PKTS_QUEUED = 1 << 8,
 
-	/** Number of bytes currently waiting in the packet queue of current
-	 * leaf node.
-	 */
-	RTE_TM_STATS_N_BYTES_QUEUED = 1 << 9,
+    /** Number of bytes currently waiting in the packet queue of current
+     * leaf node.
+     */
+    RTE_TM_STATS_N_BYTES_QUEUED = 1 << 9,
 };
 
 /**
  * Node statistics counters
  */
 struct rte_tm_node_stats {
-	/** Number of packets scheduled from current node. */
-	uint64_t n_pkts;
+    /** Number of packets scheduled from current node. */
+    uint64_t n_pkts;
 
-	/** Number of bytes scheduled from current node. */
-	uint64_t n_bytes;
+    /** Number of bytes scheduled from current node. */
+    uint64_t n_bytes;
 
-	/** Statistics counters for leaf nodes only. */
-	struct {
-		/** Number of packets dropped by current leaf node per each
-		 * color.
-		 */
-		uint64_t n_pkts_dropped[RTE_COLORS];
+    /** Statistics counters for leaf nodes only. */
+    struct {
+        /** Number of packets dropped by current leaf node per each
+         * color.
+         */
+        uint64_t n_pkts_dropped[RTE_COLORS];
 
-		/** Number of bytes dropped by current leaf node per each
-		 * color.
-		 */
-		uint64_t n_bytes_dropped[RTE_COLORS];
+        /** Number of bytes dropped by current leaf node per each
+         * color.
+         */
+        uint64_t n_bytes_dropped[RTE_COLORS];
 
-		/** Number of packets currently waiting in the packet queue of
-		 * current leaf node.
-		 */
-		uint64_t n_pkts_queued;
+        /** Number of packets currently waiting in the packet queue of
+         * current leaf node.
+         */
+        uint64_t n_pkts_queued;
 
-		/** Number of bytes currently waiting in the packet queue of
-		 * current leaf node.
-		 */
-		uint64_t n_bytes_queued;
-	} leaf;
+        /** Number of bytes currently waiting in the packet queue of
+         * current leaf node.
+         */
+        uint64_t n_bytes_queued;
+    } leaf;
 };
 
 /**
  * Traffic manager dynamic updates
  */
 enum rte_tm_dynamic_update_type {
-	/** Dynamic parent node update. The new parent node is located on same
-	 * hierarchy level as the former parent node. Consequently, the node
-	 * whose parent is changed preserves its hierarchy level.
-	 */
-	RTE_TM_UPDATE_NODE_PARENT_KEEP_LEVEL = 1 << 0,
+    /** Dynamic parent node update. The new parent node is located on same
+     * hierarchy level as the former parent node. Consequently, the node
+     * whose parent is changed preserves its hierarchy level.
+     */
+    RTE_TM_UPDATE_NODE_PARENT_KEEP_LEVEL = 1 << 0,
 
-	/** Dynamic parent node update. The new parent node is located on
-	 * different hierarchy level than the former parent node. Consequently,
-	 * the node whose parent is changed also changes its hierarchy level.
-	 */
-	RTE_TM_UPDATE_NODE_PARENT_CHANGE_LEVEL = 1 << 1,
+    /** Dynamic parent node update. The new parent node is located on
+     * different hierarchy level than the former parent node. Consequently,
+     * the node whose parent is changed also changes its hierarchy level.
+     */
+    RTE_TM_UPDATE_NODE_PARENT_CHANGE_LEVEL = 1 << 1,
 
-	/** Dynamic node add/delete. */
-	RTE_TM_UPDATE_NODE_ADD_DELETE = 1 << 2,
+    /** Dynamic node add/delete. */
+    RTE_TM_UPDATE_NODE_ADD_DELETE = 1 << 2,
 
-	/** Suspend/resume nodes. */
-	RTE_TM_UPDATE_NODE_SUSPEND_RESUME = 1 << 3,
+    /** Suspend/resume nodes. */
+    RTE_TM_UPDATE_NODE_SUSPEND_RESUME = 1 << 3,
 
-	/** Dynamic switch between byte-based and packet-based WFQ weights. */
-	RTE_TM_UPDATE_NODE_WFQ_WEIGHT_MODE = 1 << 4,
+    /** Dynamic switch between byte-based and packet-based WFQ weights. */
+    RTE_TM_UPDATE_NODE_WFQ_WEIGHT_MODE = 1 << 4,
 
-	/** Dynamic update on number of SP priorities. */
-	RTE_TM_UPDATE_NODE_N_SP_PRIORITIES = 1 << 5,
+    /** Dynamic update on number of SP priorities. */
+    RTE_TM_UPDATE_NODE_N_SP_PRIORITIES = 1 << 5,
 
-	/** Dynamic update of congestion management mode for leaf nodes. */
-	RTE_TM_UPDATE_NODE_CMAN = 1 << 6,
+    /** Dynamic update of congestion management mode for leaf nodes. */
+    RTE_TM_UPDATE_NODE_CMAN = 1 << 6,
 
-	/** Dynamic update of the set of enabled stats counter types. */
-	RTE_TM_UPDATE_NODE_STATS = 1 << 7,
+    /** Dynamic update of the set of enabled stats counter types. */
+    RTE_TM_UPDATE_NODE_STATS = 1 << 7,
 };
 
 /**
  * Traffic manager capabilities
  */
 struct rte_tm_capabilities {
-	/** Maximum number of nodes. */
-	uint32_t n_nodes_max;
+    /** Maximum number of nodes. */
+    uint32_t n_nodes_max;
 
-	/** Maximum number of levels (i.e. number of nodes connecting the root
-	 * node with any leaf node, including the root and the leaf).
-	 */
-	uint32_t n_levels_max;
+    /** Maximum number of levels (i.e. number of nodes connecting the root
+     * node with any leaf node, including the root and the leaf).
+     */
+    uint32_t n_levels_max;
 
-	/** When non-zero, this flag indicates that all the non-leaf nodes
-	 * (with the exception of the root node) have identical capability set.
-	 */
-	int non_leaf_nodes_identical;
+    /** When non-zero, this flag indicates that all the non-leaf nodes
+     * (with the exception of the root node) have identical capability set.
+     */
+    int non_leaf_nodes_identical;
 
-	/** When non-zero, this flag indicates that all the leaf nodes have
-	 * identical capability set.
-	 */
-	int leaf_nodes_identical;
+    /** When non-zero, this flag indicates that all the leaf nodes have
+     * identical capability set.
+     */
+    int leaf_nodes_identical;
 
-	/** Maximum number of shapers, either private or shared. In case the
-	 * implementation does not share any resources between private and
-	 * shared shapers, it is typically equal to the sum of
-	 * *shaper_private_n_max* and *shaper_shared_n_max*. The
-	 * value of zero indicates that traffic shaping is not supported.
-	 */
-	uint32_t shaper_n_max;
+    /** Maximum number of shapers, either private or shared. In case the
+     * implementation does not share any resources between private and
+     * shared shapers, it is typically equal to the sum of
+     * *shaper_private_n_max* and *shaper_shared_n_max*. The
+     * value of zero indicates that traffic shaping is not supported.
+     */
+    uint32_t shaper_n_max;
 
-	/** Maximum number of private shapers. Indicates the maximum number of
-	 * nodes that can concurrently have their private shaper enabled. The
-	 * value of zero indicates that private shapers are not supported.
-	 */
-	uint32_t shaper_private_n_max;
+    /** Maximum number of private shapers. Indicates the maximum number of
+     * nodes that can concurrently have their private shaper enabled. The
+     * value of zero indicates that private shapers are not supported.
+     */
+    uint32_t shaper_private_n_max;
 
-	/** Maximum number of private shapers that support dual rate shaping.
-	 * Indicates the maximum number of nodes that can concurrently have
-	 * their private shaper enabled with dual rate support. Only valid when
-	 * private shapers are supported. The value of zero indicates that dual
-	 * rate shaping is not available for private shapers. The maximum value
-	 * is *shaper_private_n_max*.
-	 */
-	int shaper_private_dual_rate_n_max;
+    /** Maximum number of private shapers that support dual rate shaping.
+     * Indicates the maximum number of nodes that can concurrently have
+     * their private shaper enabled with dual rate support. Only valid when
+     * private shapers are supported. The value of zero indicates that dual
+     * rate shaping is not available for private shapers. The maximum value
+     * is *shaper_private_n_max*.
+     */
+    int shaper_private_dual_rate_n_max;
 
-	/** Minimum committed/peak rate (bytes per second) for any private
-	 * shaper. Valid only when private shapers are supported.
-	 */
-	uint64_t shaper_private_rate_min;
+    /** Minimum committed/peak rate (bytes per second) for any private
+     * shaper. Valid only when private shapers are supported.
+     */
+    uint64_t shaper_private_rate_min;
 
-	/** Maximum committed/peak rate (bytes per second) for any private
-	 * shaper. Valid only when private shapers are supported.
-	 */
-	uint64_t shaper_private_rate_max;
+    /** Maximum committed/peak rate (bytes per second) for any private
+     * shaper. Valid only when private shapers are supported.
+     */
+    uint64_t shaper_private_rate_max;
 
-	/** Maximum number of shared shapers. The value of zero indicates that
-	 * shared shapers are not supported.
-	 */
-	uint32_t shaper_shared_n_max;
+    /** Maximum number of shared shapers. The value of zero indicates that
+     * shared shapers are not supported.
+     */
+    uint32_t shaper_shared_n_max;
 
-	/** Maximum number of nodes that can share the same shared shaper.
-	 * Only valid when shared shapers are supported.
-	 */
-	uint32_t shaper_shared_n_nodes_per_shaper_max;
+    /** Maximum number of nodes that can share the same shared shaper.
+     * Only valid when shared shapers are supported.
+     */
+    uint32_t shaper_shared_n_nodes_per_shaper_max;
 
-	/** Maximum number of shared shapers a node can be part of. This
-	 * parameter indicates that there is at least one node that can be
-	 * configured with this many shared shapers, which might not be true for
-	 * all the nodes. Only valid when shared shapers are supported, in which
-	 * case it ranges from 1 to *shaper_shared_n_max*.
-	 */
-	uint32_t shaper_shared_n_shapers_per_node_max;
+    /** Maximum number of shared shapers a node can be part of. This
+     * parameter indicates that there is at least one node that can be
+     * configured with this many shared shapers, which might not be true for
+     * all the nodes. Only valid when shared shapers are supported, in which
+     * case it ranges from 1 to *shaper_shared_n_max*.
+     */
+    uint32_t shaper_shared_n_shapers_per_node_max;
 
-	/** Maximum number of shared shapers that can be configured with dual
-	 * rate shaping. The value of zero indicates that dual rate shaping
-	 * support is not available for shared shapers.
-	 */
-	uint32_t shaper_shared_dual_rate_n_max;
+    /** Maximum number of shared shapers that can be configured with dual
+     * rate shaping. The value of zero indicates that dual rate shaping
+     * support is not available for shared shapers.
+     */
+    uint32_t shaper_shared_dual_rate_n_max;
 
-	/** Minimum committed/peak rate (bytes per second) for any shared
-	 * shaper. Only valid when shared shapers are supported.
-	 */
-	uint64_t shaper_shared_rate_min;
+    /** Minimum committed/peak rate (bytes per second) for any shared
+     * shaper. Only valid when shared shapers are supported.
+     */
+    uint64_t shaper_shared_rate_min;
 
-	/** Maximum committed/peak rate (bytes per second) for any shared
-	 * shaper. Only valid when shared shapers are supported.
-	 */
-	uint64_t shaper_shared_rate_max;
+    /** Maximum committed/peak rate (bytes per second) for any shared
+     * shaper. Only valid when shared shapers are supported.
+     */
+    uint64_t shaper_shared_rate_max;
 
-	/** Minimum value allowed for packet length adjustment for any private
-	 * or shared shaper.
-	 */
-	int shaper_pkt_length_adjust_min;
+    /** Minimum value allowed for packet length adjustment for any private
+     * or shared shaper.
+     */
+    int shaper_pkt_length_adjust_min;
 
-	/** Maximum value allowed for packet length adjustment for any private
-	 * or shared shaper.
-	 */
-	int shaper_pkt_length_adjust_max;
+    /** Maximum value allowed for packet length adjustment for any private
+     * or shared shaper.
+     */
+    int shaper_pkt_length_adjust_max;
 
-	/** Maximum number of children nodes. This parameter indicates that
-	 * there is at least one non-leaf node that can be configured with this
-	 * many children nodes, which might not be true for all the non-leaf
-	 * nodes.
-	 */
-	uint32_t sched_n_children_max;
+    /** Maximum number of children nodes. This parameter indicates that
+     * there is at least one non-leaf node that can be configured with this
+     * many children nodes, which might not be true for all the non-leaf
+     * nodes.
+     */
+    uint32_t sched_n_children_max;
 
-	/** Maximum number of supported priority levels. This parameter
-	 * indicates that there is at least one non-leaf node that can be
-	 * configured with this many priority levels for managing its children
-	 * nodes, which might not be true for all the non-leaf nodes. The value
-	 * of zero is invalid. The value of 1 indicates that only priority 0 is
-	 * supported, which essentially means that Strict Priority (SP)
-	 * algorithm is not supported.
-	 */
-	uint32_t sched_sp_n_priorities_max;
+    /** Maximum number of supported priority levels. This parameter
+     * indicates that there is at least one non-leaf node that can be
+     * configured with this many priority levels for managing its children
+     * nodes, which might not be true for all the non-leaf nodes. The value
+     * of zero is invalid. The value of 1 indicates that only priority 0 is
+     * supported, which essentially means that Strict Priority (SP)
+     * algorithm is not supported.
+     */
+    uint32_t sched_sp_n_priorities_max;
 
-	/** Maximum number of sibling nodes that can have the same priority at
-	 * any given time, i.e. maximum size of the WFQ sibling node group. This
-	 * parameter indicates there is at least one non-leaf node that meets
-	 * this condition, which might not be true for all the non-leaf nodes.
-	 * The value of zero is invalid. The value of 1 indicates that WFQ
-	 * algorithm is not supported. The maximum value is
-	 * *sched_n_children_max*.
-	 */
-	uint32_t sched_wfq_n_children_per_group_max;
+    /** Maximum number of sibling nodes that can have the same priority at
+     * any given time, i.e. maximum size of the WFQ sibling node group. This
+     * parameter indicates there is at least one non-leaf node that meets
+     * this condition, which might not be true for all the non-leaf nodes.
+     * The value of zero is invalid. The value of 1 indicates that WFQ
+     * algorithm is not supported. The maximum value is
+     * *sched_n_children_max*.
+     */
+    uint32_t sched_wfq_n_children_per_group_max;
 
-	/** Maximum number of priority levels that can have more than one child
-	 * node at any given time, i.e. maximum number of WFQ sibling node
-	 * groups that have two or more members. This parameter indicates there
-	 * is at least one non-leaf node that meets this condition, which might
-	 * not be true for all the non-leaf nodes. The value of zero states that
-	 * WFQ algorithm is not supported. The value of 1 indicates that
-	 * (*sched_sp_n_priorities_max* - 1) priority levels have at most one
-	 * child node, so there can be only one priority level with two or
-	 * more sibling nodes making up a WFQ group. The maximum value is:
-	 * min(floor(*sched_n_children_max* / 2), *sched_sp_n_priorities_max*).
-	 */
-	uint32_t sched_wfq_n_groups_max;
+    /** Maximum number of priority levels that can have more than one child
+     * node at any given time, i.e. maximum number of WFQ sibling node
+     * groups that have two or more members. This parameter indicates there
+     * is at least one non-leaf node that meets this condition, which might
+     * not be true for all the non-leaf nodes. The value of zero states that
+     * WFQ algorithm is not supported. The value of 1 indicates that
+     * (*sched_sp_n_priorities_max* - 1) priority levels have at most one
+     * child node, so there can be only one priority level with two or
+     * more sibling nodes making up a WFQ group. The maximum value is:
+     * min(floor(*sched_n_children_max* / 2), *sched_sp_n_priorities_max*).
+     */
+    uint32_t sched_wfq_n_groups_max;
 
-	/** Maximum WFQ weight. The value of 1 indicates that all sibling nodes
-	 * with same priority have the same WFQ weight, so WFQ is reduced to FQ.
-	 */
-	uint32_t sched_wfq_weight_max;
+    /** Maximum WFQ weight. The value of 1 indicates that all sibling nodes
+     * with same priority have the same WFQ weight, so WFQ is reduced to FQ.
+     */
+    uint32_t sched_wfq_weight_max;
 
-	/** WRED packet mode support. When non-zero, this parameter indicates
-	 * that there is at least one leaf node that supports the WRED packet
-	 * mode, which might not be true for all the leaf nodes. In packet
-	 * mode, the WRED thresholds specify the queue length in packets, as
-	 * opposed to bytes.
-	 */
-	int cman_wred_packet_mode_supported;
+    /** WRED packet mode support. When non-zero, this parameter indicates
+     * that there is at least one leaf node that supports the WRED packet
+     * mode, which might not be true for all the leaf nodes. In packet
+     * mode, the WRED thresholds specify the queue length in packets, as
+     * opposed to bytes.
+     */
+    int cman_wred_packet_mode_supported;
 
-	/** WRED byte mode support. When non-zero, this parameter indicates that
-	 * there is at least one leaf node that supports the WRED byte mode,
-	 * which might not be true for all the leaf nodes. In byte mode, the
-	 * WRED thresholds specify the queue length in bytes, as opposed to
-	 * packets.
-	 */
-	int cman_wred_byte_mode_supported;
+    /** WRED byte mode support. When non-zero, this parameter indicates that
+     * there is at least one leaf node that supports the WRED byte mode,
+     * which might not be true for all the leaf nodes. In byte mode, the
+     * WRED thresholds specify the queue length in bytes, as opposed to
+     * packets.
+     */
+    int cman_wred_byte_mode_supported;
 
-	/** Head drop algorithm support. When non-zero, this parameter
-	 * indicates that there is at least one leaf node that supports the head
-	 * drop algorithm, which might not be true for all the leaf nodes.
-	 */
-	int cman_head_drop_supported;
+    /** Head drop algorithm support. When non-zero, this parameter
+     * indicates that there is at least one leaf node that supports the head
+     * drop algorithm, which might not be true for all the leaf nodes.
+     */
+    int cman_head_drop_supported;
 
-	/** Maximum number of WRED contexts, either private or shared. In case
-	 * the implementation does not share any resources between private and
-	 * shared WRED contexts, it is typically equal to the sum of
-	 * *cman_wred_context_private_n_max* and
-	 * *cman_wred_context_shared_n_max*. The value of zero indicates that
-	 * WRED is not supported.
-	 */
-	uint32_t cman_wred_context_n_max;
+    /** Maximum number of WRED contexts, either private or shared. In case
+     * the implementation does not share any resources between private and
+     * shared WRED contexts, it is typically equal to the sum of
+     * *cman_wred_context_private_n_max* and
+     * *cman_wred_context_shared_n_max*. The value of zero indicates that
+     * WRED is not supported.
+     */
+    uint32_t cman_wred_context_n_max;
 
-	/** Maximum number of private WRED contexts. Indicates the maximum
-	 * number of leaf nodes that can concurrently have their private WRED
-	 * context enabled. The value of zero indicates that private WRED
-	 * contexts are not supported.
-	 */
-	uint32_t cman_wred_context_private_n_max;
+    /** Maximum number of private WRED contexts. Indicates the maximum
+     * number of leaf nodes that can concurrently have their private WRED
+     * context enabled. The value of zero indicates that private WRED
+     * contexts are not supported.
+     */
+    uint32_t cman_wred_context_private_n_max;
 
-	/** Maximum number of shared WRED contexts. The value of zero
-	 * indicates that shared WRED contexts are not supported.
-	 */
-	uint32_t cman_wred_context_shared_n_max;
+    /** Maximum number of shared WRED contexts. The value of zero
+     * indicates that shared WRED contexts are not supported.
+     */
+    uint32_t cman_wred_context_shared_n_max;
 
-	/** Maximum number of leaf nodes that can share the same WRED context.
-	 * Only valid when shared WRED contexts are supported.
-	 */
-	uint32_t cman_wred_context_shared_n_nodes_per_context_max;
+    /** Maximum number of leaf nodes that can share the same WRED context.
+     * Only valid when shared WRED contexts are supported.
+     */
+    uint32_t cman_wred_context_shared_n_nodes_per_context_max;
 
-	/** Maximum number of shared WRED contexts a leaf node can be part of.
-	 * This parameter indicates that there is at least one leaf node that
-	 * can be configured with this many shared WRED contexts, which might
-	 * not be true for all the leaf nodes. Only valid when shared WRED
-	 * contexts are supported, in which case it ranges from 1 to
-	 * *cman_wred_context_shared_n_max*.
-	 */
-	uint32_t cman_wred_context_shared_n_contexts_per_node_max;
+    /** Maximum number of shared WRED contexts a leaf node can be part of.
+     * This parameter indicates that there is at least one leaf node that
+     * can be configured with this many shared WRED contexts, which might
+     * not be true for all the leaf nodes. Only valid when shared WRED
+     * contexts are supported, in which case it ranges from 1 to
+     * *cman_wred_context_shared_n_max*.
+     */
+    uint32_t cman_wred_context_shared_n_contexts_per_node_max;
 
-	/** Support for VLAN DEI packet marking (per color). */
-	int mark_vlan_dei_supported[RTE_COLORS];
+    /** Support for VLAN DEI packet marking (per color). */
+    int mark_vlan_dei_supported[RTE_COLORS];
 
-	/** Support for IPv4/IPv6 ECN marking of TCP packets (per color). */
-	int mark_ip_ecn_tcp_supported[RTE_COLORS];
+    /** Support for IPv4/IPv6 ECN marking of TCP packets (per color). */
+    int mark_ip_ecn_tcp_supported[RTE_COLORS];
 
-	/** Support for IPv4/IPv6 ECN marking of SCTP packets (per color). */
-	int mark_ip_ecn_sctp_supported[RTE_COLORS];
+    /** Support for IPv4/IPv6 ECN marking of SCTP packets (per color). */
+    int mark_ip_ecn_sctp_supported[RTE_COLORS];
 
-	/** Support for IPv4/IPv6 DSCP packet marking (per color). */
-	int mark_ip_dscp_supported[RTE_COLORS];
+    /** Support for IPv4/IPv6 DSCP packet marking (per color). */
+    int mark_ip_dscp_supported[RTE_COLORS];
 
-	/** Set of supported dynamic update operations.
-	 * @see enum rte_tm_dynamic_update_type
-	 */
-	uint64_t dynamic_update_mask;
+    /** Set of supported dynamic update operations.
+     * @see enum rte_tm_dynamic_update_type
+     */
+    uint64_t dynamic_update_mask;
 
-	/** Set of supported statistics counter types.
-	 * @see enum rte_tm_stats_type
-	 */
-	uint64_t stats_mask;
+    /** Set of supported statistics counter types.
+     * @see enum rte_tm_stats_type
+     */
+    uint64_t stats_mask;
 };
 
 /**
  * Traffic manager level capabilities
  */
 struct rte_tm_level_capabilities {
-	/** Maximum number of nodes for the current hierarchy level. */
-	uint32_t n_nodes_max;
+    /** Maximum number of nodes for the current hierarchy level. */
+    uint32_t n_nodes_max;
 
-	/** Maximum number of non-leaf nodes for the current hierarchy level.
-	 * The value of 0 indicates that current level only supports leaf
-	 * nodes. The maximum value is *n_nodes_max*.
-	 */
-	uint32_t n_nodes_nonleaf_max;
+    /** Maximum number of non-leaf nodes for the current hierarchy level.
+     * The value of 0 indicates that current level only supports leaf
+     * nodes. The maximum value is *n_nodes_max*.
+     */
+    uint32_t n_nodes_nonleaf_max;
 
-	/** Maximum number of leaf nodes for the current hierarchy level. The
-	 * value of 0 indicates that current level only supports non-leaf
-	 * nodes. The maximum value is *n_nodes_max*.
-	 */
-	uint32_t n_nodes_leaf_max;
+    /** Maximum number of leaf nodes for the current hierarchy level. The
+     * value of 0 indicates that current level only supports non-leaf
+     * nodes. The maximum value is *n_nodes_max*.
+     */
+    uint32_t n_nodes_leaf_max;
 
-	/** When non-zero, this flag indicates that all the non-leaf nodes on
-	 * this level have identical capability set. Valid only when
-	 * *n_nodes_nonleaf_max* is non-zero.
-	 */
-	int non_leaf_nodes_identical;
+    /** When non-zero, this flag indicates that all the non-leaf nodes on
+     * this level have identical capability set. Valid only when
+     * *n_nodes_nonleaf_max* is non-zero.
+     */
+    int non_leaf_nodes_identical;
 
-	/** When non-zero, this flag indicates that all the leaf nodes on this
-	 * level have identical capability set. Valid only when
-	 * *n_nodes_leaf_max* is non-zero.
-	 */
-	int leaf_nodes_identical;
+    /** When non-zero, this flag indicates that all the leaf nodes on this
+     * level have identical capability set. Valid only when
+     * *n_nodes_leaf_max* is non-zero.
+     */
+    int leaf_nodes_identical;
 
-	RTE_STD_C11
-	union {
-		/** Items valid only for the non-leaf nodes on this level. */
-		struct {
-			/** Private shaper support. When non-zero, it indicates
-			 * there is at least one non-leaf node on this level
-			 * with private shaper support, which may not be the
-			 * case for all the non-leaf nodes on this level.
-			 */
-			int shaper_private_supported;
+    RTE_STD_C11
+    union {
+        /** Items valid only for the non-leaf nodes on this level. */
+        struct {
+            /** Private shaper support. When non-zero, it indicates
+             * there is at least one non-leaf node on this level
+             * with private shaper support, which may not be the
+             * case for all the non-leaf nodes on this level.
+             */
+            int shaper_private_supported;
 
-			/** Dual rate support for private shaper. Valid only
-			 * when private shaper is supported for the non-leaf
-			 * nodes on the current level. When non-zero, it
-			 * indicates there is at least one non-leaf node on this
-			 * level with dual rate private shaper support, which
-			 * may not be the case for all the non-leaf nodes on
-			 * this level.
-			 */
-			int shaper_private_dual_rate_supported;
+            /** Dual rate support for private shaper. Valid only
+             * when private shaper is supported for the non-leaf
+             * nodes on the current level. When non-zero, it
+             * indicates there is at least one non-leaf node on this
+             * level with dual rate private shaper support, which
+             * may not be the case for all the non-leaf nodes on
+             * this level.
+             */
+            int shaper_private_dual_rate_supported;
 
-			/** Minimum committed/peak rate (bytes per second) for
-			 * private shapers of the non-leaf nodes of this level.
-			 * Valid only when private shaper is supported on this
-			 * level.
-			 */
-			uint64_t shaper_private_rate_min;
+            /** Minimum committed/peak rate (bytes per second) for
+             * private shapers of the non-leaf nodes of this level.
+             * Valid only when private shaper is supported on this
+             * level.
+             */
+            uint64_t shaper_private_rate_min;
 
-			/** Maximum committed/peak rate (bytes per second) for
-			 * private shapers of the non-leaf nodes on this level.
-			 * Valid only when private shaper is supported on this
-			 * level.
-			 */
-			uint64_t shaper_private_rate_max;
+            /** Maximum committed/peak rate (bytes per second) for
+             * private shapers of the non-leaf nodes on this level.
+             * Valid only when private shaper is supported on this
+             * level.
+             */
+            uint64_t shaper_private_rate_max;
 
-			/** Maximum number of shared shapers that any non-leaf
-			 * node on this level can be part of. The value of zero
-			 * indicates that shared shapers are not supported by
-			 * the non-leaf nodes on this level. When non-zero, it
-			 * indicates there is at least one non-leaf node on this
-			 * level that meets this condition, which may not be the
-			 * case for all the non-leaf nodes on this level.
-			 */
-			uint32_t shaper_shared_n_max;
+            /** Maximum number of shared shapers that any non-leaf
+             * node on this level can be part of. The value of zero
+             * indicates that shared shapers are not supported by
+             * the non-leaf nodes on this level. When non-zero, it
+             * indicates there is at least one non-leaf node on this
+             * level that meets this condition, which may not be the
+             * case for all the non-leaf nodes on this level.
+             */
+            uint32_t shaper_shared_n_max;
 
-			/** Maximum number of children nodes. This parameter
-			 * indicates that there is at least one non-leaf node on
-			 * this level that can be configured with this many
-			 * children nodes, which might not be true for all the
-			 * non-leaf nodes on this level.
-			 */
-			uint32_t sched_n_children_max;
+            /** Maximum number of children nodes. This parameter
+             * indicates that there is at least one non-leaf node on
+             * this level that can be configured with this many
+             * children nodes, which might not be true for all the
+             * non-leaf nodes on this level.
+             */
+            uint32_t sched_n_children_max;
 
-			/** Maximum number of supported priority levels. This
-			 * parameter indicates that there is at least one
-			 * non-leaf node on this level that can be configured
-			 * with this many priority levels for managing its
-			 * children nodes, which might not be true for all the
-			 * non-leaf nodes on this level. The value of zero is
-			 * invalid. The value of 1 indicates that only priority
-			 * 0 is supported, which essentially means that Strict
-			 * Priority (SP) algorithm is not supported on this
-			 * level.
-			 */
-			uint32_t sched_sp_n_priorities_max;
+            /** Maximum number of supported priority levels. This
+             * parameter indicates that there is at least one
+             * non-leaf node on this level that can be configured
+             * with this many priority levels for managing its
+             * children nodes, which might not be true for all the
+             * non-leaf nodes on this level. The value of zero is
+             * invalid. The value of 1 indicates that only priority
+             * 0 is supported, which essentially means that Strict
+             * Priority (SP) algorithm is not supported on this
+             * level.
+             */
+            uint32_t sched_sp_n_priorities_max;
 
-			/** Maximum number of sibling nodes that can have the
-			 * same priority at any given time, i.e. maximum size of
-			 * the WFQ sibling node group. This parameter indicates
-			 * there is at least one non-leaf node on this level
-			 * that meets this condition, which may not be true for
-			 * all the non-leaf nodes on this level. The value of
-			 * zero is invalid. The value of 1 indicates that WFQ
-			 * algorithm is not supported on this level. The maximum
-			 * value is *sched_n_children_max*.
-			 */
-			uint32_t sched_wfq_n_children_per_group_max;
+            /** Maximum number of sibling nodes that can have the
+             * same priority at any given time, i.e. maximum size of
+             * the WFQ sibling node group. This parameter indicates
+             * there is at least one non-leaf node on this level
+             * that meets this condition, which may not be true for
+             * all the non-leaf nodes on this level. The value of
+             * zero is invalid. The value of 1 indicates that WFQ
+             * algorithm is not supported on this level. The maximum
+             * value is *sched_n_children_max*.
+             */
+            uint32_t sched_wfq_n_children_per_group_max;
 
-			/** Maximum number of priority levels that can have
-			 * more than one child node at any given time, i.e.
-			 * maximum number of WFQ sibling node groups that
-			 * have two or more members. This parameter indicates
-			 * there is at least one non-leaf node on this level
-			 * that meets this condition, which might not be true
-			 * for all the non-leaf nodes. The value of zero states
-			 * that WFQ algorithm is not supported on this level.
-			 * The value of 1 indicates that
-			 * (*sched_sp_n_priorities_max* - 1) priority levels on
-			 * this level have at most one child node, so there can
-			 * be only one priority level with two or more sibling
-			 * nodes making up a WFQ group on this level. The
-			 * maximum value is:
-			 * min(floor(*sched_n_children_max* / 2),
-			 * *sched_sp_n_priorities_max*).
-			 */
-			uint32_t sched_wfq_n_groups_max;
+            /** Maximum number of priority levels that can have
+             * more than one child node at any given time, i.e.
+             * maximum number of WFQ sibling node groups that
+             * have two or more members. This parameter indicates
+             * there is at least one non-leaf node on this level
+             * that meets this condition, which might not be true
+             * for all the non-leaf nodes. The value of zero states
+             * that WFQ algorithm is not supported on this level.
+             * The value of 1 indicates that
+             * (*sched_sp_n_priorities_max* - 1) priority levels on
+             * this level have at most one child node, so there can
+             * be only one priority level with two or more sibling
+             * nodes making up a WFQ group on this level. The
+             * maximum value is:
+             * min(floor(*sched_n_children_max* / 2),
+             * *sched_sp_n_priorities_max*).
+             */
+            uint32_t sched_wfq_n_groups_max;
 
-			/** Maximum WFQ weight. The value of 1 indicates that
-			 * all sibling nodes on this level with same priority
-			 * have the same WFQ weight, so on this level WFQ is
-			 * reduced to FQ.
-			 */
-			uint32_t sched_wfq_weight_max;
+            /** Maximum WFQ weight. The value of 1 indicates that
+             * all sibling nodes on this level with same priority
+             * have the same WFQ weight, so on this level WFQ is
+             * reduced to FQ.
+             */
+            uint32_t sched_wfq_weight_max;
 
-			/** Mask of statistics counter types supported by the
-			 * non-leaf nodes on this level. Every supported
-			 * statistics counter type is supported by at least one
-			 * non-leaf node on this level, which may not be true
-			 * for all the non-leaf nodes on this level.
-			 * @see enum rte_tm_stats_type
-			 */
-			uint64_t stats_mask;
-		} nonleaf;
+            /** Mask of statistics counter types supported by the
+             * non-leaf nodes on this level. Every supported
+             * statistics counter type is supported by at least one
+             * non-leaf node on this level, which may not be true
+             * for all the non-leaf nodes on this level.
+             * @see enum rte_tm_stats_type
+             */
+            uint64_t stats_mask;
+        } nonleaf;
 
-		/** Items valid only for the leaf nodes on this level. */
-		struct {
-			/** Private shaper support. When non-zero, it indicates
-			 * there is at least one leaf node on this level with
-			 * private shaper support, which may not be the case for
-			 * all the leaf nodes on this level.
-			 */
-			int shaper_private_supported;
+        /** Items valid only for the leaf nodes on this level. */
+        struct {
+            /** Private shaper support. When non-zero, it indicates
+             * there is at least one leaf node on this level with
+             * private shaper support, which may not be the case for
+             * all the leaf nodes on this level.
+             */
+            int shaper_private_supported;
 
-			/** Dual rate support for private shaper. Valid only
-			 * when private shaper is supported for the leaf nodes
-			 * on this level. When non-zero, it indicates there is
-			 * at least one leaf node on this level with dual rate
-			 * private shaper support, which may not be the case for
-			 * all the leaf nodes on this level.
-			 */
-			int shaper_private_dual_rate_supported;
+            /** Dual rate support for private shaper. Valid only
+             * when private shaper is supported for the leaf nodes
+             * on this level. When non-zero, it indicates there is
+             * at least one leaf node on this level with dual rate
+             * private shaper support, which may not be the case for
+             * all the leaf nodes on this level.
+             */
+            int shaper_private_dual_rate_supported;
 
-			/** Minimum committed/peak rate (bytes per second) for
-			 * private shapers of the leaf nodes of this level.
-			 * Valid only when private shaper is supported for the
-			 * leaf nodes on this level.
-			 */
-			uint64_t shaper_private_rate_min;
+            /** Minimum committed/peak rate (bytes per second) for
+             * private shapers of the leaf nodes of this level.
+             * Valid only when private shaper is supported for the
+             * leaf nodes on this level.
+             */
+            uint64_t shaper_private_rate_min;
 
-			/** Maximum committed/peak rate (bytes per second) for
-			 * private shapers of the leaf nodes on this level.
-			 * Valid only when private shaper is supported for the
-			 * leaf nodes on this level.
-			 */
-			uint64_t shaper_private_rate_max;
+            /** Maximum committed/peak rate (bytes per second) for
+             * private shapers of the leaf nodes on this level.
+             * Valid only when private shaper is supported for the
+             * leaf nodes on this level.
+             */
+            uint64_t shaper_private_rate_max;
 
-			/** Maximum number of shared shapers that any leaf node
-			 * on this level can be part of. The value of zero
-			 * indicates that shared shapers are not supported by
-			 * the leaf nodes on this level. When non-zero, it
-			 * indicates there is at least one leaf node on this
-			 * level that meets this condition, which may not be the
-			 * case for all the leaf nodes on this level.
-			 */
-			uint32_t shaper_shared_n_max;
+            /** Maximum number of shared shapers that any leaf node
+             * on this level can be part of. The value of zero
+             * indicates that shared shapers are not supported by
+             * the leaf nodes on this level. When non-zero, it
+             * indicates there is at least one leaf node on this
+             * level that meets this condition, which may not be the
+             * case for all the leaf nodes on this level.
+             */
+            uint32_t shaper_shared_n_max;
 
-			/** WRED packet mode support. When non-zero, this
-			 * parameter indicates that there is at least one leaf
-			 * node on this level that supports the WRED packet
-			 * mode, which might not be true for all the leaf
-			 * nodes. In packet mode, the WRED thresholds specify
-			 * the queue length in packets, as opposed to bytes.
-			 */
-			int cman_wred_packet_mode_supported;
+            /** WRED packet mode support. When non-zero, this
+             * parameter indicates that there is at least one leaf
+             * node on this level that supports the WRED packet
+             * mode, which might not be true for all the leaf
+             * nodes. In packet mode, the WRED thresholds specify
+             * the queue length in packets, as opposed to bytes.
+             */
+            int cman_wred_packet_mode_supported;
 
-			/** WRED byte mode support. When non-zero, this
-			 * parameter indicates that there is at least one leaf
-			 * node on this level that supports the WRED byte mode,
-			 * which might not be true for all the leaf nodes. In
-			 * byte mode, the WRED thresholds specify the queue
-			 * length in bytes, as opposed to packets.
-			 */
-			int cman_wred_byte_mode_supported;
+            /** WRED byte mode support. When non-zero, this
+             * parameter indicates that there is at least one leaf
+             * node on this level that supports the WRED byte mode,
+             * which might not be true for all the leaf nodes. In
+             * byte mode, the WRED thresholds specify the queue
+             * length in bytes, as opposed to packets.
+             */
+            int cman_wred_byte_mode_supported;
 
-			/** Head drop algorithm support. When non-zero, this
-			 * parameter indicates that there is at least one leaf
-			 * node on this level that supports the head drop
-			 * algorithm, which might not be true for all the leaf
-			 * nodes on this level.
-			 */
-			int cman_head_drop_supported;
+            /** Head drop algorithm support. When non-zero, this
+             * parameter indicates that there is at least one leaf
+             * node on this level that supports the head drop
+             * algorithm, which might not be true for all the leaf
+             * nodes on this level.
+             */
+            int cman_head_drop_supported;
 
-			/** Private WRED context support. When non-zero, it
-			 * indicates there is at least one node on this level
-			 * with private WRED context support, which may not be
-			 * true for all the leaf nodes on this level.
-			 */
-			int cman_wred_context_private_supported;
+            /** Private WRED context support. When non-zero, it
+             * indicates there is at least one node on this level
+             * with private WRED context support, which may not be
+             * true for all the leaf nodes on this level.
+             */
+            int cman_wred_context_private_supported;
 
-			/** Maximum number of shared WRED contexts that any
-			 * leaf node on this level can be part of. The value of
-			 * zero indicates that shared WRED contexts are not
-			 * supported by the leaf nodes on this level. When
-			 * non-zero, it indicates there is at least one leaf
-			 * node on this level that meets this condition, which
-			 * may not be the case for all the leaf nodes on this
-			 * level.
-			 */
-			uint32_t cman_wred_context_shared_n_max;
+            /** Maximum number of shared WRED contexts that any
+             * leaf node on this level can be part of. The value of
+             * zero indicates that shared WRED contexts are not
+             * supported by the leaf nodes on this level. When
+             * non-zero, it indicates there is at least one leaf
+             * node on this level that meets this condition, which
+             * may not be the case for all the leaf nodes on this
+             * level.
+             */
+            uint32_t cman_wred_context_shared_n_max;
 
-			/** Mask of statistics counter types supported by the
-			 * leaf nodes on this level. Every supported statistics
-			 * counter type is supported by at least one leaf node
-			 * on this level, which may not be true for all the leaf
-			 * nodes on this level.
-			 * @see enum rte_tm_stats_type
-			 */
-			uint64_t stats_mask;
-		} leaf;
-	};
+            /** Mask of statistics counter types supported by the
+             * leaf nodes on this level. Every supported statistics
+             * counter type is supported by at least one leaf node
+             * on this level, which may not be true for all the leaf
+             * nodes on this level.
+             * @see enum rte_tm_stats_type
+             */
+            uint64_t stats_mask;
+        } leaf;
+    };
 };
 
 /**
  * Traffic manager node capabilities
  */
 struct rte_tm_node_capabilities {
-	/** Private shaper support for the current node. */
-	int shaper_private_supported;
+    /** Private shaper support for the current node. */
+    int shaper_private_supported;
 
-	/** Dual rate shaping support for private shaper of current node.
-	 * Valid only when private shaper is supported by the current node.
-	 */
-	int shaper_private_dual_rate_supported;
+    /** Dual rate shaping support for private shaper of current node.
+     * Valid only when private shaper is supported by the current node.
+     */
+    int shaper_private_dual_rate_supported;
 
-	/** Minimum committed/peak rate (bytes per second) for private
-	 * shaper of current node. Valid only when private shaper is supported
-	 * by the current node.
-	 */
-	uint64_t shaper_private_rate_min;
+    /** Minimum committed/peak rate (bytes per second) for private
+     * shaper of current node. Valid only when private shaper is supported
+     * by the current node.
+     */
+    uint64_t shaper_private_rate_min;
 
-	/** Maximum committed/peak rate (bytes per second) for private
-	 * shaper of current node. Valid only when private shaper is supported
-	 * by the current node.
-	 */
-	uint64_t shaper_private_rate_max;
+    /** Maximum committed/peak rate (bytes per second) for private
+     * shaper of current node. Valid only when private shaper is supported
+     * by the current node.
+     */
+    uint64_t shaper_private_rate_max;
 
-	/** Maximum number of shared shapers the current node can be part of.
-	 * The value of zero indicates that shared shapers are not supported by
-	 * the current node.
-	 */
-	uint32_t shaper_shared_n_max;
+    /** Maximum number of shared shapers the current node can be part of.
+     * The value of zero indicates that shared shapers are not supported by
+     * the current node.
+     */
+    uint32_t shaper_shared_n_max;
 
-	RTE_STD_C11
-	union {
-		/** Items valid only for non-leaf nodes. */
-		struct {
-			/** Maximum number of children nodes. */
-			uint32_t sched_n_children_max;
+    RTE_STD_C11
+    union {
+        /** Items valid only for non-leaf nodes. */
+        struct {
+            /** Maximum number of children nodes. */
+            uint32_t sched_n_children_max;
 
-			/** Maximum number of supported priority levels. The
-			 * value of zero is invalid. The value of 1 indicates
-			 * that only priority 0 is supported, which essentially
-			 * means that Strict Priority (SP) algorithm is not
-			 * supported.
-			 */
-			uint32_t sched_sp_n_priorities_max;
+            /** Maximum number of supported priority levels. The
+             * value of zero is invalid. The value of 1 indicates
+             * that only priority 0 is supported, which essentially
+             * means that Strict Priority (SP) algorithm is not
+             * supported.
+             */
+            uint32_t sched_sp_n_priorities_max;
 
-			/** Maximum number of sibling nodes that can have the
-			 * same priority at any given time, i.e. maximum size
-			 * of the WFQ sibling node group. The value of zero
-			 * is invalid. The value of 1 indicates that WFQ
-			 * algorithm is not supported. The maximum value is
-			 * *sched_n_children_max*.
-			 */
-			uint32_t sched_wfq_n_children_per_group_max;
+            /** Maximum number of sibling nodes that can have the
+             * same priority at any given time, i.e. maximum size
+             * of the WFQ sibling node group. The value of zero
+             * is invalid. The value of 1 indicates that WFQ
+             * algorithm is not supported. The maximum value is
+             * *sched_n_children_max*.
+             */
+            uint32_t sched_wfq_n_children_per_group_max;
 
-			/** Maximum number of priority levels that can have
-			 * more than one child node at any given time, i.e.
-			 * maximum number of WFQ sibling node groups that have
-			 * two or more members. The value of zero states that
-			 * WFQ algorithm is not supported. The value of 1
-			 * indicates that (*sched_sp_n_priorities_max* - 1)
-			 * priority levels have at most one child node, so there
-			 * can be only one priority level with two or more
-			 * sibling nodes making up a WFQ group. The maximum
-			 * value is: min(floor(*sched_n_children_max* / 2),
-			 * *sched_sp_n_priorities_max*).
-			 */
-			uint32_t sched_wfq_n_groups_max;
+            /** Maximum number of priority levels that can have
+             * more than one child node at any given time, i.e.
+             * maximum number of WFQ sibling node groups that have
+             * two or more members. The value of zero states that
+             * WFQ algorithm is not supported. The value of 1
+             * indicates that (*sched_sp_n_priorities_max* - 1)
+             * priority levels have at most one child node, so there
+             * can be only one priority level with two or more
+             * sibling nodes making up a WFQ group. The maximum
+             * value is: min(floor(*sched_n_children_max* / 2),
+             * *sched_sp_n_priorities_max*).
+             */
+            uint32_t sched_wfq_n_groups_max;
 
-			/** Maximum WFQ weight. The value of 1 indicates that
-			 * all sibling nodes with same priority have the same
-			 * WFQ weight, so WFQ is reduced to FQ.
-			 */
-			uint32_t sched_wfq_weight_max;
-		} nonleaf;
+            /** Maximum WFQ weight. The value of 1 indicates that
+             * all sibling nodes with same priority have the same
+             * WFQ weight, so WFQ is reduced to FQ.
+             */
+            uint32_t sched_wfq_weight_max;
+        } nonleaf;
 
-		/** Items valid only for leaf nodes. */
-		struct {
-			/** WRED packet mode support for current node. */
-			int cman_wred_packet_mode_supported;
+        /** Items valid only for leaf nodes. */
+        struct {
+            /** WRED packet mode support for current node. */
+            int cman_wred_packet_mode_supported;
 
-			/** WRED byte mode support for current node. */
-			int cman_wred_byte_mode_supported;
+            /** WRED byte mode support for current node. */
+            int cman_wred_byte_mode_supported;
 
-			/** Head drop algorithm support for current node. */
-			int cman_head_drop_supported;
+            /** Head drop algorithm support for current node. */
+            int cman_head_drop_supported;
 
-			/** Private WRED context support for current node. */
-			int cman_wred_context_private_supported;
+            /** Private WRED context support for current node. */
+            int cman_wred_context_private_supported;
 
-			/** Maximum number of shared WRED contexts the current
-			 * node can be part of. The value of zero indicates that
-			 * shared WRED contexts are not supported by the current
-			 * node.
-			 */
-			uint32_t cman_wred_context_shared_n_max;
-		} leaf;
-	};
+            /** Maximum number of shared WRED contexts the current
+             * node can be part of. The value of zero indicates that
+             * shared WRED contexts are not supported by the current
+             * node.
+             */
+            uint32_t cman_wred_context_shared_n_max;
+        } leaf;
+    };
 
-	/** Mask of statistics counter types supported by the current node.
-	 * @see enum rte_tm_stats_type
-	 */
-	uint64_t stats_mask;
+    /** Mask of statistics counter types supported by the current node.
+     * @see enum rte_tm_stats_type
+     */
+    uint64_t stats_mask;
 };
 
 /**
@@ -783,28 +783,28 @@ struct rte_tm_node_capabilities {
  * RED* algorithm uses a separate set of RED thresholds for each packet color.
  */
 enum rte_tm_cman_mode {
-	RTE_TM_CMAN_TAIL_DROP = 0, /**< Tail drop */
-	RTE_TM_CMAN_HEAD_DROP, /**< Head drop */
-	RTE_TM_CMAN_WRED, /**< Weighted Random Early Detection (WRED) */
+    RTE_TM_CMAN_TAIL_DROP = 0, /**< Tail drop */
+    RTE_TM_CMAN_HEAD_DROP, /**< Head drop */
+    RTE_TM_CMAN_WRED, /**< Weighted Random Early Detection (WRED) */
 };
 
 /**
  * Random Early Detection (RED) profile
  */
 struct rte_tm_red_params {
-	/** Minimum queue threshold */
-	uint64_t min_th;
+    /** Minimum queue threshold */
+    uint64_t min_th;
 
-	/** Maximum queue threshold */
-	uint64_t max_th;
+    /** Maximum queue threshold */
+    uint64_t max_th;
 
-	/** Inverse of packet marking probability maximum value (maxp), i.e.
-	 * maxp_inv = 1 / maxp
-	 */
-	uint16_t maxp_inv;
+    /** Inverse of packet marking probability maximum value (maxp), i.e.
+     * maxp_inv = 1 / maxp
+     */
+    uint16_t maxp_inv;
 
-	/** Negated log2 of queue weight (wq), i.e. wq = 1 / (2 ^ wq_log2) */
-	uint16_t wq_log2;
+    /** Negated log2 of queue weight (wq), i.e. wq = 1 / (2 ^ wq_log2) */
+    uint16_t wq_log2;
 };
 
 /**
@@ -822,25 +822,25 @@ struct rte_tm_red_params {
  * @see struct rte_tm_capabilities::cman_wred_byte_mode_supported
  */
 struct rte_tm_wred_params {
-	/** One set of RED parameters per packet color */
-	struct rte_tm_red_params red_params[RTE_COLORS];
+    /** One set of RED parameters per packet color */
+    struct rte_tm_red_params red_params[RTE_COLORS];
 
-	/** When non-zero, the *min_th* and *max_th* thresholds are specified
-	 * in packets (WRED packet mode). When zero, the *min_th* and *max_th*
-	 * thresholds are specified in bytes (WRED byte mode)
-	 */
-	int packet_mode;
+    /** When non-zero, the *min_th* and *max_th* thresholds are specified
+     * in packets (WRED packet mode). When zero, the *min_th* and *max_th*
+     * thresholds are specified in bytes (WRED byte mode)
+     */
+    int packet_mode;
 };
 
 /**
  * Token bucket
  */
 struct rte_tm_token_bucket {
-	/** Token bucket rate (bytes per second) */
-	uint64_t rate;
+    /** Token bucket rate (bytes per second) */
+    uint64_t rate;
 
-	/** Token bucket size (bytes), a.k.a. max burst size */
-	uint64_t size;
+    /** Token bucket size (bytes), a.k.a. max burst size */
+    uint64_t size;
 };
 
 /**
@@ -862,18 +862,18 @@ struct rte_tm_token_bucket {
  * or equal to the rate of the committed bucket.
  */
 struct rte_tm_shaper_params {
-	/** Committed token bucket */
-	struct rte_tm_token_bucket committed;
+    /** Committed token bucket */
+    struct rte_tm_token_bucket committed;
 
-	/** Peak token bucket */
-	struct rte_tm_token_bucket peak;
+    /** Peak token bucket */
+    struct rte_tm_token_bucket peak;
 
-	/** Signed value to be added to the length of each packet for the
-	 * purpose of shaping. Can be used to correct the packet length with
-	 * the framing overhead bytes that are also consumed on the wire (e.g.
-	 * RTE_TM_ETH_FRAMING_OVERHEAD_FCS).
-	 */
-	int32_t pkt_length_adjust;
+    /** Signed value to be added to the length of each packet for the
+     * purpose of shaping. Can be used to correct the packet length with
+     * the framing overhead bytes that are also consumed on the wire (e.g.
+     * RTE_TM_ETH_FRAMING_OVERHEAD_FCS).
+     */
+    int32_t pkt_length_adjust;
 };
 
 /**
@@ -904,74 +904,74 @@ struct rte_tm_shaper_params {
  * non-leaf nodes have their IDs generated by the application.
  */
 struct rte_tm_node_params {
-	/** Shaper profile for the private shaper. The absence of the private
-	 * shaper for the current node is indicated by setting this parameter
-	 * to RTE_TM_SHAPER_PROFILE_ID_NONE.
-	 */
-	uint32_t shaper_profile_id;
+    /** Shaper profile for the private shaper. The absence of the private
+     * shaper for the current node is indicated by setting this parameter
+     * to RTE_TM_SHAPER_PROFILE_ID_NONE.
+     */
+    uint32_t shaper_profile_id;
 
-	/** User allocated array of valid shared shaper IDs. */
-	uint32_t *shared_shaper_id;
+    /** User allocated array of valid shared shaper IDs. */
+    uint32_t *shared_shaper_id;
 
-	/** Number of shared shaper IDs in the *shared_shaper_id* array. */
-	uint32_t n_shared_shapers;
+    /** Number of shared shaper IDs in the *shared_shaper_id* array. */
+    uint32_t n_shared_shapers;
 
-	RTE_STD_C11
-	union {
-		/** Parameters only valid for non-leaf nodes. */
-		struct {
-			/** WFQ weight mode for each SP priority. When NULL, it
-			 * indicates that WFQ is to be used for all priorities.
-			 * When non-NULL, it points to a pre-allocated array of
-			 * *n_sp_priorities* values, with non-zero value for
-			 * byte-mode and zero for packet-mode.
-			 */
-			int *wfq_weight_mode;
+    RTE_STD_C11
+    union {
+        /** Parameters only valid for non-leaf nodes. */
+        struct {
+            /** WFQ weight mode for each SP priority. When NULL, it
+             * indicates that WFQ is to be used for all priorities.
+             * When non-NULL, it points to a pre-allocated array of
+             * *n_sp_priorities* values, with non-zero value for
+             * byte-mode and zero for packet-mode.
+             */
+            int *wfq_weight_mode;
 
-			/** Number of SP priorities. */
-			uint32_t n_sp_priorities;
-		} nonleaf;
+            /** Number of SP priorities. */
+            uint32_t n_sp_priorities;
+        } nonleaf;
 
-		/** Parameters only valid for leaf nodes. */
-		struct {
-			/** Congestion management mode */
-			enum rte_tm_cman_mode cman;
+        /** Parameters only valid for leaf nodes. */
+        struct {
+            /** Congestion management mode */
+            enum rte_tm_cman_mode cman;
 
-			/** WRED parameters (only valid when *cman* is set to
-			 * WRED).
-			 */
-			struct {
-				/** WRED profile for private WRED context. The
-				 * absence of a private WRED context for the
-				 * current leaf node is indicated by value
-				 * RTE_TM_WRED_PROFILE_ID_NONE.
-				 */
-				uint32_t wred_profile_id;
+            /** WRED parameters (only valid when *cman* is set to
+             * WRED).
+             */
+            struct {
+                /** WRED profile for private WRED context. The
+                 * absence of a private WRED context for the
+                 * current leaf node is indicated by value
+                 * RTE_TM_WRED_PROFILE_ID_NONE.
+                 */
+                uint32_t wred_profile_id;
 
-				/** User allocated array of shared WRED context
-				 * IDs. When set to NULL, it indicates that the
-				 * current leaf node should not currently be
-				 * part of any shared WRED contexts.
-				 */
-				uint32_t *shared_wred_context_id;
+                /** User allocated array of shared WRED context
+                 * IDs. When set to NULL, it indicates that the
+                 * current leaf node should not currently be
+                 * part of any shared WRED contexts.
+                 */
+                uint32_t *shared_wred_context_id;
 
-				/** Number of elements in the
-				 * *shared_wred_context_id* array. Only valid
-				 * when *shared_wred_context_id* is non-NULL,
-				 * in which case it should be non-zero.
-				 */
-				uint32_t n_shared_wred_contexts;
-			} wred;
-		} leaf;
-	};
+                /** Number of elements in the
+                 * *shared_wred_context_id* array. Only valid
+                 * when *shared_wred_context_id* is non-NULL,
+                 * in which case it should be non-zero.
+                 */
+                uint32_t n_shared_wred_contexts;
+            } wred;
+        } leaf;
+    };
 
-	/** Mask of statistics counter types to be enabled for this node. This
-	 * needs to be a subset of the statistics counter types available for
-	 * the current node. Any statistics counter type not included in this
-	 * set is to be disabled for the current node.
-	 * @see enum rte_tm_stats_type
-	 */
-	uint64_t stats_mask;
+    /** Mask of statistics counter types to be enabled for this node. This
+     * needs to be a subset of the statistics counter types available for
+     * the current node. Any statistics counter type not included in this
+     * set is to be disabled for the current node.
+     * @see enum rte_tm_stats_type
+     */
+    uint64_t stats_mask;
 };
 
 /**
@@ -981,39 +981,39 @@ struct rte_tm_node_params {
  * rte_tm_error::cause.
  */
 enum rte_tm_error_type {
-	RTE_TM_ERROR_TYPE_NONE, /**< No error. */
-	RTE_TM_ERROR_TYPE_UNSPECIFIED, /**< Cause unspecified. */
-	RTE_TM_ERROR_TYPE_CAPABILITIES,
-	RTE_TM_ERROR_TYPE_LEVEL_ID,
-	RTE_TM_ERROR_TYPE_WRED_PROFILE,
-	RTE_TM_ERROR_TYPE_WRED_PROFILE_GREEN,
-	RTE_TM_ERROR_TYPE_WRED_PROFILE_YELLOW,
-	RTE_TM_ERROR_TYPE_WRED_PROFILE_RED,
-	RTE_TM_ERROR_TYPE_WRED_PROFILE_ID,
-	RTE_TM_ERROR_TYPE_SHARED_WRED_CONTEXT_ID,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_COMMITTED_RATE,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_COMMITTED_SIZE,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PEAK_RATE,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PEAK_SIZE,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PKT_ADJUST_LEN,
-	RTE_TM_ERROR_TYPE_SHAPER_PROFILE_ID,
-	RTE_TM_ERROR_TYPE_SHARED_SHAPER_ID,
-	RTE_TM_ERROR_TYPE_NODE_PARENT_NODE_ID,
-	RTE_TM_ERROR_TYPE_NODE_PRIORITY,
-	RTE_TM_ERROR_TYPE_NODE_WEIGHT,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_SHAPER_PROFILE_ID,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_SHARED_SHAPER_ID,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SHARED_SHAPERS,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_WFQ_WEIGHT_MODE,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SP_PRIORITIES,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_CMAN,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_WRED_PROFILE_ID,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_SHARED_WRED_CONTEXT_ID,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SHARED_WRED_CONTEXTS,
-	RTE_TM_ERROR_TYPE_NODE_PARAMS_STATS,
-	RTE_TM_ERROR_TYPE_NODE_ID,
+    RTE_TM_ERROR_TYPE_NONE, /**< No error. */
+    RTE_TM_ERROR_TYPE_UNSPECIFIED, /**< Cause unspecified. */
+    RTE_TM_ERROR_TYPE_CAPABILITIES,
+    RTE_TM_ERROR_TYPE_LEVEL_ID,
+    RTE_TM_ERROR_TYPE_WRED_PROFILE,
+    RTE_TM_ERROR_TYPE_WRED_PROFILE_GREEN,
+    RTE_TM_ERROR_TYPE_WRED_PROFILE_YELLOW,
+    RTE_TM_ERROR_TYPE_WRED_PROFILE_RED,
+    RTE_TM_ERROR_TYPE_WRED_PROFILE_ID,
+    RTE_TM_ERROR_TYPE_SHARED_WRED_CONTEXT_ID,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_COMMITTED_RATE,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_COMMITTED_SIZE,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PEAK_RATE,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PEAK_SIZE,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_PKT_ADJUST_LEN,
+    RTE_TM_ERROR_TYPE_SHAPER_PROFILE_ID,
+    RTE_TM_ERROR_TYPE_SHARED_SHAPER_ID,
+    RTE_TM_ERROR_TYPE_NODE_PARENT_NODE_ID,
+    RTE_TM_ERROR_TYPE_NODE_PRIORITY,
+    RTE_TM_ERROR_TYPE_NODE_WEIGHT,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_SHAPER_PROFILE_ID,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_SHARED_SHAPER_ID,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SHARED_SHAPERS,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_WFQ_WEIGHT_MODE,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SP_PRIORITIES,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_CMAN,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_WRED_PROFILE_ID,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_SHARED_WRED_CONTEXT_ID,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_N_SHARED_WRED_CONTEXTS,
+    RTE_TM_ERROR_TYPE_NODE_PARAMS_STATS,
+    RTE_TM_ERROR_TYPE_NODE_ID,
 };
 
 /**
@@ -1028,9 +1028,9 @@ enum rte_tm_error_type {
  * Both cause and message may be NULL regardless of the error type.
  */
 struct rte_tm_error {
-	enum rte_tm_error_type type; /**< Cause field and error type. */
-	const void *cause; /**< Object responsible for the error. */
-	const char *message; /**< Human-readable error message. */
+    enum rte_tm_error_type type; /**< Cause field and error type. */
+    const void *cause; /**< Object responsible for the error. */
+    const char *message; /**< Human-readable error message. */
 };
 
 /**
@@ -1052,8 +1052,8 @@ struct rte_tm_error {
  */
 int
 rte_tm_get_number_of_leaf_nodes(uint16_t port_id,
-	uint32_t *n_leaf_nodes,
-	struct rte_tm_error *error);
+    uint32_t *n_leaf_nodes,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node ID validate and type (i.e. leaf or non-leaf) get
@@ -1076,9 +1076,9 @@ rte_tm_get_number_of_leaf_nodes(uint16_t port_id,
  */
 int
 rte_tm_node_type_get(uint16_t port_id,
-	uint32_t node_id,
-	int *is_leaf,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    int *is_leaf,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager capabilities get
@@ -1094,8 +1094,8 @@ rte_tm_node_type_get(uint16_t port_id,
  */
 int
 rte_tm_capabilities_get(uint16_t port_id,
-	struct rte_tm_capabilities *cap,
-	struct rte_tm_error *error);
+    struct rte_tm_capabilities *cap,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager level capabilities get
@@ -1114,9 +1114,9 @@ rte_tm_capabilities_get(uint16_t port_id,
  */
 int
 rte_tm_level_capabilities_get(uint16_t port_id,
-	uint32_t level_id,
-	struct rte_tm_level_capabilities *cap,
-	struct rte_tm_error *error);
+    uint32_t level_id,
+    struct rte_tm_level_capabilities *cap,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node capabilities get
@@ -1134,9 +1134,9 @@ rte_tm_level_capabilities_get(uint16_t port_id,
  */
 int
 rte_tm_node_capabilities_get(uint16_t port_id,
-	uint32_t node_id,
-	struct rte_tm_node_capabilities *cap,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    struct rte_tm_node_capabilities *cap,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager WRED profile add
@@ -1159,9 +1159,9 @@ rte_tm_node_capabilities_get(uint16_t port_id,
  */
 int
 rte_tm_wred_profile_add(uint16_t port_id,
-	uint32_t wred_profile_id,
-	struct rte_tm_wred_params *profile,
-	struct rte_tm_error *error);
+    uint32_t wred_profile_id,
+    struct rte_tm_wred_params *profile,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager WRED profile delete
@@ -1182,8 +1182,8 @@ rte_tm_wred_profile_add(uint16_t port_id,
  */
 int
 rte_tm_wred_profile_delete(uint16_t port_id,
-	uint32_t wred_profile_id,
-	struct rte_tm_error *error);
+    uint32_t wred_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shared WRED context add or update
@@ -1213,9 +1213,9 @@ rte_tm_wred_profile_delete(uint16_t port_id,
  */
 int
 rte_tm_shared_wred_context_add_update(uint16_t port_id,
-	uint32_t shared_wred_context_id,
-	uint32_t wred_profile_id,
-	struct rte_tm_error *error);
+    uint32_t shared_wred_context_id,
+    uint32_t wred_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shared WRED context delete
@@ -1237,8 +1237,8 @@ rte_tm_shared_wred_context_add_update(uint16_t port_id,
  */
 int
 rte_tm_shared_wred_context_delete(uint16_t port_id,
-	uint32_t shared_wred_context_id,
-	struct rte_tm_error *error);
+    uint32_t shared_wred_context_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shaper profile add
@@ -1261,9 +1261,9 @@ rte_tm_shared_wred_context_delete(uint16_t port_id,
  */
 int
 rte_tm_shaper_profile_add(uint16_t port_id,
-	uint32_t shaper_profile_id,
-	struct rte_tm_shaper_params *profile,
-	struct rte_tm_error *error);
+    uint32_t shaper_profile_id,
+    struct rte_tm_shaper_params *profile,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shaper profile delete
@@ -1284,8 +1284,8 @@ rte_tm_shaper_profile_add(uint16_t port_id,
  */
 int
 rte_tm_shaper_profile_delete(uint16_t port_id,
-	uint32_t shaper_profile_id,
-	struct rte_tm_error *error);
+    uint32_t shaper_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shared shaper add or update
@@ -1313,9 +1313,9 @@ rte_tm_shaper_profile_delete(uint16_t port_id,
  */
 int
 rte_tm_shared_shaper_add_update(uint16_t port_id,
-	uint32_t shared_shaper_id,
-	uint32_t shaper_profile_id,
-	struct rte_tm_error *error);
+    uint32_t shared_shaper_id,
+    uint32_t shaper_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager shared shaper delete
@@ -1336,8 +1336,8 @@ rte_tm_shared_shaper_add_update(uint16_t port_id,
  */
 int
 rte_tm_shared_shaper_delete(uint16_t port_id,
-	uint32_t shared_shaper_id,
-	struct rte_tm_error *error);
+    uint32_t shared_shaper_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node add
@@ -1404,13 +1404,13 @@ rte_tm_shared_shaper_delete(uint16_t port_id,
  */
 int
 rte_tm_node_add(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t parent_node_id,
-	uint32_t priority,
-	uint32_t weight,
-	uint32_t level_id,
-	struct rte_tm_node_params *params,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t parent_node_id,
+    uint32_t priority,
+    uint32_t weight,
+    uint32_t level_id,
+    struct rte_tm_node_params *params,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node delete
@@ -1437,8 +1437,8 @@ rte_tm_node_add(uint16_t port_id,
  */
 int
 rte_tm_node_delete(uint16_t port_id,
-	uint32_t node_id,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node suspend
@@ -1461,8 +1461,8 @@ rte_tm_node_delete(uint16_t port_id,
  */
 int
 rte_tm_node_suspend(uint16_t port_id,
-	uint32_t node_id,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node resume
@@ -1484,8 +1484,8 @@ rte_tm_node_suspend(uint16_t port_id,
  */
 int
 rte_tm_node_resume(uint16_t port_id,
-	uint32_t node_id,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager hierarchy commit
@@ -1525,8 +1525,8 @@ rte_tm_node_resume(uint16_t port_id,
  */
 int
 rte_tm_hierarchy_commit(uint16_t port_id,
-	int clear_on_fail,
-	struct rte_tm_error *error);
+    int clear_on_fail,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node parent update
@@ -1565,11 +1565,11 @@ rte_tm_hierarchy_commit(uint16_t port_id,
  */
 int
 rte_tm_node_parent_update(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t parent_node_id,
-	uint32_t priority,
-	uint32_t weight,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t parent_node_id,
+    uint32_t priority,
+    uint32_t weight,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node private shaper update
@@ -1594,9 +1594,9 @@ rte_tm_node_parent_update(uint16_t port_id,
  */
 int
 rte_tm_node_shaper_update(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t shaper_profile_id,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t shaper_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node shared shapers update
@@ -1621,10 +1621,10 @@ rte_tm_node_shaper_update(uint16_t port_id,
  */
 int
 rte_tm_node_shared_shaper_update(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t shared_shaper_id,
-	int add,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t shared_shaper_id,
+    int add,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node enabled statistics counters update
@@ -1648,9 +1648,9 @@ rte_tm_node_shared_shaper_update(uint16_t port_id,
  */
 int
 rte_tm_node_stats_update(uint16_t port_id,
-	uint32_t node_id,
-	uint64_t stats_mask,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint64_t stats_mask,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node WFQ weight mode update
@@ -1676,10 +1676,10 @@ rte_tm_node_stats_update(uint16_t port_id,
  */
 int
 rte_tm_node_wfq_weight_mode_update(uint16_t port_id,
-	uint32_t node_id,
-	int *wfq_weight_mode,
-	uint32_t n_sp_priorities,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    int *wfq_weight_mode,
+    uint32_t n_sp_priorities,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node congestion management mode update
@@ -1699,9 +1699,9 @@ rte_tm_node_wfq_weight_mode_update(uint16_t port_id,
  */
 int
 rte_tm_node_cman_update(uint16_t port_id,
-	uint32_t node_id,
-	enum rte_tm_cman_mode cman,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    enum rte_tm_cman_mode cman,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node private WRED context update
@@ -1723,9 +1723,9 @@ rte_tm_node_cman_update(uint16_t port_id,
 */
 int
 rte_tm_node_wred_context_update(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t wred_profile_id,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t wred_profile_id,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node shared WRED context update
@@ -1748,10 +1748,10 @@ rte_tm_node_wred_context_update(uint16_t port_id,
  */
 int
 rte_tm_node_shared_wred_context_update(uint16_t port_id,
-	uint32_t node_id,
-	uint32_t shared_wred_context_id,
-	int add,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    uint32_t shared_wred_context_id,
+    int add,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager node statistics counters read
@@ -1780,11 +1780,11 @@ rte_tm_node_shared_wred_context_update(uint16_t port_id,
  */
 int
 rte_tm_node_stats_read(uint16_t port_id,
-	uint32_t node_id,
-	struct rte_tm_node_stats *stats,
-	uint64_t *stats_mask,
-	int clear,
-	struct rte_tm_error *error);
+    uint32_t node_id,
+    struct rte_tm_node_stats *stats,
+    uint64_t *stats_mask,
+    int clear,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager packet marking - VLAN DEI (IEEE 802.1Q)
@@ -1817,10 +1817,10 @@ rte_tm_node_stats_read(uint16_t port_id,
  */
 int
 rte_tm_mark_vlan_dei(uint16_t port_id,
-	int mark_green,
-	int mark_yellow,
-	int mark_red,
-	struct rte_tm_error *error);
+    int mark_green,
+    int mark_yellow,
+    int mark_red,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager packet marking - IPv4 / IPv6 ECN (IETF RFC 3168)
@@ -1867,10 +1867,10 @@ rte_tm_mark_vlan_dei(uint16_t port_id,
  */
 int
 rte_tm_mark_ip_ecn(uint16_t port_id,
-	int mark_green,
-	int mark_yellow,
-	int mark_red,
-	struct rte_tm_error *error);
+    int mark_green,
+    int mark_yellow,
+    int mark_red,
+    struct rte_tm_error *error);
 
 /**
  * Traffic manager packet marking - IPv4 / IPv6 DSCP (IETF RFC 2597)
@@ -1915,10 +1915,10 @@ rte_tm_mark_ip_ecn(uint16_t port_id,
  */
 int
 rte_tm_mark_ip_dscp(uint16_t port_id,
-	int mark_green,
-	int mark_yellow,
-	int mark_red,
-	struct rte_tm_error *error);
+    int mark_green,
+    int mark_yellow,
+    int mark_red,
+    struct rte_tm_error *error);
 
 #ifdef __cplusplus
 }

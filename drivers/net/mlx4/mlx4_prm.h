@@ -28,8 +28,8 @@
 /* Typical TSO descriptor with 16 gather entries is 352 bytes. */
 #define MLX4_MAX_SGE 32
 #define MLX4_MAX_WQE_SIZE \
-	(MLX4_MAX_SGE * sizeof(struct mlx4_wqe_data_seg) + \
-	 sizeof(struct mlx4_wqe_ctrl_seg))
+    (MLX4_MAX_SGE * sizeof(struct mlx4_wqe_data_seg) + \
+     sizeof(struct mlx4_wqe_ctrl_seg))
 #define MLX4_SEG_SHIFT 4
 
 /* Send queue stamping/invalidating information. */
@@ -45,11 +45,11 @@
 
 /* CQE checksum flags. */
 enum {
-	MLX4_CQE_L2_TUNNEL_IPV4 = (int)(1u << 25),
-	MLX4_CQE_L2_TUNNEL_L4_CSUM = (int)(1u << 26),
-	MLX4_CQE_L2_TUNNEL = (int)(1u << 27),
-	MLX4_CQE_L2_VLAN_MASK = (int)(3u << 29),
-	MLX4_CQE_L2_TUNNEL_IPOK = (int)(1u << 31),
+    MLX4_CQE_L2_TUNNEL_IPV4 = (int)(1u << 25),
+    MLX4_CQE_L2_TUNNEL_L4_CSUM = (int)(1u << 26),
+    MLX4_CQE_L2_TUNNEL = (int)(1u << 27),
+    MLX4_CQE_L2_VLAN_MASK = (int)(3u << 29),
+    MLX4_CQE_L2_TUNNEL_IPOK = (int)(1u << 31),
 };
 
 /* CQE status flags. */
@@ -61,25 +61,25 @@ enum {
 #define MLX4_CQE_STATUS_TCP (1 << 26)
 #define MLX4_CQE_STATUS_UDP (1 << 27)
 #define MLX4_CQE_STATUS_PTYPE_MASK \
-	(MLX4_CQE_STATUS_IPV4 | \
-	 MLX4_CQE_STATUS_IPV4F | \
-	 MLX4_CQE_STATUS_IPV6 | \
-	 MLX4_CQE_STATUS_IPV4OPT | \
-	 MLX4_CQE_STATUS_TCP | \
-	 MLX4_CQE_STATUS_UDP)
+    (MLX4_CQE_STATUS_IPV4 | \
+     MLX4_CQE_STATUS_IPV4F | \
+     MLX4_CQE_STATUS_IPV6 | \
+     MLX4_CQE_STATUS_IPV4OPT | \
+     MLX4_CQE_STATUS_TCP | \
+     MLX4_CQE_STATUS_UDP)
 
 /* Send queue information. */
 struct mlx4_sq {
-	volatile uint8_t *buf; /**< SQ buffer. */
-	volatile uint8_t *eob; /**< End of SQ buffer */
-	uint32_t size; /**< SQ size includes headroom. */
-	uint32_t remain_size; /**< Remaining WQE room in SQ (bytes). */
-	uint32_t owner_opcode;
-	/**< Default owner opcode with HW valid owner bit. */
-	uint32_t stamp; /**< Stamp value with an invalid HW owner bit. */
-	uint32_t *db; /**< Pointer to the doorbell. */
-	off_t uar_mmap_offset; /* UAR mmap offset for non-primary process. */
-	uint32_t doorbell_qpn; /**< qp number to write to the doorbell. */
+    volatile uint8_t *buf; /**< SQ buffer. */
+    volatile uint8_t *eob; /**< End of SQ buffer */
+    uint32_t size; /**< SQ size includes headroom. */
+    uint32_t remain_size; /**< Remaining WQE room in SQ (bytes). */
+    uint32_t owner_opcode;
+    /**< Default owner opcode with HW valid owner bit. */
+    uint32_t stamp; /**< Stamp value with an invalid HW owner bit. */
+    uint32_t *db; /**< Pointer to the doorbell. */
+    off_t uar_mmap_offset; /* UAR mmap offset for non-primary process. */
+    uint32_t doorbell_qpn; /**< qp number to write to the doorbell. */
 };
 
 /* Completion queue events, numbers and masks. */
@@ -89,16 +89,16 @@ struct mlx4_sq {
 
 /* Completion queue information. */
 struct mlx4_cq {
-	volatile void *cq_uar; /**< CQ user access region. */
-	volatile void *cq_db_reg; /**< CQ doorbell register. */
-	volatile uint32_t *set_ci_db; /**< Pointer to the CQ doorbell. */
-	volatile uint32_t *arm_db; /**< Arming Rx events doorbell. */
-	volatile uint8_t *buf; /**< Pointer to the completion queue buffer. */
-	uint32_t cqe_cnt; /**< Number of entries in the queue. */
-	uint32_t cqe_64:1; /**< CQ entry size is 64 bytes. */
-	uint32_t cons_index; /**< Last queue entry that was handled. */
-	uint32_t cqn; /**< CQ number. */
-	int arm_sn; /**< Rx event counter. */
+    volatile void *cq_uar; /**< CQ user access region. */
+    volatile void *cq_db_reg; /**< CQ doorbell register. */
+    volatile uint32_t *set_ci_db; /**< Pointer to the CQ doorbell. */
+    volatile uint32_t *arm_db; /**< Arming Rx events doorbell. */
+    volatile uint8_t *buf; /**< Pointer to the completion queue buffer. */
+    uint32_t cqe_cnt; /**< Number of entries in the queue. */
+    uint32_t cqe_64:1; /**< CQ entry size is 64 bytes. */
+    uint32_t cons_index; /**< Last queue entry that was handled. */
+    uint32_t cqn; /**< CQ number. */
+    int arm_sn; /**< Rx event counter. */
 };
 
 #ifndef HAVE_IBV_MLX4_WQE_LSO_SEG
@@ -109,8 +109,8 @@ struct mlx4_cq {
  * and above.
  */
 struct mlx4_wqe_lso_seg {
-	rte_be32_t mss_hdr_size;
-	rte_be32_t header[];
+    rte_be32_t mss_hdr_size;
+    rte_be32_t header[];
 };
 #endif
 
@@ -133,10 +133,10 @@ struct mlx4_wqe_lso_seg {
 static inline volatile struct mlx4_cqe *
 mlx4_get_cqe(struct mlx4_cq *cq, uint32_t index)
 {
-	return (volatile struct mlx4_cqe *)(cq->buf +
-				   ((index & (cq->cqe_cnt - 1)) <<
-				    (5 + cq->cqe_64)) +
-				   (cq->cqe_64 << 5));
+    return (volatile struct mlx4_cqe *)(cq->buf +
+                   ((index & (cq->cqe_cnt - 1)) <<
+                    (5 + cq->cqe_64)) +
+                   (cq->cqe_64 << 5));
 }
 
 /**
@@ -155,9 +155,9 @@ mlx4_get_cqe(struct mlx4_cq *cq, uint32_t index)
 static inline uint64_t
 mlx4_transpose(uint64_t val, uint64_t from, uint64_t to)
 {
-	return (from >= to ?
-		(val & from) / (from / to) :
-		(val & from) * (to / from));
+    return (from >= to ?
+        (val & from) / (from / to) :
+        (val & from) * (to / from));
 }
 
 #endif /* MLX4_PRM_H_ */

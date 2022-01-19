@@ -87,16 +87,16 @@ extern "C" {
  * @see rte_event_eth_tx_adapter_conf_cb
  */
 struct rte_event_eth_tx_adapter_conf {
-	uint8_t event_port_id;
-	/**< Event port identifier, the adapter service function dequeues mbuf
-	 * events from this port.
-	 * @see RTE_EVENT_ETH_RX_ADAPTER_CAP_INTERNAL_PORT
-	 */
-	uint32_t max_nb_tx;
-	/**< The adapter can return early if it has processed at least
-	 * max_nb_tx mbufs. This isn't treated as a requirement; batching may
-	 * cause the adapter to process more than max_nb_tx mbufs.
-	 */
+    uint8_t event_port_id;
+    /**< Event port identifier, the adapter service function dequeues mbuf
+     * events from this port.
+     * @see RTE_EVENT_ETH_RX_ADAPTER_CAP_INTERNAL_PORT
+     */
+    uint32_t max_nb_tx;
+    /**< The adapter can return early if it has processed at least
+     * max_nb_tx mbufs. This isn't treated as a requirement; batching may
+     * cause the adapter to process more than max_nb_tx mbufs.
+     */
 };
 
 /**
@@ -120,19 +120,19 @@ struct rte_event_eth_tx_adapter_conf {
  *   - <0: Error code on failure
  */
 typedef int (*rte_event_eth_tx_adapter_conf_cb) (uint8_t id, uint8_t dev_id,
-				struct rte_event_eth_tx_adapter_conf *conf,
-				void *arg);
+                struct rte_event_eth_tx_adapter_conf *conf,
+                void *arg);
 
 /**
  * A structure used to retrieve statistics for an ethernet Tx adapter instance.
  */
 struct rte_event_eth_tx_adapter_stats {
-	uint64_t tx_retry;
-	/**< Number of transmit retries */
-	uint64_t tx_packets;
-	/**< Number of packets transmitted */
-	uint64_t tx_dropped;
-	/**< Number of packets dropped */
+    uint64_t tx_retry;
+    /**< Number of transmit retries */
+    uint64_t tx_packets;
+    /**< Number of packets transmitted */
+    uint64_t tx_dropped;
+    /**< Number of packets dropped */
 };
 
 /**
@@ -151,7 +151,7 @@ struct rte_event_eth_tx_adapter_stats {
  */
 int
 rte_event_eth_tx_adapter_create(uint8_t id, uint8_t dev_id,
-				struct rte_event_port_conf *port_config);
+                struct rte_event_port_conf *port_config);
 
 /**
  * Create a new ethernet Tx adapter with the specified identifier.
@@ -172,8 +172,8 @@ rte_event_eth_tx_adapter_create(uint8_t id, uint8_t dev_id,
  */
 int
 rte_event_eth_tx_adapter_create_ext(uint8_t id, uint8_t dev_id,
-				rte_event_eth_tx_adapter_conf_cb conf_cb,
-				void *conf_arg);
+                rte_event_eth_tx_adapter_conf_cb conf_cb,
+                void *conf_arg);
 
 /**
  * Free an ethernet Tx adapter
@@ -229,8 +229,8 @@ rte_event_eth_tx_adapter_stop(uint8_t id);
  */
 int
 rte_event_eth_tx_adapter_queue_add(uint8_t id,
-				uint16_t eth_dev_id,
-				int32_t queue);
+                uint16_t eth_dev_id,
+                int32_t queue);
 
 /**
  * Delete a Tx queue from the adapter.
@@ -250,8 +250,8 @@ rte_event_eth_tx_adapter_queue_add(uint8_t id,
  */
 int
 rte_event_eth_tx_adapter_queue_del(uint8_t id,
-				uint16_t eth_dev_id,
-				int32_t queue);
+                uint16_t eth_dev_id,
+                int32_t queue);
 
 /**
  * Set Tx queue in the mbuf. This queue is used by the adapter
@@ -265,7 +265,7 @@ rte_event_eth_tx_adapter_queue_del(uint8_t id,
 static __rte_always_inline void
 rte_event_eth_tx_adapter_txq_set(struct rte_mbuf *pkt, uint16_t queue)
 {
-	pkt->hash.txadapter.txq = queue;
+    pkt->hash.txadapter.txq = queue;
 }
 
 /**
@@ -281,7 +281,7 @@ rte_event_eth_tx_adapter_txq_set(struct rte_mbuf *pkt, uint16_t queue)
 static __rte_always_inline uint16_t
 rte_event_eth_tx_adapter_txq_get(struct rte_mbuf *pkt)
 {
-	return pkt->hash.txadapter.txq;
+    return pkt->hash.txadapter.txq;
 }
 
 /**
@@ -300,7 +300,7 @@ rte_event_eth_tx_adapter_txq_get(struct rte_mbuf *pkt)
 int
 rte_event_eth_tx_adapter_event_port_get(uint8_t id, uint8_t *event_port_id);
 
-#define RTE_EVENT_ETH_TX_ADAPTER_ENQUEUE_SAME_DEST	0x1
+#define RTE_EVENT_ETH_TX_ADAPTER_ENQUEUE_SAME_DEST    0x1
 /**< This flag is used when all the packets enqueued in the tx adapter are
  * destined for the same Ethernet port & Tx queue.
  */
@@ -350,31 +350,31 @@ rte_event_eth_tx_adapter_event_port_get(uint8_t id, uint8_t *event_port_id);
  */
 static inline uint16_t
 rte_event_eth_tx_adapter_enqueue(uint8_t dev_id,
-				uint8_t port_id,
-				struct rte_event ev[],
-				uint16_t nb_events,
-				const uint8_t flags)
+                uint8_t port_id,
+                struct rte_event ev[],
+                uint16_t nb_events,
+                const uint8_t flags)
 {
-	const struct rte_eventdev *dev = &rte_eventdevs[dev_id];
+    const struct rte_eventdev *dev = &rte_eventdevs[dev_id];
 
 #ifdef RTE_LIBRTE_EVENTDEV_DEBUG
-	if (dev_id >= RTE_EVENT_MAX_DEVS ||
-		!rte_eventdevs[dev_id].attached) {
-		rte_errno = EINVAL;
-		return 0;
-	}
+    if (dev_id >= RTE_EVENT_MAX_DEVS ||
+        !rte_eventdevs[dev_id].attached) {
+        rte_errno = EINVAL;
+        return 0;
+    }
 
-	if (port_id >= dev->data->nb_ports) {
-		rte_errno = EINVAL;
-		return 0;
-	}
+    if (port_id >= dev->data->nb_ports) {
+        rte_errno = EINVAL;
+        return 0;
+    }
 #endif
-	if (flags)
-		return dev->txa_enqueue_same_dest(dev->data->ports[port_id],
-						  ev, nb_events);
-	else
-		return dev->txa_enqueue(dev->data->ports[port_id], ev,
-					nb_events);
+    if (flags)
+        return dev->txa_enqueue_same_dest(dev->data->ports[port_id],
+                          ev, nb_events);
+    else
+        return dev->txa_enqueue(dev->data->ports[port_id], ev,
+                    nb_events);
 }
 
 /**
@@ -390,7 +390,7 @@ rte_event_eth_tx_adapter_enqueue(uint8_t dev_id,
  */
 int
 rte_event_eth_tx_adapter_stats_get(uint8_t id,
-				struct rte_event_eth_tx_adapter_stats *stats);
+                struct rte_event_eth_tx_adapter_stats *stats);
 
 /**
  * Reset statistics for an adapter.
@@ -423,4 +423,4 @@ rte_event_eth_tx_adapter_service_id_get(uint8_t id, uint32_t *service_id);
 #ifdef __cplusplus
 }
 #endif
-#endif	/* _RTE_EVENT_ETH_TX_ADAPTER_ */
+#endif    /* _RTE_EVENT_ETH_TX_ADAPTER_ */

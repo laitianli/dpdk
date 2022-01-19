@@ -28,12 +28,12 @@ extern uint32_t qman_version;
 /* QBMan DQRR size is set at runtime in qbman_portal.c */
 
 static inline uint8_t qm_cyc_diff(uint8_t ringsize, uint8_t first,
-				  uint8_t last)
+                  uint8_t last)
 {
-	/* 'first' is included, 'last' is excluded */
-	if (first <= last)
-		return last - first;
-	return (2 * ringsize) + last - first;
+    /* 'first' is included, 'last' is excluded */
+    if (first <= last)
+        return last - first;
+    return (2 * ringsize) + last - first;
 }
 
 /* --------------------- */
@@ -41,67 +41,67 @@ static inline uint8_t qm_cyc_diff(uint8_t ringsize, uint8_t first,
 /* --------------------- */
 
 struct qbman_swp {
-	struct qbman_swp_desc desc;
-	/* The qbman_sys (ie. arch/OS-specific) support code can put anything it
-	 * needs in here.
-	 */
-	struct qbman_swp_sys sys;
-	/* Management commands */
-	struct {
+    struct qbman_swp_desc desc;
+    /* The qbman_sys (ie. arch/OS-specific) support code can put anything it
+     * needs in here.
+     */
+    struct qbman_swp_sys sys;
+    /* Management commands */
+    struct {
 #ifdef QBMAN_CHECKING
-		enum swp_mc_check {
-			swp_mc_can_start, /* call __qbman_swp_mc_start() */
-			swp_mc_can_submit, /* call __qbman_swp_mc_submit() */
-			swp_mc_can_poll, /* call __qbman_swp_mc_result() */
-		} check;
+        enum swp_mc_check {
+            swp_mc_can_start, /* call __qbman_swp_mc_start() */
+            swp_mc_can_submit, /* call __qbman_swp_mc_submit() */
+            swp_mc_can_poll, /* call __qbman_swp_mc_result() */
+        } check;
 #endif
-		uint32_t valid_bit; /* 0x00 or 0x80 */
-	} mc;
-	/* Management response */
-	struct {
-		uint32_t valid_bit; /* 0x00 or 0x80 */
-	} mr;
-	/* Push dequeues */
-	uint32_t sdq;
-	/* Volatile dequeues */
-	struct {
-		/* VDQCR supports a "1 deep pipeline", meaning that if you know
-		 * the last-submitted command is already executing in the
-		 * hardware (as evidenced by at least 1 valid dequeue result),
-		 * you can write another dequeue command to the register, the
-		 * hardware will start executing it as soon as the
-		 * already-executing command terminates. (This minimises latency
-		 * and stalls.) With that in mind, this "busy" variable refers
-		 * to whether or not a command can be submitted, not whether or
-		 * not a previously-submitted command is still executing. In
-		 * other words, once proof is seen that the previously-submitted
-		 * command is executing, "vdq" is no longer "busy".
-		 */
-		atomic_t busy;
-		uint32_t valid_bit; /* 0x00 or 0x80 */
-		/* We need to determine when vdq is no longer busy. This depends
-		 * on whether the "busy" (last-submitted) dequeue command is
-		 * targeting DQRR or main-memory, and detected is based on the
-		 * presence of the dequeue command's "token" showing up in
-		 * dequeue entries in DQRR or main-memory (respectively).
-		 */
-		struct qbman_result *storage; /* NULL if DQRR */
-	} vdq;
-	/* DQRR */
-	struct {
-		uint32_t next_idx;
-		uint32_t valid_bit;
-		uint8_t dqrr_size;
-		int reset_bug;
-	} dqrr;
-	struct {
-		uint32_t pi;
-		uint32_t pi_vb;
-		uint32_t pi_ring_size;
-		uint32_t pi_ci_mask;
-		uint32_t ci;
-		int available;
-	} eqcr;
+        uint32_t valid_bit; /* 0x00 or 0x80 */
+    } mc;
+    /* Management response */
+    struct {
+        uint32_t valid_bit; /* 0x00 or 0x80 */
+    } mr;
+    /* Push dequeues */
+    uint32_t sdq;
+    /* Volatile dequeues */
+    struct {
+        /* VDQCR supports a "1 deep pipeline", meaning that if you know
+         * the last-submitted command is already executing in the
+         * hardware (as evidenced by at least 1 valid dequeue result),
+         * you can write another dequeue command to the register, the
+         * hardware will start executing it as soon as the
+         * already-executing command terminates. (This minimises latency
+         * and stalls.) With that in mind, this "busy" variable refers
+         * to whether or not a command can be submitted, not whether or
+         * not a previously-submitted command is still executing. In
+         * other words, once proof is seen that the previously-submitted
+         * command is executing, "vdq" is no longer "busy".
+         */
+        atomic_t busy;
+        uint32_t valid_bit; /* 0x00 or 0x80 */
+        /* We need to determine when vdq is no longer busy. This depends
+         * on whether the "busy" (last-submitted) dequeue command is
+         * targeting DQRR or main-memory, and detected is based on the
+         * presence of the dequeue command's "token" showing up in
+         * dequeue entries in DQRR or main-memory (respectively).
+         */
+        struct qbman_result *storage; /* NULL if DQRR */
+    } vdq;
+    /* DQRR */
+    struct {
+        uint32_t next_idx;
+        uint32_t valid_bit;
+        uint8_t dqrr_size;
+        int reset_bug;
+    } dqrr;
+    struct {
+        uint32_t pi;
+        uint32_t pi_vb;
+        uint32_t pi_ring_size;
+        uint32_t pi_ci_mask;
+        uint32_t ci;
+        int available;
+    } eqcr;
 };
 
 /* -------------------------- */
@@ -122,17 +122,17 @@ void *qbman_swp_mc_result(struct qbman_swp *p);
 
 /* Wraps up submit + poll-for-result */
 static inline void *qbman_swp_mc_complete(struct qbman_swp *swp, void *cmd,
-					  uint8_t cmd_verb)
+                      uint8_t cmd_verb)
 {
-	int loopvar = 1000;
+    int loopvar = 1000;
 
-	qbman_swp_mc_submit(swp, cmd, cmd_verb);
-	do {
-		cmd = qbman_swp_mc_result(swp);
-	} while (!cmd && loopvar--);
-	QBMAN_BUG_ON(!loopvar);
+    qbman_swp_mc_submit(swp, cmd, cmd_verb);
+    do {
+        cmd = qbman_swp_mc_result(swp);
+    } while (!cmd && loopvar--);
+    QBMAN_BUG_ON(!loopvar);
 
-	return cmd;
+    return cmd;
 }
 
 /* ---------------------- */
@@ -156,13 +156,13 @@ static inline void *qbman_swp_mc_complete(struct qbman_swp *swp, void *cmd,
 #define qb_cl(d) (&(d)->dont_manipulate_directly[0])
 
 #ifdef RTE_ARCH_ARM64
-	#define clean(p) \
-			{ asm volatile("dc cvac, %0;" : : "r" (p) : "memory"); }
-	#define invalidate(p) \
-			{ asm volatile("dc ivac, %0" : : "r"(p) : "memory"); }
+    #define clean(p) \
+            { asm volatile("dc cvac, %0;" : : "r" (p) : "memory"); }
+    #define invalidate(p) \
+            { asm volatile("dc ivac, %0" : : "r"(p) : "memory"); }
 #else
-	#define clean(p)
-	#define invalidate(p)
+    #define clean(p)
+    #define invalidate(p)
 #endif
 
 #endif

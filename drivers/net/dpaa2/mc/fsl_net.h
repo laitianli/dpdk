@@ -34,8 +34,8 @@
 #define NH_FLD_VLAN_ALL_FIELDS                ((NH_FLD_VLAN_VPRI << 5) - 1)
 
 #define NH_FLD_VLAN_TCI                       (NH_FLD_VLAN_VPRI | \
-					       NH_FLD_VLAN_CFI | \
-					       NH_FLD_VLAN_VID)
+                           NH_FLD_VLAN_CFI | \
+                           NH_FLD_VLAN_VID)
 
 /************************  IP (generic) fields  ******************************/
 #define NH_FLD_IP_VER                         (1)
@@ -79,7 +79,7 @@
 #define NH_FLD_IPV6_NEXT_HDR                  (NH_FLD_IPV6_VER << 4)
 #define NH_FLD_IPV6_FL                        (NH_FLD_IPV6_VER << 5)
 #define NH_FLD_IPV6_HOP_LIMIT                 (NH_FLD_IPV6_VER << 6)
-#define NH_FLD_IPV6_ID			      (NH_FLD_IPV6_VER << 7)
+#define NH_FLD_IPV6_ID                  (NH_FLD_IPV6_VER << 7)
 #define NH_FLD_IPV6_ALL_FIELDS                ((NH_FLD_IPV6_VER << 8) - 1)
 
 #define NH_FLD_IPV6_ADDR_SIZE                 16
@@ -132,7 +132,7 @@
 #define NH_FLD_UDP_LITE_PORT_SRC              (1)
 #define NH_FLD_UDP_LITE_PORT_DST              (NH_FLD_UDP_LITE_PORT_SRC << 1)
 #define NH_FLD_UDP_LITE_ALL_FIELDS \
-	((NH_FLD_UDP_LITE_PORT_SRC << 2) - 1)
+    ((NH_FLD_UDP_LITE_PORT_SRC << 2) - 1)
 
 #define NH_FLD_UDP_LITE_PORT_SIZE             2
 
@@ -144,7 +144,7 @@
 #define NH_FLD_UDP_ENC_ESP_SPI              (NH_FLD_UDP_ENC_ESP_PORT_SRC << 4)
 #define NH_FLD_UDP_ENC_ESP_SEQUENCE_NUM     (NH_FLD_UDP_ENC_ESP_PORT_SRC << 5)
 #define NH_FLD_UDP_ENC_ESP_ALL_FIELDS \
-	((NH_FLD_UDP_ENC_ESP_PORT_SRC << 6) - 1)
+    ((NH_FLD_UDP_ENC_ESP_PORT_SRC << 6) - 1)
 
 #define NH_FLD_UDP_ENC_ESP_PORT_SIZE        2
 #define NH_FLD_UDP_ENC_ESP_SPI_SIZE         4
@@ -185,7 +185,7 @@
 #define NH_FLD_SCTP_CHUNK_DATA_BEGGINING      (NH_FLD_SCTP_CHUNK_DATA_TYPE << 8)
 #define NH_FLD_SCTP_CHUNK_DATA_END            (NH_FLD_SCTP_CHUNK_DATA_TYPE << 9)
 #define NH_FLD_SCTP_CHUNK_DATA_ALL_FIELDS \
-	((NH_FLD_SCTP_CHUNK_DATA_TYPE << 10) - 1)
+    ((NH_FLD_SCTP_CHUNK_DATA_TYPE << 10) - 1)
 
 /***************************  L2TPV2 fields  *********************************/
 #define NH_FLD_L2TPV2_TYPE_BIT                (1)
@@ -202,7 +202,7 @@
 #define NH_FLD_L2TPV2_OFFSET_SIZE             (NH_FLD_L2TPV2_TYPE_BIT << 11)
 #define NH_FLD_L2TPV2_FIRST_BYTE              (NH_FLD_L2TPV2_TYPE_BIT << 12)
 #define NH_FLD_L2TPV2_ALL_FIELDS \
-	((NH_FLD_L2TPV2_TYPE_BIT << 13) - 1)
+    ((NH_FLD_L2TPV2_TYPE_BIT << 13) - 1)
 
 /***************************  L2TPV3 fields  *********************************/
 #define NH_FLD_L2TPV3_CTRL_TYPE_BIT           (1)
@@ -215,14 +215,14 @@
 #define NH_FLD_L2TPV3_CTRL_RECV               (NH_FLD_L2TPV3_CTRL_TYPE_BIT << 7)
 #define NH_FLD_L2TPV3_CTRL_FIRST_BYTE         (NH_FLD_L2TPV3_CTRL_TYPE_BIT << 8)
 #define NH_FLD_L2TPV3_CTRL_ALL_FIELDS \
-	((NH_FLD_L2TPV3_CTRL_TYPE_BIT << 9) - 1)
+    ((NH_FLD_L2TPV3_CTRL_TYPE_BIT << 9) - 1)
 
 #define NH_FLD_L2TPV3_SESS_TYPE_BIT           (1)
 #define NH_FLD_L2TPV3_SESS_VERSION            (NH_FLD_L2TPV3_SESS_TYPE_BIT << 1)
 #define NH_FLD_L2TPV3_SESS_ID                 (NH_FLD_L2TPV3_SESS_TYPE_BIT << 2)
 #define NH_FLD_L2TPV3_SESS_COOKIE             (NH_FLD_L2TPV3_SESS_TYPE_BIT << 3)
 #define NH_FLD_L2TPV3_SESS_ALL_FIELDS \
-	((NH_FLD_L2TPV3_SESS_TYPE_BIT << 4) - 1)
+    ((NH_FLD_L2TPV3_SESS_TYPE_BIT << 4) - 1)
 
 /****************************  PPP fields  ***********************************/
 #define NH_FLD_PPP_PID                        (1)
@@ -252,7 +252,7 @@
 #define NH_FLD_PPPMUX_SUBFRM_PID            (NH_FLD_PPPMUX_SUBFRM_PFF << 3)
 #define NH_FLD_PPPMUX_SUBFRM_USE_PID        (NH_FLD_PPPMUX_SUBFRM_PFF << 4)
 #define NH_FLD_PPPMUX_SUBFRM_ALL_FIELDS \
-	((NH_FLD_PPPMUX_SUBFRM_PFF << 5) - 1)
+    ((NH_FLD_PPPMUX_SUBFRM_PFF << 5) - 1)
 
 /***************************  LLC fields  ************************************/
 #define NH_FLD_LLC_DSAP                       (1)
@@ -297,7 +297,7 @@
 #define NH_FLD_USER_DEFINED_SRCPORT           (1)
 #define NH_FLD_USER_DEFINED_PCDID             (NH_FLD_USER_DEFINED_SRCPORT << 1)
 #define NH_FLD_USER_DEFINED_ALL_FIELDS \
-	((NH_FLD_USER_DEFINED_SRCPORT << 2) - 1)
+    ((NH_FLD_USER_DEFINED_SRCPORT << 2) - 1)
 
 /***************************  Payload fields  ********************************/
 #define NH_FLD_PAYLOAD_BUFFER                 (1)
@@ -317,7 +317,7 @@
 #define NH_FLD_MINENCAP_DST_IP                (NH_FLD_MINENCAP_SRC_IP << 1)
 #define NH_FLD_MINENCAP_TYPE                  (NH_FLD_MINENCAP_SRC_IP << 2)
 #define NH_FLD_MINENCAP_ALL_FIELDS \
-	((NH_FLD_MINENCAP_SRC_IP << 3) - 1)
+    ((NH_FLD_MINENCAP_SRC_IP << 3) - 1)
 
 /***************************  IPSEC AH fields  *******************************/
 #define NH_FLD_IPSEC_AH_SPI                   (1)
@@ -334,7 +334,7 @@
 /***************************  MPLS fields  ***********************************/
 #define NH_FLD_MPLS_LABEL_STACK               (1)
 #define NH_FLD_MPLS_LABEL_STACK_ALL_FIELDS \
-	((NH_FLD_MPLS_LABEL_STACK << 1) - 1)
+    ((NH_FLD_MPLS_LABEL_STACK << 1) - 1)
 
 /***************************  MACSEC fields  *********************************/
 #define NH_FLD_MACSEC_SECTAG                  (1)
@@ -346,111 +346,111 @@
 /* Protocol options */
 
 /* Ethernet options */
-#define	NH_OPT_ETH_BROADCAST			1
-#define	NH_OPT_ETH_MULTICAST			2
-#define	NH_OPT_ETH_UNICAST			3
-#define	NH_OPT_ETH_BPDU				4
+#define    NH_OPT_ETH_BROADCAST            1
+#define    NH_OPT_ETH_MULTICAST            2
+#define    NH_OPT_ETH_UNICAST            3
+#define    NH_OPT_ETH_BPDU                4
 
 #define NH_ETH_IS_MULTICAST_ADDR(addr) (addr[0] & 0x01)
 /* also applicable for broadcast */
 
 /* VLAN options */
-#define	NH_OPT_VLAN_CFI				1
+#define    NH_OPT_VLAN_CFI                1
 
 /* IPV4 options */
-#define	NH_OPT_IPV4_UNICAST			1
-#define	NH_OPT_IPV4_MULTICAST			2
-#define	NH_OPT_IPV4_BROADCAST			3
-#define	NH_OPT_IPV4_OPTION			4
-#define	NH_OPT_IPV4_FRAG			5
-#define	NH_OPT_IPV4_INITIAL_FRAG		6
+#define    NH_OPT_IPV4_UNICAST            1
+#define    NH_OPT_IPV4_MULTICAST            2
+#define    NH_OPT_IPV4_BROADCAST            3
+#define    NH_OPT_IPV4_OPTION            4
+#define    NH_OPT_IPV4_FRAG            5
+#define    NH_OPT_IPV4_INITIAL_FRAG        6
 
 /* IPV6 options */
-#define	NH_OPT_IPV6_UNICAST			1
-#define	NH_OPT_IPV6_MULTICAST			2
-#define	NH_OPT_IPV6_OPTION			3
-#define	NH_OPT_IPV6_FRAG			4
-#define	NH_OPT_IPV6_INITIAL_FRAG		5
+#define    NH_OPT_IPV6_UNICAST            1
+#define    NH_OPT_IPV6_MULTICAST            2
+#define    NH_OPT_IPV6_OPTION            3
+#define    NH_OPT_IPV6_FRAG            4
+#define    NH_OPT_IPV6_INITIAL_FRAG        5
 
 /* General IP options (may be used for any version) */
-#define	NH_OPT_IP_FRAG				1
-#define	NH_OPT_IP_INITIAL_FRAG			2
-#define	NH_OPT_IP_OPTION			3
+#define    NH_OPT_IP_FRAG                1
+#define    NH_OPT_IP_INITIAL_FRAG            2
+#define    NH_OPT_IP_OPTION            3
 
 /* Minenc. options */
-#define	NH_OPT_MINENCAP_SRC_ADDR_PRESENT	1
+#define    NH_OPT_MINENCAP_SRC_ADDR_PRESENT    1
 
 /* GRE. options */
-#define	NH_OPT_GRE_ROUTING_PRESENT		1
+#define    NH_OPT_GRE_ROUTING_PRESENT        1
 
 /* TCP options */
-#define	NH_OPT_TCP_OPTIONS			1
-#define	NH_OPT_TCP_CONTROL_HIGH_BITS		2
-#define	NH_OPT_TCP_CONTROL_LOW_BITS		3
+#define    NH_OPT_TCP_OPTIONS            1
+#define    NH_OPT_TCP_CONTROL_HIGH_BITS        2
+#define    NH_OPT_TCP_CONTROL_LOW_BITS        3
 
 /* CAPWAP options */
-#define	NH_OPT_CAPWAP_DTLS			1
+#define    NH_OPT_CAPWAP_DTLS            1
 
 enum net_prot {
-	NET_PROT_NONE = 0,
-	NET_PROT_PAYLOAD,
-	NET_PROT_ETH,
-	NET_PROT_VLAN,
-	NET_PROT_IPV4,
-	NET_PROT_IPV6,
-	NET_PROT_IP,
-	NET_PROT_TCP,
-	NET_PROT_UDP,
-	NET_PROT_UDP_LITE,
-	NET_PROT_IPHC,
-	NET_PROT_SCTP,
-	NET_PROT_SCTP_CHUNK_DATA,
-	NET_PROT_PPPOE,
-	NET_PROT_PPP,
-	NET_PROT_PPPMUX,
-	NET_PROT_PPPMUX_SUBFRM,
-	NET_PROT_L2TPV2,
-	NET_PROT_L2TPV3_CTRL,
-	NET_PROT_L2TPV3_SESS,
-	NET_PROT_LLC,
-	NET_PROT_LLC_SNAP,
-	NET_PROT_NLPID,
-	NET_PROT_SNAP,
-	NET_PROT_MPLS,
-	NET_PROT_IPSEC_AH,
-	NET_PROT_IPSEC_ESP,
-	NET_PROT_UDP_ENC_ESP, /* RFC 3948 */
-	NET_PROT_MACSEC,
-	NET_PROT_GRE,
-	NET_PROT_MINENCAP,
-	NET_PROT_DCCP,
-	NET_PROT_ICMP,
-	NET_PROT_IGMP,
-	NET_PROT_ARP,
-	NET_PROT_CAPWAP_DATA,
-	NET_PROT_CAPWAP_CTRL,
-	NET_PROT_RFC2684,
-	NET_PROT_ICMPV6,
-	NET_PROT_FCOE,
-	NET_PROT_FIP,
-	NET_PROT_ISCSI,
-	NET_PROT_GTP,
-	NET_PROT_USER_DEFINED_L2,
-	NET_PROT_USER_DEFINED_L3,
-	NET_PROT_USER_DEFINED_L4,
-	NET_PROT_USER_DEFINED_L5,
-	NET_PROT_USER_DEFINED_SHIM1,
-	NET_PROT_USER_DEFINED_SHIM2,
+    NET_PROT_NONE = 0,
+    NET_PROT_PAYLOAD,
+    NET_PROT_ETH,
+    NET_PROT_VLAN,
+    NET_PROT_IPV4,
+    NET_PROT_IPV6,
+    NET_PROT_IP,
+    NET_PROT_TCP,
+    NET_PROT_UDP,
+    NET_PROT_UDP_LITE,
+    NET_PROT_IPHC,
+    NET_PROT_SCTP,
+    NET_PROT_SCTP_CHUNK_DATA,
+    NET_PROT_PPPOE,
+    NET_PROT_PPP,
+    NET_PROT_PPPMUX,
+    NET_PROT_PPPMUX_SUBFRM,
+    NET_PROT_L2TPV2,
+    NET_PROT_L2TPV3_CTRL,
+    NET_PROT_L2TPV3_SESS,
+    NET_PROT_LLC,
+    NET_PROT_LLC_SNAP,
+    NET_PROT_NLPID,
+    NET_PROT_SNAP,
+    NET_PROT_MPLS,
+    NET_PROT_IPSEC_AH,
+    NET_PROT_IPSEC_ESP,
+    NET_PROT_UDP_ENC_ESP, /* RFC 3948 */
+    NET_PROT_MACSEC,
+    NET_PROT_GRE,
+    NET_PROT_MINENCAP,
+    NET_PROT_DCCP,
+    NET_PROT_ICMP,
+    NET_PROT_IGMP,
+    NET_PROT_ARP,
+    NET_PROT_CAPWAP_DATA,
+    NET_PROT_CAPWAP_CTRL,
+    NET_PROT_RFC2684,
+    NET_PROT_ICMPV6,
+    NET_PROT_FCOE,
+    NET_PROT_FIP,
+    NET_PROT_ISCSI,
+    NET_PROT_GTP,
+    NET_PROT_USER_DEFINED_L2,
+    NET_PROT_USER_DEFINED_L3,
+    NET_PROT_USER_DEFINED_L4,
+    NET_PROT_USER_DEFINED_L5,
+    NET_PROT_USER_DEFINED_SHIM1,
+    NET_PROT_USER_DEFINED_SHIM2,
 
-	NET_PROT_DUMMY_LAST
+    NET_PROT_DUMMY_LAST
 };
 
 /*! IEEE8021.Q */
 #define NH_IEEE8021Q_ETYPE  0x8100
 #define NH_IEEE8021Q_HDR(etype, pcp, dei, vlan_id)      \
-	    ((((uint32_t)(etype & 0xFFFF)) << 16) |       \
-	    (((uint32_t)(pcp & 0x07)) << 13) |          \
-	    (((uint32_t)(dei & 0x01)) << 12) |          \
-	    (((uint32_t)(vlan_id & 0xFFF))))
+        ((((uint32_t)(etype & 0xFFFF)) << 16) |       \
+        (((uint32_t)(pcp & 0x07)) << 13) |          \
+        (((uint32_t)(dei & 0x01)) << 12) |          \
+        (((uint32_t)(vlan_id & 0xFFF))))
 
 #endif /* __FSL_NET_H */

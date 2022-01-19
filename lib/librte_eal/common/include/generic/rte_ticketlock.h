@@ -30,11 +30,11 @@ extern "C" {
  * The rte_ticketlock_t type.
  */
 typedef union {
-	uint32_t tickets;
-	struct {
-		uint16_t current;
-		uint16_t next;
-	} s;
+    uint32_t tickets;
+    struct {
+        uint16_t current;
+        uint16_t next;
+    } s;
 } rte_ticketlock_t;
 
 /**
@@ -52,7 +52,7 @@ __rte_experimental
 static inline void
 rte_ticketlock_init(rte_ticketlock_t *tl)
 {
-	__atomic_store_n(&tl->tickets, 0, __ATOMIC_RELAXED);
+    __atomic_store_n(&tl->tickets, 0, __ATOMIC_RELAXED);
 }
 
 /**
@@ -65,9 +65,9 @@ __rte_experimental
 static inline void
 rte_ticketlock_lock(rte_ticketlock_t *tl)
 {
-	uint16_t me = __atomic_fetch_add(&tl->s.next, 1, __ATOMIC_RELAXED);
-	while (__atomic_load_n(&tl->s.current, __ATOMIC_ACQUIRE) != me)
-		rte_pause();
+    uint16_t me = __atomic_fetch_add(&tl->s.next, 1, __ATOMIC_RELAXED);
+    while (__atomic_load_n(&tl->s.current, __ATOMIC_ACQUIRE) != me)
+        rte_pause();
 }
 
 /**
@@ -80,8 +80,8 @@ __rte_experimental
 static inline void
 rte_ticketlock_unlock(rte_ticketlock_t *tl)
 {
-	uint16_t i = __atomic_load_n(&tl->s.current, __ATOMIC_RELAXED);
-	__atomic_store_n(&tl->s.current, i + 1, __ATOMIC_RELEASE);
+    uint16_t i = __atomic_load_n(&tl->s.current, __ATOMIC_RELAXED);
+    __atomic_store_n(&tl->s.current, i + 1, __ATOMIC_RELEASE);
 }
 
 /**
@@ -96,17 +96,17 @@ __rte_experimental
 static inline int
 rte_ticketlock_trylock(rte_ticketlock_t *tl)
 {
-	rte_ticketlock_t old, new;
-	old.tickets = __atomic_load_n(&tl->tickets, __ATOMIC_RELAXED);
-	new.tickets = old.tickets;
-	new.s.next++;
-	if (old.s.next == old.s.current) {
-		if (__atomic_compare_exchange_n(&tl->tickets, &old.tickets,
-		    new.tickets, 0, __ATOMIC_ACQUIRE, __ATOMIC_RELAXED))
-			return 1;
-	}
+    rte_ticketlock_t old, new;
+    old.tickets = __atomic_load_n(&tl->tickets, __ATOMIC_RELAXED);
+    new.tickets = old.tickets;
+    new.s.next++;
+    if (old.s.next == old.s.current) {
+        if (__atomic_compare_exchange_n(&tl->tickets, &old.tickets,
+            new.tickets, 0, __ATOMIC_ACQUIRE, __ATOMIC_RELAXED))
+            return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -121,9 +121,9 @@ __rte_experimental
 static inline int
 rte_ticketlock_is_locked(rte_ticketlock_t *tl)
 {
-	rte_ticketlock_t tic;
-	tic.tickets = __atomic_load_n(&tl->tickets, __ATOMIC_ACQUIRE);
-	return (tic.s.current != tic.s.next);
+    rte_ticketlock_t tic;
+    tic.tickets = __atomic_load_n(&tl->tickets, __ATOMIC_ACQUIRE);
+    return (tic.s.current != tic.s.next);
 }
 
 /**
@@ -132,16 +132,16 @@ rte_ticketlock_is_locked(rte_ticketlock_t *tl)
 #define TICKET_LOCK_INVALID_ID -1
 
 typedef struct {
-	rte_ticketlock_t tl; /**< the actual ticketlock */
-	int user; /**< core id using lock, TICKET_LOCK_INVALID_ID for unused */
-	unsigned int count; /**< count of time this lock has been called */
+    rte_ticketlock_t tl; /**< the actual ticketlock */
+    int user; /**< core id using lock, TICKET_LOCK_INVALID_ID for unused */
+    unsigned int count; /**< count of time this lock has been called */
 } rte_ticketlock_recursive_t;
 
 /**
  * A static recursive ticketlock initializer.
  */
 #define RTE_TICKETLOCK_RECURSIVE_INITIALIZER {RTE_TICKETLOCK_INITIALIZER, \
-					      TICKET_LOCK_INVALID_ID, 0}
+                          TICKET_LOCK_INVALID_ID, 0}
 
 /**
  * Initialize the recursive ticketlock to an unlocked state.
@@ -153,9 +153,9 @@ __rte_experimental
 static inline void
 rte_ticketlock_recursive_init(rte_ticketlock_recursive_t *tlr)
 {
-	rte_ticketlock_init(&tlr->tl);
-	__atomic_store_n(&tlr->user, TICKET_LOCK_INVALID_ID, __ATOMIC_RELAXED);
-	tlr->count = 0;
+    rte_ticketlock_init(&tlr->tl);
+    __atomic_store_n(&tlr->user, TICKET_LOCK_INVALID_ID, __ATOMIC_RELAXED);
+    tlr->count = 0;
 }
 
 /**
@@ -168,13 +168,13 @@ __rte_experimental
 static inline void
 rte_ticketlock_recursive_lock(rte_ticketlock_recursive_t *tlr)
 {
-	int id = rte_gettid();
+    int id = rte_gettid();
 
-	if (__atomic_load_n(&tlr->user, __ATOMIC_RELAXED) != id) {
-		rte_ticketlock_lock(&tlr->tl);
-		__atomic_store_n(&tlr->user, id, __ATOMIC_RELAXED);
-	}
-	tlr->count++;
+    if (__atomic_load_n(&tlr->user, __ATOMIC_RELAXED) != id) {
+        rte_ticketlock_lock(&tlr->tl);
+        __atomic_store_n(&tlr->user, id, __ATOMIC_RELAXED);
+    }
+    tlr->count++;
 }
 
 /**
@@ -187,11 +187,11 @@ __rte_experimental
 static inline void
 rte_ticketlock_recursive_unlock(rte_ticketlock_recursive_t *tlr)
 {
-	if (--(tlr->count) == 0) {
-		__atomic_store_n(&tlr->user, TICKET_LOCK_INVALID_ID,
-				 __ATOMIC_RELAXED);
-		rte_ticketlock_unlock(&tlr->tl);
-	}
+    if (--(tlr->count) == 0) {
+        __atomic_store_n(&tlr->user, TICKET_LOCK_INVALID_ID,
+                 __ATOMIC_RELAXED);
+        rte_ticketlock_unlock(&tlr->tl);
+    }
 }
 
 /**
@@ -206,15 +206,15 @@ __rte_experimental
 static inline int
 rte_ticketlock_recursive_trylock(rte_ticketlock_recursive_t *tlr)
 {
-	int id = rte_gettid();
+    int id = rte_gettid();
 
-	if (__atomic_load_n(&tlr->user, __ATOMIC_RELAXED) != id) {
-		if (rte_ticketlock_trylock(&tlr->tl) == 0)
-			return 0;
-		__atomic_store_n(&tlr->user, id, __ATOMIC_RELAXED);
-	}
-	tlr->count++;
-	return 1;
+    if (__atomic_load_n(&tlr->user, __ATOMIC_RELAXED) != id) {
+        if (rte_ticketlock_trylock(&tlr->tl) == 0)
+            return 0;
+        __atomic_store_n(&tlr->user, id, __ATOMIC_RELAXED);
+    }
+    tlr->count++;
+    return 1;
 }
 
 #ifdef __cplusplus

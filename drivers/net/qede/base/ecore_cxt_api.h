@@ -10,17 +10,17 @@
 struct ecore_hwfn;
 
 struct ecore_cxt_info {
-	void			*p_cxt;
-	u32			iid;
-	enum protocol_type	type;
+    void            *p_cxt;
+    u32            iid;
+    enum protocol_type    type;
 };
 
-#define MAX_TID_BLOCKS			512
+#define MAX_TID_BLOCKS            512
 struct ecore_tid_mem {
-	u32 tid_size;
-	u32 num_tids_per_block;
-	u32 waste;
-	u8 *blocks[MAX_TID_BLOCKS]; /* 4K */
+    u32 tid_size;
+    u32 num_tids_per_block;
+    u32 waste;
+    u8 *blocks[MAX_TID_BLOCKS]; /* 4K */
 };
 
 /**
@@ -33,6 +33,6 @@ struct ecore_tid_mem {
 * @return enum _ecore_status_t
 */
 enum _ecore_status_t ecore_cxt_get_cid_info(struct ecore_hwfn *p_hwfn,
-					    struct ecore_cxt_info *p_info);
+                        struct ecore_cxt_info *p_info);
 
 #endif

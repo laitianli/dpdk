@@ -27,8 +27,8 @@ extern "C" {
 
 /** kni_reader port parameters */
 struct rte_port_kni_reader_params {
-	/** KNI interface reference */
-	struct rte_kni *kni;
+    /** KNI interface reference */
+    struct rte_kni *kni;
 };
 
 /** kni_reader port operations */
@@ -37,10 +37,10 @@ extern struct rte_port_in_ops rte_port_kni_reader_ops;
 
 /** kni_writer port parameters */
 struct rte_port_kni_writer_params {
-	/** KNI interface reference */
-	struct rte_kni *kni;
-	/** Burst size to KNI interface. */
-	uint32_t tx_burst_sz;
+    /** KNI interface reference */
+    struct rte_kni *kni;
+    /** Burst size to KNI interface. */
+    uint32_t tx_burst_sz;
 };
 
 /** kni_writer port operations */
@@ -48,12 +48,12 @@ extern struct rte_port_out_ops rte_port_kni_writer_ops;
 
 /** kni_writer_nodrop port parameters */
 struct rte_port_kni_writer_nodrop_params {
-	/** KNI interface reference */
-	struct rte_kni *kni;
-	/** Burst size to KNI interface. */
-	uint32_t tx_burst_sz;
-	/** Maximum number of retries, 0 for no limit */
-	uint32_t n_retries;
+    /** KNI interface reference */
+    struct rte_kni *kni;
+    /** Burst size to KNI interface. */
+    uint32_t tx_burst_sz;
+    /** Maximum number of retries, 0 for no limit */
+    uint32_t n_retries;
 };
 
 /** kni_writer_nodrop port operations */

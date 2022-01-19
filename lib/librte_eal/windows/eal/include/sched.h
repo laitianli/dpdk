@@ -26,18 +26,18 @@ extern "C" {
 #define _WHICH_BIT(b) ((b) & (_BITS_PER_SET - 1))
 
 typedef struct _rte_cpuset_s {
-	long long _bits[_NUM_SETS(CPU_SET_SIZE)];
+    long long _bits[_NUM_SETS(CPU_SET_SIZE)];
 } rte_cpuset_t;
 
 #define CPU_SET(b, s) ((s)->_bits[_WHICH_SET(b)] |= (1LL << _WHICH_BIT(b)))
 
-#define CPU_ZERO(s)							\
-	do {								\
-		unsigned int _i;					\
-									\
-		for (_i = 0; _i < _NUM_SETS(CPU_SET_SIZE); _i++)	\
-			(s)->_bits[_i] = 0LL;				\
-	} while (0)
+#define CPU_ZERO(s)                            \
+    do {                                \
+        unsigned int _i;                    \
+                                    \
+        for (_i = 0; _i < _NUM_SETS(CPU_SET_SIZE); _i++)    \
+            (s)->_bits[_i] = 0LL;                \
+    } while (0)
 
 #ifdef __cplusplus
 }

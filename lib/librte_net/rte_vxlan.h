@@ -29,13 +29,13 @@ extern "C" {
  * Reserved fields (24 bits and 8 bits)
  */
 struct rte_vxlan_hdr {
-	uint32_t vx_flags; /**< flag (8) + Reserved (24). */
-	uint32_t vx_vni;   /**< VNI (24) + Reserved (8). */
+    uint32_t vx_flags; /**< flag (8) + Reserved (24). */
+    uint32_t vx_vni;   /**< VNI (24) + Reserved (8). */
 } __attribute__((__packed__));
 
 /** VXLAN tunnel header length. */
 #define RTE_ETHER_VXLAN_HLEN \
-	(sizeof(struct rte_udp_hdr) + sizeof(struct rte_vxlan_hdr))
+    (sizeof(struct rte_udp_hdr) + sizeof(struct rte_vxlan_hdr))
 
 
 /**
@@ -44,15 +44,15 @@ struct rte_vxlan_hdr {
  * Identifier and Reserved fields (16 bits and 8 bits).
  */
 struct rte_vxlan_gpe_hdr {
-	uint8_t vx_flags;    /**< flag (8). */
-	uint8_t reserved[2]; /**< Reserved (16). */
-	uint8_t proto;       /**< next-protocol (8). */
-	uint32_t vx_vni;     /**< VNI (24) + Reserved (8). */
+    uint8_t vx_flags;    /**< flag (8). */
+    uint8_t reserved[2]; /**< Reserved (16). */
+    uint8_t proto;       /**< next-protocol (8). */
+    uint32_t vx_vni;     /**< VNI (24) + Reserved (8). */
 } __attribute__((__packed__));
 
 /** VXLAN-GPE tunnel header length. */
 #define RTE_ETHER_VXLAN_GPE_HLEN (sizeof(struct rte_udp_hdr) + \
-		sizeof(struct rte_vxlan_gpe_hdr))
+        sizeof(struct rte_vxlan_gpe_hdr))
 
 /* VXLAN-GPE next protocol types */
 #define RTE_VXLAN_GPE_TYPE_IPV4 1 /**< IPv4 Protocol. */

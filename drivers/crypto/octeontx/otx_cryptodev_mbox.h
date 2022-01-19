@@ -17,52 +17,52 @@
 
 /* CPT mailbox structure */
 struct cpt_mbox {
-	/** Message type MBOX[0] */
-	uint64_t msg;
-	/** Data         MBOX[1] */
-	uint64_t data;
+    /** Message type MBOX[0] */
+    uint64_t msg;
+    /** Data         MBOX[1] */
+    uint64_t data;
 };
 
 /* CPT PF types */
 enum otx_cpt_pf_type {
-	OTX_CPT_PF_TYPE_INVALID = 0,
-	OTX_CPT_PF_TYPE_AE = 2,
-	OTX_CPT_PF_TYPE_SE,
+    OTX_CPT_PF_TYPE_INVALID = 0,
+    OTX_CPT_PF_TYPE_AE = 2,
+    OTX_CPT_PF_TYPE_SE,
 };
 
 /* CPT VF types */
 enum otx_cpt_vf_type {
-	OTX_CPT_VF_TYPE_AE = 1,
-	OTX_CPT_VF_TYPE_SE,
-	OTX_CPT_VF_TYPE_INVALID,
+    OTX_CPT_VF_TYPE_AE = 1,
+    OTX_CPT_VF_TYPE_SE,
+    OTX_CPT_VF_TYPE_INVALID,
 };
 
 /* PF-VF message opcodes */
 enum otx_cpt_mbox_opcode {
-	OTX_CPT_MSG_VF_UP = 1,
-	OTX_CPT_MSG_VF_DOWN,
-	OTX_CPT_MSG_READY,
-	OTX_CPT_MSG_QLEN,
-	OTX_CPT_MSG_QBIND_GRP,
-	OTX_CPT_MSG_VQ_PRIORITY,
-	OTX_CPT_MSG_PF_TYPE,
-	OTX_CPT_MBOX_MSG_TYPE_ACK,
-	OTX_CPT_MBOX_MSG_TYPE_NACK
+    OTX_CPT_MSG_VF_UP = 1,
+    OTX_CPT_MSG_VF_DOWN,
+    OTX_CPT_MSG_READY,
+    OTX_CPT_MSG_QLEN,
+    OTX_CPT_MSG_QBIND_GRP,
+    OTX_CPT_MSG_VQ_PRIORITY,
+    OTX_CPT_MSG_PF_TYPE,
+    OTX_CPT_MBOX_MSG_TYPE_ACK,
+    OTX_CPT_MBOX_MSG_TYPE_NACK
 };
 
 typedef union {
-	uint64_t u64;
-	struct {
+    uint64_t u64;
+    struct {
 #if RTE_BYTE_ORDER == RTE_BIG_ENDIAN
-		uint32_t chip_id;
-		uint8_t vfid;
-		uint8_t reserved[3];
+        uint32_t chip_id;
+        uint8_t vfid;
+        uint8_t reserved[3];
 #else
-		uint8_t reserved[3];
-		uint8_t vfid;
-		uint32_t chip_id;
+        uint8_t reserved[3];
+        uint8_t vfid;
+        uint32_t chip_id;
 #endif
-	} s;
+    } s;
 } otx_cpt_chipid_vfid_t;
 
 /* Poll handler to handle mailbox messages from VFs */

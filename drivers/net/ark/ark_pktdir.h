@@ -23,13 +23,13 @@ typedef void *ark_pkt_dir_t;
  * structs will never be instantiated in ram memory
  */
 struct ark_pkt_dir_regs {
-	uint32_t ctrl;
-	uint32_t status;
-	uint32_t stall_cnt;
+    uint32_t ctrl;
+    uint32_t status;
+    uint32_t stall_cnt;
 } __attribute__ ((packed));
 
 struct ark_pkt_dir_inst {
-	volatile struct ark_pkt_dir_regs *regs;
+    volatile struct ark_pkt_dir_regs *regs;
 };
 
 ark_pkt_dir_t ark_pktdir_init(void *base);

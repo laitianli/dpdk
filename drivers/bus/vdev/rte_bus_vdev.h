@@ -20,8 +20,8 @@ extern "C" {
 #include <rte_devargs.h>
 
 struct rte_vdev_device {
-	TAILQ_ENTRY(rte_vdev_device) next;      /**< Next attached vdev */
-	struct rte_device device;               /**< Inherit core device */
+    TAILQ_ENTRY(rte_vdev_device) next;      /**< Next attached vdev */
+    struct rte_device device;               /**< Inherit core device */
 };
 
 /**
@@ -29,25 +29,25 @@ struct rte_vdev_device {
  * Helper macro for drivers that need to convert to struct rte_vdev_device.
  */
 #define RTE_DEV_TO_VDEV(ptr) \
-	container_of(ptr, struct rte_vdev_device, device)
+    container_of(ptr, struct rte_vdev_device, device)
 
 #define RTE_DEV_TO_VDEV_CONST(ptr) \
-	container_of(ptr, const struct rte_vdev_device, device)
+    container_of(ptr, const struct rte_vdev_device, device)
 
 static inline const char *
 rte_vdev_device_name(const struct rte_vdev_device *dev)
 {
-	if (dev && dev->device.name)
-		return dev->device.name;
-	return NULL;
+    if (dev && dev->device.name)
+        return dev->device.name;
+    return NULL;
 }
 
 static inline const char *
 rte_vdev_device_args(const struct rte_vdev_device *dev)
 {
-	if (dev && dev->device.devargs)
-		return dev->device.devargs->args;
-	return "";
+    if (dev && dev->device.devargs)
+        return dev->device.devargs->args;
+    return "";
 }
 
 /** Double linked list of virtual device drivers. */
@@ -67,10 +67,10 @@ typedef int (rte_vdev_remove_t)(struct rte_vdev_device *dev);
  * A virtual device driver abstraction.
  */
 struct rte_vdev_driver {
-	TAILQ_ENTRY(rte_vdev_driver) next; /**< Next in list. */
-	struct rte_driver driver;      /**< Inherited general driver. */
-	rte_vdev_probe_t *probe;       /**< Virtual device probe function. */
-	rte_vdev_remove_t *remove;     /**< Virtual device remove function. */
+    TAILQ_ENTRY(rte_vdev_driver) next; /**< Next in list. */
+    struct rte_driver driver;      /**< Inherited general driver. */
+    rte_vdev_probe_t *probe;       /**< Virtual device probe function. */
+    rte_vdev_remove_t *remove;     /**< Virtual device remove function. */
 };
 
 /**
@@ -95,9 +95,9 @@ void rte_vdev_unregister(struct rte_vdev_driver *driver);
 static const char *vdrvinit_ ## nm ## _alias;\
 RTE_INIT(vdrvinitfn_ ##vdrv)\
 {\
-	(vdrv).driver.name = RTE_STR(nm);\
-	(vdrv).driver.alias = vdrvinit_ ## nm ## _alias;\
-	rte_vdev_register(&vdrv);\
+    (vdrv).driver.name = RTE_STR(nm);\
+    (vdrv).driver.alias = vdrvinit_ ## nm ## _alias;\
+    rte_vdev_register(&vdrv);\
 } \
 RTE_PMD_EXPORT_NAME(nm, __COUNTER__)
 

@@ -10,25 +10,25 @@
 #include <rte_ip.h>
 #include <rte_ether.h>
 
-#define PARSE_DELIMITER				" \f\n\r\t\v"
+#define PARSE_DELIMITER                " \f\n\r\t\v"
 
-#define skip_white_spaces(pos)			\
-({						\
-	__typeof__(pos) _p = (pos);		\
-	for ( ; isspace(*_p); _p++)		\
-		;				\
-	_p;					\
+#define skip_white_spaces(pos)            \
+({                        \
+    __typeof__(pos) _p = (pos);        \
+    for ( ; isspace(*_p); _p++)        \
+        ;                \
+    _p;                    \
 })
 
 static inline size_t
 skip_digits(const char *src)
 {
-	size_t i;
+    size_t i;
 
-	for (i = 0; isdigit(src[i]); i++)
-		;
+    for (i = 0; isdigit(src[i]); i++)
+        ;
 
-	return i;
+    return i;
 }
 
 int parser_read_arg_bool(const char *p);
@@ -51,9 +51,9 @@ int parse_mac_addr(const char *token, struct rte_ether_addr *addr);
 int parse_mpls_labels(char *string, uint32_t *labels, uint32_t *n_labels);
 
 struct cpu_core_params {
-	uint32_t socket_id;
-	uint32_t core_id;
-	uint32_t thread_id;
+    uint32_t socket_id;
+    uint32_t core_id;
+    uint32_t thread_id;
 };
 
 int parse_cpu_core(const char *entry, struct cpu_core_params *p);

@@ -51,13 +51,13 @@ void rte_dump_registers(void);
 #define rte_panic_(func, format, ...) __rte_panic(func, format "%.0s", __VA_ARGS__)
 
 #ifdef RTE_ENABLE_ASSERT
-#define RTE_ASSERT(exp)	RTE_VERIFY(exp)
+#define RTE_ASSERT(exp)    RTE_VERIFY(exp)
 #else
 #define RTE_ASSERT(exp) do {} while (0)
 #endif
-#define	RTE_VERIFY(exp)	do {                                                  \
-	if (unlikely(!(exp)))                                                           \
-		rte_panic("line %d\tassert \"%s\" failed\n", __LINE__, #exp); \
+#define    RTE_VERIFY(exp)    do {                                                  \
+    if (unlikely(!(exp)))                                                           \
+        rte_panic("line %d\tassert \"%s\" failed\n", __LINE__, #exp); \
 } while (0)
 
 /*
@@ -69,11 +69,11 @@ void rte_dump_registers(void);
 void __rte_panic(const char *funcname , const char *format, ...)
 #ifdef __GNUC__
 #if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 2))
-	__attribute__((cold))
+    __attribute__((cold))
 #endif
 #endif
-	__attribute__((noreturn))
-	__attribute__((format(printf, 2, 3)));
+    __attribute__((noreturn))
+    __attribute__((format(printf, 2, 3)));
 
 #ifdef __cplusplus
 }

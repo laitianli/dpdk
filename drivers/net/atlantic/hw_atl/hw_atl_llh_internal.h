@@ -139,7 +139,7 @@
 
 /* register address for bitfield desc{d}_data_size[4:0] */
 #define HW_ATL_RDM_DESCDDATA_SIZE_ADR(descriptor) \
-	(0x00005b18 + (descriptor) * 0x20)
+    (0x00005b18 + (descriptor) * 0x20)
 /* bitmask for bitfield desc{d}_data_size[4:0] */
 #define HW_ATL_RDM_DESCDDATA_SIZE_MSK 0x0000001f
 /* inverted bitmask for bitfield desc{d}_data_size[4:0] */
@@ -197,7 +197,7 @@
 
 /* register address for bitfield desc{d}_hdr_size[4:0] */
 #define HW_ATL_RDM_DESCDHDR_SIZE_ADR(descriptor) \
-	(0x00005b18 + (descriptor) * 0x20)
+    (0x00005b18 + (descriptor) * 0x20)
 /* bitmask for bitfield desc{d}_hdr_size[4:0] */
 #define HW_ATL_RDM_DESCDHDR_SIZE_MSK 0x00001f00
 /* inverted bitmask for bitfield desc{d}_hdr_size[4:0] */
@@ -217,7 +217,7 @@
 
 /* register address for bitfield desc{d}_hdr_split */
 #define HW_ATL_RDM_DESCDHDR_SPLIT_ADR(descriptor) \
-	(0x00005b08 + (descriptor) * 0x20)
+    (0x00005b08 + (descriptor) * 0x20)
 /* bitmask for bitfield desc{d}_hdr_split */
 #define HW_ATL_RDM_DESCDHDR_SPLIT_MSK 0x10000000
 /* inverted bitmask for bitfield desc{d}_hdr_split */
@@ -407,7 +407,7 @@
  * parameter: descriptor {d} | stride size 0x20 | range [0, 31]
  */
 #define HW_ATL_RX_DMA_DESC_STAT_ADR(descriptor) \
-	(0x00005b14u + (descriptor) * 0x20)
+    (0x00005b14u + (descriptor) * 0x20)
 
 /* rx dma descriptor tail pointer register definitions
  * preprocessor definitions for rx dma descriptor tail pointer register
@@ -415,7 +415,7 @@
  * parameter: descriptor {d} | stride size 0x20 | range [0, 31]
  */
 #define HW_ATL_RX_DMA_DESC_TAIL_PTR_ADR(descriptor) \
-	(0x00005b10u + (descriptor) * 0x20)
+    (0x00005b10u + (descriptor) * 0x20)
 
 /* rx interrupt moderation control register definitions
  * Preprocessor definitions for RX Interrupt Moderation Control Register
@@ -473,7 +473,7 @@
  * parameter: descriptor {d} | stride size 0x40 | range [0, 31]
  */
 #define HW_ATL_TX_DMA_DESC_BASE_ADDRLSW_ADR(descriptor) \
-	(0x00007c00u + (descriptor) * 0x40)
+    (0x00007c00u + (descriptor) * 0x40)
 
 /* tx dma descriptor tail pointer register definitions
  * preprocessor definitions for tx dma descriptor tail pointer register
@@ -481,7 +481,7 @@
  *  parameter: descriptor {d} | stride size 0x40 | range [0, 31]
  */
 #define HW_ATL_TX_DMA_DESC_TAIL_PTR_ADR(descriptor) \
-	(0x00007c10u + (descriptor) * 0x40)
+    (0x00007c10u + (descriptor) * 0x40)
 
 /* rx dma_sys_loopback bitfield definitions
  * preprocessor definitions for the bitfield "dma_sys_loopback".
@@ -1262,7 +1262,7 @@
 
 /* register address for bitfield desc{d}_vl_strip */
 #define HW_ATL_RPO_DESCDVL_STRIP_ADR(descriptor) \
-	(0x00005b08 + (descriptor) * 0x20)
+    (0x00005b08 + (descriptor) * 0x20)
 /* bitmask for bitfield desc{d}_vl_strip */
 #define HW_ATL_RPO_DESCDVL_STRIP_MSK 0x20000000
 /* inverted bitmask for bitfield desc{d}_vl_strip */
@@ -1483,7 +1483,7 @@
 
 /* register address for bitfield desc{d}_wrb_thresh[6:0] */
 #define HW_ATL_TDM_DESCDWRB_THRESH_ADR(descriptor) \
-	(0x00007c18 + (descriptor) * 0x40)
+    (0x00007c18 + (descriptor) * 0x40)
 /* bitmask for bitfield desc{d}_wrb_thresh[6:0] */
 #define HW_ATL_TDM_DESCDWRB_THRESH_MSK 0x00007f00
 /* inverted bitmask for bitfield desc{d}_wrb_thresh[6:0] */
@@ -1799,7 +1799,7 @@
 
 /* Register address for bitfield desc{D}_wrb_thresh[6:0] */
 #define HW_ATL_TDM_DESC_DWRB_THRESH_ADR(descriptor) \
-	(0x00007C18 + (descriptor) * 0x40)
+    (0x00007C18 + (descriptor) * 0x40)
 /* Bitmask for bitfield desc{D}_wrb_thresh[6:0] */
 #define HW_ATL_TDM_DESC_DWRB_THRESH_MSK 0x00007F00
 /* Inverted bitmask for bitfield desc{D}_wrb_thresh[6:0] */
@@ -2353,7 +2353,7 @@
 
 /* tx dma descriptor base address msw definitions */
 #define HW_ATL_TX_DMA_DESC_BASE_ADDRMSW_ADR(descriptor) \
-			(0x00007c04u + (descriptor) * 0x40)
+            (0x00007c04u + (descriptor) * 0x40)
 
 /* tx dma total request limit */
 #define HW_ATL_TX_DMA_TOTAL_REQ_LIMIT_ADR 0x00007b20u
@@ -2389,7 +2389,7 @@
 
 /* global microprocessor scratch pad definitions */
 #define HW_ATL_GLB_CPU_SCRATCH_SCP_ADR(scratch_scp) \
-	(0x00000300u + (scratch_scp) * 0x4)
+    (0x00000300u + (scratch_scp) * 0x4)
 
 /* register address for bitfield uP Force Interrupt */
 #define HW_ATL_MCP_UP_FORCE_INTERRUPT_ADR 0x00000404

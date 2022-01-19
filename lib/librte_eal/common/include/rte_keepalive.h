@@ -22,13 +22,13 @@
 #endif
 
 enum rte_keepalive_state {
-	RTE_KA_STATE_UNUSED = 0,
-	RTE_KA_STATE_ALIVE = 1,
-	RTE_KA_STATE_MISSING = 4,
-	RTE_KA_STATE_DEAD = 2,
-	RTE_KA_STATE_GONE = 3,
-	RTE_KA_STATE_DOZING = 5,
-	RTE_KA_STATE_SLEEP = 6
+    RTE_KA_STATE_UNUSED = 0,
+    RTE_KA_STATE_ALIVE = 1,
+    RTE_KA_STATE_MISSING = 4,
+    RTE_KA_STATE_DEAD = 2,
+    RTE_KA_STATE_GONE = 3,
+    RTE_KA_STATE_DOZING = 5,
+    RTE_KA_STATE_SLEEP = 6
 };
 
 /**
@@ -40,8 +40,8 @@ enum rte_keepalive_state {
  *  @param id_core ID of the core that has failed
  */
 typedef void (*rte_keepalive_failure_callback_t)(
-	void *data,
-	const int id_core);
+    void *data,
+    const int id_core);
 
 /**
  * Keepalive relay callback.
@@ -55,11 +55,11 @@ typedef void (*rte_keepalive_failure_callback_t)(
  *  @param Timestamp of when core was last seen alive
  */
 typedef void (*rte_keepalive_relay_callback_t)(
-	void *data,
-	const int id_core,
-	enum rte_keepalive_state core_state,
-	uint64_t last_seen
-	);
+    void *data,
+    const int id_core,
+    enum rte_keepalive_state core_state,
+    uint64_t last_seen
+    );
 
 /**
  * Keepalive state structure.
@@ -77,8 +77,8 @@ struct rte_keepalive;
  *   Keepalive structure success, NULL on failure.
  */
 struct rte_keepalive *rte_keepalive_create(
-	rte_keepalive_failure_callback_t callback,
-	void *data);
+    rte_keepalive_failure_callback_t callback,
+    void *data);
 
 /**
  * Checks & handles keepalive state of monitored cores.
@@ -95,7 +95,7 @@ void rte_keepalive_dispatch_pings(void *ptr_timer, void *ptr_data);
  *   ID number of core to register.
  */
 void rte_keepalive_register_core(struct rte_keepalive *keepcfg,
-	const int id_core);
+    const int id_core);
 
 /**
  * Per-core keepalive check.
@@ -136,7 +136,7 @@ rte_keepalive_mark_sleep(struct rte_keepalive *keepcfg);
  */
 void
 rte_keepalive_register_relay_callback(struct rte_keepalive *keepcfg,
-	rte_keepalive_relay_callback_t callback,
-	void *data);
+    rte_keepalive_relay_callback_t callback,
+    void *data);
 
 #endif /* _KEEPALIVE_H_ */

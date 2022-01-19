@@ -33,30 +33,30 @@ extern int librawdev_logtype;
 
 /* Logging Macros */
 #define RTE_RDEV_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, librawdev_logtype, "%s(): " fmt "\n", \
-		__func__, ##args)
+    rte_log(RTE_LOG_ ## level, librawdev_logtype, "%s(): " fmt "\n", \
+        __func__, ##args)
 
 #define RTE_RDEV_ERR(fmt, args...) \
-	RTE_RDEV_LOG(ERR, fmt, ## args)
+    RTE_RDEV_LOG(ERR, fmt, ## args)
 #define RTE_RDEV_DEBUG(fmt, args...) \
-	RTE_RDEV_LOG(DEBUG, fmt, ## args)
+    RTE_RDEV_LOG(DEBUG, fmt, ## args)
 #define RTE_RDEV_INFO(fmt, args...) \
-	RTE_RDEV_LOG(INFO, fmt, ## args)
+    RTE_RDEV_LOG(INFO, fmt, ## args)
 
 
 /* Macros to check for valid device */
 #define RTE_RAWDEV_VALID_DEVID_OR_ERR_RET(dev_id, retval) do { \
-	if (!rte_rawdev_pmd_is_valid_dev((dev_id))) { \
-		RTE_RDEV_ERR("Invalid dev_id=%d", dev_id); \
-		return retval; \
-	} \
+    if (!rte_rawdev_pmd_is_valid_dev((dev_id))) { \
+        RTE_RDEV_ERR("Invalid dev_id=%d", dev_id); \
+        return retval; \
+    } \
 } while (0)
 
 #define RTE_RAWDEV_VALID_DEVID_OR_RET(dev_id) do { \
-	if (!rte_rawdev_pmd_is_valid_dev((dev_id))) { \
-		RTE_RDEV_ERR("Invalid dev_id=%d", dev_id); \
-		return; \
-	} \
+    if (!rte_rawdev_pmd_is_valid_dev((dev_id))) { \
+        RTE_RDEV_ERR("Invalid dev_id=%d", dev_id); \
+        return; \
+    } \
 } while (0)
 
 #define RTE_RAWDEV_DETACHED  (0)
@@ -69,8 +69,8 @@ extern int librawdev_logtype;
  *       devices which were detected or attached to this DPDK instance.
  */
 struct rte_rawdev_global {
-	/**< Number of devices found */
-	uint16_t nb_devs;
+    /**< Number of devices found */
+    uint16_t nb_devs;
 };
 
 extern struct rte_rawdev *rte_rawdevs;
@@ -88,20 +88,20 @@ extern struct rte_rawdev *rte_rawdevs;
 static inline struct rte_rawdev *
 rte_rawdev_pmd_get_named_dev(const char *name)
 {
-	struct rte_rawdev *dev;
-	unsigned int i;
+    struct rte_rawdev *dev;
+    unsigned int i;
 
-	if (name == NULL)
-		return NULL;
+    if (name == NULL)
+        return NULL;
 
-	for (i = 0; i < RTE_RAWDEV_MAX_DEVS; i++) {
-		dev = &rte_rawdevs[i];
-		if ((dev->attached == RTE_RAWDEV_ATTACHED) &&
-		   (strcmp(dev->name, name) == 0))
-			return dev;
-	}
+    for (i = 0; i < RTE_RAWDEV_MAX_DEVS; i++) {
+        dev = &rte_rawdevs[i];
+        if ((dev->attached == RTE_RAWDEV_ATTACHED) &&
+           (strcmp(dev->name, name) == 0))
+            return dev;
+    }
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -116,16 +116,16 @@ rte_rawdev_pmd_get_named_dev(const char *name)
 static inline unsigned
 rte_rawdev_pmd_is_valid_dev(uint8_t dev_id)
 {
-	struct rte_rawdev *dev;
+    struct rte_rawdev *dev;
 
-	if (dev_id >= RTE_RAWDEV_MAX_DEVS)
-		return 0;
+    if (dev_id >= RTE_RAWDEV_MAX_DEVS)
+        return 0;
 
-	dev = &rte_rawdevs[dev_id];
-	if (dev->attached != RTE_RAWDEV_ATTACHED)
-		return 0;
-	else
-		return 1;
+    dev = &rte_rawdevs[dev_id];
+    if (dev->attached != RTE_RAWDEV_ATTACHED)
+        return 0;
+    else
+        return 1;
 }
 
 /**
@@ -146,7 +146,7 @@ rte_rawdev_pmd_is_valid_dev(uint8_t dev_id)
  *   Returns 0 on success
  */
 typedef void (*rawdev_info_get_t)(struct rte_rawdev *dev,
-				  rte_rawdev_obj_t dev_info);
+                  rte_rawdev_obj_t dev_info);
 
 /**
  * Configure a device.
@@ -160,7 +160,7 @@ typedef void (*rawdev_info_get_t)(struct rte_rawdev *dev,
  *   Returns 0 on success
  */
 typedef int (*rawdev_configure_t)(const struct rte_rawdev *dev,
-				  rte_rawdev_obj_t config);
+                  rte_rawdev_obj_t config);
 
 /**
  * Start a configured device.
@@ -216,8 +216,8 @@ typedef int (*rawdev_reset_t)(struct rte_rawdev *dev);
  *
  */
 typedef void (*rawdev_queue_conf_get_t)(struct rte_rawdev *dev,
-					uint16_t queue_id,
-					rte_rawdev_obj_t queue_conf);
+                    uint16_t queue_id,
+                    rte_rawdev_obj_t queue_conf);
 
 /**
  * Setup an raw queue.
@@ -233,8 +233,8 @@ typedef void (*rawdev_queue_conf_get_t)(struct rte_rawdev *dev,
  *   Returns 0 on success.
  */
 typedef int (*rawdev_queue_setup_t)(struct rte_rawdev *dev,
-				    uint16_t queue_id,
-				    rte_rawdev_obj_t queue_conf);
+                    uint16_t queue_id,
+                    rte_rawdev_obj_t queue_conf);
 
 /**
  * Release resources allocated by given raw queue.
@@ -246,7 +246,7 @@ typedef int (*rawdev_queue_setup_t)(struct rte_rawdev *dev,
  *
  */
 typedef int (*rawdev_queue_release_t)(struct rte_rawdev *dev,
-				      uint16_t queue_id);
+                      uint16_t queue_id);
 
 /**
  * Get the count of number of queues configured on this device.
@@ -289,9 +289,9 @@ typedef uint16_t (*rawdev_queue_count_t)(struct rte_rawdev *dev);
  *   <0 Error count in case of error
  */
 typedef int (*rawdev_enqueue_bufs_t)(struct rte_rawdev *dev,
-				     struct rte_rawdev_buf **buffers,
-				     unsigned int count,
-				     rte_rawdev_obj_t context);
+                     struct rte_rawdev_buf **buffers,
+                     unsigned int count,
+                     rte_rawdev_obj_t context);
 
 /**
  * Dequeue an array of raw buffers from the device.
@@ -314,9 +314,9 @@ typedef int (*rawdev_enqueue_bufs_t)(struct rte_rawdev *dev,
  *   driver.
  */
 typedef int (*rawdev_dequeue_bufs_t)(struct rte_rawdev *dev,
-				     struct rte_rawdev_buf **buffers,
-				     unsigned int count,
-				     rte_rawdev_obj_t context);
+                     struct rte_rawdev_buf **buffers,
+                     unsigned int count,
+                     rte_rawdev_obj_t context);
 
 /**
  * Dump internal information
@@ -348,8 +348,8 @@ typedef int (*rawdev_dump_t)(struct rte_rawdev *dev, FILE *f);
  *  !0 Error; attr_value remains untouched in case of error.
  */
 typedef int (*rawdev_get_attr_t)(struct rte_rawdev *dev,
-				 const char *attr_name,
-				 uint64_t *attr_value);
+                 const char *attr_name,
+                 uint64_t *attr_value);
 
 /**
  * Set an attribute value.
@@ -366,8 +366,8 @@ typedef int (*rawdev_get_attr_t)(struct rte_rawdev *dev,
  *  !0 Error
  */
 typedef int (*rawdev_set_attr_t)(struct rte_rawdev *dev,
-				 const char *attr_name,
-				 const uint64_t attr_value);
+                 const char *attr_name,
+                 const uint64_t attr_value);
 
 /**
  * Retrieve a set of statistics from device.
@@ -386,14 +386,14 @@ typedef int (*rawdev_set_attr_t)(struct rte_rawdev *dev,
  *   The number of stat values successfully filled into the values array
  */
 typedef int (*rawdev_xstats_get_t)(const struct rte_rawdev *dev,
-		const unsigned int ids[], uint64_t values[], unsigned int n);
+        const unsigned int ids[], uint64_t values[], unsigned int n);
 
 /**
  * Resets the statistic values in xstats for the device.
  */
 typedef int (*rawdev_xstats_reset_t)(struct rte_rawdev *dev,
-		const uint32_t ids[],
-		uint32_t nb_ids);
+        const uint32_t ids[],
+        uint32_t nb_ids);
 
 /**
  * Get names of extended stats of an raw device
@@ -411,8 +411,8 @@ typedef int (*rawdev_xstats_reset_t)(struct rte_rawdev *dev,
  *   values, and do not fill in any data into xstats_names.
  */
 typedef int (*rawdev_xstats_get_names_t)(const struct rte_rawdev *dev,
-		struct rte_rawdev_xstats_name *xstats_names,
-		unsigned int size);
+        struct rte_rawdev_xstats_name *xstats_names,
+        unsigned int size);
 
 /**
  * Get value of one stats and optionally return its id
@@ -430,8 +430,8 @@ typedef int (*rawdev_xstats_get_names_t)(const struct rte_rawdev *dev,
  *   if id pointer is non-NULL
  */
 typedef uint64_t (*rawdev_xstats_get_by_name_t)(const struct rte_rawdev *dev,
-						const char *name,
-						unsigned int *id);
+                        const char *name,
+                        unsigned int *id);
 
 /**
  * Get firmware/device-stack status.
@@ -446,7 +446,7 @@ typedef uint64_t (*rawdev_xstats_get_by_name_t)(const struct rte_rawdev *dev,
  *   !0 for failure, with undefined value in `status_info`
  */
 typedef int (*rawdev_firmware_status_get_t)(struct rte_rawdev *dev,
-					    rte_rawdev_obj_t status_info);
+                        rte_rawdev_obj_t status_info);
 
 /**
  * Get firmware version information
@@ -460,7 +460,7 @@ typedef int (*rawdev_firmware_status_get_t)(struct rte_rawdev *dev,
  *   !0 for failure, with undefined value in `version_info`
  */
 typedef int (*rawdev_firmware_version_get_t)(struct rte_rawdev *dev,
-					     rte_rawdev_obj_t version_info);
+                         rte_rawdev_obj_t version_info);
 
 /**
  * Load firmware from a buffer (DMA'able)
@@ -477,7 +477,7 @@ typedef int (*rawdev_firmware_version_get_t)(struct rte_rawdev *dev,
  * load
  */
 typedef int (*rawdev_firmware_load_t)(struct rte_rawdev *dev,
-				      rte_rawdev_obj_t firmware_buf);
+                      rte_rawdev_obj_t firmware_buf);
 
 /**
  * Unload firmware
@@ -503,62 +503,62 @@ typedef int (*rawdev_selftest_t)(uint16_t dev_id);
 
 /** Rawdevice operations function pointer table */
 struct rte_rawdev_ops {
-	/**< Get device info. */
-	rawdev_info_get_t dev_info_get;
-	/**< Configure device. */
-	rawdev_configure_t dev_configure;
-	/**< Start device. */
-	rawdev_start_t dev_start;
-	/**< Stop device. */
-	rawdev_stop_t dev_stop;
-	/**< Close device. */
-	rawdev_close_t dev_close;
-	/**< Reset device. */
-	rawdev_reset_t dev_reset;
+    /**< Get device info. */
+    rawdev_info_get_t dev_info_get;
+    /**< Configure device. */
+    rawdev_configure_t dev_configure;
+    /**< Start device. */
+    rawdev_start_t dev_start;
+    /**< Stop device. */
+    rawdev_stop_t dev_stop;
+    /**< Close device. */
+    rawdev_close_t dev_close;
+    /**< Reset device. */
+    rawdev_reset_t dev_reset;
 
-	/**< Get raw queue configuration. */
-	rawdev_queue_conf_get_t queue_def_conf;
-	/**< Set up an raw queue. */
-	rawdev_queue_setup_t queue_setup;
-	/**< Release an raw queue. */
-	rawdev_queue_release_t queue_release;
-	/**< Get the number of queues attached to the device */
-	rawdev_queue_count_t queue_count;
+    /**< Get raw queue configuration. */
+    rawdev_queue_conf_get_t queue_def_conf;
+    /**< Set up an raw queue. */
+    rawdev_queue_setup_t queue_setup;
+    /**< Release an raw queue. */
+    rawdev_queue_release_t queue_release;
+    /**< Get the number of queues attached to the device */
+    rawdev_queue_count_t queue_count;
 
-	/**< Enqueue an array of raw buffers to device. */
-	rawdev_enqueue_bufs_t enqueue_bufs;
-	/**< Dequeue an array of raw buffers from device. */
-	/** TODO: Callback based enqueue and dequeue support */
-	rawdev_dequeue_bufs_t dequeue_bufs;
+    /**< Enqueue an array of raw buffers to device. */
+    rawdev_enqueue_bufs_t enqueue_bufs;
+    /**< Dequeue an array of raw buffers from device. */
+    /** TODO: Callback based enqueue and dequeue support */
+    rawdev_dequeue_bufs_t dequeue_bufs;
 
-	/* Dump internal information */
-	rawdev_dump_t dump;
+    /* Dump internal information */
+    rawdev_dump_t dump;
 
-	/**< Get an attribute managed by the implementation */
-	rawdev_get_attr_t attr_get;
-	/**< Set an attribute managed by the implementation */
-	rawdev_set_attr_t attr_set;
+    /**< Get an attribute managed by the implementation */
+    rawdev_get_attr_t attr_get;
+    /**< Set an attribute managed by the implementation */
+    rawdev_set_attr_t attr_set;
 
-	/**< Get extended device statistics. */
-	rawdev_xstats_get_t xstats_get;
-	/**< Get names of extended stats. */
-	rawdev_xstats_get_names_t xstats_get_names;
-	/**< Get one value by name. */
-	rawdev_xstats_get_by_name_t xstats_get_by_name;
-	/**< Reset the statistics values in xstats. */
-	rawdev_xstats_reset_t xstats_reset;
+    /**< Get extended device statistics. */
+    rawdev_xstats_get_t xstats_get;
+    /**< Get names of extended stats. */
+    rawdev_xstats_get_names_t xstats_get_names;
+    /**< Get one value by name. */
+    rawdev_xstats_get_by_name_t xstats_get_by_name;
+    /**< Reset the statistics values in xstats. */
+    rawdev_xstats_reset_t xstats_reset;
 
-	/**< Obtain firmware status */
-	rawdev_firmware_status_get_t firmware_status_get;
-	/**< Obtain firmware version information */
-	rawdev_firmware_version_get_t firmware_version_get;
-	/**< Load firmware */
-	rawdev_firmware_load_t firmware_load;
-	/**< Unload firmware */
-	rawdev_firmware_unload_t firmware_unload;
+    /**< Obtain firmware status */
+    rawdev_firmware_status_get_t firmware_status_get;
+    /**< Obtain firmware version information */
+    rawdev_firmware_version_get_t firmware_version_get;
+    /**< Load firmware */
+    rawdev_firmware_load_t firmware_load;
+    /**< Unload firmware */
+    rawdev_firmware_unload_t firmware_unload;
 
-	/**< Device selftest function */
-	rawdev_selftest_t dev_selftest;
+    /**< Device selftest function */
+    rawdev_selftest_t dev_selftest;
 };
 
 /**
@@ -578,7 +578,7 @@ struct rte_rawdev_ops {
  */
 struct rte_rawdev *
 rte_rawdev_pmd_allocate(const char *name, size_t dev_private_size,
-			int socket_id);
+            int socket_id);
 
 /**
  * Release the specified rawdev device.
@@ -607,7 +607,7 @@ rte_rawdev_pmd_release(struct rte_rawdev *rawdev);
  */
 struct rte_rawdev *
 rte_rawdev_pmd_init(const char *name, size_t dev_private_size,
-		    int socket_id);
+            int socket_id);
 
 /**
  * Destroy a raw device

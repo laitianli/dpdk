@@ -15,149 +15,149 @@ extern "C" {
  * buffer pools.
  */
 struct bman_depletion {
-	u32 state[2];
+    u32 state[2];
 };
 
 static inline void bman_depletion_init(struct bman_depletion *c)
 {
-	c->state[0] = c->state[1] = 0;
+    c->state[0] = c->state[1] = 0;
 }
 
 static inline void bman_depletion_fill(struct bman_depletion *c)
 {
-	c->state[0] = c->state[1] = ~0;
+    c->state[0] = c->state[1] = ~0;
 }
 
 /* --- Bman data structures (and associated constants) --- */
 
 /* Represents s/w corenet portal mapped data structures */
-struct bm_rcr_entry;	/* RCR (Release Command Ring) entries */
-struct bm_mc_command;	/* MC (Management Command) command */
-struct bm_mc_result;	/* MC result */
+struct bm_rcr_entry;    /* RCR (Release Command Ring) entries */
+struct bm_mc_command;    /* MC (Management Command) command */
+struct bm_mc_result;    /* MC result */
 
 /* Code-reduction, define a wrapper for 48-bit buffers. In cases where a buffer
  * pool id specific to this buffer is needed (BM_RCR_VERB_CMD_BPID_MULTI,
  * BM_MCC_VERB_ACQUIRE), the 'bpid' field is used.
  */
 struct bm_buffer {
-	union {
-		struct {
+    union {
+        struct {
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-			u8 __reserved1;
-			u8 bpid;
-			u16 hi; /* High 16-bits of 48-bit address */
-			u32 lo; /* Low 32-bits of 48-bit address */
+            u8 __reserved1;
+            u8 bpid;
+            u16 hi; /* High 16-bits of 48-bit address */
+            u32 lo; /* Low 32-bits of 48-bit address */
 #else
-			u32 lo;
-			u16 hi;
-			u8 bpid;
-			u8 __reserved;
+            u32 lo;
+            u16 hi;
+            u8 bpid;
+            u8 __reserved;
 #endif
-		};
-		struct {
+        };
+        struct {
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-			u64 __notaddress:16;
-			u64 addr:48;
+            u64 __notaddress:16;
+            u64 addr:48;
 #else
-			u64 addr:48;
-			u64 __notaddress:16;
+            u64 addr:48;
+            u64 __notaddress:16;
 #endif
-		};
-		u64 opaque;
-	};
+        };
+        u64 opaque;
+    };
 } __attribute__((aligned(8)));
 static inline u64 bm_buffer_get64(const struct bm_buffer *buf)
 {
-	return buf->addr;
+    return buf->addr;
 }
 
 static inline dma_addr_t bm_buf_addr(const struct bm_buffer *buf)
 {
-	return (dma_addr_t)buf->addr;
+    return (dma_addr_t)buf->addr;
 }
 
 #define bm_buffer_set64(buf, v) \
-	do { \
-		struct bm_buffer *__buf931 = (buf); \
-		__buf931->hi = upper_32_bits(v); \
-		__buf931->lo = lower_32_bits(v); \
-	} while (0)
+    do { \
+        struct bm_buffer *__buf931 = (buf); \
+        __buf931->hi = upper_32_bits(v); \
+        __buf931->lo = lower_32_bits(v); \
+    } while (0)
 
 /* See 1.5.3.5.4: "Release Command" */
 struct bm_rcr_entry {
-	union {
-		struct {
-			u8 __dont_write_directly__verb;
-			u8 bpid; /* used with BM_RCR_VERB_CMD_BPID_SINGLE */
-			u8 __reserved1[62];
-		};
-		struct bm_buffer bufs[8];
-	};
+    union {
+        struct {
+            u8 __dont_write_directly__verb;
+            u8 bpid; /* used with BM_RCR_VERB_CMD_BPID_SINGLE */
+            u8 __reserved1[62];
+        };
+        struct bm_buffer bufs[8];
+    };
 } __packed;
-#define BM_RCR_VERB_VBIT		0x80
-#define BM_RCR_VERB_CMD_MASK		0x70	/* one of two values; */
-#define BM_RCR_VERB_CMD_BPID_SINGLE	0x20
-#define BM_RCR_VERB_CMD_BPID_MULTI	0x30
-#define BM_RCR_VERB_BUFCOUNT_MASK	0x0f	/* values 1..8 */
+#define BM_RCR_VERB_VBIT        0x80
+#define BM_RCR_VERB_CMD_MASK        0x70    /* one of two values; */
+#define BM_RCR_VERB_CMD_BPID_SINGLE    0x20
+#define BM_RCR_VERB_CMD_BPID_MULTI    0x30
+#define BM_RCR_VERB_BUFCOUNT_MASK    0x0f    /* values 1..8 */
 
 /* See 1.5.3.1: "Acquire Command" */
 /* See 1.5.3.2: "Query Command" */
 struct bm_mcc_acquire {
-	u8 bpid;
-	u8 __reserved1[62];
+    u8 bpid;
+    u8 __reserved1[62];
 } __packed;
 struct bm_mcc_query {
-	u8 __reserved2[63];
+    u8 __reserved2[63];
 } __packed;
 struct bm_mc_command {
-	u8 __dont_write_directly__verb;
-	union {
-		struct bm_mcc_acquire acquire;
-		struct bm_mcc_query query;
-	};
+    u8 __dont_write_directly__verb;
+    union {
+        struct bm_mcc_acquire acquire;
+        struct bm_mcc_query query;
+    };
 } __packed;
-#define BM_MCC_VERB_VBIT		0x80
-#define BM_MCC_VERB_CMD_MASK		0x70	/* where the verb contains; */
-#define BM_MCC_VERB_CMD_ACQUIRE		0x10
-#define BM_MCC_VERB_CMD_QUERY		0x40
-#define BM_MCC_VERB_ACQUIRE_BUFCOUNT	0x0f	/* values 1..8 go here */
+#define BM_MCC_VERB_VBIT        0x80
+#define BM_MCC_VERB_CMD_MASK        0x70    /* where the verb contains; */
+#define BM_MCC_VERB_CMD_ACQUIRE        0x10
+#define BM_MCC_VERB_CMD_QUERY        0x40
+#define BM_MCC_VERB_ACQUIRE_BUFCOUNT    0x0f    /* values 1..8 go here */
 
 /* See 1.5.3.3: "Acquire Response" */
 /* See 1.5.3.4: "Query Response" */
 struct bm_pool_state {
-	u8 __reserved1[32];
-	/* "availability state" and "depletion state" */
-	struct {
-		u8 __reserved1[8];
-		/* Access using bman_depletion_***() */
-		struct bman_depletion state;
-	} as, ds;
+    u8 __reserved1[32];
+    /* "availability state" and "depletion state" */
+    struct {
+        u8 __reserved1[8];
+        /* Access using bman_depletion_***() */
+        struct bman_depletion state;
+    } as, ds;
 };
 
 struct bm_mc_result {
-	union {
-		struct {
-			u8 verb;
-			u8 __reserved1[63];
-		};
-		union {
-			struct {
-				u8 __reserved1;
-				u8 bpid;
-				u8 __reserved2[62];
-			};
-			struct bm_buffer bufs[8];
-		} acquire;
-		struct bm_pool_state query;
-	};
+    union {
+        struct {
+            u8 verb;
+            u8 __reserved1[63];
+        };
+        union {
+            struct {
+                u8 __reserved1;
+                u8 bpid;
+                u8 __reserved2[62];
+            };
+            struct bm_buffer bufs[8];
+        } acquire;
+        struct bm_pool_state query;
+    };
 } __packed;
-#define BM_MCR_VERB_VBIT		0x80
-#define BM_MCR_VERB_CMD_MASK		BM_MCC_VERB_CMD_MASK
-#define BM_MCR_VERB_CMD_ACQUIRE		BM_MCC_VERB_CMD_ACQUIRE
-#define BM_MCR_VERB_CMD_QUERY		BM_MCC_VERB_CMD_QUERY
-#define BM_MCR_VERB_CMD_ERR_INVALID	0x60
-#define BM_MCR_VERB_CMD_ERR_ECC		0x70
-#define BM_MCR_VERB_ACQUIRE_BUFCOUNT	BM_MCC_VERB_ACQUIRE_BUFCOUNT /* 0..8 */
+#define BM_MCR_VERB_VBIT        0x80
+#define BM_MCR_VERB_CMD_MASK        BM_MCC_VERB_CMD_MASK
+#define BM_MCR_VERB_CMD_ACQUIRE        BM_MCC_VERB_CMD_ACQUIRE
+#define BM_MCR_VERB_CMD_QUERY        BM_MCC_VERB_CMD_QUERY
+#define BM_MCR_VERB_CMD_ERR_INVALID    0x60
+#define BM_MCR_VERB_CMD_ERR_ECC        0x70
+#define BM_MCR_VERB_ACQUIRE_BUFCOUNT    BM_MCC_VERB_ACQUIRE_BUFCOUNT /* 0..8 */
 
 /* Portal and Buffer Pools */
 /* Represents a managed portal */
@@ -168,18 +168,18 @@ struct bman_pool;
 
 /* This struct specifies parameters for a bman_pool object. */
 struct bman_pool_params {
-	/* index of the buffer pool to encapsulate (0-63), ignored if
-	 * BMAN_POOL_FLAG_DYNAMIC_BPID is set.
-	 */
-	u32 bpid;
-	/* bit-mask of BMAN_POOL_FLAG_*** options */
-	u32 flags;
-	/* depletion-entry/exit thresholds, if BMAN_POOL_FLAG_THRESH is set. NB:
-	 * this is only allowed if BMAN_POOL_FLAG_DYNAMIC_BPID is used *and*
-	 * when run in the control plane (which controls Bman CCSR). This array
-	 * matches the definition of bm_pool_set().
-	 */
-	u32 thresholds[4];
+    /* index of the buffer pool to encapsulate (0-63), ignored if
+     * BMAN_POOL_FLAG_DYNAMIC_BPID is set.
+     */
+    u32 bpid;
+    /* bit-mask of BMAN_POOL_FLAG_*** options */
+    u32 flags;
+    /* depletion-entry/exit thresholds, if BMAN_POOL_FLAG_THRESH is set. NB:
+     * this is only allowed if BMAN_POOL_FLAG_DYNAMIC_BPID is used *and*
+     * when run in the control plane (which controls Bman CCSR). This array
+     * matches the definition of bm_pool_set().
+     */
+    u32 thresholds[4];
 };
 
 /* Flags to bman_new_pool() */
@@ -225,9 +225,9 @@ int bman_rcr_is_empty(void);
 int bman_alloc_bpid_range(u32 *result, u32 count, u32 align, int partial);
 static inline int bman_alloc_bpid(u32 *result)
 {
-	int ret = bman_alloc_bpid_range(result, 1, 0, 0);
+    int ret = bman_alloc_bpid_range(result, 1, 0, 0);
 
-	return (ret > 0) ? 0 : ret;
+    return (ret > 0) ? 0 : ret;
 }
 
 /**
@@ -241,13 +241,13 @@ static inline int bman_alloc_bpid(u32 *result)
 void bman_release_bpid_range(u32 bpid, unsigned int count);
 static inline void bman_release_bpid(u32 bpid)
 {
-	bman_release_bpid_range(bpid, 1);
+    bman_release_bpid_range(bpid, 1);
 }
 
 int bman_reserve_bpid_range(u32 bpid, unsigned int count);
 static inline int bman_reserve_bpid(u32 bpid)
 {
-	return bman_reserve_bpid_range(bpid, 1);
+    return bman_reserve_bpid_range(bpid, 1);
 }
 
 void bman_seed_bpid_range(u32 bpid, unsigned int count);
@@ -290,7 +290,7 @@ const struct bman_pool_params *bman_get_params(const struct bman_pool *pool);
  *
  */
 int bman_release(struct bman_pool *pool, const struct bm_buffer *bufs, u8 num,
-		 u32 flags);
+         u32 flags);
 
 /**
  * bman_acquire - Acquire buffer(s) from a buffer pool
@@ -303,7 +303,7 @@ int bman_release(struct bman_pool *pool, const struct bm_buffer *bufs, u8 num,
  * negative error code if a h/w error or pool starvation was encountered.
  */
 int bman_acquire(struct bman_pool *pool, struct bm_buffer *bufs, u8 num,
-		 u32 flags);
+         u32 flags);
 
 /**
  * bman_query_pools - Query all buffer pool states
@@ -333,7 +333,7 @@ int bman_update_pool_thresholds(struct bman_pool *pool, const u32 *thresholds);
  * @high_thresh: high threshold
  */
 int bm_pool_set_hw_threshold(u32 bpid, const u32 low_thresh,
-			     const u32 high_thresh);
+                 const u32 high_thresh);
 
 #ifdef __cplusplus
 }

@@ -15,13 +15,13 @@ extern "C" {
 (&__stop_per_lt - &__start_per_lt)
 
 struct lthread_key {
-	tls_destructor_func destructor;
+    tls_destructor_func destructor;
 };
 
 struct lthread_tls {
-	void *data[LTHREAD_MAX_KEYS];
-	int  nb_keys_inuse;
-	struct lthread_sched *root_sched;
+    void *data[LTHREAD_MAX_KEYS];
+    int  nb_keys_inuse;
+    struct lthread_sched *root_sched;
 };
 
 void _lthread_tls_destroy(struct lthread *lt);
@@ -32,4 +32,4 @@ void _lthread_tls_alloc(struct lthread *lt);
 }
 #endif
 
-#endif				/* LTHREAD_TLS_H_ */
+#endif                /* LTHREAD_TLS_H_ */

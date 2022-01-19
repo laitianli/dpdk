@@ -26,9 +26,9 @@ struct rte_mbuf;
  *     sufficient.
  *
  */
-#define virtio_mb()	rte_smp_mb()
-#define virtio_rmb()	rte_smp_rmb()
-#define virtio_wmb()	rte_smp_wmb()
+#define virtio_mb()    rte_smp_mb()
+#define virtio_rmb()    rte_smp_rmb()
+#define virtio_wmb()    rte_smp_wmb()
 
 #define VIRTQUEUE_MAX_NAME_SZ 32
 
@@ -43,52 +43,52 @@ enum { VTCRYPTO_DATAQ = 0, VTCRYPTO_CTRLQ = 1 };
 #define VQ_RING_DESC_CHAIN_END 32768
 
 struct vq_desc_extra {
-	void     *crypto_op;
-	void     *cookie;
-	uint16_t ndescs;
+    void     *crypto_op;
+    void     *cookie;
+    uint16_t ndescs;
 };
 
 struct virtqueue {
-	/**< virtio_crypto_hw structure pointer. */
-	struct virtio_crypto_hw *hw;
-	/**< mem zone to populate RX ring. */
-	const struct rte_memzone *mz;
-	/**< memzone to populate hdr and request. */
-	struct rte_mempool *mpool;
-	uint8_t     dev_id;              /**< Device identifier. */
-	uint16_t    vq_queue_index;       /**< PCI queue index */
+    /**< virtio_crypto_hw structure pointer. */
+    struct virtio_crypto_hw *hw;
+    /**< mem zone to populate RX ring. */
+    const struct rte_memzone *mz;
+    /**< memzone to populate hdr and request. */
+    struct rte_mempool *mpool;
+    uint8_t     dev_id;              /**< Device identifier. */
+    uint16_t    vq_queue_index;       /**< PCI queue index */
 
-	void        *vq_ring_virt_mem;    /**< linear address of vring*/
-	unsigned int vq_ring_size;
-	phys_addr_t vq_ring_mem;          /**< physical address of vring */
+    void        *vq_ring_virt_mem;    /**< linear address of vring*/
+    unsigned int vq_ring_size;
+    phys_addr_t vq_ring_mem;          /**< physical address of vring */
 
-	struct vring vq_ring;    /**< vring keeping desc, used and avail */
-	uint16_t    vq_free_cnt; /**< num of desc available */
-	uint16_t    vq_nentries; /**< vring desc numbers */
+    struct vring vq_ring;    /**< vring keeping desc, used and avail */
+    uint16_t    vq_free_cnt; /**< num of desc available */
+    uint16_t    vq_nentries; /**< vring desc numbers */
 
-	/**
-	 * Head of the free chain in the descriptor table. If
-	 * there are no free descriptors, this will be set to
-	 * VQ_RING_DESC_CHAIN_END.
-	 */
-	uint16_t  vq_desc_head_idx;
-	uint16_t  vq_desc_tail_idx;
-	/**
-	 * Last consumed descriptor in the used table,
-	 * trails vq_ring.used->idx.
-	 */
-	uint16_t vq_used_cons_idx;
-	uint16_t vq_avail_idx;
+    /**
+     * Head of the free chain in the descriptor table. If
+     * there are no free descriptors, this will be set to
+     * VQ_RING_DESC_CHAIN_END.
+     */
+    uint16_t  vq_desc_head_idx;
+    uint16_t  vq_desc_tail_idx;
+    /**
+     * Last consumed descriptor in the used table,
+     * trails vq_ring.used->idx.
+     */
+    uint16_t vq_used_cons_idx;
+    uint16_t vq_avail_idx;
 
-	/* Statistics */
-	uint64_t	packets_sent_total;
-	uint64_t	packets_sent_failed;
-	uint64_t	packets_received_total;
-	uint64_t	packets_received_failed;
+    /* Statistics */
+    uint64_t    packets_sent_total;
+    uint64_t    packets_sent_failed;
+    uint64_t    packets_received_total;
+    uint64_t    packets_received_failed;
 
-	uint16_t  *notify_addr;
+    uint16_t  *notify_addr;
 
-	struct vq_desc_extra vq_descx[0];
+    struct vq_desc_extra vq_descx[0];
 };
 
 /**
@@ -104,68 +104,68 @@ void virtqueue_detatch_unused(struct virtqueue *vq);
 static inline int
 virtqueue_full(const struct virtqueue *vq)
 {
-	return vq->vq_free_cnt == 0;
+    return vq->vq_free_cnt == 0;
 }
 
 #define VIRTQUEUE_NUSED(vq) \
-	((uint16_t)((vq)->vq_ring.used->idx - (vq)->vq_used_cons_idx))
+    ((uint16_t)((vq)->vq_ring.used->idx - (vq)->vq_used_cons_idx))
 
 static inline void
 vq_update_avail_idx(struct virtqueue *vq)
 {
-	virtio_wmb();
-	vq->vq_ring.avail->idx = vq->vq_avail_idx;
+    virtio_wmb();
+    vq->vq_ring.avail->idx = vq->vq_avail_idx;
 }
 
 static inline void
 vq_update_avail_ring(struct virtqueue *vq, uint16_t desc_idx)
 {
-	uint16_t avail_idx;
-	/*
-	 * Place the head of the descriptor chain into the next slot and make
-	 * it usable to the host. The chain is made available now rather than
-	 * deferring to virtqueue_notify() in the hopes that if the host is
-	 * currently running on another CPU, we can keep it processing the new
-	 * descriptor.
-	 */
-	avail_idx = (uint16_t)(vq->vq_avail_idx & (vq->vq_nentries - 1));
-	if (unlikely(vq->vq_ring.avail->ring[avail_idx] != desc_idx))
-		vq->vq_ring.avail->ring[avail_idx] = desc_idx;
-	vq->vq_avail_idx++;
+    uint16_t avail_idx;
+    /*
+     * Place the head of the descriptor chain into the next slot and make
+     * it usable to the host. The chain is made available now rather than
+     * deferring to virtqueue_notify() in the hopes that if the host is
+     * currently running on another CPU, we can keep it processing the new
+     * descriptor.
+     */
+    avail_idx = (uint16_t)(vq->vq_avail_idx & (vq->vq_nentries - 1));
+    if (unlikely(vq->vq_ring.avail->ring[avail_idx] != desc_idx))
+        vq->vq_ring.avail->ring[avail_idx] = desc_idx;
+    vq->vq_avail_idx++;
 }
 
 static inline int
 virtqueue_kick_prepare(struct virtqueue *vq)
 {
-	return !(vq->vq_ring.used->flags & VRING_USED_F_NO_NOTIFY);
+    return !(vq->vq_ring.used->flags & VRING_USED_F_NO_NOTIFY);
 }
 
 static inline void
 virtqueue_notify(struct virtqueue *vq)
 {
-	/*
-	 * Ensure updated avail->idx is visible to host.
-	 * For virtio on IA, the notificaiton is through io port operation
-	 * which is a serialization instruction itself.
-	 */
-	VTPCI_OPS(vq->hw)->notify_queue(vq->hw, vq);
+    /*
+     * Ensure updated avail->idx is visible to host.
+     * For virtio on IA, the notificaiton is through io port operation
+     * which is a serialization instruction itself.
+     */
+    VTPCI_OPS(vq->hw)->notify_queue(vq->hw, vq);
 }
 
 /**
  * Dump virtqueue internal structures, for debug purpose only.
  */
 #define VIRTQUEUE_DUMP(vq) do { \
-	uint16_t used_idx, nused; \
-	used_idx = (vq)->vq_ring.used->idx; \
-	nused = (uint16_t)(used_idx - (vq)->vq_used_cons_idx); \
-	VIRTIO_CRYPTO_INIT_LOG_DBG(\
-	  "VQ: - size=%d; free=%d; used=%d; desc_head_idx=%d;" \
-	  " avail.idx=%d; used_cons_idx=%d; used.idx=%d;" \
-	  " avail.flags=0x%x; used.flags=0x%x", \
-	  (vq)->vq_nentries, (vq)->vq_free_cnt, nused, \
-	  (vq)->vq_desc_head_idx, (vq)->vq_ring.avail->idx, \
-	  (vq)->vq_used_cons_idx, (vq)->vq_ring.used->idx, \
-	  (vq)->vq_ring.avail->flags, (vq)->vq_ring.used->flags); \
+    uint16_t used_idx, nused; \
+    used_idx = (vq)->vq_ring.used->idx; \
+    nused = (uint16_t)(used_idx - (vq)->vq_used_cons_idx); \
+    VIRTIO_CRYPTO_INIT_LOG_DBG(\
+      "VQ: - size=%d; free=%d; used=%d; desc_head_idx=%d;" \
+      " avail.idx=%d; used_cons_idx=%d; used.idx=%d;" \
+      " avail.flags=0x%x; used.flags=0x%x", \
+      (vq)->vq_nentries, (vq)->vq_free_cnt, nused, \
+      (vq)->vq_desc_head_idx, (vq)->vq_ring.avail->idx, \
+      (vq)->vq_used_cons_idx, (vq)->vq_ring.used->idx, \
+      (vq)->vq_ring.avail->flags, (vq)->vq_ring.used->flags); \
 } while (0)
 
 #endif /* _VIRTQUEUE_H_ */

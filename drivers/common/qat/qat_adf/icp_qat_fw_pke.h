@@ -50,11 +50,11 @@ typedef uint64_t u64;
  *
  *****************************************************************************/
 struct icp_qat_fw_pke_resp_status {
-	u8 comn_err_code;
-	/**< 8 bit common error code */
+    u8 comn_err_code;
+    /**< 8 bit common error code */
 
-	u8 pke_resp_flags;
-	/**< 8-bit PKE response flags  */
+    u8 pke_resp_flags;
+    /**< 8-bit PKE response flags  */
 };
 
 /**
@@ -67,17 +67,17 @@ struct icp_qat_fw_pke_resp_status {
  *
  *****************************************************************************/
 struct icp_qat_fw_req_hdr_pke_cd_pars {
-	/**< LWs 2-3 */
-	u64 content_desc_addr;
-	/**< Content descriptor pointer */
+    /**< LWs 2-3 */
+    u64 content_desc_addr;
+    /**< Content descriptor pointer */
 
-	/**< LW 4 */
-	u32 content_desc_resrvd;
-	/**< Content descriptor reserved field */
+    /**< LW 4 */
+    u32 content_desc_resrvd;
+    /**< Content descriptor reserved field */
 
-	/**< LW 5 */
-	u32 func_id;
-	/**< MMP functionality Id */
+    /**< LW 5 */
+    u32 func_id;
+    /**< MMP functionality Id */
 };
 
 /**
@@ -90,23 +90,23 @@ struct icp_qat_fw_req_hdr_pke_cd_pars {
  *
  *****************************************************************************/
 struct icp_qat_fw_req_pke_mid {
-	/**< LWs 6-11 */
-	u64 opaque;
-	/**< Opaque data passed unmodified from the request to response messages
-	 * by firmware (fw)
-	 */
+    /**< LWs 6-11 */
+    u64 opaque;
+    /**< Opaque data passed unmodified from the request to response messages
+     * by firmware (fw)
+     */
 
-	u64 src_data_addr;
-	/**< Generic definition of the source data supplied to the QAT AE. The
-	 * common flags are used to further describe the attributes of this
-	 * field
-	 */
+    u64 src_data_addr;
+    /**< Generic definition of the source data supplied to the QAT AE. The
+     * common flags are used to further describe the attributes of this
+     * field
+     */
 
-	u64 dest_data_addr;
-	/**< Generic definition of the destination data supplied to the QAT AE.
-	 * The common flags are used to further describe the attributes of this
-	 * field
-	 */
+    u64 dest_data_addr;
+    /**< Generic definition of the destination data supplied to the QAT AE.
+     * The common flags are used to further describe the attributes of this
+     * field
+     */
 };
 
 /**
@@ -119,43 +119,43 @@ struct icp_qat_fw_req_pke_mid {
  *
  *****************************************************************************/
 struct icp_qat_fw_req_pke_hdr {
-	/**< LW0 */
-	u8 resrvd1;
-	/**< reserved field */
+    /**< LW0 */
+    u8 resrvd1;
+    /**< reserved field */
 
-	u8 resrvd2;
-	/**< reserved field */
+    u8 resrvd2;
+    /**< reserved field */
 
-	u8 service_type;
-	/**< Service type */
+    u8 service_type;
+    /**< Service type */
 
-	u8 hdr_flags;
-	/**< This represents a flags field for the Service Request.
-	 * The most significant bit is the 'valid' flag and the only
-	 * one used. All remaining bit positions are unused and
-	 * are therefore reserved and need to be set to 0.
-	 */
+    u8 hdr_flags;
+    /**< This represents a flags field for the Service Request.
+     * The most significant bit is the 'valid' flag and the only
+     * one used. All remaining bit positions are unused and
+     * are therefore reserved and need to be set to 0.
+     */
 
-	/**< LW1 */
-	u16 comn_req_flags;
-	/**< Common Request flags must indicate flat buffer
-	 * Common Request flags - PKE slice flags no longer used - slice
-	 * allocated to a threadstrand.
-	 */
+    /**< LW1 */
+    u16 comn_req_flags;
+    /**< Common Request flags must indicate flat buffer
+     * Common Request flags - PKE slice flags no longer used - slice
+     * allocated to a threadstrand.
+     */
 
-	u8 kpt_mask;
-	/** < KPT input parameters array mask, indicate which node in array is
-	 *encrypted
-	 */
+    u8 kpt_mask;
+    /** < KPT input parameters array mask, indicate which node in array is
+     *encrypted
+     */
 
-	u8 kpt_rn_mask;
-	/**< KPT random node(RN) mask - indicate which node is RN that QAT
-	 * should generate itself.
-	 */
+    u8 kpt_rn_mask;
+    /**< KPT random node(RN) mask - indicate which node is RN that QAT
+     * should generate itself.
+     */
 
-	/**< LWs 2-5 */
-	struct icp_qat_fw_req_hdr_pke_cd_pars cd_pars;
-	/**< PKE request message header pars structure */
+    /**< LWs 2-5 */
+    struct icp_qat_fw_req_hdr_pke_cd_pars cd_pars;
+    /**< PKE request message header pars structure */
 };
 
 /**
@@ -168,31 +168,31 @@ struct icp_qat_fw_req_pke_hdr {
  *
  *****************************************************************************/
 struct icp_qat_fw_pke_request {
-	/**< LWs 0-5 */
-	struct icp_qat_fw_req_pke_hdr pke_hdr;
-	/**< Request header for PKE - CD Header/Param size  must be zero */
+    /**< LWs 0-5 */
+    struct icp_qat_fw_req_pke_hdr pke_hdr;
+    /**< Request header for PKE - CD Header/Param size  must be zero */
 
-	/**< LWs 6-11 */
-	struct icp_qat_fw_req_pke_mid pke_mid;
-	/**< Request middle section for PKE */
+    /**< LWs 6-11 */
+    struct icp_qat_fw_req_pke_mid pke_mid;
+    /**< Request middle section for PKE */
 
-	/**< LW 12 */
-	u8 output_param_count;
-	/**< Number of output large integers for request */
+    /**< LW 12 */
+    u8 output_param_count;
+    /**< Number of output large integers for request */
 
-	u8 input_param_count;
-	/**< Number of input large integers for request */
+    u8 input_param_count;
+    /**< Number of input large integers for request */
 
-	u16 resrvd1;
-	/** Reserved **/
+    u16 resrvd1;
+    /** Reserved **/
 
-	/**< LW 13 */
-	u32 resrvd2;
-	/**< Reserved */
+    /**< LW 13 */
+    u32 resrvd2;
+    /**< Reserved */
 
-	/**< LWs 14-15 */
-	u64 next_req_adr;
-	/** < PKE - next request address */
+    /**< LWs 14-15 */
+    u64 next_req_adr;
+    /** < PKE - next request address */
 };
 
 /**
@@ -205,28 +205,28 @@ struct icp_qat_fw_pke_request {
  *
  *****************************************************************************/
 struct icp_qat_fw_resp_pke_hdr {
-	/**< LW0 */
-	u8 resrvd1;
-	/**< Reserved */
+    /**< LW0 */
+    u8 resrvd1;
+    /**< Reserved */
 
-	u8 resrvd2;
-	/**< Reserved */
+    u8 resrvd2;
+    /**< Reserved */
 
-	u8 response_type;
-	/**< Response type - copied from the request to the response message */
+    u8 response_type;
+    /**< Response type - copied from the request to the response message */
 
-	u8 hdr_flags;
-	/**< This represents a flags field for the Response.
-	 * The most significant bit is the 'valid' flag and the only
-	 * one used. All remaining bit positions are unused and
-	 * are therefore reserved
-	 */
+    u8 hdr_flags;
+    /**< This represents a flags field for the Response.
+     * The most significant bit is the 'valid' flag and the only
+     * one used. All remaining bit positions are unused and
+     * are therefore reserved
+     */
 
-	/**< LW1 */
-	struct icp_qat_fw_pke_resp_status resp_status;
+    /**< LW1 */
+    struct icp_qat_fw_pke_resp_status resp_status;
 
-	u16 resrvd4;
-	/**< Set to zero. */
+    u16 resrvd4;
+    /**< Set to zero. */
 };
 
 /**
@@ -239,27 +239,27 @@ struct icp_qat_fw_resp_pke_hdr {
  *
  *****************************************************************************/
 struct icp_qat_fw_pke_resp {
-	/**< LWs 0-1 */
-	struct icp_qat_fw_resp_pke_hdr pke_resp_hdr;
-	/**< Response header for PKE */
+    /**< LWs 0-1 */
+    struct icp_qat_fw_resp_pke_hdr pke_resp_hdr;
+    /**< Response header for PKE */
 
-	/**< LWs 2-3 */
-	u64 opaque;
-	/**< Opaque data passed from the request to the response message */
+    /**< LWs 2-3 */
+    u64 opaque;
+    /**< Opaque data passed from the request to the response message */
 
-	/**< LWs 4-5 */
-	u64 src_data_addr;
-	/**< Generic definition of the source data supplied to the QAT AE. The
-	 * common flags are used to further describe the attributes of this
-	 * field
-	 */
+    /**< LWs 4-5 */
+    u64 src_data_addr;
+    /**< Generic definition of the source data supplied to the QAT AE. The
+     * common flags are used to further describe the attributes of this
+     * field
+     */
 
-	/**< LWs 6-7 */
-	u64 dest_data_addr;
-	/**< Generic definition of the destination data supplied to the QAT AE.
-	 * The common flags are used to further describe the attributes of this
-	 * field
-	 */
+    /**< LWs 6-7 */
+    u64 dest_data_addr;
+    /**< Generic definition of the destination data supplied to the QAT AE.
+     * The common flags are used to further describe the attributes of this
+     * field
+     */
 };
 
 /* ========================================================================= */
@@ -322,8 +322,8 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_RESP_PKE_STAT_GET(flags)                                \
-	QAT_FIELD_GET((flags), QAT_COMN_RESP_PKE_STATUS_BITPOS,                \
-		      QAT_COMN_RESP_PKE_STATUS_MASK)
+    QAT_FIELD_GET((flags), QAT_COMN_RESP_PKE_STATUS_BITPOS,                \
+              QAT_COMN_RESP_PKE_STATUS_MASK)
 
 /**
  ******************************************************************************
@@ -339,7 +339,7 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_RQ_VALID_FLAG_GET(icp_qat_fw_req_pke_hdr)               \
-	ICP_QAT_FW_PKE_HDR_VALID_FLAG_GET(icp_qat_fw_req_pke_hdr)
+    ICP_QAT_FW_PKE_HDR_VALID_FLAG_GET(icp_qat_fw_req_pke_hdr)
 
 /**
  ******************************************************************************
@@ -355,7 +355,7 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_RQ_VALID_FLAG_SET(icp_qat_fw_req_pke_hdr, val)          \
-	ICP_QAT_FW_PKE_HDR_VALID_FLAG_SET(icp_qat_fw_req_pke_hdr, val)
+    ICP_QAT_FW_PKE_HDR_VALID_FLAG_SET(icp_qat_fw_req_pke_hdr, val)
 
 /**
  ******************************************************************************
@@ -371,7 +371,7 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_RESP_VALID_FLAG_GET(icp_qat_fw_resp_pke_hdr)            \
-	ICP_QAT_FW_PKE_HDR_VALID_FLAG_GET(icp_qat_fw_resp_pke_hdr)
+    ICP_QAT_FW_PKE_HDR_VALID_FLAG_GET(icp_qat_fw_resp_pke_hdr)
 
 /**
  ******************************************************************************
@@ -387,7 +387,7 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_RESP_VALID_FLAG_SET(icp_qat_fw_resp_pke_hdr, val)       \
-	ICP_QAT_FW_PKE_HDR_VALID_FLAG_SET(icp_qat_fw_resp_pke_hdr, val)
+    ICP_QAT_FW_PKE_HDR_VALID_FLAG_SET(icp_qat_fw_resp_pke_hdr, val)
 
 /**
  ******************************************************************************
@@ -402,8 +402,8 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_HDR_VALID_FLAG_GET(hdr)                                 \
-	QAT_FIELD_GET(hdr.hdr_flags, ICP_QAT_FW_PKE_HDR_VALID_FLAG_BITPOS,     \
-		      ICP_QAT_FW_PKE_HDR_VALID_FLAG_MASK)
+    QAT_FIELD_GET(hdr.hdr_flags, ICP_QAT_FW_PKE_HDR_VALID_FLAG_BITPOS,     \
+              ICP_QAT_FW_PKE_HDR_VALID_FLAG_MASK)
 
 /**
  ******************************************************************************
@@ -419,8 +419,8 @@ struct icp_qat_fw_pke_resp {
  *
  *****************************************************************************/
 #define ICP_QAT_FW_PKE_HDR_VALID_FLAG_SET(hdr, val)                            \
-	QAT_FIELD_SET((hdr.hdr_flags), (val),                                  \
-		      ICP_QAT_FW_PKE_HDR_VALID_FLAG_BITPOS,                    \
-		      ICP_QAT_FW_PKE_HDR_VALID_FLAG_MASK)
+    QAT_FIELD_SET((hdr.hdr_flags), (val),                                  \
+              ICP_QAT_FW_PKE_HDR_VALID_FLAG_BITPOS,                    \
+              ICP_QAT_FW_PKE_HDR_VALID_FLAG_MASK)
 
 #endif /* _ICP_QAT_FW_PKE_H_ */

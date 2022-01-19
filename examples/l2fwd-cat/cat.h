@@ -21,15 +21,15 @@ extern "C" {
 
 /* L3 cache allocation class of service data structure */
 struct cat_config {
-	rte_cpuset_t cpumask;		/* CPUs bitmask */
-	int cdp;			/* data & code masks used if true */
-	union {
-		uint64_t mask;		/* capacity bitmask (CBM) */
-		struct {
-			uint64_t data_mask; /* data capacity bitmask (CBM) */
-			uint64_t code_mask; /* code capacity bitmask (CBM) */
-		};
-	};
+    rte_cpuset_t cpumask;        /* CPUs bitmask */
+    int cdp;            /* data & code masks used if true */
+    union {
+        uint64_t mask;        /* capacity bitmask (CBM) */
+        struct {
+            uint64_t data_mask; /* data capacity bitmask (CBM) */
+            uint64_t code_mask; /* code capacity bitmask (CBM) */
+        };
+    };
 };
 
 int cat_init(int argc, char **argv);

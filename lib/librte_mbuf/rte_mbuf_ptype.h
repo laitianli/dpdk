@@ -682,11 +682,11 @@ extern "C" {
 #define  RTE_ETH_IS_IPV6_HDR(ptype) ((ptype) & RTE_PTYPE_L3_IPV6)
 
 /* Check if it is a tunneling packet */
-#define RTE_ETH_IS_TUNNEL_PKT(ptype) ((ptype) &				\
-	(RTE_PTYPE_TUNNEL_MASK |					\
-		RTE_PTYPE_INNER_L2_MASK |				\
-		RTE_PTYPE_INNER_L3_MASK |				\
-		RTE_PTYPE_INNER_L4_MASK))
+#define RTE_ETH_IS_TUNNEL_PKT(ptype) ((ptype) &                \
+    (RTE_PTYPE_TUNNEL_MASK |                    \
+        RTE_PTYPE_INNER_L2_MASK |                \
+        RTE_PTYPE_INNER_L3_MASK |                \
+        RTE_PTYPE_INNER_L4_MASK))
 
 /**
  * Get the name of the l2 packet type

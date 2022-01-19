@@ -58,137 +58,137 @@ extern "C" {
  * Statistics counter type
  */
 enum rte_mtr_stats_type {
-	/** Number of packets passed as green by the policer. */
-	RTE_MTR_STATS_N_PKTS_GREEN = 1 << 0,
+    /** Number of packets passed as green by the policer. */
+    RTE_MTR_STATS_N_PKTS_GREEN = 1 << 0,
 
-	/** Number of packets passed as yellow by the policer. */
-	RTE_MTR_STATS_N_PKTS_YELLOW = 1 << 1,
+    /** Number of packets passed as yellow by the policer. */
+    RTE_MTR_STATS_N_PKTS_YELLOW = 1 << 1,
 
-	/** Number of packets passed as red by the policer. */
-	RTE_MTR_STATS_N_PKTS_RED = 1 << 2,
+    /** Number of packets passed as red by the policer. */
+    RTE_MTR_STATS_N_PKTS_RED = 1 << 2,
 
-	/** Number of packets dropped by the policer. */
-	RTE_MTR_STATS_N_PKTS_DROPPED = 1 << 3,
+    /** Number of packets dropped by the policer. */
+    RTE_MTR_STATS_N_PKTS_DROPPED = 1 << 3,
 
-	/** Number of bytes passed as green by the policer. */
-	RTE_MTR_STATS_N_BYTES_GREEN = 1 << 4,
+    /** Number of bytes passed as green by the policer. */
+    RTE_MTR_STATS_N_BYTES_GREEN = 1 << 4,
 
-	/** Number of bytes passed as yellow by the policer. */
-	RTE_MTR_STATS_N_BYTES_YELLOW = 1 << 5,
+    /** Number of bytes passed as yellow by the policer. */
+    RTE_MTR_STATS_N_BYTES_YELLOW = 1 << 5,
 
-	/** Number of bytes passed as red by the policer. */
-	RTE_MTR_STATS_N_BYTES_RED = 1 << 6,
+    /** Number of bytes passed as red by the policer. */
+    RTE_MTR_STATS_N_BYTES_RED = 1 << 6,
 
-	/** Number of bytes dropped by the policer. */
-	RTE_MTR_STATS_N_BYTES_DROPPED = 1 << 7,
+    /** Number of bytes dropped by the policer. */
+    RTE_MTR_STATS_N_BYTES_DROPPED = 1 << 7,
 };
 
 /**
  * Statistics counters
  */
 struct rte_mtr_stats {
-	/** Number of packets passed by the policer (per color). */
-	uint64_t n_pkts[RTE_COLORS];
+    /** Number of packets passed by the policer (per color). */
+    uint64_t n_pkts[RTE_COLORS];
 
-	/** Number of bytes passed by the policer (per color). */
-	uint64_t n_bytes[RTE_COLORS];
+    /** Number of bytes passed by the policer (per color). */
+    uint64_t n_bytes[RTE_COLORS];
 
-	/** Number of packets dropped by the policer. */
-	uint64_t n_pkts_dropped;
+    /** Number of packets dropped by the policer. */
+    uint64_t n_pkts_dropped;
 
-	/** Number of bytes passed by the policer. */
-	uint64_t n_bytes_dropped;
+    /** Number of bytes passed by the policer. */
+    uint64_t n_bytes_dropped;
 };
 
 /**
  * Traffic metering algorithms
  */
 enum rte_mtr_algorithm {
-	/** No traffic metering performed, the output color is the same as the
-	 * input color for every input packet. The meter of the MTR object is
-	 * working in pass-through mode, having same effect as meter disable.
-	 * @see rte_mtr_meter_disable()
-	 */
-	RTE_MTR_NONE = 0,
+    /** No traffic metering performed, the output color is the same as the
+     * input color for every input packet. The meter of the MTR object is
+     * working in pass-through mode, having same effect as meter disable.
+     * @see rte_mtr_meter_disable()
+     */
+    RTE_MTR_NONE = 0,
 
-	/** Single Rate Three Color Marker (srTCM) - IETF RFC 2697. */
-	RTE_MTR_SRTCM_RFC2697,
+    /** Single Rate Three Color Marker (srTCM) - IETF RFC 2697. */
+    RTE_MTR_SRTCM_RFC2697,
 
-	/** Two Rate Three Color Marker (trTCM) - IETF RFC 2698. */
-	RTE_MTR_TRTCM_RFC2698,
+    /** Two Rate Three Color Marker (trTCM) - IETF RFC 2698. */
+    RTE_MTR_TRTCM_RFC2698,
 
-	/** Two Rate Three Color Marker (trTCM) - IETF RFC 4115. */
-	RTE_MTR_TRTCM_RFC4115,
+    /** Two Rate Three Color Marker (trTCM) - IETF RFC 4115. */
+    RTE_MTR_TRTCM_RFC4115,
 };
 
 /**
  * Meter profile
  */
 struct rte_mtr_meter_profile {
-	/** Traffic metering algorithm. */
-	enum rte_mtr_algorithm alg;
+    /** Traffic metering algorithm. */
+    enum rte_mtr_algorithm alg;
 
-	RTE_STD_C11
-	union {
-		/** Items only valid when *alg* is set to srTCM - RFC 2697. */
-		struct {
-			/** Committed Information Rate (CIR) (bytes/second). */
-			uint64_t cir;
+    RTE_STD_C11
+    union {
+        /** Items only valid when *alg* is set to srTCM - RFC 2697. */
+        struct {
+            /** Committed Information Rate (CIR) (bytes/second). */
+            uint64_t cir;
 
-			/** Committed Burst Size (CBS) (bytes). */
-			uint64_t cbs;
+            /** Committed Burst Size (CBS) (bytes). */
+            uint64_t cbs;
 
-			/** Excess Burst Size (EBS) (bytes). */
-			uint64_t ebs;
-		} srtcm_rfc2697;
+            /** Excess Burst Size (EBS) (bytes). */
+            uint64_t ebs;
+        } srtcm_rfc2697;
 
-		/** Items only valid when *alg* is set to trTCM - RFC 2698. */
-		struct {
-			/** Committed Information Rate (CIR) (bytes/second). */
-			uint64_t cir;
+        /** Items only valid when *alg* is set to trTCM - RFC 2698. */
+        struct {
+            /** Committed Information Rate (CIR) (bytes/second). */
+            uint64_t cir;
 
-			/** Peak Information Rate (PIR) (bytes/second). */
-			uint64_t pir;
+            /** Peak Information Rate (PIR) (bytes/second). */
+            uint64_t pir;
 
-			/** Committed Burst Size (CBS) (byes). */
-			uint64_t cbs;
+            /** Committed Burst Size (CBS) (byes). */
+            uint64_t cbs;
 
-			/** Peak Burst Size (PBS) (bytes). */
-			uint64_t pbs;
-		} trtcm_rfc2698;
+            /** Peak Burst Size (PBS) (bytes). */
+            uint64_t pbs;
+        } trtcm_rfc2698;
 
-		/** Items only valid when *alg* is set to trTCM - RFC 4115. */
-		struct {
-			/** Committed Information Rate (CIR) (bytes/second). */
-			uint64_t cir;
+        /** Items only valid when *alg* is set to trTCM - RFC 4115. */
+        struct {
+            /** Committed Information Rate (CIR) (bytes/second). */
+            uint64_t cir;
 
-			/** Excess Information Rate (EIR) (bytes/second). */
-			uint64_t eir;
+            /** Excess Information Rate (EIR) (bytes/second). */
+            uint64_t eir;
 
-			/** Committed Burst Size (CBS) (byes). */
-			uint64_t cbs;
+            /** Committed Burst Size (CBS) (byes). */
+            uint64_t cbs;
 
-			/** Excess Burst Size (EBS) (bytes). */
-			uint64_t ebs;
-		} trtcm_rfc4115;
-	};
+            /** Excess Burst Size (EBS) (bytes). */
+            uint64_t ebs;
+        } trtcm_rfc4115;
+    };
 };
 
 /**
  * Policer actions
  */
 enum rte_mtr_policer_action {
-	/** Recolor the packet as green. */
-	MTR_POLICER_ACTION_COLOR_GREEN = 0,
+    /** Recolor the packet as green. */
+    MTR_POLICER_ACTION_COLOR_GREEN = 0,
 
-	/** Recolor the packet as yellow. */
-	MTR_POLICER_ACTION_COLOR_YELLOW,
+    /** Recolor the packet as yellow. */
+    MTR_POLICER_ACTION_COLOR_YELLOW,
 
-	/** Recolor the packet as red. */
-	MTR_POLICER_ACTION_COLOR_RED,
+    /** Recolor the packet as red. */
+    MTR_POLICER_ACTION_COLOR_RED,
 
-	/** Drop the packet. */
-	MTR_POLICER_ACTION_DROP,
+    /** Drop the packet. */
+    MTR_POLICER_ACTION_DROP,
 };
 
 /**
@@ -197,167 +197,167 @@ enum rte_mtr_policer_action {
  * @see enum rte_mtr_stats_type
  */
 struct rte_mtr_params {
-	/** Meter profile ID. */
-	uint32_t meter_profile_id;
+    /** Meter profile ID. */
+    uint32_t meter_profile_id;
 
-	/** Meter input color in case of MTR object chaining. When non-zero: if
-	 * a previous MTR object is enabled in the same flow, then the color
-	 * determined by the latest MTR object in the same flow is used as the
-	 * input color by the current MTR object, otherwise the current MTR
-	 * object uses the *dscp_table* to determine the input color. When zero:
-	 * the color determined by any previous MTR object in same flow is
-	 * ignored by the current MTR object, which uses the *dscp_table* to
-	 * determine the input color.
-	 */
-	int use_prev_mtr_color;
+    /** Meter input color in case of MTR object chaining. When non-zero: if
+     * a previous MTR object is enabled in the same flow, then the color
+     * determined by the latest MTR object in the same flow is used as the
+     * input color by the current MTR object, otherwise the current MTR
+     * object uses the *dscp_table* to determine the input color. When zero:
+     * the color determined by any previous MTR object in same flow is
+     * ignored by the current MTR object, which uses the *dscp_table* to
+     * determine the input color.
+     */
+    int use_prev_mtr_color;
 
-	/** Meter input color. When non-NULL: it points to a pre-allocated and
-	 * pre-populated table with exactly 64 elements providing the input
-	 * color for each value of the IPv4/IPv6 Differentiated Services Code
-	 * Point (DSCP) input packet field. When NULL: it is equivalent to
-	 * setting this parameter to an all-green populated table (i.e. table
-	 * with all the 64 elements set to green color). The color blind mode
-	 * is configured by setting *use_prev_mtr_color* to 0 and *dscp_table*
-	 * to either NULL or to an all-green populated table. When
-	 * *use_prev_mtr_color* is non-zero value or when *dscp_table* contains
-	 * at least one yellow or red color element, then the color aware mode
-	 * is configured.
-	 */
-	enum rte_color *dscp_table;
+    /** Meter input color. When non-NULL: it points to a pre-allocated and
+     * pre-populated table with exactly 64 elements providing the input
+     * color for each value of the IPv4/IPv6 Differentiated Services Code
+     * Point (DSCP) input packet field. When NULL: it is equivalent to
+     * setting this parameter to an all-green populated table (i.e. table
+     * with all the 64 elements set to green color). The color blind mode
+     * is configured by setting *use_prev_mtr_color* to 0 and *dscp_table*
+     * to either NULL or to an all-green populated table. When
+     * *use_prev_mtr_color* is non-zero value or when *dscp_table* contains
+     * at least one yellow or red color element, then the color aware mode
+     * is configured.
+     */
+    enum rte_color *dscp_table;
 
-	/** Non-zero to enable the meter, zero to disable the meter at the time
-	 * of MTR object creation. Ignored when the meter profile indicated by
-	 * *meter_profile_id* is set to NONE.
-	 * @see rte_mtr_meter_disable()
-	 */
-	int meter_enable;
+    /** Non-zero to enable the meter, zero to disable the meter at the time
+     * of MTR object creation. Ignored when the meter profile indicated by
+     * *meter_profile_id* is set to NONE.
+     * @see rte_mtr_meter_disable()
+     */
+    int meter_enable;
 
-	/** Policer actions (per meter output color). */
-	enum rte_mtr_policer_action action[RTE_COLORS];
+    /** Policer actions (per meter output color). */
+    enum rte_mtr_policer_action action[RTE_COLORS];
 
-	/** Set of stats counters to be enabled.
-	 * @see enum rte_mtr_stats_type
-	 */
-	uint64_t stats_mask;
+    /** Set of stats counters to be enabled.
+     * @see enum rte_mtr_stats_type
+     */
+    uint64_t stats_mask;
 };
 
 /**
  * MTR capabilities
  */
 struct rte_mtr_capabilities {
-	/** Maximum number of MTR objects. */
-	uint32_t n_max;
+    /** Maximum number of MTR objects. */
+    uint32_t n_max;
 
-	/** Maximum number of MTR objects that can be shared by multiple flows.
-	 * The value of zero indicates that shared MTR objects are not
-	 * supported. The maximum value is *n_max*.
-	 */
-	uint32_t n_shared_max;
+    /** Maximum number of MTR objects that can be shared by multiple flows.
+     * The value of zero indicates that shared MTR objects are not
+     * supported. The maximum value is *n_max*.
+     */
+    uint32_t n_shared_max;
 
-	/** When non-zero, this flag indicates that all the MTR objects that
-	 * cannot be shared by multiple flows have identical capability set.
-	 */
-	int identical;
+    /** When non-zero, this flag indicates that all the MTR objects that
+     * cannot be shared by multiple flows have identical capability set.
+     */
+    int identical;
 
-	/** When non-zero, this flag indicates that all the MTR objects that
-	 * can be shared by multiple flows have identical capability set.
-	 */
-	int shared_identical;
+    /** When non-zero, this flag indicates that all the MTR objects that
+     * can be shared by multiple flows have identical capability set.
+     */
+    int shared_identical;
 
-	/** Maximum number of flows that can share the same MTR object. The
-	 * value of zero is invalid. The value of 1 means that shared MTR
-	 * objects not supported.
-	 */
-	uint32_t shared_n_flows_per_mtr_max;
+    /** Maximum number of flows that can share the same MTR object. The
+     * value of zero is invalid. The value of 1 means that shared MTR
+     * objects not supported.
+     */
+    uint32_t shared_n_flows_per_mtr_max;
 
-	/** Maximum number of MTR objects that can be part of the same flow. The
-	 * value of zero is invalid. The value of 1 indicates that MTR object
-	 * chaining is not supported. The maximum value is *n_max*.
-	 */
-	uint32_t chaining_n_mtrs_per_flow_max;
+    /** Maximum number of MTR objects that can be part of the same flow. The
+     * value of zero is invalid. The value of 1 indicates that MTR object
+     * chaining is not supported. The maximum value is *n_max*.
+     */
+    uint32_t chaining_n_mtrs_per_flow_max;
 
-	/**
-	 * When non-zero, it indicates that the packet color identified by one
-	 * MTR object can be used as the packet input color by any subsequent
-	 * MTR object from the same flow. When zero, it indicates that the color
-	 * determined by one MTR object is always ignored by any subsequent MTR
-	 * object from the same flow. Only valid when MTR chaining is supported,
-	 * i.e. *chaining_n_mtrs_per_flow_max* is greater than 1. When non-zero,
-	 * it also means that the color aware mode is supported by at least one
-	 * metering algorithm.
-	 */
-	int chaining_use_prev_mtr_color_supported;
+    /**
+     * When non-zero, it indicates that the packet color identified by one
+     * MTR object can be used as the packet input color by any subsequent
+     * MTR object from the same flow. When zero, it indicates that the color
+     * determined by one MTR object is always ignored by any subsequent MTR
+     * object from the same flow. Only valid when MTR chaining is supported,
+     * i.e. *chaining_n_mtrs_per_flow_max* is greater than 1. When non-zero,
+     * it also means that the color aware mode is supported by at least one
+     * metering algorithm.
+     */
+    int chaining_use_prev_mtr_color_supported;
 
-	/**
-	 * When non-zero, it indicates that the packet color identified by one
-	 * MTR object is always used as the packet input color by any subsequent
-	 * MTR object that is part of the same flow. When zero, it indicates
-	 * that whether the color determined by one MTR object is either ignored
-	 * or used as the packet input color by any subsequent MTR object from
-	 * the same flow is individually configurable for each MTR object. Only
-	 * valid when *chaining_use_prev_mtr_color_supported* is non-zero.
-	 */
-	int chaining_use_prev_mtr_color_enforced;
+    /**
+     * When non-zero, it indicates that the packet color identified by one
+     * MTR object is always used as the packet input color by any subsequent
+     * MTR object that is part of the same flow. When zero, it indicates
+     * that whether the color determined by one MTR object is either ignored
+     * or used as the packet input color by any subsequent MTR object from
+     * the same flow is individually configurable for each MTR object. Only
+     * valid when *chaining_use_prev_mtr_color_supported* is non-zero.
+     */
+    int chaining_use_prev_mtr_color_enforced;
 
-	/** Maximum number of MTR objects that can have their meter configured
-	 * to run the srTCM RFC 2697 algorithm. The value of 0 indicates this
-	 * metering algorithm is not supported. The maximum value is *n_max*.
-	 */
-	uint32_t meter_srtcm_rfc2697_n_max;
+    /** Maximum number of MTR objects that can have their meter configured
+     * to run the srTCM RFC 2697 algorithm. The value of 0 indicates this
+     * metering algorithm is not supported. The maximum value is *n_max*.
+     */
+    uint32_t meter_srtcm_rfc2697_n_max;
 
-	/** Maximum number of MTR objects that can have their meter configured
-	 * to run the trTCM RFC 2698 algorithm. The value of 0 indicates this
-	 * metering algorithm is not supported. The maximum value is *n_max*.
-	 */
-	uint32_t meter_trtcm_rfc2698_n_max;
+    /** Maximum number of MTR objects that can have their meter configured
+     * to run the trTCM RFC 2698 algorithm. The value of 0 indicates this
+     * metering algorithm is not supported. The maximum value is *n_max*.
+     */
+    uint32_t meter_trtcm_rfc2698_n_max;
 
-	/** Maximum number of MTR objects that can have their meter configured
-	 * to run the trTCM RFC 4115 algorithm. The value of 0 indicates this
-	 * metering algorithm is not supported. The maximum value is *n_max*.
-	 */
-	uint32_t meter_trtcm_rfc4115_n_max;
+    /** Maximum number of MTR objects that can have their meter configured
+     * to run the trTCM RFC 4115 algorithm. The value of 0 indicates this
+     * metering algorithm is not supported. The maximum value is *n_max*.
+     */
+    uint32_t meter_trtcm_rfc4115_n_max;
 
-	/** Maximum traffic rate that can be metered by a single MTR object. For
-	 * srTCM RFC 2697, this is the maximum CIR rate. For trTCM RFC 2698,
-	 * this is the maximum PIR rate. For trTCM RFC 4115, this is the maximum
-	 * value for the sum of PIR and EIR rates.
-	 */
-	uint64_t meter_rate_max;
+    /** Maximum traffic rate that can be metered by a single MTR object. For
+     * srTCM RFC 2697, this is the maximum CIR rate. For trTCM RFC 2698,
+     * this is the maximum PIR rate. For trTCM RFC 4115, this is the maximum
+     * value for the sum of PIR and EIR rates.
+     */
+    uint64_t meter_rate_max;
 
-	/**
-	 * When non-zero, it indicates that color aware mode is supported for
-	 * the srTCM RFC 2697 metering algorithm.
-	 */
-	int color_aware_srtcm_rfc2697_supported;
+    /**
+     * When non-zero, it indicates that color aware mode is supported for
+     * the srTCM RFC 2697 metering algorithm.
+     */
+    int color_aware_srtcm_rfc2697_supported;
 
-	/**
-	 * When non-zero, it indicates that color aware mode is supported for
-	 * the trTCM RFC 2698 metering algorithm.
-	 */
-	int color_aware_trtcm_rfc2698_supported;
+    /**
+     * When non-zero, it indicates that color aware mode is supported for
+     * the trTCM RFC 2698 metering algorithm.
+     */
+    int color_aware_trtcm_rfc2698_supported;
 
-	/**
-	 * When non-zero, it indicates that color aware mode is supported for
-	 * the trTCM RFC 4115 metering algorithm.
-	 */
-	int color_aware_trtcm_rfc4115_supported;
+    /**
+     * When non-zero, it indicates that color aware mode is supported for
+     * the trTCM RFC 4115 metering algorithm.
+     */
+    int color_aware_trtcm_rfc4115_supported;
 
-	/** When non-zero, it indicates that the policer packet recolor actions
-	 * are supported.
-	 * @see enum rte_mtr_policer_action
-	 */
-	int policer_action_recolor_supported;
+    /** When non-zero, it indicates that the policer packet recolor actions
+     * are supported.
+     * @see enum rte_mtr_policer_action
+     */
+    int policer_action_recolor_supported;
 
-	/** When non-zero, it indicates that the policer packet drop action is
-	 * supported.
-	 * @see enum rte_mtr_policer_action
-	 */
-	int policer_action_drop_supported;
+    /** When non-zero, it indicates that the policer packet drop action is
+     * supported.
+     * @see enum rte_mtr_policer_action
+     */
+    int policer_action_drop_supported;
 
-	/** Set of supported statistics counter types.
-	 * @see enum rte_mtr_stats_type
-	 */
-	uint64_t stats_mask;
+    /** Set of supported statistics counter types.
+     * @see enum rte_mtr_stats_type
+     */
+    uint64_t stats_mask;
 };
 
 /**
@@ -367,18 +367,18 @@ struct rte_mtr_capabilities {
  * rte_mtr_error::cause.
  */
 enum rte_mtr_error_type {
-	RTE_MTR_ERROR_TYPE_NONE, /**< No error. */
-	RTE_MTR_ERROR_TYPE_UNSPECIFIED, /**< Cause unspecified. */
-	RTE_MTR_ERROR_TYPE_METER_PROFILE_ID,
-	RTE_MTR_ERROR_TYPE_METER_PROFILE,
-	RTE_MTR_ERROR_TYPE_MTR_ID,
-	RTE_MTR_ERROR_TYPE_MTR_PARAMS,
-	RTE_MTR_ERROR_TYPE_POLICER_ACTION_GREEN,
-	RTE_MTR_ERROR_TYPE_POLICER_ACTION_YELLOW,
-	RTE_MTR_ERROR_TYPE_POLICER_ACTION_RED,
-	RTE_MTR_ERROR_TYPE_STATS_MASK,
-	RTE_MTR_ERROR_TYPE_STATS,
-	RTE_MTR_ERROR_TYPE_SHARED,
+    RTE_MTR_ERROR_TYPE_NONE, /**< No error. */
+    RTE_MTR_ERROR_TYPE_UNSPECIFIED, /**< Cause unspecified. */
+    RTE_MTR_ERROR_TYPE_METER_PROFILE_ID,
+    RTE_MTR_ERROR_TYPE_METER_PROFILE,
+    RTE_MTR_ERROR_TYPE_MTR_ID,
+    RTE_MTR_ERROR_TYPE_MTR_PARAMS,
+    RTE_MTR_ERROR_TYPE_POLICER_ACTION_GREEN,
+    RTE_MTR_ERROR_TYPE_POLICER_ACTION_YELLOW,
+    RTE_MTR_ERROR_TYPE_POLICER_ACTION_RED,
+    RTE_MTR_ERROR_TYPE_STATS_MASK,
+    RTE_MTR_ERROR_TYPE_STATS,
+    RTE_MTR_ERROR_TYPE_SHARED,
 };
 
 /**
@@ -393,9 +393,9 @@ enum rte_mtr_error_type {
  * Both cause and message may be NULL regardless of the error type.
  */
 struct rte_mtr_error {
-	enum rte_mtr_error_type type; /**< Cause field and error type. */
-	const void *cause; /**< Object responsible for the error. */
-	const char *message; /**< Human-readable error message. */
+    enum rte_mtr_error_type type; /**< Cause field and error type. */
+    const void *cause; /**< Object responsible for the error. */
+    const char *message; /**< Human-readable error message. */
 };
 
 /**
@@ -413,8 +413,8 @@ struct rte_mtr_error {
 __rte_experimental
 int
 rte_mtr_capabilities_get(uint16_t port_id,
-	struct rte_mtr_capabilities *cap,
-	struct rte_mtr_error *error);
+    struct rte_mtr_capabilities *cap,
+    struct rte_mtr_error *error);
 
 /**
  * Meter profile add
@@ -437,9 +437,9 @@ rte_mtr_capabilities_get(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_profile_add(uint16_t port_id,
-	uint32_t meter_profile_id,
-	struct rte_mtr_meter_profile *profile,
-	struct rte_mtr_error *error);
+    uint32_t meter_profile_id,
+    struct rte_mtr_meter_profile *profile,
+    struct rte_mtr_error *error);
 
 /**
  * Meter profile delete
@@ -459,8 +459,8 @@ rte_mtr_meter_profile_add(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_profile_delete(uint16_t port_id,
-	uint32_t meter_profile_id,
-	struct rte_mtr_error *error);
+    uint32_t meter_profile_id,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object create
@@ -488,10 +488,10 @@ rte_mtr_meter_profile_delete(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_create(uint16_t port_id,
-	uint32_t mtr_id,
-	struct rte_mtr_params *params,
-	int shared,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_params *params,
+    int shared,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object destroy
@@ -512,8 +512,8 @@ rte_mtr_create(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_destroy(uint16_t port_id,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object meter disable
@@ -540,8 +540,8 @@ rte_mtr_destroy(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_disable(uint16_t port_id,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object meter enable
@@ -562,8 +562,8 @@ rte_mtr_meter_disable(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_enable(uint16_t port_id,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object meter profile update
@@ -582,9 +582,9 @@ rte_mtr_meter_enable(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_profile_update(uint16_t port_id,
-	uint32_t mtr_id,
-	uint32_t meter_profile_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint32_t meter_profile_id,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object DSCP table update
@@ -607,9 +607,9 @@ rte_mtr_meter_profile_update(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_meter_dscp_table_update(uint16_t port_id,
-	uint32_t mtr_id,
-	enum rte_color *dscp_table,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    enum rte_color *dscp_table,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object policer actions update
@@ -634,10 +634,10 @@ rte_mtr_meter_dscp_table_update(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_policer_actions_update(uint16_t port_id,
-	uint32_t mtr_id,
-	uint32_t action_mask,
-	enum rte_mtr_policer_action *actions,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint32_t action_mask,
+    enum rte_mtr_policer_action *actions,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object enabled statistics counters update
@@ -660,9 +660,9 @@ rte_mtr_policer_actions_update(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_stats_update(uint16_t port_id,
-	uint32_t mtr_id,
-	uint64_t stats_mask,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint64_t stats_mask,
+    struct rte_mtr_error *error);
 
 /**
  * MTR object statistics counters read
@@ -692,11 +692,11 @@ rte_mtr_stats_update(uint16_t port_id,
 __rte_experimental
 int
 rte_mtr_stats_read(uint16_t port_id,
-	uint32_t mtr_id,
-	struct rte_mtr_stats *stats,
-	uint64_t *stats_mask,
-	int clear,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_stats *stats,
+    uint64_t *stats_mask,
+    int clear,
+    struct rte_mtr_error *error);
 
 #ifdef __cplusplus
 }

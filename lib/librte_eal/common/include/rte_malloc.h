@@ -24,12 +24,12 @@ extern "C" {
  *  Structure to hold heap statistics obtained from rte_malloc_get_socket_stats function.
  */
 struct rte_malloc_socket_stats {
-	size_t heap_totalsz_bytes; /**< Total bytes on heap */
-	size_t heap_freesz_bytes;  /**< Total free bytes on heap */
-	size_t greatest_free_size; /**< Size in bytes of largest free block */
-	unsigned free_count;       /**< Number of free elements on heap */
-	unsigned alloc_count;      /**< Number of allocated elements on heap */
-	size_t heap_allocsz_bytes; /**< Total allocated bytes on heap */
+    size_t heap_totalsz_bytes; /**< Total bytes on heap */
+    size_t heap_freesz_bytes;  /**< Total free bytes on heap */
+    size_t greatest_free_size; /**< Size in bytes of largest free block */
+    unsigned free_count;       /**< Number of free elements on heap */
+    unsigned alloc_count;      /**< Number of allocated elements on heap */
+    size_t heap_allocsz_bytes; /**< Total allocated bytes on heap */
 };
 
 /**
@@ -290,7 +290,7 @@ rte_malloc_validate(const void *ptr, size_t *size);
  */
 int
 rte_malloc_get_socket_stats(int socket,
-		struct rte_malloc_socket_stats *socket_stats);
+        struct rte_malloc_socket_stats *socket_stats);
 
 /**
  * Add memory chunk to a heap with specified name.
@@ -334,7 +334,7 @@ rte_malloc_get_socket_stats(int socket,
 __rte_experimental
 int
 rte_malloc_heap_memory_add(const char *heap_name, void *va_addr, size_t len,
-		rte_iova_t iova_addrs[], unsigned int n_pages, size_t page_sz);
+        rte_iova_t iova_addrs[], unsigned int n_pages, size_t page_sz);
 
 /**
  * Remove memory chunk from heap with specified name.

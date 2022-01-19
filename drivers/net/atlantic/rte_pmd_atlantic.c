@@ -10,93 +10,93 @@
 
 int
 rte_pmd_atl_macsec_enable(uint16_t port,
-			  uint8_t encr, uint8_t repl_prot)
+              uint8_t encr, uint8_t repl_prot)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_enable(dev, encr, repl_prot);
+    return atl_macsec_enable(dev, encr, repl_prot);
 }
 
 int
 rte_pmd_atl_macsec_disable(uint16_t port)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_disable(dev);
+    return atl_macsec_disable(dev);
 }
 
 int
 rte_pmd_atl_macsec_config_txsc(uint16_t port, uint8_t *mac)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_config_txsc(dev, mac);
+    return atl_macsec_config_txsc(dev, mac);
 }
 
 int
 rte_pmd_atl_macsec_config_rxsc(uint16_t port, uint8_t *mac, uint16_t pi)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_config_rxsc(dev, mac, pi);
+    return atl_macsec_config_rxsc(dev, mac, pi);
 }
 
 int
 rte_pmd_atl_macsec_select_txsa(uint16_t port, uint8_t idx, uint8_t an,
-				 uint32_t pn, uint8_t *key)
+                 uint32_t pn, uint8_t *key)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_select_txsa(dev, idx, an, pn, key);
+    return atl_macsec_select_txsa(dev, idx, an, pn, key);
 }
 
 int
 rte_pmd_atl_macsec_select_rxsa(uint16_t port, uint8_t idx, uint8_t an,
-				 uint32_t pn, uint8_t *key)
+                 uint32_t pn, uint8_t *key)
 {
-	struct rte_eth_dev *dev;
+    struct rte_eth_dev *dev;
 
-	RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
+    RTE_ETH_VALID_PORTID_OR_ERR_RET(port, -ENODEV);
 
-	dev = &rte_eth_devices[port];
+    dev = &rte_eth_devices[port];
 
-	if (!is_atlantic_supported(dev))
-		return -ENOTSUP;
+    if (!is_atlantic_supported(dev))
+        return -ENOTSUP;
 
-	return atl_macsec_select_rxsa(dev, idx, an, pn, key);
+    return atl_macsec_select_rxsa(dev, idx, an, pn, key);
 }

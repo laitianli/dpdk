@@ -40,7 +40,7 @@ extern "C" {
 #define VFIO_GET_REGION_ADDR(x) ((uint64_t) x << 40ULL)
 #define VFIO_GET_REGION_IDX(x) (x >> 40)
 #define VFIO_NOIOMMU_MODE      \
-	"/sys/module/vfio/parameters/enable_unsafe_noiommu_mode"
+    "/sys/module/vfio/parameters/enable_unsafe_noiommu_mode"
 
 /* NOIOMMU is defined from kernel version 4.5 onwards */
 #ifdef VFIO_NOIOMMU_IOMMU
@@ -60,9 +60,9 @@ extern "C" {
 #define RTE_VFIO_INFO_FLAG_CAPS (1 << 3)
 #define VFIO_CAP_OFFSET(x) (x->resv)
 struct vfio_info_cap_header {
-	uint16_t id;
-	uint16_t version;
-	uint32_t next;
+    uint16_t id;
+    uint16_t version;
+    uint32_t next;
 };
 #endif
 
@@ -108,7 +108,7 @@ struct vfio_device_info;
  *   >1 if the device cannot be managed this way.
  */
 int rte_vfio_setup_device(const char *sysfs_base, const char *dev_addr,
-		int *vfio_dev_fd, struct vfio_device_info *device_info);
+        int *vfio_dev_fd, struct vfio_device_info *device_info);
 
 /**
  * Release a device mapped to a VFIO-managed I/O MMU group.
@@ -211,7 +211,7 @@ rte_vfio_clear_group(int vfio_group_fd);
  */
 int
 rte_vfio_get_group_num(const char *sysfs_base,
-		      const char *dev_addr, int *iommu_group_num);
+              const char *dev_addr, int *iommu_group_num);
 
 /**
  * Open a new VFIO container fd
@@ -327,7 +327,7 @@ rte_vfio_container_group_unbind(int container_fd, int iommu_group_num);
  */
 int
 rte_vfio_container_dma_map(int container_fd, uint64_t vaddr,
-		uint64_t iova, uint64_t len);
+        uint64_t iova, uint64_t len);
 
 /**
  * Perform DMA unmapping for devices in a container.
@@ -351,7 +351,7 @@ rte_vfio_container_dma_map(int container_fd, uint64_t vaddr,
  */
 int
 rte_vfio_container_dma_unmap(int container_fd, uint64_t vaddr,
-		uint64_t iova, uint64_t len);
+        uint64_t iova, uint64_t len);
 
 #ifdef __cplusplus
 }

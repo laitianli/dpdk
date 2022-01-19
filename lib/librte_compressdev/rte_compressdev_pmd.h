@@ -25,12 +25,12 @@ extern "C" {
 #include "rte_compressdev.h"
 #include "rte_compressdev_internal.h"
 
-#define RTE_COMPRESSDEV_PMD_NAME_ARG			("name")
-#define RTE_COMPRESSDEV_PMD_SOCKET_ID_ARG		("socket_id")
+#define RTE_COMPRESSDEV_PMD_NAME_ARG            ("name")
+#define RTE_COMPRESSDEV_PMD_SOCKET_ID_ARG        ("socket_id")
 
 static const char * const compressdev_pmd_valid_params[] = {
-	RTE_COMPRESSDEV_PMD_NAME_ARG,
-	RTE_COMPRESSDEV_PMD_SOCKET_ID_ARG
+    RTE_COMPRESSDEV_PMD_NAME_ARG,
+    RTE_COMPRESSDEV_PMD_SOCKET_ID_ARG
 };
 
 /**
@@ -38,17 +38,17 @@ static const char * const compressdev_pmd_valid_params[] = {
  * Initialisation parameters for comp devices
  */
 struct rte_compressdev_pmd_init_params {
-	char name[RTE_COMPRESSDEV_NAME_MAX_LEN];
-	int socket_id;
+    char name[RTE_COMPRESSDEV_NAME_MAX_LEN];
+    int socket_id;
 };
 
 /** Global structure used for maintaining state of allocated comp devices */
 struct rte_compressdev_global {
-	struct rte_compressdev *devs;	/**< Device information array */
-	struct rte_compressdev_data *data[RTE_COMPRESS_MAX_DEVS];
-	/**< Device private data */
-	uint8_t nb_devs;		/**< Number of devices found */
-	uint8_t max_devs;		/**< Max number of devices */
+    struct rte_compressdev *devs;    /**< Device information array */
+    struct rte_compressdev_data *data[RTE_COMPRESS_MAX_DEVS];
+    /**< Device private data */
+    uint8_t nb_devs;        /**< Number of devices found */
+    uint8_t max_devs;        /**< Max number of devices */
 };
 
 /**
@@ -80,7 +80,7 @@ rte_compressdev_pmd_get_named_dev(const char *name);
  *   Returns 0 on success
  */
 typedef int (*compressdev_configure_t)(struct rte_compressdev *dev,
-		struct rte_compressdev_config *config);
+        struct rte_compressdev_config *config);
 
 /**
  * Function used to start a configured device.
@@ -121,7 +121,7 @@ typedef int (*compressdev_close_t)(struct rte_compressdev *dev);
  *   Compress device stats to populate
  */
 typedef void (*compressdev_stats_get_t)(struct rte_compressdev *dev,
-				struct rte_compressdev_stats *stats);
+                struct rte_compressdev_stats *stats);
 
 
 /**
@@ -140,7 +140,7 @@ typedef void (*compressdev_stats_reset_t)(struct rte_compressdev *dev);
  *   Compress device
  */
 typedef void (*compressdev_info_get_t)(struct rte_compressdev *dev,
-				struct rte_compressdev_info *dev_info);
+                struct rte_compressdev_info *dev_info);
 
 /**
  * Setup a queue pair for a device.
@@ -157,7 +157,7 @@ typedef void (*compressdev_info_get_t)(struct rte_compressdev *dev,
  *   Returns 0 on success.
  */
 typedef int (*compressdev_queue_pair_setup_t)(struct rte_compressdev *dev,
-		uint16_t qp_id,	uint32_t max_inflight_ops, int socket_id);
+        uint16_t qp_id,    uint32_t max_inflight_ops, int socket_id);
 
 /**
  * Release memory resources allocated by given queue pair.
@@ -171,7 +171,7 @@ typedef int (*compressdev_queue_pair_setup_t)(struct rte_compressdev *dev,
  * - EAGAIN if can't close as device is busy
  */
 typedef int (*compressdev_queue_pair_release_t)(struct rte_compressdev *dev,
-		uint16_t qp_id);
+        uint16_t qp_id);
 
 /**
  * Get number of available queue pairs of a device.
@@ -200,7 +200,7 @@ typedef uint32_t (*compressdev_queue_pair_count_t)(struct rte_compressdev *dev);
  *  - Returns -ENOMEM if the private stream could not be allocated.
  */
 typedef int (*compressdev_stream_create_t)(struct rte_compressdev *dev,
-		const struct rte_comp_xform *xform, void **stream);
+        const struct rte_comp_xform *xform, void **stream);
 
 /**
  * Free driver private stream data.
@@ -217,7 +217,7 @@ typedef int (*compressdev_stream_create_t)(struct rte_compressdev *dev,
  *  - Returns -EBUSY if can't free stream as there are inflight operations
  */
 typedef int (*compressdev_stream_free_t)(struct rte_compressdev *dev,
-		void *stream);
+        void *stream);
 
 /**
  * Create driver private_xform data.
@@ -237,7 +237,7 @@ typedef int (*compressdev_stream_free_t)(struct rte_compressdev *dev,
  *  - Returns -ENOMEM if the private_xform could not be allocated.
  */
 typedef int (*compressdev_private_xform_create_t)(struct rte_compressdev *dev,
-		const struct rte_comp_xform *xform, void **private_xform);
+        const struct rte_comp_xform *xform, void **private_xform);
 
 /**
  * Free driver private_xform data.
@@ -253,36 +253,36 @@ typedef int (*compressdev_private_xform_create_t)(struct rte_compressdev *dev,
  *  - Returns -EBUSY if can't free private_xform due to inflight operations
  */
 typedef int (*compressdev_private_xform_free_t)(struct rte_compressdev *dev,
-		void *private_xform);
+        void *private_xform);
 
 /** comp device operations function pointer table */
 struct rte_compressdev_ops {
-	compressdev_configure_t dev_configure;	/**< Configure device. */
-	compressdev_start_t dev_start;		/**< Start device. */
-	compressdev_stop_t dev_stop;		/**< Stop device. */
-	compressdev_close_t dev_close;		/**< Close device. */
+    compressdev_configure_t dev_configure;    /**< Configure device. */
+    compressdev_start_t dev_start;        /**< Start device. */
+    compressdev_stop_t dev_stop;        /**< Stop device. */
+    compressdev_close_t dev_close;        /**< Close device. */
 
-	compressdev_info_get_t dev_infos_get;	/**< Get device info. */
+    compressdev_info_get_t dev_infos_get;    /**< Get device info. */
 
-	compressdev_stats_get_t stats_get;
-	/**< Get device statistics. */
-	compressdev_stats_reset_t stats_reset;
-	/**< Reset device statistics. */
+    compressdev_stats_get_t stats_get;
+    /**< Get device statistics. */
+    compressdev_stats_reset_t stats_reset;
+    /**< Reset device statistics. */
 
-	compressdev_queue_pair_setup_t queue_pair_setup;
-	/**< Set up a device queue pair. */
-	compressdev_queue_pair_release_t queue_pair_release;
-	/**< Release a queue pair. */
+    compressdev_queue_pair_setup_t queue_pair_setup;
+    /**< Set up a device queue pair. */
+    compressdev_queue_pair_release_t queue_pair_release;
+    /**< Release a queue pair. */
 
-	compressdev_stream_create_t stream_create;
-	/**< Create a comp stream and initialise its private data. */
-	compressdev_stream_free_t stream_free;
-	/**< Free a comp stream's private data. */
+    compressdev_stream_create_t stream_create;
+    /**< Create a comp stream and initialise its private data. */
+    compressdev_stream_free_t stream_free;
+    /**< Free a comp stream's private data. */
 
-	compressdev_private_xform_create_t private_xform_create;
-	/**< Create a comp private_xform and initialise its private data. */
-	compressdev_private_xform_free_t private_xform_free;
-	/**< Free a comp private_xform's data. */
+    compressdev_private_xform_create_t private_xform_create;
+    /**< Create a comp private_xform and initialise its private data. */
+    compressdev_private_xform_free_t private_xform_free;
+    /**< Free a comp private_xform's data. */
 };
 
 /**
@@ -342,8 +342,8 @@ rte_compressdev_pmd_release_device(struct rte_compressdev *dev);
 __rte_experimental
 int
 rte_compressdev_pmd_parse_input_args(
-		struct rte_compressdev_pmd_init_params *params,
-		const char *args);
+        struct rte_compressdev_pmd_init_params *params,
+        const char *args);
 
 /**
  * @internal
@@ -364,9 +364,9 @@ rte_compressdev_pmd_parse_input_args(
 __rte_experimental
 struct rte_compressdev *
 rte_compressdev_pmd_create(const char *name,
-		struct rte_device *device,
-		size_t private_data_size,
-		struct rte_compressdev_pmd_init_params *params);
+        struct rte_device *device,
+        size_t private_data_size,
+        struct rte_compressdev_pmd_init_params *params);
 
 /**
  * @internal

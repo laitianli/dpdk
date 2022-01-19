@@ -16,16 +16,16 @@
 #define EAL_DEV_MP_DEV_ARGS_MAX_LEN 128
 
 enum eal_dev_req_type {
-	EAL_DEV_REQ_TYPE_ATTACH,
-	EAL_DEV_REQ_TYPE_DETACH,
-	EAL_DEV_REQ_TYPE_ATTACH_ROLLBACK,
-	EAL_DEV_REQ_TYPE_DETACH_ROLLBACK,
+    EAL_DEV_REQ_TYPE_ATTACH,
+    EAL_DEV_REQ_TYPE_DETACH,
+    EAL_DEV_REQ_TYPE_ATTACH_ROLLBACK,
+    EAL_DEV_REQ_TYPE_DETACH_ROLLBACK,
 };
 
 struct eal_dev_mp_req {
-	enum eal_dev_req_type t;
-	char devargs[EAL_DEV_MP_DEV_ARGS_MAX_LEN];
-	int result;
+    enum eal_dev_req_type t;
+    char devargs[EAL_DEV_MP_DEV_ARGS_MAX_LEN];
+    int result;
 };
 
 /**

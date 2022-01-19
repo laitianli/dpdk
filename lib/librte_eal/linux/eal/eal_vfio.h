@@ -34,36 +34,36 @@
 #define VFIO_IOMMU_SPAPR_TCE_REMOVE _IO(VFIO_TYPE, VFIO_BASE + 20)
 
 struct vfio_iommu_spapr_register_memory {
-	uint32_t argsz;
-	uint32_t flags;
-	uint64_t vaddr;
-	uint64_t size;
+    uint32_t argsz;
+    uint32_t flags;
+    uint64_t vaddr;
+    uint64_t size;
 };
 
 struct vfio_iommu_spapr_tce_create {
-	uint32_t argsz;
-	uint32_t flags;
-	/* in */
-	uint32_t page_shift;
-	uint32_t __resv1;
-	uint64_t window_size;
-	uint32_t levels;
-	uint32_t __resv2;
-	/* out */
-	uint64_t start_addr;
+    uint32_t argsz;
+    uint32_t flags;
+    /* in */
+    uint32_t page_shift;
+    uint32_t __resv1;
+    uint64_t window_size;
+    uint32_t levels;
+    uint32_t __resv2;
+    /* out */
+    uint64_t start_addr;
 };
 
 struct vfio_iommu_spapr_tce_remove {
-	uint32_t argsz;
-	uint32_t flags;
-	/* in */
-	uint64_t start_addr;
+    uint32_t argsz;
+    uint32_t flags;
+    /* in */
+    uint64_t start_addr;
 };
 
 struct vfio_iommu_spapr_tce_ddw_info {
-	uint64_t pgsizes;
-	uint32_t max_dynamic_windows_supported;
-	uint32_t levels;
+    uint64_t pgsizes;
+    uint32_t max_dynamic_windows_supported;
+    uint32_t levels;
 };
 
 /* SPAPR_v2 is not present, but SPAPR might be */
@@ -71,11 +71,11 @@ struct vfio_iommu_spapr_tce_ddw_info {
 #define VFIO_IOMMU_SPAPR_TCE_GET_INFO _IO(VFIO_TYPE, VFIO_BASE + 12)
 
 struct vfio_iommu_spapr_tce_info {
-	uint32_t argsz;
-	uint32_t flags;
-	uint32_t dma32_window_start;
-	uint32_t dma32_window_size;
-	struct vfio_iommu_spapr_tce_ddw_info ddw;
+    uint32_t argsz;
+    uint32_t flags;
+    uint32_t dma32_window_start;
+    uint32_t dma32_window_size;
+    struct vfio_iommu_spapr_tce_ddw_info ddw;
 };
 #endif /* VFIO_SPAPR_TCE_IOMMU */
 
@@ -91,9 +91,9 @@ struct vfio_iommu_spapr_tce_info {
  * the group fd via an ioctl() call.
  */
 struct vfio_group {
-	int group_num;
-	int fd;
-	int devices;
+    int group_num;
+    int fd;
+    int devices;
 };
 
 /* DMA mapping function prototype.
@@ -108,13 +108,13 @@ typedef int (*vfio_dma_func_t)(int);
  * Returns 0 on success, -1 on error.
  **/
 typedef int (*vfio_dma_user_func_t)(int fd, uint64_t vaddr, uint64_t iova,
-		uint64_t len, int do_map);
+        uint64_t len, int do_map);
 
 struct vfio_iommu_type {
-	int type_id;
-	const char *name;
-	vfio_dma_user_func_t dma_user_map_func;
-	vfio_dma_func_t dma_map_func;
+    int type_id;
+    const char *name;
+    vfio_dma_user_func_t dma_user_map_func;
+    vfio_dma_func_t dma_map_func;
 };
 
 /* get the vfio container that devices are bound to by default */
@@ -144,13 +144,13 @@ int vfio_mp_sync_setup(void);
 #define SOCKET_ERR 0xFF
 
 struct vfio_mp_param {
-	int req;
-	int result;
-	RTE_STD_C11
-	union {
-		int group_num;
-		int iommu_type_id;
-	};
+    int req;
+    int result;
+    RTE_STD_C11
+    union {
+        int group_num;
+        int iommu_type_id;
+    };
 };
 
 #endif /* VFIO_PRESENT */

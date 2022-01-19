@@ -20,10 +20,10 @@
 /* Compat./Leg. mode */
 static inline uint64_t rte_arch_bswap64(uint64_t x)
 {
-	uint64_t ret = 0;
-	ret |= ((uint64_t)rte_arch_bswap32(x & 0xffffffffUL) << 32);
-	ret |= ((uint64_t)rte_arch_bswap32((x >> 32) & 0xffffffffUL));
-	return ret;
+    uint64_t ret = 0;
+    ret |= ((uint64_t)rte_arch_bswap32(x & 0xffffffffUL) << 32);
+    ret |= ((uint64_t)rte_arch_bswap32((x >> 32) & 0xffffffffUL));
+    return ret;
 }
 
 #endif /* _RTE_BYTEORDER_I686_H_ */

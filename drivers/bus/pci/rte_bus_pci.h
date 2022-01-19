@@ -43,11 +43,11 @@ TAILQ_HEAD(rte_pci_device_list, rte_pci_device);
 TAILQ_HEAD(rte_pci_driver_list, rte_pci_driver);
 
 /* PCI Bus iterators */
-#define FOREACH_DEVICE_ON_PCIBUS(p)	\
-		TAILQ_FOREACH(p, &(rte_pci_bus.device_list), next)
+#define FOREACH_DEVICE_ON_PCIBUS(p)    \
+        TAILQ_FOREACH(p, &(rte_pci_bus.device_list), next)
 
-#define FOREACH_DRIVER_ON_PCIBUS(p)	\
-		TAILQ_FOREACH(p, &(rte_pci_bus.driver_list), next)
+#define FOREACH_DRIVER_ON_PCIBUS(p)    \
+        TAILQ_FOREACH(p, &(rte_pci_bus.driver_list), next)
 
 struct rte_devargs;
 /* pcie设备 */
@@ -55,19 +55,19 @@ struct rte_devargs;
  * A structure describing a PCI device.
  */
 struct rte_pci_device {
-	TAILQ_ENTRY(rte_pci_device) next;   /**< Next probed PCI device. */
-	struct rte_device device;           /**< Inherit core device *//* 设备 */
-	struct rte_pci_addr addr;           /**< PCI location. */ /* pcie设备地址 */
-	struct rte_pci_id id;               /**< PCI ID. *//* pcie设备id属性： */
-	struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];/* pcie bar空间 */
-					    /**< PCI Memory Resource */
-	struct rte_intr_handle intr_handle; /**< Interrupt handle */ /* pcie中断句柄 */
-	struct rte_pci_driver *driver;      /**< PCI driver used in probing */ /* pcie设备驱动  */
-	uint16_t max_vfs;                   /**< sriov enable if not zero */
-	enum rte_kernel_driver kdrv;        /**< Kernel driver passthrough */ /* pcie使用的内核模块类型 */
-	char name[PCI_PRI_STR_SIZE+1];      /**< PCI location (ASCII) */
-	struct rte_intr_handle vfio_req_intr_handle;
-				/**< Handler of VFIO request interrupt */
+    TAILQ_ENTRY(rte_pci_device) next;   /**< Next probed PCI device. */
+    struct rte_device device;           /**< Inherit core device *//* 设备 */
+    struct rte_pci_addr addr;           /**< PCI location. */ /* pcie设备地址 */
+    struct rte_pci_id id;               /**< PCI ID. *//* pcie设备id属性： */
+    struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];/* pcie bar空间 */
+                        /**< PCI Memory Resource */
+    struct rte_intr_handle intr_handle; /**< Interrupt handle */ /* pcie中断句柄 */
+    struct rte_pci_driver *driver;      /**< PCI driver used in probing */ /* pcie设备驱动  */
+    uint16_t max_vfs;                   /**< sriov enable if not zero */
+    enum rte_kernel_driver kdrv;        /**< Kernel driver passthrough */ /* pcie使用的内核模块类型 */
+    char name[PCI_PRI_STR_SIZE+1];      /**< PCI location (ASCII) */
+    struct rte_intr_handle vfio_req_intr_handle;
+                /**< Handler of VFIO request interrupt */
 };
 
 /**
@@ -77,9 +77,9 @@ struct rte_pci_device {
 #define RTE_DEV_TO_PCI(ptr) container_of(ptr, struct rte_pci_device, device)
 
 #define RTE_DEV_TO_PCI_CONST(ptr) \
-	container_of(ptr, const struct rte_pci_device, device)
+    container_of(ptr, const struct rte_pci_device, device)
 
-#define RTE_ETH_DEV_TO_PCI(eth_dev)	RTE_DEV_TO_PCI((eth_dev)->device)
+#define RTE_ETH_DEV_TO_PCI(eth_dev)    RTE_DEV_TO_PCI((eth_dev)->device)
 
 /** Any PCI device identifier (vendor, device, ...) */
 #define PCI_ANY_ID (0xffff)
@@ -88,19 +88,19 @@ struct rte_pci_device {
 #ifdef __cplusplus
 /** C++ macro used to help building up tables of device IDs */
 #define RTE_PCI_DEVICE(vend, dev) \
-	RTE_CLASS_ANY_ID,         \
-	(vend),                   \
-	(dev),                    \
-	PCI_ANY_ID,               \
-	PCI_ANY_ID
+    RTE_CLASS_ANY_ID,         \
+    (vend),                   \
+    (dev),                    \
+    PCI_ANY_ID,               \
+    PCI_ANY_ID
 #else
 /** Macro used to help building up tables of device IDs */
 #define RTE_PCI_DEVICE(vend, dev)          \
-	.class_id = RTE_CLASS_ANY_ID,      \
-	.vendor_id = (vend),               \
-	.device_id = (dev),                \
-	.subsystem_vendor_id = PCI_ANY_ID, \
-	.subsystem_device_id = PCI_ANY_ID
+    .class_id = RTE_CLASS_ANY_ID,      \
+    .vendor_id = (vend),               \
+    .device_id = (dev),                \
+    .subsystem_vendor_id = PCI_ANY_ID, \
+    .subsystem_device_id = PCI_ANY_ID
 #endif
 
 /**
@@ -130,7 +130,7 @@ typedef int (pci_remove_t)(struct rte_pci_device *);
  *   - Negative value and rte_errno is set otherwise.
  */
 typedef int (pci_dma_map_t)(struct rte_pci_device *dev, void *addr,
-			    uint64_t iova, size_t len);
+                uint64_t iova, size_t len);
 
 /**
  * Driver-specific DMA un-mapping. After a successful call the device
@@ -149,30 +149,30 @@ typedef int (pci_dma_map_t)(struct rte_pci_device *dev, void *addr,
  *   - Negative value and rte_errno is set otherwise.
  */
 typedef int (pci_dma_unmap_t)(struct rte_pci_device *dev, void *addr,
-			      uint64_t iova, size_t len);
+                  uint64_t iova, size_t len);
 
 /**
  * A structure describing a PCI driver.
  */
 struct rte_pci_driver {
-	TAILQ_ENTRY(rte_pci_driver) next;  /**< Next in list. */
-	struct rte_driver driver;          /**< Inherit core driver. */
-	struct rte_pci_bus *bus;           /**< PCI bus reference. */
-	pci_probe_t *probe;                /**< Device Probe function. */
-	pci_remove_t *remove;              /**< Device Remove function. */
-	pci_dma_map_t *dma_map;		   /**< device dma map function. */
-	pci_dma_unmap_t *dma_unmap;	   /**< device dma unmap function. */
-	const struct rte_pci_id *id_table; /**< ID table, NULL terminated. */
-	uint32_t drv_flags;                /**< Flags RTE_PCI_DRV_*. */
+    TAILQ_ENTRY(rte_pci_driver) next;  /**< Next in list. */
+    struct rte_driver driver;          /**< Inherit core driver. */
+    struct rte_pci_bus *bus;           /**< PCI bus reference. */
+    pci_probe_t *probe;                /**< Device Probe function. */
+    pci_remove_t *remove;              /**< Device Remove function. */
+    pci_dma_map_t *dma_map;           /**< device dma map function. */
+    pci_dma_unmap_t *dma_unmap;       /**< device dma unmap function. */
+    const struct rte_pci_id *id_table; /**< ID table, NULL terminated. */
+    uint32_t drv_flags;                /**< Flags RTE_PCI_DRV_*. */
 };
 
 /**
  * Structure describing the PCI bus
  */
 struct rte_pci_bus {
-	struct rte_bus bus;               /**< Inherit the generic class */ /* 总线 */
-	struct rte_pci_device_list device_list;  /**< List of PCI devices *//* 设备列表 */
-	struct rte_pci_driver_list driver_list;  /**< List of PCI drivers *//* 驱动列表 */
+    struct rte_bus bus;               /**< Inherit the generic class */ /* 总线 */
+    struct rte_pci_device_list device_list;  /**< List of PCI devices *//* 设备列表 */
+    struct rte_pci_driver_list driver_list;  /**< List of PCI drivers *//* 驱动列表 */
 };
 
 /** Device needs PCI BAR mapping (done with either IGB_UIO or VFIO) */
@@ -182,7 +182,7 @@ struct rte_pci_bus {
 /** Device already probed can be probed again to check for new ports. */
 #define RTE_PCI_DRV_PROBE_AGAIN 0x0004
 /** Device driver supports link state interrupt */
-#define RTE_PCI_DRV_INTR_LSC	0x0008
+#define RTE_PCI_DRV_INTR_LSC    0x0008
 /** Device driver supports device removal interrupt */
 #define RTE_PCI_DRV_INTR_RMV 0x0010
 /** Device driver needs to keep mapped resources if unsupported dev detected */
@@ -237,8 +237,8 @@ void rte_pci_register(struct rte_pci_driver *driver);
 #define RTE_PMD_REGISTER_PCI(nm, pci_drv) \
 RTE_INIT(pciinitfn_ ##nm) \
 {\
-	(pci_drv).driver.name = RTE_STR(nm);\
-	rte_pci_register(&pci_drv); \
+    (pci_drv).driver.name = RTE_STR(nm);\
+    rte_pci_register(&pci_drv); \
 } \
 RTE_PMD_EXPORT_NAME(nm, __COUNTER__)
 
@@ -267,7 +267,7 @@ void rte_pci_unregister(struct rte_pci_driver *driver);
  *  Number of bytes read on success, negative on error.
  */
 int rte_pci_read_config(const struct rte_pci_device *device,
-		void *buf, size_t len, off_t offset);
+        void *buf, size_t len, off_t offset);
 
 /**
  * Write PCI config space.
@@ -283,7 +283,7 @@ int rte_pci_read_config(const struct rte_pci_device *device,
  *   The offset into PCI config space
  */
 int rte_pci_write_config(const struct rte_pci_device *device,
-		const void *buf, size_t len, off_t offset);
+        const void *buf, size_t len, off_t offset);
 
 /**
  * A structure used to access io resources for a pci device.
@@ -291,9 +291,9 @@ int rte_pci_write_config(const struct rte_pci_device *device,
  * of pci ioport api.
  */
 struct rte_pci_ioport {
-	struct rte_pci_device *dev;
-	uint64_t base;
-	uint64_t len; /* only filled for memory mapped ports */
+    struct rte_pci_device *dev;
+    uint64_t base;
+    uint64_t len; /* only filled for memory mapped ports */
 };
 
 /**
@@ -312,7 +312,7 @@ struct rte_pci_ioport {
  *  0 on success, negative on error.
  */
 int rte_pci_ioport_map(struct rte_pci_device *dev, int bar,
-		struct rte_pci_ioport *p);
+        struct rte_pci_ioport *p);
 
 /**
  * Release any resources used in a rte_pci_ioport object.
@@ -337,7 +337,7 @@ int rte_pci_ioport_unmap(struct rte_pci_ioport *p);
  *   The offset into the pci io resource.
  */
 void rte_pci_ioport_read(struct rte_pci_ioport *p,
-		void *data, size_t len, off_t offset);
+        void *data, size_t len, off_t offset);
 
 /**
  * Write to a io pci resource.
@@ -352,7 +352,7 @@ void rte_pci_ioport_read(struct rte_pci_ioport *p,
  *   The offset into the pci io resource.
  */
 void rte_pci_ioport_write(struct rte_pci_ioport *p,
-		const void *data, size_t len, off_t offset);
+        const void *data, size_t len, off_t offset);
 
 #ifdef __cplusplus
 }

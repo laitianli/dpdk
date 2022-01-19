@@ -50,21 +50,21 @@ extern "C" {
 
 /** LPM table parameters */
 struct rte_table_lpm_ipv6_params {
-	/** Table name */
-	const char *name;
+    /** Table name */
+    const char *name;
 
-	/** Maximum number of LPM rules (i.e. IP routes) */
-	uint32_t n_rules;
+    /** Maximum number of LPM rules (i.e. IP routes) */
+    uint32_t n_rules;
 
-	uint32_t number_tbl8s;
+    uint32_t number_tbl8s;
 
-	/** Number of bytes at the start of the table entry that uniquely
-	identify the entry. Cannot be bigger than table entry size. */
-	uint32_t entry_unique_size;
+    /** Number of bytes at the start of the table entry that uniquely
+    identify the entry. Cannot be bigger than table entry size. */
+    uint32_t entry_unique_size;
 
-	/** Byte offset within input packet meta-data where lookup key (i.e.
-	the destination IP address) is located. */
-	uint32_t offset;
+    /** Byte offset within input packet meta-data where lookup key (i.e.
+    the destination IP address) is located. */
+    uint32_t offset;
 };
 
 /** LPM table rule (i.e. route), specified as IP prefix. While the key used by
@@ -73,14 +73,14 @@ meta-data), the entry add and entry delete operations work with LPM rules, with
 each rule covering for a multitude of lookup keys (destination IP addresses)
 that share the same data (next hop). */
 struct rte_table_lpm_ipv6_key {
-	/** IP address */
-	uint8_t ip[RTE_LPM_IPV6_ADDR_SIZE];
+    /** IP address */
+    uint8_t ip[RTE_LPM_IPV6_ADDR_SIZE];
 
-	/** IP address depth. The most significant "depth" bits of the IP
-	address specify the network part of the IP address, while the rest of
-	the bits specify the host part of the address and are ignored for the
-	purpose of route specification. */
-	uint8_t depth;
+    /** IP address depth. The most significant "depth" bits of the IP
+    address specify the network part of the IP address, while the rest of
+    the bits specify the host part of the address and are ignored for the
+    purpose of route specification. */
+    uint8_t depth;
 };
 
 /** LPM table operations */

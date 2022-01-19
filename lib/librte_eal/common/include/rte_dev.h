@@ -28,68 +28,68 @@ extern "C" {
  * The device event type.
  */
 enum rte_dev_event_type {
-	RTE_DEV_EVENT_ADD,	/**< device being added */
-	RTE_DEV_EVENT_REMOVE,	/**< device being removed */
-	RTE_DEV_EVENT_MAX	/**< max value of this enum */
+    RTE_DEV_EVENT_ADD,    /**< device being added */
+    RTE_DEV_EVENT_REMOVE,    /**< device being removed */
+    RTE_DEV_EVENT_MAX    /**< max value of this enum */
 };
 
 struct rte_dev_event {
-	enum rte_dev_event_type type;	/**< device event type */
-	int subsystem;			/**< subsystem id */
-	char *devname;			/**< device name */
+    enum rte_dev_event_type type;    /**< device event type */
+    int subsystem;            /**< subsystem id */
+    char *devname;            /**< device name */
 };
 
 typedef void (*rte_dev_event_cb_fn)(const char *device_name,
-					enum rte_dev_event_type event,
-					void *cb_arg);
+                    enum rte_dev_event_type event,
+                    void *cb_arg);
 
 /* Macros to check for invalid function pointers */
 #define RTE_FUNC_PTR_OR_ERR_RET(func, retval) do { \
-	if ((func) == NULL) \
-		return retval; \
+    if ((func) == NULL) \
+        return retval; \
 } while (0)
 
 #define RTE_FUNC_PTR_OR_RET(func) do { \
-	if ((func) == NULL) \
-		return; \
+    if ((func) == NULL) \
+        return; \
 } while (0)
 
 /**
  * Device driver.
  */
 enum rte_kernel_driver {
-	RTE_KDRV_UNKNOWN = 0,
-	RTE_KDRV_IGB_UIO,
-	RTE_KDRV_VFIO,
-	RTE_KDRV_UIO_GENERIC,
-	RTE_KDRV_NIC_UIO,
-	RTE_KDRV_NONE,
+    RTE_KDRV_UNKNOWN = 0,
+    RTE_KDRV_IGB_UIO,
+    RTE_KDRV_VFIO,
+    RTE_KDRV_UIO_GENERIC,
+    RTE_KDRV_NIC_UIO,
+    RTE_KDRV_NONE,
 };
 
 /**
  * Device policies.
  */
 enum rte_dev_policy {
-	RTE_DEV_WHITELISTED,
-	RTE_DEV_BLACKLISTED,
+    RTE_DEV_WHITELISTED,
+    RTE_DEV_BLACKLISTED,
 };
 
 /**
  * A generic memory resource representation.
  */
 struct rte_mem_resource {
-	uint64_t phys_addr; /**< Physical address, 0 if not resource. */ /* 物理地址 */
-	uint64_t len;       /**< Length of the resource. */
-	void *addr;         /**< Virtual address, NULL when not mapped. *//* 虚拟地址 */
+    uint64_t phys_addr; /**< Physical address, 0 if not resource. */ /* 物理地址 */
+    uint64_t len;       /**< Length of the resource. */
+    void *addr;         /**< Virtual address, NULL when not mapped. *//* 虚拟地址 */
 };
 
 /**
  * A structure describing a device driver.
  */
 struct rte_driver {
-	TAILQ_ENTRY(rte_driver) next;  /**< Next in list. */
-	const char *name;                   /**< Driver name. */
-	const char *alias;              /**< Driver alias. */
+    TAILQ_ENTRY(rte_driver) next;  /**< Next in list. */
+    const char *name;                   /**< Driver name. */
+    const char *alias;              /**< Driver alias. */
 };
 
 /*
@@ -102,12 +102,12 @@ struct rte_driver {
  * A structure describing a generic device.
  */
 struct rte_device {
-	TAILQ_ENTRY(rte_device) next; /**< Next device */
-	const char *name;             /**< Device name */
-	const struct rte_driver *driver; /**< Driver assigned after probing */
-	const struct rte_bus *bus;    /**< Bus handle assigned on scan */
-	int numa_node;                /**< NUMA node connection */
-	struct rte_devargs *devargs;  /**< Arguments for latest probing */
+    TAILQ_ENTRY(rte_device) next; /**< Next device */
+    const char *name;             /**< Device name */
+    const struct rte_driver *driver; /**< Driver assigned after probing */
+    const struct rte_bus *bus;    /**< Bus handle assigned on scan */
+    int numa_node;                /**< NUMA node connection */
+    struct rte_devargs *devargs;  /**< Arguments for latest probing */
 };
 
 /**
@@ -137,7 +137,7 @@ int rte_dev_is_probed(const struct rte_device *dev);
  *   0 on success, negative on error.
  */
 int rte_eal_hotplug_add(const char *busname, const char *devname,
-			const char *drvargs);
+            const char *drvargs);
 
 /**
  * Add matching devices.
@@ -248,13 +248,13 @@ __attribute__((used)) = str
  * This context carries over the current iteration state.
  */
 struct rte_dev_iterator {
-	const char *dev_str; /**< device string. */
-	const char *bus_str; /**< bus-related part of device string. */
-	const char *cls_str; /**< class-related part of device string. */
-	struct rte_bus *bus; /**< bus handle. */
-	struct rte_class *cls; /**< class handle. */
-	struct rte_device *device; /**< current position. */
-	void *class_device; /**< additional specialized context. */
+    const char *dev_str; /**< device string. */
+    const char *bus_str; /**< bus-related part of device string. */
+    const char *cls_str; /**< class-related part of device string. */
+    struct rte_bus *bus; /**< bus handle. */
+    struct rte_class *cls; /**< class handle. */
+    struct rte_device *device; /**< current position. */
+    void *class_device; /**< additional specialized context. */
 };
 
 /**
@@ -286,8 +286,8 @@ struct rte_dev_iterator {
  *   string.
  */
 typedef void *(*rte_dev_iterate_t)(const void *start,
-				   const char *devstr,
-				   const struct rte_dev_iterator *it);
+                   const char *devstr,
+                   const struct rte_dev_iterator *it);
 
 /**
  * Initializes a device iterator.
@@ -334,10 +334,10 @@ struct rte_device *
 rte_dev_iterator_next(struct rte_dev_iterator *it);
 
 #define RTE_DEV_FOREACH(dev, devstr, it) \
-	for (rte_dev_iterator_init(it, devstr), \
-	     dev = rte_dev_iterator_next(it); \
-	     dev != NULL; \
-	     dev = rte_dev_iterator_next(it))
+    for (rte_dev_iterator_init(it, devstr), \
+         dev = rte_dev_iterator_next(it); \
+         dev != NULL; \
+         dev = rte_dev_iterator_next(it))
 
 #ifdef __cplusplus
 }
@@ -365,8 +365,8 @@ rte_dev_iterator_next(struct rte_dev_iterator *it);
 __rte_experimental
 int
 rte_dev_event_callback_register(const char *device_name,
-				rte_dev_event_cb_fn cb_fn,
-				void *cb_arg);
+                rte_dev_event_cb_fn cb_fn,
+                void *cb_arg);
 
 /**
  * @warning
@@ -390,8 +390,8 @@ rte_dev_event_callback_register(const char *device_name,
 __rte_experimental
 int
 rte_dev_event_callback_unregister(const char *device_name,
-				  rte_dev_event_cb_fn cb_fn,
-				  void *cb_arg);
+                  rte_dev_event_cb_fn cb_fn,
+                  void *cb_arg);
 
 /**
  * @warning
@@ -408,7 +408,7 @@ rte_dev_event_callback_unregister(const char *device_name,
 __rte_experimental
 void
 rte_dev_event_callback_process(const char *device_name,
-			       enum rte_dev_event_type event);
+                   enum rte_dev_event_type event);
 
 /**
  * @warning
@@ -474,17 +474,17 @@ rte_dev_hotplug_handle_disable(void);
  * @note: Memory must be registered in advance using rte_extmem_* APIs.
  *
  * @param dev
- *	Device pointer.
+ *    Device pointer.
  * @param addr
- *	Virtual address to map.
+ *    Virtual address to map.
  * @param iova
- *	IOVA address to map.
+ *    IOVA address to map.
  * @param len
- *	Length of the memory segment being mapped.
+ *    Length of the memory segment being mapped.
  *
  * @return
- *	0 if mapping was successful.
- *	Negative value and rte_errno is set otherwise.
+ *    0 if mapping was successful.
+ *    Negative value and rte_errno is set otherwise.
  */
 __rte_experimental
 int
@@ -498,21 +498,21 @@ rte_dev_dma_map(struct rte_device *dev, void *addr, uint64_t iova, size_t len);
  * @note: Memory must be registered in advance using rte_extmem_* APIs.
  *
  * @param dev
- *	Device pointer.
+ *    Device pointer.
  * @param addr
- *	Virtual address to unmap.
+ *    Virtual address to unmap.
  * @param iova
- *	IOVA address to unmap.
+ *    IOVA address to unmap.
  * @param len
- *	Length of the memory segment being mapped.
+ *    Length of the memory segment being mapped.
  *
  * @return
- *	0 if un-mapping was successful.
- *	Negative value and rte_errno is set otherwise.
+ *    0 if un-mapping was successful.
+ *    Negative value and rte_errno is set otherwise.
  */
 __rte_experimental
 int
 rte_dev_dma_unmap(struct rte_device *dev, void *addr, uint64_t iova,
-		  size_t len);
+          size_t len);
 
 #endif /* _RTE_DEV_H_ */

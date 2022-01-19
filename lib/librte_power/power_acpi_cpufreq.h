@@ -65,7 +65,7 @@ int power_acpi_cpufreq_exit(unsigned int lcore_id);
  *  The number of available frequencies.
  */
 uint32_t power_acpi_cpufreq_freqs(unsigned int lcore_id, uint32_t *freqs,
-		uint32_t num);
+        uint32_t num);
 
 /**
  * Return the current index of available frequencies of a specific lcore. It
@@ -210,7 +210,7 @@ int power_acpi_disable_turbo(unsigned int lcore_id);
  *  - Negative on error.
  */
 int power_acpi_get_capabilities(unsigned int lcore_id,
-		struct rte_power_core_capabilities *caps);
+        struct rte_power_core_capabilities *caps);
 
 #ifdef __cplusplus
 }

@@ -25,10 +25,10 @@ extern "C" {
 static inline uint64_t
 rte_rdtsc(void)
 {
-	uint64_t tsc;
+    uint64_t tsc;
 
-	asm volatile("mrs %0, cntvct_el0" : "=r" (tsc));
-	return tsc;
+    asm volatile("mrs %0, cntvct_el0" : "=r" (tsc));
+    return tsc;
 }
 #else
 /**
@@ -52,18 +52,18 @@ rte_rdtsc(void)
 static inline uint64_t
 rte_rdtsc(void)
 {
-	uint64_t tsc;
+    uint64_t tsc;
 
-	asm volatile("mrs %0, pmccntr_el0" : "=r"(tsc));
-	return tsc;
+    asm volatile("mrs %0, pmccntr_el0" : "=r"(tsc));
+    return tsc;
 }
 #endif
 
 static inline uint64_t
 rte_rdtsc_precise(void)
 {
-	rte_mb();
-	return rte_rdtsc();
+    rte_mb();
+    return rte_rdtsc();
 }
 
 static inline uint64_t

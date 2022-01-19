@@ -14,7 +14,7 @@ extern "C" {
 
 static inline void rte_pause(void)
 {
-	asm volatile("yield" ::: "memory");
+    asm volatile("yield" ::: "memory");
 }
 
 #ifdef __cplusplus

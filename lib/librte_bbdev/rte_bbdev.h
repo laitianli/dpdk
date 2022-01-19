@@ -45,8 +45,8 @@ extern "C" {
 
 /** Flags indicate current state of BBDEV device */
 enum rte_bbdev_state {
-	RTE_BBDEV_UNUSED,
-	RTE_BBDEV_INITIALIZED
+    RTE_BBDEV_UNUSED,
+    RTE_BBDEV_INITIALIZED
 };
 
 /**
@@ -88,8 +88,8 @@ rte_bbdev_find_next(uint16_t dev_id);
 
 /** Iterate through all enabled devices */
 #define RTE_BBDEV_FOREACH(i) for (i = rte_bbdev_find_next(-1); \
-		i < RTE_BBDEV_MAX_DEVS; \
-		i = rte_bbdev_find_next(i))
+        i < RTE_BBDEV_MAX_DEVS; \
+        i = rte_bbdev_find_next(i))
 
 /**
  * Setup up device queues.
@@ -136,11 +136,11 @@ rte_bbdev_intr_enable(uint16_t dev_id);
 
 /** Device queue configuration structure */
 struct rte_bbdev_queue_conf {
-	int socket;  /**< NUMA socket used for memory allocation */
-	uint32_t queue_size;  /**< Size of queue */
-	uint8_t priority;  /**< Queue priority */
-	bool deferred_start; /**< Do not start queue when device is started. */
-	enum rte_bbdev_op_type op_type; /**< Operation type */
+    int socket;  /**< NUMA socket used for memory allocation */
+    uint32_t queue_size;  /**< Size of queue */
+    uint8_t priority;  /**< Queue priority */
+    bool deferred_start; /**< Do not start queue when device is started. */
+    enum rte_bbdev_op_type op_type; /**< Operation type */
 };
 
 /**
@@ -163,7 +163,7 @@ struct rte_bbdev_queue_conf {
 __rte_experimental
 int
 rte_bbdev_queue_configure(uint16_t dev_id, uint16_t queue_id,
-		const struct rte_bbdev_queue_conf *conf);
+        const struct rte_bbdev_queue_conf *conf);
 
 /**
  * Start a device.
@@ -244,19 +244,19 @@ rte_bbdev_queue_stop(uint16_t dev_id, uint16_t queue_id);
 
 /** Device statistics. */
 struct rte_bbdev_stats {
-	uint64_t enqueued_count;  /**< Count of all operations enqueued */
-	uint64_t dequeued_count;  /**< Count of all operations dequeued */
-	/** Total error count on operations enqueued */
-	uint64_t enqueue_err_count;
-	/** Total error count on operations dequeued */
-	uint64_t dequeue_err_count;
-	/** CPU cycles consumed by the (HW/SW) accelerator device to offload
-	 *  the enqueue request to its internal queues.
-	 *  - For a HW device this is the cycles consumed in MMIO write
-	 *  - For a SW (vdev) device, this is the processing time of the
-	 *     bbdev operation
-	 */
-	uint64_t acc_offload_cycles;
+    uint64_t enqueued_count;  /**< Count of all operations enqueued */
+    uint64_t dequeued_count;  /**< Count of all operations dequeued */
+    /** Total error count on operations enqueued */
+    uint64_t enqueue_err_count;
+    /** Total error count on operations dequeued */
+    uint64_t dequeue_err_count;
+    /** CPU cycles consumed by the (HW/SW) accelerator device to offload
+     *  the enqueue request to its internal queues.
+     *  - For a HW device this is the cycles consumed in MMIO write
+     *  - For a SW (vdev) device, this is the processing time of the
+     *     bbdev operation
+     */
+    uint64_t acc_offload_cycles;
 };
 
 /**
@@ -290,46 +290,46 @@ rte_bbdev_stats_reset(uint16_t dev_id);
 
 /** Device information supplied by the device's driver */
 struct rte_bbdev_driver_info {
-	/** Driver name */
-	const char *driver_name;
+    /** Driver name */
+    const char *driver_name;
 
-	/** Maximum number of queues supported by the device */
-	unsigned int max_num_queues;
-	/** Queue size limit (queue size must also be power of 2) */
-	uint32_t queue_size_lim;
-	/** Set if device off-loads operation to hardware  */
-	bool hardware_accelerated;
-	/** Max value supported by queue priority for DL */
-	uint8_t max_dl_queue_priority;
-	/** Max value supported by queue priority for UL */
-	uint8_t max_ul_queue_priority;
-	/** Set if device supports per-queue interrupts */
-	bool queue_intr_supported;
-	/** Minimum alignment of buffers, in bytes */
-	uint16_t min_alignment;
-	/** Default queue configuration used if none is supplied  */
-	struct rte_bbdev_queue_conf default_queue_conf;
-	/** Device operation capabilities */
-	const struct rte_bbdev_op_cap *capabilities;
-	/** Device cpu_flag requirements */
-	const enum rte_cpu_flag_t *cpu_flag_reqs;
+    /** Maximum number of queues supported by the device */
+    unsigned int max_num_queues;
+    /** Queue size limit (queue size must also be power of 2) */
+    uint32_t queue_size_lim;
+    /** Set if device off-loads operation to hardware  */
+    bool hardware_accelerated;
+    /** Max value supported by queue priority for DL */
+    uint8_t max_dl_queue_priority;
+    /** Max value supported by queue priority for UL */
+    uint8_t max_ul_queue_priority;
+    /** Set if device supports per-queue interrupts */
+    bool queue_intr_supported;
+    /** Minimum alignment of buffers, in bytes */
+    uint16_t min_alignment;
+    /** Default queue configuration used if none is supplied  */
+    struct rte_bbdev_queue_conf default_queue_conf;
+    /** Device operation capabilities */
+    const struct rte_bbdev_op_cap *capabilities;
+    /** Device cpu_flag requirements */
+    const enum rte_cpu_flag_t *cpu_flag_reqs;
 };
 
 /** Macro used at end of bbdev PMD list */
 #define RTE_BBDEV_END_OF_CAPABILITIES_LIST() \
-	{ RTE_BBDEV_OP_NONE }
+    { RTE_BBDEV_OP_NONE }
 
 /**
  * Device information structure used by an application to discover a devices
  * capabilities and current configuration
  */
 struct rte_bbdev_info {
-	int socket_id;  /**< NUMA socket that device is on */
-	const char *dev_name;  /**< Unique device name */
-	const struct rte_device *device; /**< Device Information */
-	uint16_t num_queues;  /**< Number of queues currently configured */
-	bool started;  /**< Set if device is currently started */
-	struct rte_bbdev_driver_info drv;  /**< Info from device driver */
+    int socket_id;  /**< NUMA socket that device is on */
+    const char *dev_name;  /**< Unique device name */
+    const struct rte_device *device; /**< Device Information */
+    uint16_t num_queues;  /**< Number of queues currently configured */
+    bool started;  /**< Set if device is currently started */
+    struct rte_bbdev_driver_info drv;  /**< Info from device driver */
 };
 
 /**
@@ -351,10 +351,10 @@ rte_bbdev_info_get(uint16_t dev_id, struct rte_bbdev_info *dev_info);
 
 /** Queue information */
 struct rte_bbdev_queue_info {
-	/** Current device configuration */
-	struct rte_bbdev_queue_conf conf;
-	/** Set if queue is currently started */
-	bool started;
+    /** Current device configuration */
+    struct rte_bbdev_queue_conf conf;
+    /** Set if queue is currently started */
+    bool started;
 };
 
 /**
@@ -375,37 +375,37 @@ struct rte_bbdev_queue_info {
 __rte_experimental
 int
 rte_bbdev_queue_info_get(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_queue_info *queue_info);
+        struct rte_bbdev_queue_info *queue_info);
 
 /** @internal The data structure associated with each queue of a device. */
 struct rte_bbdev_queue_data {
-	void *queue_private;  /**< Driver-specific per-queue data */
-	struct rte_bbdev_queue_conf conf;  /**< Current configuration */
-	struct rte_bbdev_stats queue_stats;  /**< Queue statistics */
-	bool started;  /**< Queue state */
+    void *queue_private;  /**< Driver-specific per-queue data */
+    struct rte_bbdev_queue_conf conf;  /**< Current configuration */
+    struct rte_bbdev_stats queue_stats;  /**< Queue statistics */
+    bool started;  /**< Queue state */
 };
 
 /** @internal Enqueue encode operations for processing on queue of a device. */
 typedef uint16_t (*rte_bbdev_enqueue_enc_ops_t)(
-		struct rte_bbdev_queue_data *q_data,
-		struct rte_bbdev_enc_op **ops,
-		uint16_t num);
+        struct rte_bbdev_queue_data *q_data,
+        struct rte_bbdev_enc_op **ops,
+        uint16_t num);
 
 /** @internal Enqueue decode operations for processing on queue of a device. */
 typedef uint16_t (*rte_bbdev_enqueue_dec_ops_t)(
-		struct rte_bbdev_queue_data *q_data,
-		struct rte_bbdev_dec_op **ops,
-		uint16_t num);
+        struct rte_bbdev_queue_data *q_data,
+        struct rte_bbdev_dec_op **ops,
+        uint16_t num);
 
 /** @internal Dequeue encode operations from a queue of a device. */
 typedef uint16_t (*rte_bbdev_dequeue_enc_ops_t)(
-		struct rte_bbdev_queue_data *q_data,
-		struct rte_bbdev_enc_op **ops, uint16_t num);
+        struct rte_bbdev_queue_data *q_data,
+        struct rte_bbdev_enc_op **ops, uint16_t num);
 
 /** @internal Dequeue decode operations from a queue of a device. */
 typedef uint16_t (*rte_bbdev_dequeue_dec_ops_t)(
-		struct rte_bbdev_queue_data *q_data,
-		struct rte_bbdev_dec_op **ops, uint16_t num);
+        struct rte_bbdev_queue_data *q_data,
+        struct rte_bbdev_dec_op **ops, uint16_t num);
 
 #define RTE_BBDEV_NAME_MAX_LEN  64  /**< Max length of device name */
 
@@ -416,15 +416,15 @@ typedef uint16_t (*rte_bbdev_dequeue_dec_ops_t)(
  * these fields, but should never write to them!
  */
 struct rte_bbdev_data {
-	char name[RTE_BBDEV_NAME_MAX_LEN]; /**< Unique identifier name */
-	void *dev_private;  /**< Driver-specific private data */
-	uint16_t num_queues;  /**< Number of currently configured queues */
-	struct rte_bbdev_queue_data *queues;  /**< Queue structures */
-	uint16_t dev_id;  /**< Device ID */
-	int socket_id;  /**< NUMA socket that device is on */
-	bool started;  /**< Device run-time state */
-	/** Counter of processes using the device */
-	rte_atomic16_t process_cnt;
+    char name[RTE_BBDEV_NAME_MAX_LEN]; /**< Unique identifier name */
+    void *dev_private;  /**< Driver-specific private data */
+    uint16_t num_queues;  /**< Number of currently configured queues */
+    struct rte_bbdev_queue_data *queues;  /**< Queue structures */
+    uint16_t dev_id;  /**< Device ID */
+    int socket_id;  /**< NUMA socket that device is on */
+    bool started;  /**< Device run-time state */
+    /** Counter of processes using the device */
+    rte_atomic16_t process_cnt;
 };
 
 /* Forward declarations */
@@ -440,29 +440,29 @@ TAILQ_HEAD(rte_bbdev_cb_list, rte_bbdev_callback);
  * these fields, but should only write to the *_ops fields.
  */
 struct __rte_cache_aligned rte_bbdev {
-	/**< Enqueue encode function */
-	rte_bbdev_enqueue_enc_ops_t enqueue_enc_ops;
-	/**< Enqueue decode function */
-	rte_bbdev_enqueue_dec_ops_t enqueue_dec_ops;
-	/**< Dequeue encode function */
-	rte_bbdev_dequeue_enc_ops_t dequeue_enc_ops;
-	/**< Dequeue decode function */
-	rte_bbdev_dequeue_dec_ops_t dequeue_dec_ops;
-	/**< Enqueue encode function */
-	rte_bbdev_enqueue_enc_ops_t enqueue_ldpc_enc_ops;
-	/**< Enqueue decode function */
-	rte_bbdev_enqueue_dec_ops_t enqueue_ldpc_dec_ops;
-	/**< Dequeue encode function */
-	rte_bbdev_dequeue_enc_ops_t dequeue_ldpc_enc_ops;
-	/**< Dequeue decode function */
-	rte_bbdev_dequeue_dec_ops_t dequeue_ldpc_dec_ops;
-	const struct rte_bbdev_ops *dev_ops;  /**< Functions exported by PMD */
-	struct rte_bbdev_data *data;  /**< Pointer to device data */
-	enum rte_bbdev_state state;  /**< If device is currently used or not */
-	struct rte_device *device; /**< Backing device */
-	/** User application callback for interrupts if present */
-	struct rte_bbdev_cb_list list_cbs;
-	struct rte_intr_handle *intr_handle; /**< Device interrupt handle */
+    /**< Enqueue encode function */
+    rte_bbdev_enqueue_enc_ops_t enqueue_enc_ops;
+    /**< Enqueue decode function */
+    rte_bbdev_enqueue_dec_ops_t enqueue_dec_ops;
+    /**< Dequeue encode function */
+    rte_bbdev_dequeue_enc_ops_t dequeue_enc_ops;
+    /**< Dequeue decode function */
+    rte_bbdev_dequeue_dec_ops_t dequeue_dec_ops;
+    /**< Enqueue encode function */
+    rte_bbdev_enqueue_enc_ops_t enqueue_ldpc_enc_ops;
+    /**< Enqueue decode function */
+    rte_bbdev_enqueue_dec_ops_t enqueue_ldpc_dec_ops;
+    /**< Dequeue encode function */
+    rte_bbdev_dequeue_enc_ops_t dequeue_ldpc_enc_ops;
+    /**< Dequeue decode function */
+    rte_bbdev_dequeue_dec_ops_t dequeue_ldpc_dec_ops;
+    const struct rte_bbdev_ops *dev_ops;  /**< Functions exported by PMD */
+    struct rte_bbdev_data *data;  /**< Pointer to device data */
+    enum rte_bbdev_state state;  /**< If device is currently used or not */
+    struct rte_device *device; /**< Backing device */
+    /** User application callback for interrupts if present */
+    struct rte_bbdev_cb_list list_cbs;
+    struct rte_intr_handle *intr_handle; /**< Device interrupt handle */
 };
 
 /** @internal array of all devices */
@@ -492,11 +492,11 @@ extern struct rte_bbdev rte_bbdev_devices[];
 __rte_experimental
 static inline uint16_t
 rte_bbdev_enqueue_enc_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_enc_op **ops, uint16_t num_ops)
+        struct rte_bbdev_enc_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->enqueue_enc_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->enqueue_enc_ops(q_data, ops, num_ops);
 }
 
 /**
@@ -523,11 +523,11 @@ rte_bbdev_enqueue_enc_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_enqueue_dec_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_dec_op **ops, uint16_t num_ops)
+        struct rte_bbdev_dec_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->enqueue_dec_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->enqueue_dec_ops(q_data, ops, num_ops);
 }
 
 /**
@@ -554,11 +554,11 @@ rte_bbdev_enqueue_dec_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_enqueue_ldpc_enc_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_enc_op **ops, uint16_t num_ops)
+        struct rte_bbdev_enc_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->enqueue_ldpc_enc_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->enqueue_ldpc_enc_ops(q_data, ops, num_ops);
 }
 
 /**
@@ -585,11 +585,11 @@ rte_bbdev_enqueue_ldpc_enc_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_enqueue_ldpc_dec_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_dec_op **ops, uint16_t num_ops)
+        struct rte_bbdev_dec_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->enqueue_ldpc_dec_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->enqueue_ldpc_dec_ops(q_data, ops, num_ops);
 }
 
 
@@ -617,11 +617,11 @@ rte_bbdev_enqueue_ldpc_dec_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_dequeue_enc_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_enc_op **ops, uint16_t num_ops)
+        struct rte_bbdev_enc_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->dequeue_enc_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->dequeue_enc_ops(q_data, ops, num_ops);
 }
 
 /**
@@ -649,11 +649,11 @@ rte_bbdev_dequeue_enc_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_dequeue_dec_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_dec_op **ops, uint16_t num_ops)
+        struct rte_bbdev_dec_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->dequeue_dec_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->dequeue_dec_ops(q_data, ops, num_ops);
 }
 
 
@@ -681,11 +681,11 @@ rte_bbdev_dequeue_dec_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_dequeue_ldpc_enc_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_enc_op **ops, uint16_t num_ops)
+        struct rte_bbdev_enc_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->dequeue_ldpc_enc_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->dequeue_ldpc_enc_ops(q_data, ops, num_ops);
 }
 
 /**
@@ -712,19 +712,19 @@ rte_bbdev_dequeue_ldpc_enc_ops(uint16_t dev_id, uint16_t queue_id,
 __rte_experimental
 static inline uint16_t
 rte_bbdev_dequeue_ldpc_dec_ops(uint16_t dev_id, uint16_t queue_id,
-		struct rte_bbdev_dec_op **ops, uint16_t num_ops)
+        struct rte_bbdev_dec_op **ops, uint16_t num_ops)
 {
-	struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
-	struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
-	return dev->dequeue_ldpc_dec_ops(q_data, ops, num_ops);
+    struct rte_bbdev *dev = &rte_bbdev_devices[dev_id];
+    struct rte_bbdev_queue_data *q_data = &dev->data->queues[queue_id];
+    return dev->dequeue_ldpc_dec_ops(q_data, ops, num_ops);
 }
 
 /** Definitions of device event types */
 enum rte_bbdev_event_type {
-	RTE_BBDEV_EVENT_UNKNOWN,  /**< unknown event type */
-	RTE_BBDEV_EVENT_ERROR,  /**< error interrupt event */
-	RTE_BBDEV_EVENT_DEQUEUE,  /**< dequeue event */
-	RTE_BBDEV_EVENT_MAX  /**< max value of this enum */
+    RTE_BBDEV_EVENT_UNKNOWN,  /**< unknown event type */
+    RTE_BBDEV_EVENT_ERROR,  /**< error interrupt event */
+    RTE_BBDEV_EVENT_DEQUEUE,  /**< dequeue event */
+    RTE_BBDEV_EVENT_MAX  /**< max value of this enum */
 };
 
 /**
@@ -741,8 +741,8 @@ enum rte_bbdev_event_type {
  *   To pass data back to user application.
  */
 typedef void (*rte_bbdev_cb_fn)(uint16_t dev_id,
-		enum rte_bbdev_event_type event, void *cb_arg,
-		void *ret_param);
+        enum rte_bbdev_event_type event, void *cb_arg,
+        void *ret_param);
 
 /**
  * Register a callback function for specific device id. Multiple callbacks can
@@ -764,7 +764,7 @@ typedef void (*rte_bbdev_cb_fn)(uint16_t dev_id,
 __rte_experimental
 int
 rte_bbdev_callback_register(uint16_t dev_id, enum rte_bbdev_event_type event,
-		rte_bbdev_cb_fn cb_fn, void *cb_arg);
+        rte_bbdev_cb_fn cb_fn, void *cb_arg);
 
 /**
  * Unregister a callback function for specific device id.
@@ -788,7 +788,7 @@ rte_bbdev_callback_register(uint16_t dev_id, enum rte_bbdev_event_type event,
 __rte_experimental
 int
 rte_bbdev_callback_unregister(uint16_t dev_id, enum rte_bbdev_event_type event,
-		rte_bbdev_cb_fn cb_fn, void *cb_arg);
+        rte_bbdev_cb_fn cb_fn, void *cb_arg);
 
 /**
  * Enable a one-shot interrupt on the next operation enqueued to a particular
@@ -854,7 +854,7 @@ rte_bbdev_queue_intr_disable(uint16_t dev_id, uint16_t queue_id);
 __rte_experimental
 int
 rte_bbdev_queue_intr_ctl(uint16_t dev_id, uint16_t queue_id, int epfd, int op,
-		void *data);
+        void *data);
 
 #ifdef __cplusplus
 }

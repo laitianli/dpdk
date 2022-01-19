@@ -22,21 +22,21 @@
 /**
  * PDBOPTS_ESP_ESN - Extended sequence included
  */
-#define PDBOPTS_ESP_ESN		0x10
+#define PDBOPTS_ESP_ESN        0x10
 
 /**
  * PDBOPTS_ESP_IPVSN - Process IPv6 header
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_IPVSN	0x02
+#define PDBOPTS_ESP_IPVSN    0x02
 
 /**
  * PDBOPTS_ESP_TUNNEL - Tunnel mode next-header byte
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_TUNNEL	0x01
+#define PDBOPTS_ESP_TUNNEL    0x01
 
 /* IPSec ESP Encap PDB options */
 
@@ -52,33 +52,33 @@
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_DIFFSERV	0x40
+#define PDBOPTS_ESP_DIFFSERV    0x40
 
 /**
  * PDBOPTS_ESP_IVSRC - IV comes from internal random gen
  */
-#define PDBOPTS_ESP_IVSRC	0x20
+#define PDBOPTS_ESP_IVSRC    0x20
 
 /**
  * PDBOPTS_ESP_IPHDRSRC - IP header comes from PDB
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_IPHDRSRC	0x08
+#define PDBOPTS_ESP_IPHDRSRC    0x08
 
 /**
  * PDBOPTS_ESP_INCIPHDR - Prepend IP header to output frame
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_INCIPHDR	0x04
+#define PDBOPTS_ESP_INCIPHDR    0x04
 
 /**
  * PDBOPTS_ESP_OIHI_MASK - Mask for Outer IP Header Included
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_OIHI_MASK	0x0c
+#define PDBOPTS_ESP_OIHI_MASK    0x0c
 
 /**
  * PDBOPTS_ESP_OIHI_PDB_INL - Prepend IP header to output frame from PDB (where
@@ -101,50 +101,50 @@
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_OIHI_IF	0x04
+#define PDBOPTS_ESP_OIHI_IF    0x04
 
 /**
  * PDBOPTS_ESP_NAT - Enable RFC 3948 UDP-encapsulated-ESP
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_NAT		0x02
+#define PDBOPTS_ESP_NAT        0x02
 
 /**
  * PDBOPTS_ESP_NUC - Enable NAT UDP Checksum
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_NUC		0x01
+#define PDBOPTS_ESP_NUC        0x01
 
 /* IPSec ESP Decap PDB options */
 
 /**
  * PDBOPTS_ESP_ARS_MASK - antireplay window mask
  */
-#define PDBOPTS_ESP_ARS_MASK	0xc0
+#define PDBOPTS_ESP_ARS_MASK    0xc0
 
 /**
  * PDBOPTS_ESP_ARSNONE - No antireplay window
  */
-#define PDBOPTS_ESP_ARSNONE	0x00
+#define PDBOPTS_ESP_ARSNONE    0x00
 
 /**
  * PDBOPTS_ESP_ARS64 - 64-entry antireplay window
  */
-#define PDBOPTS_ESP_ARS64	0xc0
+#define PDBOPTS_ESP_ARS64    0xc0
 
 /**
  * PDBOPTS_ESP_ARS128 - 128-entry antireplay window
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_ARS128	0x80
+#define PDBOPTS_ESP_ARS128    0x80
 
 /**
  * PDBOPTS_ESP_ARS32 - 32-entry antireplay window
  */
-#define PDBOPTS_ESP_ARS32	0x40
+#define PDBOPTS_ESP_ARS32    0x40
 
 /**
  * PDBOPTS_ESP_VERIFY_CSUM - Validate ip header checksum
@@ -159,21 +159,21 @@
  *
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_TECN	0x20
+#define PDBOPTS_ESP_TECN    0x20
 
 /**
  * PDBOPTS_ESP_OUTFMT - Output only decapsulation
  *
  * Valid only for IPsec legacy mode.
  */
-#define PDBOPTS_ESP_OUTFMT	0x08
+#define PDBOPTS_ESP_OUTFMT    0x08
 
 /**
  * PDBOPTS_ESP_AOFL - Adjust out frame len
  *
  * Valid only for IPsec legacy mode and for SEC >= 5.3.
  */
-#define PDBOPTS_ESP_AOFL	0x04
+#define PDBOPTS_ESP_AOFL    0x04
 
 /**
  * PDBOPTS_ESP_ETU - EtherType Update
@@ -182,35 +182,35 @@
  * frame.
  * Valid only for IPsec new mode.
  */
-#define PDBOPTS_ESP_ETU		0x01
+#define PDBOPTS_ESP_ETU        0x01
 
-#define PDBHMO_ESP_DECAP_SHIFT		28
-#define PDBHMO_ESP_ENCAP_SHIFT		28
-#define PDBNH_ESP_ENCAP_SHIFT		16
-#define PDBNH_ESP_ENCAP_MASK		(0xff << PDBNH_ESP_ENCAP_SHIFT)
-#define PDBHDRLEN_ESP_DECAP_SHIFT	16
-#define PDBHDRLEN_MASK			(0x0fff << PDBHDRLEN_ESP_DECAP_SHIFT)
-#define PDB_NH_OFFSET_SHIFT		8
-#define PDB_NH_OFFSET_MASK		(0xff << PDB_NH_OFFSET_SHIFT)
+#define PDBHMO_ESP_DECAP_SHIFT        28
+#define PDBHMO_ESP_ENCAP_SHIFT        28
+#define PDBNH_ESP_ENCAP_SHIFT        16
+#define PDBNH_ESP_ENCAP_MASK        (0xff << PDBNH_ESP_ENCAP_SHIFT)
+#define PDBHDRLEN_ESP_DECAP_SHIFT    16
+#define PDBHDRLEN_MASK            (0x0fff << PDBHDRLEN_ESP_DECAP_SHIFT)
+#define PDB_NH_OFFSET_SHIFT        8
+#define PDB_NH_OFFSET_MASK        (0xff << PDB_NH_OFFSET_SHIFT)
 
 /**
  * PDBHMO_ESP_DECAP_DTTL - IPsec ESP decrement TTL (IPv4) / Hop limit (IPv6)
  *                         HMO option.
  */
-#define PDBHMO_ESP_DECAP_DTTL	(0x02 << PDBHMO_ESP_DECAP_SHIFT)
+#define PDBHMO_ESP_DECAP_DTTL    (0x02 << PDBHMO_ESP_DECAP_SHIFT)
 
 /**
  * PDBHMO_ESP_ENCAP_DTTL - IPsec ESP increment TTL (IPv4) / Hop limit (IPv6)
  *                         HMO option.
  */
-#define PDBHMO_ESP_ENCAP_DTTL	(0x02 << PDBHMO_ESP_ENCAP_SHIFT)
+#define PDBHMO_ESP_ENCAP_DTTL    (0x02 << PDBHMO_ESP_ENCAP_SHIFT)
 
 /**
  * PDBHMO_ESP_DIFFSERV - (Decap) DiffServ Copy - Copy the IPv4 TOS or IPv6
  *                       Traffic Class byte from the outer IP header to the
  *                       inner IP header.
  */
-#define PDBHMO_ESP_DIFFSERV	(0x01 << PDBHMO_ESP_DECAP_SHIFT)
+#define PDBHMO_ESP_DIFFSERV    (0x01 << PDBHMO_ESP_DECAP_SHIFT)
 
 /**
  * PDBHMO_ESP_SNR - (Encap) - Sequence Number Rollover control
@@ -219,14 +219,14 @@
  * error if SNR = 1, rollover allowed if SNR = 0.
  * Valid only for IPsec new mode.
  */
-#define PDBHMO_ESP_SNR		(0x01 << PDBHMO_ESP_ENCAP_SHIFT)
+#define PDBHMO_ESP_SNR        (0x01 << PDBHMO_ESP_ENCAP_SHIFT)
 
 /**
  * PDBHMO_ESP_DFBIT - (Encap) Copy DF bit - if an IPv4 tunnel mode outer IP
  *                    header is coming from the PDB, copy the DF bit from the
  *                    inner IP header to the outer IP header.
  */
-#define PDBHMO_ESP_DFBIT	(0x04 << PDBHMO_ESP_ENCAP_SHIFT)
+#define PDBHMO_ESP_DFBIT    (0x04 << PDBHMO_ESP_ENCAP_SHIFT)
 
 /**
  * PDBHMO_ESP_DFV - (Decap) - DF bit value
@@ -234,7 +234,7 @@
  * If ODF = 1, DF bit in output frame is replaced by DFV.
  * Valid only from SEC Era 5 onwards.
  */
-#define PDBHMO_ESP_DFV		(0x04 << PDBHMO_ESP_DECAP_SHIFT)
+#define PDBHMO_ESP_DFV        (0x04 << PDBHMO_ESP_DECAP_SHIFT)
 
 /**
  * PDBHMO_ESP_ODF - (Decap) Override DF bit in IPv4 header of decapsulated
@@ -243,14 +243,14 @@
  * If ODF = 1, DF is replaced with the value of DFV bit.
  * Valid only from SEC Era 5 onwards.
  */
-#define PDBHMO_ESP_ODF		(0x08 << PDBHMO_ESP_DECAP_SHIFT)
+#define PDBHMO_ESP_ODF        (0x08 << PDBHMO_ESP_DECAP_SHIFT)
 
 /**
  * struct ipsec_encap_cbc - PDB part for IPsec CBC encapsulation
  * @iv: 16-byte array initialization vector
  */
 struct ipsec_encap_cbc {
-	uint8_t iv[16];
+    uint8_t iv[16];
 };
 
 
@@ -261,9 +261,9 @@ struct ipsec_encap_cbc {
  * @iv: initialization vector
  */
 struct ipsec_encap_ctr {
-	uint32_t ctr_nonce;
-	uint32_t ctr_initial;
-	uint8_t iv[8];
+    uint32_t ctr_nonce;
+    uint32_t ctr_initial;
+    uint8_t iv[8];
 };
 
 /**
@@ -277,9 +277,9 @@ struct ipsec_encap_ctr {
  * @iv: initialization vector
  */
 struct ipsec_encap_ccm {
-	uint8_t salt[4];
-	uint32_t ccm_opt;
-	uint64_t iv;
+    uint8_t salt[4];
+    uint32_t ccm_opt;
+    uint64_t iv;
 };
 
 /**
@@ -289,9 +289,9 @@ struct ipsec_encap_ccm {
  * @iv: initialization vector
  */
 struct ipsec_encap_gcm {
-	uint8_t salt[4];
-	uint32_t rsvd;
-	uint64_t iv;
+    uint8_t salt[4];
+    uint32_t rsvd;
+    uint64_t iv;
 };
 
 /**
@@ -311,68 +311,68 @@ struct ipsec_encap_gcm {
  * @ip_hdr: optional IP Header content (only for IPsec legacy mode)
  */
 struct ipsec_encap_pdb {
-	uint32_t options;
-	uint32_t seq_num_ext_hi;
-	uint32_t seq_num;
-	union {
-		struct ipsec_encap_cbc cbc;
-		struct ipsec_encap_ctr ctr;
-		struct ipsec_encap_ccm ccm;
-		struct ipsec_encap_gcm gcm;
-	};
-	uint32_t spi;
-	uint32_t ip_hdr_len;
-	uint8_t ip_hdr[0];
+    uint32_t options;
+    uint32_t seq_num_ext_hi;
+    uint32_t seq_num;
+    union {
+        struct ipsec_encap_cbc cbc;
+        struct ipsec_encap_ctr ctr;
+        struct ipsec_encap_ccm ccm;
+        struct ipsec_encap_gcm gcm;
+    };
+    uint32_t spi;
+    uint32_t ip_hdr_len;
+    uint8_t ip_hdr[0];
 };
 
 static inline unsigned int
 __rta_copy_ipsec_encap_pdb(struct program *program,
-			   struct ipsec_encap_pdb *pdb,
-			   uint32_t algtype)
+               struct ipsec_encap_pdb *pdb,
+               uint32_t algtype)
 {
-	unsigned int start_pc = program->current_pc;
+    unsigned int start_pc = program->current_pc;
 
-	__rta_out32(program, pdb->options);
-	__rta_out32(program, pdb->seq_num_ext_hi);
-	__rta_out32(program, pdb->seq_num);
+    __rta_out32(program, pdb->options);
+    __rta_out32(program, pdb->seq_num_ext_hi);
+    __rta_out32(program, pdb->seq_num);
 
-	switch (algtype & OP_PCL_IPSEC_CIPHER_MASK) {
-	case OP_PCL_IPSEC_DES_IV64:
-	case OP_PCL_IPSEC_DES:
-	case OP_PCL_IPSEC_3DES:
-	case OP_PCL_IPSEC_AES_CBC:
-	case OP_PCL_IPSEC_NULL:
-		rta_copy_data(program, pdb->cbc.iv, sizeof(pdb->cbc.iv));
-		break;
+    switch (algtype & OP_PCL_IPSEC_CIPHER_MASK) {
+    case OP_PCL_IPSEC_DES_IV64:
+    case OP_PCL_IPSEC_DES:
+    case OP_PCL_IPSEC_3DES:
+    case OP_PCL_IPSEC_AES_CBC:
+    case OP_PCL_IPSEC_NULL:
+        rta_copy_data(program, pdb->cbc.iv, sizeof(pdb->cbc.iv));
+        break;
 
-	case OP_PCL_IPSEC_AES_CTR:
-		rta_copy_data(program, (uint8_t *)&pdb->ctr.ctr_nonce, 4);
-		__rta_out32(program, pdb->ctr.ctr_initial);
-		rta_copy_data(program, pdb->ctr.iv, sizeof(pdb->ctr.iv));
-		break;
+    case OP_PCL_IPSEC_AES_CTR:
+        rta_copy_data(program, (uint8_t *)&pdb->ctr.ctr_nonce, 4);
+        __rta_out32(program, pdb->ctr.ctr_initial);
+        rta_copy_data(program, pdb->ctr.iv, sizeof(pdb->ctr.iv));
+        break;
 
-	case OP_PCL_IPSEC_AES_CCM8:
-	case OP_PCL_IPSEC_AES_CCM12:
-	case OP_PCL_IPSEC_AES_CCM16:
-		rta_copy_data(program, pdb->ccm.salt, sizeof(pdb->ccm.salt));
-		__rta_out32(program, pdb->ccm.ccm_opt);
-		__rta_out64(program, true, pdb->ccm.iv);
-		break;
+    case OP_PCL_IPSEC_AES_CCM8:
+    case OP_PCL_IPSEC_AES_CCM12:
+    case OP_PCL_IPSEC_AES_CCM16:
+        rta_copy_data(program, pdb->ccm.salt, sizeof(pdb->ccm.salt));
+        __rta_out32(program, pdb->ccm.ccm_opt);
+        __rta_out64(program, true, pdb->ccm.iv);
+        break;
 
-	case OP_PCL_IPSEC_AES_GCM8:
-	case OP_PCL_IPSEC_AES_GCM12:
-	case OP_PCL_IPSEC_AES_GCM16:
-	case OP_PCL_IPSEC_AES_NULL_WITH_GMAC:
-		rta_copy_data(program, pdb->gcm.salt, sizeof(pdb->gcm.salt));
-		__rta_out32(program, pdb->gcm.rsvd);
-		__rta_out64(program, true, pdb->gcm.iv);
-		break;
-	}
+    case OP_PCL_IPSEC_AES_GCM8:
+    case OP_PCL_IPSEC_AES_GCM12:
+    case OP_PCL_IPSEC_AES_GCM16:
+    case OP_PCL_IPSEC_AES_NULL_WITH_GMAC:
+        rta_copy_data(program, pdb->gcm.salt, sizeof(pdb->gcm.salt));
+        __rta_out32(program, pdb->gcm.rsvd);
+        __rta_out64(program, true, pdb->gcm.iv);
+        break;
+    }
 
-	__rta_out32(program, pdb->spi);
-	__rta_out32(program, pdb->ip_hdr_len);
+    __rta_out32(program, pdb->spi);
+    __rta_out32(program, pdb->ip_hdr_len);
 
-	return start_pc;
+    return start_pc;
 }
 
 /**
@@ -380,7 +380,7 @@ __rta_copy_ipsec_encap_pdb(struct program *program,
  * @rsvd: reserved, do not use
  */
 struct ipsec_decap_cbc {
-	uint32_t rsvd[2];
+    uint32_t rsvd[2];
 };
 
 /**
@@ -389,8 +389,8 @@ struct ipsec_decap_cbc {
  * @ctr_initial: initial count constant
  */
 struct ipsec_decap_ctr {
-	uint32_t ctr_nonce;
-	uint32_t ctr_initial;
+    uint32_t ctr_nonce;
+    uint32_t ctr_initial;
 };
 
 /**
@@ -403,8 +403,8 @@ struct ipsec_decap_ctr {
  *  ctr_initial (16b) - initial count constant
  */
 struct ipsec_decap_ccm {
-	uint8_t salt[4];
-	uint32_t ccm_opt;
+    uint8_t salt[4];
+    uint32_t ccm_opt;
 };
 
 /**
@@ -413,8 +413,8 @@ struct ipsec_decap_ccm {
  * @rsvd: reserved, do not use
  */
 struct ipsec_decap_gcm {
-	uint8_t salt[4];
-	uint32_t rsvd;
+    uint8_t salt[4];
+    uint32_t rsvd;
 };
 
 /**
@@ -430,82 +430,82 @@ struct ipsec_decap_gcm {
  *  format must be Big Endian, irrespective of platform
  */
 struct ipsec_decap_pdb {
-	uint32_t options;
-	union {
-		struct ipsec_decap_cbc cbc;
-		struct ipsec_decap_ctr ctr;
-		struct ipsec_decap_ccm ccm;
-		struct ipsec_decap_gcm gcm;
-	};
-	uint32_t seq_num_ext_hi;
-	uint32_t seq_num;
-	uint32_t anti_replay[4];
+    uint32_t options;
+    union {
+        struct ipsec_decap_cbc cbc;
+        struct ipsec_decap_ctr ctr;
+        struct ipsec_decap_ccm ccm;
+        struct ipsec_decap_gcm gcm;
+    };
+    uint32_t seq_num_ext_hi;
+    uint32_t seq_num;
+    uint32_t anti_replay[4];
 };
 
 static inline unsigned int
 __rta_copy_ipsec_decap_pdb(struct program *program,
-			   struct ipsec_decap_pdb *pdb,
-			   uint32_t algtype)
+               struct ipsec_decap_pdb *pdb,
+               uint32_t algtype)
 {
-	unsigned int start_pc = program->current_pc;
-	unsigned int i, ars;
+    unsigned int start_pc = program->current_pc;
+    unsigned int i, ars;
 
-	__rta_out32(program, pdb->options);
+    __rta_out32(program, pdb->options);
 
-	switch (algtype & OP_PCL_IPSEC_CIPHER_MASK) {
-	case OP_PCL_IPSEC_DES_IV64:
-	case OP_PCL_IPSEC_DES:
-	case OP_PCL_IPSEC_3DES:
-	case OP_PCL_IPSEC_AES_CBC:
-	case OP_PCL_IPSEC_NULL:
-		__rta_out32(program, pdb->cbc.rsvd[0]);
-		__rta_out32(program, pdb->cbc.rsvd[1]);
-		break;
+    switch (algtype & OP_PCL_IPSEC_CIPHER_MASK) {
+    case OP_PCL_IPSEC_DES_IV64:
+    case OP_PCL_IPSEC_DES:
+    case OP_PCL_IPSEC_3DES:
+    case OP_PCL_IPSEC_AES_CBC:
+    case OP_PCL_IPSEC_NULL:
+        __rta_out32(program, pdb->cbc.rsvd[0]);
+        __rta_out32(program, pdb->cbc.rsvd[1]);
+        break;
 
-	case OP_PCL_IPSEC_AES_CTR:
-		rta_copy_data(program, (uint8_t *)&pdb->ctr.ctr_nonce, 4);
-		__rta_out32(program, pdb->ctr.ctr_initial);
-		break;
+    case OP_PCL_IPSEC_AES_CTR:
+        rta_copy_data(program, (uint8_t *)&pdb->ctr.ctr_nonce, 4);
+        __rta_out32(program, pdb->ctr.ctr_initial);
+        break;
 
-	case OP_PCL_IPSEC_AES_CCM8:
-	case OP_PCL_IPSEC_AES_CCM12:
-	case OP_PCL_IPSEC_AES_CCM16:
-		rta_copy_data(program, pdb->ccm.salt, sizeof(pdb->ccm.salt));
-		__rta_out32(program, pdb->ccm.ccm_opt);
-		break;
+    case OP_PCL_IPSEC_AES_CCM8:
+    case OP_PCL_IPSEC_AES_CCM12:
+    case OP_PCL_IPSEC_AES_CCM16:
+        rta_copy_data(program, pdb->ccm.salt, sizeof(pdb->ccm.salt));
+        __rta_out32(program, pdb->ccm.ccm_opt);
+        break;
 
-	case OP_PCL_IPSEC_AES_GCM8:
-	case OP_PCL_IPSEC_AES_GCM12:
-	case OP_PCL_IPSEC_AES_GCM16:
-	case OP_PCL_IPSEC_AES_NULL_WITH_GMAC:
-		rta_copy_data(program, pdb->gcm.salt, sizeof(pdb->gcm.salt));
-		__rta_out32(program, pdb->gcm.rsvd);
-		break;
-	}
+    case OP_PCL_IPSEC_AES_GCM8:
+    case OP_PCL_IPSEC_AES_GCM12:
+    case OP_PCL_IPSEC_AES_GCM16:
+    case OP_PCL_IPSEC_AES_NULL_WITH_GMAC:
+        rta_copy_data(program, pdb->gcm.salt, sizeof(pdb->gcm.salt));
+        __rta_out32(program, pdb->gcm.rsvd);
+        break;
+    }
 
-	__rta_out32(program, pdb->seq_num_ext_hi);
-	__rta_out32(program, pdb->seq_num);
+    __rta_out32(program, pdb->seq_num_ext_hi);
+    __rta_out32(program, pdb->seq_num);
 
-	switch (pdb->options & PDBOPTS_ESP_ARS_MASK) {
-	case PDBOPTS_ESP_ARS128:
-		ars = 4;
-		break;
-	case PDBOPTS_ESP_ARS64:
-		ars = 2;
-		break;
-	case PDBOPTS_ESP_ARS32:
-		ars = 1;
-		break;
-	case PDBOPTS_ESP_ARSNONE:
-	default:
-		ars = 0;
-		break;
-	}
+    switch (pdb->options & PDBOPTS_ESP_ARS_MASK) {
+    case PDBOPTS_ESP_ARS128:
+        ars = 4;
+        break;
+    case PDBOPTS_ESP_ARS64:
+        ars = 2;
+        break;
+    case PDBOPTS_ESP_ARS32:
+        ars = 1;
+        break;
+    case PDBOPTS_ESP_ARSNONE:
+    default:
+        ars = 0;
+        break;
+    }
 
-	for (i = 0; i < ars; i++)
-		__rta_out_be32(program, pdb->anti_replay[i]);
+    for (i = 0; i < ars; i++)
+        __rta_out_be32(program, pdb->anti_replay[i]);
 
-	return start_pc;
+    return start_pc;
 }
 
 /**
@@ -514,8 +514,8 @@ __rta_copy_ipsec_decap_pdb(struct program *program,
  * @IPSEC_ICV_MD5_TRUNC_SIZE: truncated MD5 ICV
  */
 enum ipsec_icv_size {
-	IPSEC_ICV_MD5_SIZE = 16,
-	IPSEC_ICV_MD5_TRUNC_SIZE = 12
+    IPSEC_ICV_MD5_SIZE = 16,
+    IPSEC_ICV_MD5_TRUNC_SIZE = 12
 };
 
 /*
@@ -526,7 +526,7 @@ enum ipsec_icv_size {
 /**
  * IPSEC_DPOVRD_USE - DPOVRD will override values specified in the PDB
  */
-#define IPSEC_DPOVRD_USE	BIT(31)
+#define IPSEC_DPOVRD_USE    BIT(31)
 
 /**
  * IPSEC_DPOVRD_ECN_SHIFT - Explicit Congestion Notification
@@ -534,154 +534,154 @@ enum ipsec_icv_size {
  * If set, MSB of the 4 bits indicates that the 2 LSBs will replace the ECN bits
  * in the IP header.
  */
-#define IPSEC_DPOVRD_ECN_SHIFT		24
+#define IPSEC_DPOVRD_ECN_SHIFT        24
 
 /**
  * IPSEC_DPOVRD_ECN_MASK - See IPSEC_DPOVRD_ECN_SHIFT
  */
-#define IPSEC_DPOVRD_ECN_MASK		(0xf << IPSEC_ENCAP_DPOVRD_ECN_SHIFT)
+#define IPSEC_DPOVRD_ECN_MASK        (0xf << IPSEC_ENCAP_DPOVRD_ECN_SHIFT)
 
 /**
  * IPSEC_DPOVRD_IP_HDR_LEN_SHIFT - The length (in bytes) of the portion of the
  *                                 IP header that is not encrypted
  */
-#define IPSEC_DPOVRD_IP_HDR_LEN_SHIFT	16
+#define IPSEC_DPOVRD_IP_HDR_LEN_SHIFT    16
 
 /**
  * IPSEC_DPOVRD_IP_HDR_LEN_MASK - See IPSEC_DPOVRD_IP_HDR_LEN_SHIFT
  */
-#define IPSEC_DPOVRD_IP_HDR_LEN_MASK	(0xff << IPSEC_DPOVRD_IP_HDR_LEN_SHIFT)
+#define IPSEC_DPOVRD_IP_HDR_LEN_MASK    (0xff << IPSEC_DPOVRD_IP_HDR_LEN_SHIFT)
 
 /**
  * IPSEC_DPOVRD_NH_OFFSET_SHIFT - The location of the next header field within
  *                                the IP header of the transport mode packet
  *
  * Encap:
- *	ESP_Trailer_NH <-- IP_Hdr[DPOVRD[NH_OFFSET]]
- *	IP_Hdr[DPOVRD[NH_OFFSET]] <-- DPOVRD[NH]
+ *    ESP_Trailer_NH <-- IP_Hdr[DPOVRD[NH_OFFSET]]
+ *    IP_Hdr[DPOVRD[NH_OFFSET]] <-- DPOVRD[NH]
  *Decap:
- *	IP_Hdr[DPOVRD[NH_OFFSET]] <-- ESP_Trailer_NH
+ *    IP_Hdr[DPOVRD[NH_OFFSET]] <-- ESP_Trailer_NH
  */
-#define IPSEC_DPOVRD_NH_OFFSET_SHIFT	8
+#define IPSEC_DPOVRD_NH_OFFSET_SHIFT    8
 
 /**
  * IPSEC_DPOVRD_NH_OFFSET_MASK - See IPSEC_DPOVRD_NH_OFFSET_SHIFT
  */
-#define IPSEC_DPOVRD_NH_OFFSET_MASK	(0xff << IPSEC_DPOVRD_NH_OFFSET_SHIFT)
+#define IPSEC_DPOVRD_NH_OFFSET_MASK    (0xff << IPSEC_DPOVRD_NH_OFFSET_SHIFT)
 
 /**
  * IPSEC_DPOVRD_NH_MASK - See IPSEC_DPOVRD_NH_OFFSET_SHIFT
  *                        Valid only for encapsulation.
  */
-#define IPSEC_DPOVRD_NH_MASK		0xff
+#define IPSEC_DPOVRD_NH_MASK        0xff
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT - Outer IP header Material length (encap)
  *                                      Valid only if L2_COPY is not set.
  */
-#define IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT	16
+#define IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT    16
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_OIM_LEN_MASK - See IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT
  */
 #define IPSEC_N_ENCAP_DPOVRD_OIM_LEN_MASK \
-	(0xfff << IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT)
+    (0xfff << IPSEC_N_ENCAP_DPOVRD_OIM_LEN_SHIFT)
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT - L2 header length
  *                                     Valid only if L2_COPY is set.
  */
-#define IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT	16
+#define IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT    16
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_L2_LEN_MASK - See IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT
  */
 #define IPSEC_N_ENCAP_DPOVRD_L2_LEN_MASK \
-	(0xff << IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT)
+    (0xff << IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT)
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_OIMIF -  Outer IP header Material in Input Frame
  */
-#define IPSEC_N_ENCAP_DPOVRD_OIMIF		BIT(15)
+#define IPSEC_N_ENCAP_DPOVRD_OIMIF        BIT(15)
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_L2_COPY - L2 header present in input frame
  *
  * Note: For Era <= 8, this bit is reserved (not used) by HW.
  */
-#define IPSEC_N_ENCAP_DPOVRD_L2_COPY		BIT(14)
+#define IPSEC_N_ENCAP_DPOVRD_L2_COPY        BIT(14)
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT - Actual Outer IP Header Offset (encap)
  */
-#define IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT	8
+#define IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT    8
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_AOIPHO_MASK - See IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT
  */
 #define IPSEC_N_ENCAP_DPOVRD_AOIPHO_MASK \
-	(0x3c << IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT)
+    (0x3c << IPSEC_N_ENCAP_DPOVRD_AOIPHO_SHIFT)
 
 /**
  * IPSEC_N_ENCAP_DPOVRD_NH_MASK -  Next Header
  *
  * Used in the Next Header field of the encapsulated payload.
  */
-#define IPSEC_N_ENCAP_DPOVRD_NH_MASK		0xff
+#define IPSEC_N_ENCAP_DPOVRD_NH_MASK        0xff
 
 /**
  * IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT - Actual Outer IP Header Offset (decap)
  */
-#define IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT	12
+#define IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT    12
 
 /**
  * IPSEC_N_DECAP_DPOVRD_AOIPHO_MASK - See IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT
  */
 #define IPSEC_N_DECAP_DPOVRD_AOIPHO_MASK \
-	(0xff << IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT)
+    (0xff << IPSEC_N_DECAP_DPOVRD_AOIPHO_SHIFT)
 
 /**
  * IPSEC_N_DECAP_DPOVRD_OIM_LEN_MASK - Outer IP header Material length (decap)
  */
-#define IPSEC_N_DECAP_DPOVRD_OIM_LEN_MASK	0xfff
+#define IPSEC_N_DECAP_DPOVRD_OIM_LEN_MASK    0xfff
 
 static inline void __gen_auth_key(struct program *program,
-				  struct alginfo *authdata)
+                  struct alginfo *authdata)
 {
-	uint32_t dkp_protid;
+    uint32_t dkp_protid;
 
-	switch (authdata->algtype & OP_PCL_IPSEC_AUTH_MASK) {
-	case OP_PCL_IPSEC_HMAC_MD5_96:
-	case OP_PCL_IPSEC_HMAC_MD5_128:
-		dkp_protid = OP_PCLID_DKP_MD5;
-		break;
-	case OP_PCL_IPSEC_HMAC_SHA1_96:
-	case OP_PCL_IPSEC_HMAC_SHA1_160:
-		dkp_protid = OP_PCLID_DKP_SHA1;
-		break;
-	case OP_PCL_IPSEC_HMAC_SHA2_256_128:
-		dkp_protid = OP_PCLID_DKP_SHA256;
-		break;
-	case OP_PCL_IPSEC_HMAC_SHA2_384_192:
-		dkp_protid = OP_PCLID_DKP_SHA384;
-		break;
-	case OP_PCL_IPSEC_HMAC_SHA2_512_256:
-		dkp_protid = OP_PCLID_DKP_SHA512;
-		break;
-	default:
-		KEY(program, KEY2, authdata->key_enc_flags, authdata->key,
-		    authdata->keylen, INLINE_KEY(authdata));
-		return;
-	}
+    switch (authdata->algtype & OP_PCL_IPSEC_AUTH_MASK) {
+    case OP_PCL_IPSEC_HMAC_MD5_96:
+    case OP_PCL_IPSEC_HMAC_MD5_128:
+        dkp_protid = OP_PCLID_DKP_MD5;
+        break;
+    case OP_PCL_IPSEC_HMAC_SHA1_96:
+    case OP_PCL_IPSEC_HMAC_SHA1_160:
+        dkp_protid = OP_PCLID_DKP_SHA1;
+        break;
+    case OP_PCL_IPSEC_HMAC_SHA2_256_128:
+        dkp_protid = OP_PCLID_DKP_SHA256;
+        break;
+    case OP_PCL_IPSEC_HMAC_SHA2_384_192:
+        dkp_protid = OP_PCLID_DKP_SHA384;
+        break;
+    case OP_PCL_IPSEC_HMAC_SHA2_512_256:
+        dkp_protid = OP_PCLID_DKP_SHA512;
+        break;
+    default:
+        KEY(program, KEY2, authdata->key_enc_flags, authdata->key,
+            authdata->keylen, INLINE_KEY(authdata));
+        return;
+    }
 
-	if (authdata->key_type == RTA_DATA_PTR)
-		DKP_PROTOCOL(program, dkp_protid, OP_PCL_DKP_SRC_PTR,
-			     OP_PCL_DKP_DST_PTR, (uint16_t)authdata->keylen,
-			     authdata->key, authdata->key_type);
-	else
-		DKP_PROTOCOL(program, dkp_protid, OP_PCL_DKP_SRC_IMM,
-			     OP_PCL_DKP_DST_IMM, (uint16_t)authdata->keylen,
-			     authdata->key, authdata->key_type);
+    if (authdata->key_type == RTA_DATA_PTR)
+        DKP_PROTOCOL(program, dkp_protid, OP_PCL_DKP_SRC_PTR,
+                 OP_PCL_DKP_DST_PTR, (uint16_t)authdata->keylen,
+                 authdata->key, authdata->key_type);
+    else
+        DKP_PROTOCOL(program, dkp_protid, OP_PCL_DKP_SRC_IMM,
+                 OP_PCL_DKP_DST_IMM, (uint16_t)authdata->keylen,
+                 authdata->key, authdata->key_type);
 }
 
 /**
@@ -709,47 +709,47 @@ static inline void __gen_auth_key(struct program *program,
  */
 static inline int
 cnstr_shdsc_ipsec_encap(uint32_t *descbuf, bool ps, bool swap,
-					  enum rta_share_type share,
-			struct ipsec_encap_pdb *pdb,
-			struct alginfo *cipherdata,
-			struct alginfo *authdata)
+                      enum rta_share_type share,
+            struct ipsec_encap_pdb *pdb,
+            struct alginfo *cipherdata,
+            struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
+    struct program prg;
+    struct program *p = &prg;
 
-	LABEL(keyjmp);
-	REFERENCE(pkeyjmp);
-	LABEL(hdr);
-	REFERENCE(phdr);
+    LABEL(keyjmp);
+    REFERENCE(pkeyjmp);
+    LABEL(hdr);
+    REFERENCE(phdr);
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	if (swap)
-		PROGRAM_SET_BSWAP(p);
-	if (ps)
-		PROGRAM_SET_36BIT_ADDR(p);
-	phdr = SHR_HDR(p, share, hdr, 0);
-	__rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
-	COPY_DATA(p, pdb->ip_hdr, pdb->ip_hdr_len);
-	SET_LABEL(p, hdr);
-	pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, BOTH|SHRD);
-	if (authdata->keylen) {
-		if (rta_sec_era < RTA_SEC_ERA_6)
-			KEY(p, MDHA_SPLIT_KEY, authdata->key_enc_flags,
-			    authdata->key, authdata->keylen,
-			    INLINE_KEY(authdata));
-		else
-			__gen_auth_key(p, authdata);
-	}
-	if (cipherdata->keylen)
-		KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-		    cipherdata->keylen, INLINE_KEY(cipherdata));
-	SET_LABEL(p, keyjmp);
-	PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL,
-		 OP_PCLID_IPSEC,
-		 (uint16_t)(cipherdata->algtype | authdata->algtype));
-	PATCH_JUMP(p, pkeyjmp, keyjmp);
-	PATCH_HDR(p, phdr, hdr);
-	return PROGRAM_FINALIZE(p);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    if (swap)
+        PROGRAM_SET_BSWAP(p);
+    if (ps)
+        PROGRAM_SET_36BIT_ADDR(p);
+    phdr = SHR_HDR(p, share, hdr, 0);
+    __rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
+    COPY_DATA(p, pdb->ip_hdr, pdb->ip_hdr_len);
+    SET_LABEL(p, hdr);
+    pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, BOTH|SHRD);
+    if (authdata->keylen) {
+        if (rta_sec_era < RTA_SEC_ERA_6)
+            KEY(p, MDHA_SPLIT_KEY, authdata->key_enc_flags,
+                authdata->key, authdata->keylen,
+                INLINE_KEY(authdata));
+        else
+            __gen_auth_key(p, authdata);
+    }
+    if (cipherdata->keylen)
+        KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+            cipherdata->keylen, INLINE_KEY(cipherdata));
+    SET_LABEL(p, keyjmp);
+    PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL,
+         OP_PCLID_IPSEC,
+         (uint16_t)(cipherdata->algtype | authdata->algtype));
+    PATCH_JUMP(p, pkeyjmp, keyjmp);
+    PATCH_HDR(p, phdr, hdr);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
@@ -777,46 +777,46 @@ cnstr_shdsc_ipsec_encap(uint32_t *descbuf, bool ps, bool swap,
  */
 static inline int
 cnstr_shdsc_ipsec_decap(uint32_t *descbuf, bool ps, bool swap,
-			enum rta_share_type share,
-			struct ipsec_decap_pdb *pdb,
-			struct alginfo *cipherdata,
-			struct alginfo *authdata)
+            enum rta_share_type share,
+            struct ipsec_decap_pdb *pdb,
+            struct alginfo *cipherdata,
+            struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
+    struct program prg;
+    struct program *p = &prg;
 
-	LABEL(keyjmp);
-	REFERENCE(pkeyjmp);
-	LABEL(hdr);
-	REFERENCE(phdr);
+    LABEL(keyjmp);
+    REFERENCE(pkeyjmp);
+    LABEL(hdr);
+    REFERENCE(phdr);
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	if (swap)
-		PROGRAM_SET_BSWAP(p);
-	if (ps)
-		PROGRAM_SET_36BIT_ADDR(p);
-	phdr = SHR_HDR(p, share, hdr, 0);
-	__rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
-	SET_LABEL(p, hdr);
-	pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, BOTH|SHRD);
-	if (authdata->keylen) {
-		if (rta_sec_era < RTA_SEC_ERA_6)
-			KEY(p, MDHA_SPLIT_KEY, authdata->key_enc_flags,
-			    authdata->key, authdata->keylen,
-			    INLINE_KEY(authdata));
-		else
-			__gen_auth_key(p, authdata);
-	}
-	if (cipherdata->keylen)
-		KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-		    cipherdata->keylen, INLINE_KEY(cipherdata));
-	SET_LABEL(p, keyjmp);
-	PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL,
-		 OP_PCLID_IPSEC,
-		 (uint16_t)(cipherdata->algtype | authdata->algtype));
-	PATCH_JUMP(p, pkeyjmp, keyjmp);
-	PATCH_HDR(p, phdr, hdr);
-	return PROGRAM_FINALIZE(p);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    if (swap)
+        PROGRAM_SET_BSWAP(p);
+    if (ps)
+        PROGRAM_SET_36BIT_ADDR(p);
+    phdr = SHR_HDR(p, share, hdr, 0);
+    __rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
+    SET_LABEL(p, hdr);
+    pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, BOTH|SHRD);
+    if (authdata->keylen) {
+        if (rta_sec_era < RTA_SEC_ERA_6)
+            KEY(p, MDHA_SPLIT_KEY, authdata->key_enc_flags,
+                authdata->key, authdata->keylen,
+                INLINE_KEY(authdata));
+        else
+            __gen_auth_key(p, authdata);
+    }
+    if (cipherdata->keylen)
+        KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+            cipherdata->keylen, INLINE_KEY(cipherdata));
+    SET_LABEL(p, keyjmp);
+    PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL,
+         OP_PCLID_IPSEC,
+         (uint16_t)(cipherdata->algtype | authdata->algtype));
+    PATCH_JUMP(p, pkeyjmp, keyjmp);
+    PATCH_HDR(p, phdr, hdr);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
@@ -851,108 +851,108 @@ cnstr_shdsc_ipsec_decap(uint32_t *descbuf, bool ps, bool swap,
  */
 static inline int
 cnstr_shdsc_ipsec_encap_des_aes_xcbc(uint32_t *descbuf,
-				     struct ipsec_encap_pdb *pdb,
-				     struct alginfo *cipherdata,
-				     struct alginfo *authdata)
+                     struct ipsec_encap_pdb *pdb,
+                     struct alginfo *cipherdata,
+                     struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
+    struct program prg;
+    struct program *p = &prg;
 
-	LABEL(hdr);
-	LABEL(shd_ptr);
-	LABEL(keyjump);
-	LABEL(outptr);
-	LABEL(swapped_seqin_fields);
-	LABEL(swapped_seqin_ptr);
-	REFERENCE(phdr);
-	REFERENCE(pkeyjump);
-	REFERENCE(move_outlen);
-	REFERENCE(move_seqout_ptr);
-	REFERENCE(swapped_seqin_ptr_jump);
-	REFERENCE(write_swapped_seqin_ptr);
+    LABEL(hdr);
+    LABEL(shd_ptr);
+    LABEL(keyjump);
+    LABEL(outptr);
+    LABEL(swapped_seqin_fields);
+    LABEL(swapped_seqin_ptr);
+    REFERENCE(phdr);
+    REFERENCE(pkeyjump);
+    REFERENCE(move_outlen);
+    REFERENCE(move_seqout_ptr);
+    REFERENCE(swapped_seqin_ptr_jump);
+    REFERENCE(write_swapped_seqin_ptr);
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	phdr = SHR_HDR(p, SHR_SERIAL, hdr, 0);
-	__rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
-	COPY_DATA(p, pdb->ip_hdr, pdb->ip_hdr_len);
-	SET_LABEL(p, hdr);
-	pkeyjump = JUMP(p, keyjump, LOCAL_JUMP, ALL_TRUE, SHRD | SELF);
-	/*
-	 * Hard-coded KEY arguments. The descriptor uses all the benefits of
-	 * the built-in protocol by computing the IPsec ESP with a hardware
-	 * supported algorithms combination (DES-CBC/3DES-CBC & HMAC-MD5-96).
-	 * The HMAC-MD5 authentication algorithm was chosen with
-	 * the keys options from below in order to speed up the computational
-	 * time for this intermediate step.
-	 * Warning: The user must allocate at least 32 bytes for
-	 * the authentication key (in order to use it also with HMAC-MD5-96),
-	 * even when using a shorter key for the AES-XCBC-MAC-96.
-	 */
-	KEY(p, MDHA_SPLIT_KEY, 0, authdata->key, 32, INLINE_KEY(authdata));
-	SET_LABEL(p, keyjump);
-	LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
-	     CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
-	     IMMED);
-	KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-	    cipherdata->keylen, INLINE_KEY(cipherdata));
-	PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL, OP_PCLID_IPSEC,
-		 (uint16_t)(cipherdata->algtype | OP_PCL_IPSEC_HMAC_MD5_96));
-	/* Swap SEQINPTR to SEQOUTPTR. */
-	move_seqout_ptr = MOVE(p, DESCBUF, 0, MATH1, 0, 16, WAITCOMP | IMMED);
-	MATHB(p, MATH1, AND, ~(CMD_SEQ_IN_PTR ^ CMD_SEQ_OUT_PTR), MATH1,
-	      8, IFB | IMMED2);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    phdr = SHR_HDR(p, SHR_SERIAL, hdr, 0);
+    __rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
+    COPY_DATA(p, pdb->ip_hdr, pdb->ip_hdr_len);
+    SET_LABEL(p, hdr);
+    pkeyjump = JUMP(p, keyjump, LOCAL_JUMP, ALL_TRUE, SHRD | SELF);
+    /*
+     * Hard-coded KEY arguments. The descriptor uses all the benefits of
+     * the built-in protocol by computing the IPsec ESP with a hardware
+     * supported algorithms combination (DES-CBC/3DES-CBC & HMAC-MD5-96).
+     * The HMAC-MD5 authentication algorithm was chosen with
+     * the keys options from below in order to speed up the computational
+     * time for this intermediate step.
+     * Warning: The user must allocate at least 32 bytes for
+     * the authentication key (in order to use it also with HMAC-MD5-96),
+     * even when using a shorter key for the AES-XCBC-MAC-96.
+     */
+    KEY(p, MDHA_SPLIT_KEY, 0, authdata->key, 32, INLINE_KEY(authdata));
+    SET_LABEL(p, keyjump);
+    LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
+         CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
+         IMMED);
+    KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+        cipherdata->keylen, INLINE_KEY(cipherdata));
+    PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL, OP_PCLID_IPSEC,
+         (uint16_t)(cipherdata->algtype | OP_PCL_IPSEC_HMAC_MD5_96));
+    /* Swap SEQINPTR to SEQOUTPTR. */
+    move_seqout_ptr = MOVE(p, DESCBUF, 0, MATH1, 0, 16, WAITCOMP | IMMED);
+    MATHB(p, MATH1, AND, ~(CMD_SEQ_IN_PTR ^ CMD_SEQ_OUT_PTR), MATH1,
+          8, IFB | IMMED2);
 /*
  * TODO: RTA currently doesn't support creating a LOAD command
  * with another command as IMM.
  * To be changed when proper support is added in RTA.
  */
-	LOAD(p, 0xa00000e5, MATH3, 4, 4, IMMED);
-	MATHB(p, MATH3, SHLD, MATH3, MATH3,  8, 0);
-	write_swapped_seqin_ptr = MOVE(p, MATH1, 0, DESCBUF, 0, 20, WAITCOMP |
-				       IMMED);
-	swapped_seqin_ptr_jump = JUMP(p, swapped_seqin_ptr, LOCAL_JUMP,
-				      ALL_TRUE, 0);
-	LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
-	     CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
-	     0);
-	SEQOUTPTR(p, 0, 65535, RTO);
-	move_outlen = MOVE(p, DESCBUF, 0, MATH0, 4, 8, WAITCOMP | IMMED);
-	MATHB(p, MATH0, SUB,
-	      (uint64_t)(pdb->ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE),
-	      VSEQINSZ, 4, IMMED2);
-	MATHB(p, MATH0, SUB, IPSEC_ICV_MD5_TRUNC_SIZE, VSEQOUTSZ, 4, IMMED2);
-	KEY(p, KEY1, authdata->key_enc_flags, authdata->key, authdata->keylen,
-	    0);
-	ALG_OPERATION(p, OP_ALG_ALGSEL_AES, OP_ALG_AAI_XCBC_MAC,
-		      OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, DIR_ENC);
-	SEQFIFOLOAD(p, SKIP, pdb->ip_hdr_len, 0);
-	SEQFIFOLOAD(p, MSG1, 0, VLF | FLUSH1 | LAST1);
-	SEQFIFOSTORE(p, SKIP, 0, 0, VLF);
-	SEQSTORE(p, CONTEXT1, 0, IPSEC_ICV_MD5_TRUNC_SIZE, 0);
+    LOAD(p, 0xa00000e5, MATH3, 4, 4, IMMED);
+    MATHB(p, MATH3, SHLD, MATH3, MATH3,  8, 0);
+    write_swapped_seqin_ptr = MOVE(p, MATH1, 0, DESCBUF, 0, 20, WAITCOMP |
+                       IMMED);
+    swapped_seqin_ptr_jump = JUMP(p, swapped_seqin_ptr, LOCAL_JUMP,
+                      ALL_TRUE, 0);
+    LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
+         CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
+         0);
+    SEQOUTPTR(p, 0, 65535, RTO);
+    move_outlen = MOVE(p, DESCBUF, 0, MATH0, 4, 8, WAITCOMP | IMMED);
+    MATHB(p, MATH0, SUB,
+          (uint64_t)(pdb->ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE),
+          VSEQINSZ, 4, IMMED2);
+    MATHB(p, MATH0, SUB, IPSEC_ICV_MD5_TRUNC_SIZE, VSEQOUTSZ, 4, IMMED2);
+    KEY(p, KEY1, authdata->key_enc_flags, authdata->key, authdata->keylen,
+        0);
+    ALG_OPERATION(p, OP_ALG_ALGSEL_AES, OP_ALG_AAI_XCBC_MAC,
+              OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, DIR_ENC);
+    SEQFIFOLOAD(p, SKIP, pdb->ip_hdr_len, 0);
+    SEQFIFOLOAD(p, MSG1, 0, VLF | FLUSH1 | LAST1);
+    SEQFIFOSTORE(p, SKIP, 0, 0, VLF);
+    SEQSTORE(p, CONTEXT1, 0, IPSEC_ICV_MD5_TRUNC_SIZE, 0);
 /*
  * TODO: RTA currently doesn't support adding labels in or after Job Descriptor.
  * To be changed when proper support is added in RTA.
  */
-	/* Label the Shared Descriptor Pointer */
-	SET_LABEL(p, shd_ptr);
-	shd_ptr += 1;
-	/* Label the Output Pointer */
-	SET_LABEL(p, outptr);
-	outptr += 3;
-	/* Label the first word after JD */
-	SET_LABEL(p, swapped_seqin_fields);
-	swapped_seqin_fields += 8;
-	/* Label the second word after JD */
-	SET_LABEL(p, swapped_seqin_ptr);
-	swapped_seqin_ptr += 9;
+    /* Label the Shared Descriptor Pointer */
+    SET_LABEL(p, shd_ptr);
+    shd_ptr += 1;
+    /* Label the Output Pointer */
+    SET_LABEL(p, outptr);
+    outptr += 3;
+    /* Label the first word after JD */
+    SET_LABEL(p, swapped_seqin_fields);
+    swapped_seqin_fields += 8;
+    /* Label the second word after JD */
+    SET_LABEL(p, swapped_seqin_ptr);
+    swapped_seqin_ptr += 9;
 
-	PATCH_HDR(p, phdr, hdr);
-	PATCH_JUMP(p, pkeyjump, keyjump);
-	PATCH_JUMP(p, swapped_seqin_ptr_jump, swapped_seqin_ptr);
-	PATCH_MOVE(p, move_outlen, outptr);
-	PATCH_MOVE(p, move_seqout_ptr, shd_ptr);
-	PATCH_MOVE(p, write_swapped_seqin_ptr, swapped_seqin_fields);
-	return PROGRAM_FINALIZE(p);
+    PATCH_HDR(p, phdr, hdr);
+    PATCH_JUMP(p, pkeyjump, keyjump);
+    PATCH_JUMP(p, swapped_seqin_ptr_jump, swapped_seqin_ptr);
+    PATCH_MOVE(p, move_outlen, outptr);
+    PATCH_MOVE(p, move_seqout_ptr, shd_ptr);
+    PATCH_MOVE(p, write_swapped_seqin_ptr, swapped_seqin_fields);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
@@ -988,140 +988,140 @@ cnstr_shdsc_ipsec_encap_des_aes_xcbc(uint32_t *descbuf,
  */
 static inline int
 cnstr_shdsc_ipsec_decap_des_aes_xcbc(uint32_t *descbuf,
-				     struct ipsec_decap_pdb *pdb,
-				     struct alginfo *cipherdata,
-				     struct alginfo *authdata)
+                     struct ipsec_decap_pdb *pdb,
+                     struct alginfo *cipherdata,
+                     struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
-	uint32_t ip_hdr_len = (pdb->options & PDBHDRLEN_MASK) >>
-				PDBHDRLEN_ESP_DECAP_SHIFT;
+    struct program prg;
+    struct program *p = &prg;
+    uint32_t ip_hdr_len = (pdb->options & PDBHDRLEN_MASK) >>
+                PDBHDRLEN_ESP_DECAP_SHIFT;
 
-	LABEL(hdr);
-	LABEL(jump_cmd);
-	LABEL(keyjump);
-	LABEL(outlen);
-	LABEL(seqin_ptr);
-	LABEL(seqout_ptr);
-	LABEL(swapped_seqout_fields);
-	LABEL(swapped_seqout_ptr);
-	REFERENCE(seqout_ptr_jump);
-	REFERENCE(phdr);
-	REFERENCE(pkeyjump);
-	REFERENCE(move_jump);
-	REFERENCE(move_jump_back);
-	REFERENCE(move_seqin_ptr);
-	REFERENCE(swapped_seqout_ptr_jump);
-	REFERENCE(write_swapped_seqout_ptr);
+    LABEL(hdr);
+    LABEL(jump_cmd);
+    LABEL(keyjump);
+    LABEL(outlen);
+    LABEL(seqin_ptr);
+    LABEL(seqout_ptr);
+    LABEL(swapped_seqout_fields);
+    LABEL(swapped_seqout_ptr);
+    REFERENCE(seqout_ptr_jump);
+    REFERENCE(phdr);
+    REFERENCE(pkeyjump);
+    REFERENCE(move_jump);
+    REFERENCE(move_jump_back);
+    REFERENCE(move_seqin_ptr);
+    REFERENCE(swapped_seqout_ptr_jump);
+    REFERENCE(write_swapped_seqout_ptr);
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	phdr = SHR_HDR(p, SHR_SERIAL, hdr, 0);
-	__rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
-	SET_LABEL(p, hdr);
-	pkeyjump = JUMP(p, keyjump, LOCAL_JUMP, ALL_TRUE, SHRD | SELF);
-	/*
-	 * Hard-coded KEY arguments. The descriptor uses all the benefits of
-	 * the built-in protocol by computing the IPsec ESP with a hardware
-	 * supported algorithms combination (DES-CBC/3DES-CBC & HMAC-MD5-96).
-	 * The HMAC-MD5 authentication algorithm was chosen with
-	 * the keys options from bellow in order to speed up the computational
-	 * time for this intermediate step.
-	 * Warning: The user must allocate at least 32 bytes for
-	 * the authentication key (in order to use it also with HMAC-MD5-96),
-	 * even when using a shorter key for the AES-XCBC-MAC-96.
-	 */
-	KEY(p, MDHA_SPLIT_KEY, 0, authdata->key, 32, INLINE_KEY(authdata));
-	SET_LABEL(p, keyjump);
-	LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
-	     CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
-	     0);
-	KEY(p, KEY1, authdata->key_enc_flags, authdata->key, authdata->keylen,
-	    INLINE_KEY(authdata));
-	MATHB(p, SEQINSZ, SUB,
-	      (uint64_t)(ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE), MATH0, 4,
-	      IMMED2);
-	MATHB(p, MATH0, SUB, ZERO, VSEQINSZ, 4, 0);
-	ALG_OPERATION(p, OP_ALG_ALGSEL_MD5, OP_ALG_AAI_HMAC_PRECOMP,
-		      OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, DIR_ENC);
-	ALG_OPERATION(p, OP_ALG_ALGSEL_AES, OP_ALG_AAI_XCBC_MAC,
-		      OP_ALG_AS_INITFINAL, ICV_CHECK_ENABLE, DIR_DEC);
-	SEQFIFOLOAD(p, SKIP, ip_hdr_len, 0);
-	SEQFIFOLOAD(p, MSG1, 0, VLF | FLUSH1);
-	SEQFIFOLOAD(p, ICV1, IPSEC_ICV_MD5_TRUNC_SIZE, FLUSH1 | LAST1);
-	/* Swap SEQOUTPTR to SEQINPTR. */
-	move_seqin_ptr = MOVE(p, DESCBUF, 0, MATH1, 0, 16, WAITCOMP | IMMED);
-	MATHB(p, MATH1, OR, CMD_SEQ_IN_PTR ^ CMD_SEQ_OUT_PTR, MATH1, 8,
-	      IFB | IMMED2);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    phdr = SHR_HDR(p, SHR_SERIAL, hdr, 0);
+    __rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
+    SET_LABEL(p, hdr);
+    pkeyjump = JUMP(p, keyjump, LOCAL_JUMP, ALL_TRUE, SHRD | SELF);
+    /*
+     * Hard-coded KEY arguments. The descriptor uses all the benefits of
+     * the built-in protocol by computing the IPsec ESP with a hardware
+     * supported algorithms combination (DES-CBC/3DES-CBC & HMAC-MD5-96).
+     * The HMAC-MD5 authentication algorithm was chosen with
+     * the keys options from bellow in order to speed up the computational
+     * time for this intermediate step.
+     * Warning: The user must allocate at least 32 bytes for
+     * the authentication key (in order to use it also with HMAC-MD5-96),
+     * even when using a shorter key for the AES-XCBC-MAC-96.
+     */
+    KEY(p, MDHA_SPLIT_KEY, 0, authdata->key, 32, INLINE_KEY(authdata));
+    SET_LABEL(p, keyjump);
+    LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
+         CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_RESET_CLS1_CHA, CLRW, 0, 4,
+         0);
+    KEY(p, KEY1, authdata->key_enc_flags, authdata->key, authdata->keylen,
+        INLINE_KEY(authdata));
+    MATHB(p, SEQINSZ, SUB,
+          (uint64_t)(ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE), MATH0, 4,
+          IMMED2);
+    MATHB(p, MATH0, SUB, ZERO, VSEQINSZ, 4, 0);
+    ALG_OPERATION(p, OP_ALG_ALGSEL_MD5, OP_ALG_AAI_HMAC_PRECOMP,
+              OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, DIR_ENC);
+    ALG_OPERATION(p, OP_ALG_ALGSEL_AES, OP_ALG_AAI_XCBC_MAC,
+              OP_ALG_AS_INITFINAL, ICV_CHECK_ENABLE, DIR_DEC);
+    SEQFIFOLOAD(p, SKIP, ip_hdr_len, 0);
+    SEQFIFOLOAD(p, MSG1, 0, VLF | FLUSH1);
+    SEQFIFOLOAD(p, ICV1, IPSEC_ICV_MD5_TRUNC_SIZE, FLUSH1 | LAST1);
+    /* Swap SEQOUTPTR to SEQINPTR. */
+    move_seqin_ptr = MOVE(p, DESCBUF, 0, MATH1, 0, 16, WAITCOMP | IMMED);
+    MATHB(p, MATH1, OR, CMD_SEQ_IN_PTR ^ CMD_SEQ_OUT_PTR, MATH1, 8,
+          IFB | IMMED2);
 /*
  * TODO: RTA currently doesn't support creating a LOAD command
  * with another command as IMM.
  * To be changed when proper support is added in RTA.
  */
-	LOAD(p, 0xA00000e1, MATH3, 4, 4, IMMED);
-	MATHB(p, MATH3, SHLD, MATH3, MATH3,  8, 0);
-	write_swapped_seqout_ptr = MOVE(p, MATH1, 0, DESCBUF, 0, 20, WAITCOMP |
-					IMMED);
-	swapped_seqout_ptr_jump = JUMP(p, swapped_seqout_ptr, LOCAL_JUMP,
-				       ALL_TRUE, 0);
+    LOAD(p, 0xA00000e1, MATH3, 4, 4, IMMED);
+    MATHB(p, MATH3, SHLD, MATH3, MATH3,  8, 0);
+    write_swapped_seqout_ptr = MOVE(p, MATH1, 0, DESCBUF, 0, 20, WAITCOMP |
+                    IMMED);
+    swapped_seqout_ptr_jump = JUMP(p, swapped_seqout_ptr, LOCAL_JUMP,
+                       ALL_TRUE, 0);
 /*
  * TODO: To be changed when proper support is added in RTA (can't load
  * a command that is also written by RTA).
  * Change when proper RTA support is added.
  */
-	SET_LABEL(p, jump_cmd);
-	WORD(p, 0xA00000f3);
-	SEQINPTR(p, 0, 65535, RTO);
-	MATHB(p, MATH0, SUB, ZERO, VSEQINSZ, 4, 0);
-	MATHB(p, MATH0, ADD, ip_hdr_len, VSEQOUTSZ, 4, IMMED2);
-	move_jump = MOVE(p, DESCBUF, 0, OFIFO, 0, 8, WAITCOMP | IMMED);
-	move_jump_back = MOVE(p, OFIFO, 0, DESCBUF, 0, 8, IMMED);
-	SEQFIFOLOAD(p, SKIP, ip_hdr_len, 0);
-	SEQFIFOLOAD(p, MSG2, 0, VLF | LAST2);
-	SEQFIFOSTORE(p, SKIP, 0, 0, VLF);
-	SEQSTORE(p, CONTEXT2, 0, IPSEC_ICV_MD5_TRUNC_SIZE, 0);
-	seqout_ptr_jump = JUMP(p, seqout_ptr, LOCAL_JUMP, ALL_TRUE, CALM);
+    SET_LABEL(p, jump_cmd);
+    WORD(p, 0xA00000f3);
+    SEQINPTR(p, 0, 65535, RTO);
+    MATHB(p, MATH0, SUB, ZERO, VSEQINSZ, 4, 0);
+    MATHB(p, MATH0, ADD, ip_hdr_len, VSEQOUTSZ, 4, IMMED2);
+    move_jump = MOVE(p, DESCBUF, 0, OFIFO, 0, 8, WAITCOMP | IMMED);
+    move_jump_back = MOVE(p, OFIFO, 0, DESCBUF, 0, 8, IMMED);
+    SEQFIFOLOAD(p, SKIP, ip_hdr_len, 0);
+    SEQFIFOLOAD(p, MSG2, 0, VLF | LAST2);
+    SEQFIFOSTORE(p, SKIP, 0, 0, VLF);
+    SEQSTORE(p, CONTEXT2, 0, IPSEC_ICV_MD5_TRUNC_SIZE, 0);
+    seqout_ptr_jump = JUMP(p, seqout_ptr, LOCAL_JUMP, ALL_TRUE, CALM);
 
-	LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
-	     CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_CLR_C2MODE |
-	     CLRW_CLR_C2DATAS | CLRW_CLR_C2CTX | CLRW_RESET_CLS1_CHA, CLRW, 0,
-	     4, 0);
-	SEQINPTR(p, 0, 65535, RTO);
-	MATHB(p, MATH0, ADD,
-	      (uint64_t)(ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE), SEQINSZ, 4,
-	      IMMED2);
-	KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-	    cipherdata->keylen, INLINE_KEY(cipherdata));
-	PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL, OP_PCLID_IPSEC,
-		 (uint16_t)(cipherdata->algtype | OP_PCL_IPSEC_HMAC_MD5_96));
+    LOAD(p, LDST_SRCDST_WORD_CLRW | CLRW_CLR_C1MODE | CLRW_CLR_C1DATAS |
+         CLRW_CLR_C1CTX | CLRW_CLR_C1KEY | CLRW_CLR_C2MODE |
+         CLRW_CLR_C2DATAS | CLRW_CLR_C2CTX | CLRW_RESET_CLS1_CHA, CLRW, 0,
+         4, 0);
+    SEQINPTR(p, 0, 65535, RTO);
+    MATHB(p, MATH0, ADD,
+          (uint64_t)(ip_hdr_len + IPSEC_ICV_MD5_TRUNC_SIZE), SEQINSZ, 4,
+          IMMED2);
+    KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+        cipherdata->keylen, INLINE_KEY(cipherdata));
+    PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL, OP_PCLID_IPSEC,
+         (uint16_t)(cipherdata->algtype | OP_PCL_IPSEC_HMAC_MD5_96));
 /*
  * TODO: RTA currently doesn't support adding labels in or after Job Descriptor.
  * To be changed when proper support is added in RTA.
  */
-	/* Label the SEQ OUT PTR */
-	SET_LABEL(p, seqout_ptr);
-	seqout_ptr += 2;
-	/* Label the Output Length */
-	SET_LABEL(p, outlen);
-	outlen += 4;
-	/* Label the SEQ IN PTR */
-	SET_LABEL(p, seqin_ptr);
-	seqin_ptr += 5;
-	/* Label the first word after JD */
-	SET_LABEL(p, swapped_seqout_fields);
-	swapped_seqout_fields += 8;
-	/* Label the second word after JD */
-	SET_LABEL(p, swapped_seqout_ptr);
-	swapped_seqout_ptr += 9;
+    /* Label the SEQ OUT PTR */
+    SET_LABEL(p, seqout_ptr);
+    seqout_ptr += 2;
+    /* Label the Output Length */
+    SET_LABEL(p, outlen);
+    outlen += 4;
+    /* Label the SEQ IN PTR */
+    SET_LABEL(p, seqin_ptr);
+    seqin_ptr += 5;
+    /* Label the first word after JD */
+    SET_LABEL(p, swapped_seqout_fields);
+    swapped_seqout_fields += 8;
+    /* Label the second word after JD */
+    SET_LABEL(p, swapped_seqout_ptr);
+    swapped_seqout_ptr += 9;
 
-	PATCH_HDR(p, phdr, hdr);
-	PATCH_JUMP(p, pkeyjump, keyjump);
-	PATCH_JUMP(p, seqout_ptr_jump, seqout_ptr);
-	PATCH_JUMP(p, swapped_seqout_ptr_jump, swapped_seqout_ptr);
-	PATCH_MOVE(p, move_jump, jump_cmd);
-	PATCH_MOVE(p, move_jump_back, seqin_ptr);
-	PATCH_MOVE(p, move_seqin_ptr, outlen);
-	PATCH_MOVE(p, write_swapped_seqout_ptr, swapped_seqout_fields);
-	return PROGRAM_FINALIZE(p);
+    PATCH_HDR(p, phdr, hdr);
+    PATCH_JUMP(p, pkeyjump, keyjump);
+    PATCH_JUMP(p, seqout_ptr_jump, seqout_ptr);
+    PATCH_JUMP(p, swapped_seqout_ptr_jump, swapped_seqout_ptr);
+    PATCH_MOVE(p, move_jump, jump_cmd);
+    PATCH_MOVE(p, move_jump_back, seqin_ptr);
+    PATCH_MOVE(p, move_seqin_ptr, outlen);
+    PATCH_MOVE(p, write_swapped_seqout_ptr, swapped_seqout_fields);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
@@ -1131,8 +1131,8 @@ cnstr_shdsc_ipsec_decap_des_aes_xcbc(uint32_t *descbuf,
  * layers to determine whether Outer IP Header and/or keys can be inlined or
  * not. To be used as first parameter of rta_inline_query().
  */
-#define IPSEC_NEW_ENC_BASE_DESC_LEN	(12 * CAAM_CMD_SZ + \
-					 sizeof(struct ipsec_encap_pdb))
+#define IPSEC_NEW_ENC_BASE_DESC_LEN    (12 * CAAM_CMD_SZ + \
+                     sizeof(struct ipsec_encap_pdb))
 
 /**
  * IPSEC_NEW_NULL_ENC_BASE_DESC_LEN - IPsec new mode encap shared descriptor
@@ -1143,8 +1143,8 @@ cnstr_shdsc_ipsec_decap_des_aes_xcbc(uint32_t *descbuf,
  * layers to determine whether Outer IP Header and/or key can be inlined or
  * not. To be used as first parameter of rta_inline_query().
  */
-#define IPSEC_NEW_NULL_ENC_BASE_DESC_LEN	(11 * CAAM_CMD_SZ + \
-						 sizeof(struct ipsec_encap_pdb))
+#define IPSEC_NEW_NULL_ENC_BASE_DESC_LEN    (11 * CAAM_CMD_SZ + \
+                         sizeof(struct ipsec_encap_pdb))
 
 /**
  * cnstr_shdsc_ipsec_new_encap -  IPSec new mode ESP encapsulation
@@ -1185,77 +1185,77 @@ cnstr_shdsc_ipsec_decap_des_aes_xcbc(uint32_t *descbuf,
  */
 static inline int
 cnstr_shdsc_ipsec_new_encap(uint32_t *descbuf, bool ps,
-			    bool swap,
-			    enum rta_share_type share,
-			    struct ipsec_encap_pdb *pdb,
-			    uint8_t *opt_ip_hdr,
-			    struct alginfo *cipherdata,
-			    struct alginfo *authdata)
+                bool swap,
+                enum rta_share_type share,
+                struct ipsec_encap_pdb *pdb,
+                uint8_t *opt_ip_hdr,
+                struct alginfo *cipherdata,
+                struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
+    struct program prg;
+    struct program *p = &prg;
 
-	LABEL(keyjmp);
-	REFERENCE(pkeyjmp);
-	LABEL(hdr);
-	REFERENCE(phdr);
-	LABEL(l2copy);
-	REFERENCE(pl2copy);
+    LABEL(keyjmp);
+    REFERENCE(pkeyjmp);
+    LABEL(hdr);
+    REFERENCE(phdr);
+    LABEL(l2copy);
+    REFERENCE(pl2copy);
 
-	if (rta_sec_era < RTA_SEC_ERA_8) {
-		pr_err("IPsec new mode encap: available only for Era %d or above\n",
-		       USER_SEC_ERA(RTA_SEC_ERA_8));
-		return -ENOTSUP;
-	}
+    if (rta_sec_era < RTA_SEC_ERA_8) {
+        pr_err("IPsec new mode encap: available only for Era %d or above\n",
+               USER_SEC_ERA(RTA_SEC_ERA_8));
+        return -ENOTSUP;
+    }
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	if (swap)
-		PROGRAM_SET_BSWAP(p);
-	if (ps)
-		PROGRAM_SET_36BIT_ADDR(p);
-	phdr = SHR_HDR(p, share, hdr, 0);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    if (swap)
+        PROGRAM_SET_BSWAP(p);
+    if (ps)
+        PROGRAM_SET_36BIT_ADDR(p);
+    phdr = SHR_HDR(p, share, hdr, 0);
 
-	__rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
+    __rta_copy_ipsec_encap_pdb(p, pdb, cipherdata->algtype);
 
-	switch (pdb->options & PDBOPTS_ESP_OIHI_MASK) {
-	case PDBOPTS_ESP_OIHI_PDB_INL:
-		COPY_DATA(p, opt_ip_hdr, pdb->ip_hdr_len);
-		break;
-	case PDBOPTS_ESP_OIHI_PDB_REF:
-		if (ps)
-			COPY_DATA(p, opt_ip_hdr, 8);
-		else
-			COPY_DATA(p, opt_ip_hdr, 4);
-		break;
-	default:
-		break;
-	}
-	SET_LABEL(p, hdr);
+    switch (pdb->options & PDBOPTS_ESP_OIHI_MASK) {
+    case PDBOPTS_ESP_OIHI_PDB_INL:
+        COPY_DATA(p, opt_ip_hdr, pdb->ip_hdr_len);
+        break;
+    case PDBOPTS_ESP_OIHI_PDB_REF:
+        if (ps)
+            COPY_DATA(p, opt_ip_hdr, 8);
+        else
+            COPY_DATA(p, opt_ip_hdr, 4);
+        break;
+    default:
+        break;
+    }
+    SET_LABEL(p, hdr);
 
-	MATHB(p, DPOVRD, AND, IPSEC_N_ENCAP_DPOVRD_L2_COPY, NONE, 4, IMMED2);
-	pl2copy = JUMP(p, l2copy, LOCAL_JUMP, ALL_TRUE, MATH_Z);
-	MATHI(p, DPOVRD, RSHIFT, IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT, VSEQOUTSZ,
-	      1, 0);
-	MATHB(p, DPOVRD, AND, ~IPSEC_N_ENCAP_DPOVRD_L2_LEN_MASK, DPOVRD, 4,
-	      IMMED2);
-	/* TODO: CLASS2 corresponds to AUX=2'b10; add more intuitive defines */
-	SEQFIFOSTORE(p, METADATA, 0, 0, CLASS2 | VLF);
-	SET_LABEL(p, l2copy);
+    MATHB(p, DPOVRD, AND, IPSEC_N_ENCAP_DPOVRD_L2_COPY, NONE, 4, IMMED2);
+    pl2copy = JUMP(p, l2copy, LOCAL_JUMP, ALL_TRUE, MATH_Z);
+    MATHI(p, DPOVRD, RSHIFT, IPSEC_N_ENCAP_DPOVRD_L2_LEN_SHIFT, VSEQOUTSZ,
+          1, 0);
+    MATHB(p, DPOVRD, AND, ~IPSEC_N_ENCAP_DPOVRD_L2_LEN_MASK, DPOVRD, 4,
+          IMMED2);
+    /* TODO: CLASS2 corresponds to AUX=2'b10; add more intuitive defines */
+    SEQFIFOSTORE(p, METADATA, 0, 0, CLASS2 | VLF);
+    SET_LABEL(p, l2copy);
 
-	pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
-	if (authdata->keylen)
-		__gen_auth_key(p, authdata);
-	if (cipherdata->keylen)
-		KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-		    cipherdata->keylen, INLINE_KEY(cipherdata));
-	SET_LABEL(p, keyjmp);
-	PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL,
-		 OP_PCLID_IPSEC_NEW,
-		 (uint16_t)(cipherdata->algtype | authdata->algtype));
-	PATCH_JUMP(p, pl2copy, l2copy);
-	PATCH_JUMP(p, pkeyjmp, keyjmp);
-	PATCH_HDR(p, phdr, hdr);
-	return PROGRAM_FINALIZE(p);
+    pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
+    if (authdata->keylen)
+        __gen_auth_key(p, authdata);
+    if (cipherdata->keylen)
+        KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+            cipherdata->keylen, INLINE_KEY(cipherdata));
+    SET_LABEL(p, keyjmp);
+    PROTOCOL(p, OP_TYPE_ENCAP_PROTOCOL,
+         OP_PCLID_IPSEC_NEW,
+         (uint16_t)(cipherdata->algtype | authdata->algtype));
+    PATCH_JUMP(p, pl2copy, l2copy);
+    PATCH_JUMP(p, pkeyjmp, keyjmp);
+    PATCH_HDR(p, phdr, hdr);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
@@ -1265,8 +1265,8 @@ cnstr_shdsc_ipsec_new_encap(uint32_t *descbuf, bool ps,
  * layers to determine whether keys can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_NEW_DEC_BASE_DESC_LEN	(5 * CAAM_CMD_SZ + \
-					 sizeof(struct ipsec_decap_pdb))
+#define IPSEC_NEW_DEC_BASE_DESC_LEN    (5 * CAAM_CMD_SZ + \
+                     sizeof(struct ipsec_decap_pdb))
 
 /**
  * IPSEC_NEW_NULL_DEC_BASE_DESC_LEN - IPsec new mode decap shared descriptor
@@ -1277,8 +1277,8 @@ cnstr_shdsc_ipsec_new_encap(uint32_t *descbuf, bool ps,
  * layers to determine whether key can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_NEW_NULL_DEC_BASE_DESC_LEN	(4 * CAAM_CMD_SZ + \
-						 sizeof(struct ipsec_decap_pdb))
+#define IPSEC_NEW_NULL_DEC_BASE_DESC_LEN    (4 * CAAM_CMD_SZ + \
+                         sizeof(struct ipsec_decap_pdb))
 
 /**
  * cnstr_shdsc_ipsec_new_decap - IPSec new mode ESP decapsulation protocol-level
@@ -1303,60 +1303,60 @@ cnstr_shdsc_ipsec_new_encap(uint32_t *descbuf, bool ps,
  */
 static inline int
 cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
-			    bool swap,
-			    enum rta_share_type share,
-			    struct ipsec_decap_pdb *pdb,
-			    struct alginfo *cipherdata,
-			    struct alginfo *authdata)
+                bool swap,
+                enum rta_share_type share,
+                struct ipsec_decap_pdb *pdb,
+                struct alginfo *cipherdata,
+                struct alginfo *authdata)
 {
-	struct program prg;
-	struct program *p = &prg;
+    struct program prg;
+    struct program *p = &prg;
 
-	LABEL(keyjmp);
-	REFERENCE(pkeyjmp);
-	LABEL(hdr);
-	REFERENCE(phdr);
+    LABEL(keyjmp);
+    REFERENCE(pkeyjmp);
+    LABEL(hdr);
+    REFERENCE(phdr);
 
-	if (rta_sec_era < RTA_SEC_ERA_8) {
-		pr_err("IPsec new mode decap: available only for Era %d or above\n",
-		       USER_SEC_ERA(RTA_SEC_ERA_8));
-		return -ENOTSUP;
-	}
+    if (rta_sec_era < RTA_SEC_ERA_8) {
+        pr_err("IPsec new mode decap: available only for Era %d or above\n",
+               USER_SEC_ERA(RTA_SEC_ERA_8));
+        return -ENOTSUP;
+    }
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
-	if (swap)
-		PROGRAM_SET_BSWAP(p);
-	if (ps)
-		PROGRAM_SET_36BIT_ADDR(p);
-	phdr = SHR_HDR(p, share, hdr, 0);
-	__rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
-	SET_LABEL(p, hdr);
-	pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
-	if (authdata->keylen)
-		__gen_auth_key(p, authdata);
-	if (cipherdata->keylen)
-		KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-		    cipherdata->keylen, INLINE_KEY(cipherdata));
-	SET_LABEL(p, keyjmp);
-	PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL,
-		 OP_PCLID_IPSEC_NEW,
-		 (uint16_t)(cipherdata->algtype | authdata->algtype));
-	PATCH_JUMP(p, pkeyjmp, keyjmp);
-	PATCH_HDR(p, phdr, hdr);
-	return PROGRAM_FINALIZE(p);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    if (swap)
+        PROGRAM_SET_BSWAP(p);
+    if (ps)
+        PROGRAM_SET_36BIT_ADDR(p);
+    phdr = SHR_HDR(p, share, hdr, 0);
+    __rta_copy_ipsec_decap_pdb(p, pdb, cipherdata->algtype);
+    SET_LABEL(p, hdr);
+    pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
+    if (authdata->keylen)
+        __gen_auth_key(p, authdata);
+    if (cipherdata->keylen)
+        KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+            cipherdata->keylen, INLINE_KEY(cipherdata));
+    SET_LABEL(p, keyjmp);
+    PROTOCOL(p, OP_TYPE_DECAP_PROTOCOL,
+         OP_PCLID_IPSEC_NEW,
+         (uint16_t)(cipherdata->algtype | authdata->algtype));
+    PATCH_JUMP(p, pkeyjmp, keyjmp);
+    PATCH_HDR(p, phdr, hdr);
+    return PROGRAM_FINALIZE(p);
 }
 
 /**
  * IPSEC_AUTH_VAR_BASE_DESC_LEN - IPsec encap/decap shared descriptor length
- *				for the case of variable-length authentication
- *				only data.
- *				Note: Only for SoCs with SEC_ERA >= 3.
+ *                for the case of variable-length authentication
+ *                only data.
+ *                Note: Only for SoCs with SEC_ERA >= 3.
  *
  * Accounts only for the "base" commands and is intended to be used by upper
  * layers to determine whether keys can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_AUTH_VAR_BASE_DESC_LEN	(27 * CAAM_CMD_SZ)
+#define IPSEC_AUTH_VAR_BASE_DESC_LEN    (27 * CAAM_CMD_SZ)
 
 /**
  * IPSEC_AUTH_VAR_AES_DEC_BASE_DESC_LEN - IPsec AES decap shared descriptor
@@ -1368,8 +1368,8 @@ cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
  * layers to determine whether key can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_AUTH_VAR_AES_DEC_BASE_DESC_LEN	\
-				(IPSEC_AUTH_VAR_BASE_DESC_LEN + CAAM_CMD_SZ)
+#define IPSEC_AUTH_VAR_AES_DEC_BASE_DESC_LEN    \
+                (IPSEC_AUTH_VAR_BASE_DESC_LEN + CAAM_CMD_SZ)
 
 /**
  * IPSEC_AUTH_BASE_DESC_LEN - IPsec encap/decap shared descriptor length
@@ -1378,7 +1378,7 @@ cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
  * layers to determine whether key can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_AUTH_BASE_DESC_LEN	(19 * CAAM_CMD_SZ)
+#define IPSEC_AUTH_BASE_DESC_LEN    (19 * CAAM_CMD_SZ)
 
 /**
  * IPSEC_AUTH_AES_DEC_BASE_DESC_LEN - IPsec AES decap shared descriptor length
@@ -1387,8 +1387,8 @@ cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
  * layers to determine whether key can be inlined or not. To be used as first
  * parameter of rta_inline_query().
  */
-#define IPSEC_AUTH_AES_DEC_BASE_DESC_LEN	(IPSEC_AUTH_BASE_DESC_LEN + \
-						CAAM_CMD_SZ)
+#define IPSEC_AUTH_AES_DEC_BASE_DESC_LEN    (IPSEC_AUTH_BASE_DESC_LEN + \
+                        CAAM_CMD_SZ)
 
 /**
  * cnstr_shdsc_authenc - authenc-like descriptor
@@ -1440,7 +1440,7 @@ cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
  *
  * Note: This descriptor can use per-packet commands, encoded as below in the
  *       DPOVRD register:
- * 32    28               16	         1
+ * 32    28               16             1
  * +------+------------------------------+
  * | 0x8  | auth_tail_len | auth_hdr_len |
  * +------+------------------------------+
@@ -1457,157 +1457,157 @@ cnstr_shdsc_ipsec_new_decap(uint32_t *descbuf, bool ps,
  */
 static inline int
 cnstr_shdsc_authenc(uint32_t *descbuf, bool ps, bool swap,
-		    enum rta_share_type share,
-		    struct alginfo *cipherdata,
-		    struct alginfo *authdata,
-		    uint16_t ivlen,
-		    uint8_t trunc_len, uint8_t dir)
+            enum rta_share_type share,
+            struct alginfo *cipherdata,
+            struct alginfo *authdata,
+            uint16_t ivlen,
+            uint8_t trunc_len, uint8_t dir)
 {
-	struct program prg;
-	struct program *p = &prg;
-	const bool need_dk = (dir == DIR_DEC) &&
-			     (cipherdata->algtype == OP_ALG_ALGSEL_AES) &&
-			     (cipherdata->algmode == OP_ALG_AAI_CBC);
-	int data_type;
+    struct program prg;
+    struct program *p = &prg;
+    const bool need_dk = (dir == DIR_DEC) &&
+                 (cipherdata->algtype == OP_ALG_ALGSEL_AES) &&
+                 (cipherdata->algmode == OP_ALG_AAI_CBC);
+    int data_type;
 
-	LABEL(keyjmp);
-	LABEL(skipkeys);
-	LABEL(proc_icv);
-	LABEL(no_auth_tail);
-	REFERENCE(pkeyjmp);
-	REFERENCE(pskipkeys);
-	REFERENCE(p_proc_icv);
-	REFERENCE(p_no_auth_tail);
+    LABEL(keyjmp);
+    LABEL(skipkeys);
+    LABEL(proc_icv);
+    LABEL(no_auth_tail);
+    REFERENCE(pkeyjmp);
+    REFERENCE(pskipkeys);
+    REFERENCE(p_proc_icv);
+    REFERENCE(p_no_auth_tail);
 
-	PROGRAM_CNTXT_INIT(p, descbuf, 0);
+    PROGRAM_CNTXT_INIT(p, descbuf, 0);
 
-	if (swap)
-		PROGRAM_SET_BSWAP(p);
-	if (ps)
-		PROGRAM_SET_36BIT_ADDR(p);
+    if (swap)
+        PROGRAM_SET_BSWAP(p);
+    if (ps)
+        PROGRAM_SET_36BIT_ADDR(p);
 
-	/*
-	 * Since we currently assume that key length is equal to hash digest
-	 * size, it's ok to truncate keylen value.
-	 */
-	trunc_len = trunc_len && (trunc_len < authdata->keylen) ?
-			trunc_len : (uint8_t)authdata->keylen;
+    /*
+     * Since we currently assume that key length is equal to hash digest
+     * size, it's ok to truncate keylen value.
+     */
+    trunc_len = trunc_len && (trunc_len < authdata->keylen) ?
+            trunc_len : (uint8_t)authdata->keylen;
 
-	SHR_HDR(p, share, 1, SC);
+    SHR_HDR(p, share, 1, SC);
 
-	/* Collect the (auth_tail || auth_hdr) len from DPOVRD */
-	MATHB(p, DPOVRD, ADD, 0x80000000, MATH2, 4, IMMED2);
+    /* Collect the (auth_tail || auth_hdr) len from DPOVRD */
+    MATHB(p, DPOVRD, ADD, 0x80000000, MATH2, 4, IMMED2);
 
-	/* Get auth_hdr len in MATH0 */
-	MATHB(p, MATH2, AND, 0xFFFF, MATH0, 4, IMMED2);
+    /* Get auth_hdr len in MATH0 */
+    MATHB(p, MATH2, AND, 0xFFFF, MATH0, 4, IMMED2);
 
-	/* Get auth_tail len in MATH2 */
-	MATHB(p, MATH2, AND, 0xFFF0000, MATH2, 4, IMMED2);
-	MATHI(p, MATH2, RSHIFT, 16, MATH2, 4, IMMED2);
+    /* Get auth_tail len in MATH2 */
+    MATHB(p, MATH2, AND, 0xFFF0000, MATH2, 4, IMMED2);
+    MATHI(p, MATH2, RSHIFT, 16, MATH2, 4, IMMED2);
 
-	pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
+    pkeyjmp = JUMP(p, keyjmp, LOCAL_JUMP, ALL_TRUE, SHRD);
 
-	KEY(p, KEY2, authdata->key_enc_flags, authdata->key, authdata->keylen,
-	    INLINE_KEY(authdata));
+    KEY(p, KEY2, authdata->key_enc_flags, authdata->key, authdata->keylen,
+        INLINE_KEY(authdata));
 
-	/* Insert Key */
-	KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
-	    cipherdata->keylen, INLINE_KEY(cipherdata));
+    /* Insert Key */
+    KEY(p, KEY1, cipherdata->key_enc_flags, cipherdata->key,
+        cipherdata->keylen, INLINE_KEY(cipherdata));
 
-	/* Do operation */
-	ALG_OPERATION(p, authdata->algtype, OP_ALG_AAI_HMAC,
-		      OP_ALG_AS_INITFINAL,
-		      dir == DIR_ENC ? ICV_CHECK_DISABLE : ICV_CHECK_ENABLE,
-		      dir);
+    /* Do operation */
+    ALG_OPERATION(p, authdata->algtype, OP_ALG_AAI_HMAC,
+              OP_ALG_AS_INITFINAL,
+              dir == DIR_ENC ? ICV_CHECK_DISABLE : ICV_CHECK_ENABLE,
+              dir);
 
-	if (need_dk)
-		ALG_OPERATION(p, OP_ALG_ALGSEL_AES, cipherdata->algmode,
-			      OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, dir);
-	pskipkeys = JUMP(p, skipkeys, LOCAL_JUMP, ALL_TRUE, 0);
+    if (need_dk)
+        ALG_OPERATION(p, OP_ALG_ALGSEL_AES, cipherdata->algmode,
+                  OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, dir);
+    pskipkeys = JUMP(p, skipkeys, LOCAL_JUMP, ALL_TRUE, 0);
 
-	SET_LABEL(p, keyjmp);
+    SET_LABEL(p, keyjmp);
 
-	ALG_OPERATION(p, authdata->algtype, OP_ALG_AAI_HMAC_PRECOMP,
-		      OP_ALG_AS_INITFINAL,
-		      dir == DIR_ENC ? ICV_CHECK_DISABLE : ICV_CHECK_ENABLE,
-		      dir);
+    ALG_OPERATION(p, authdata->algtype, OP_ALG_AAI_HMAC_PRECOMP,
+              OP_ALG_AS_INITFINAL,
+              dir == DIR_ENC ? ICV_CHECK_DISABLE : ICV_CHECK_ENABLE,
+              dir);
 
-	if (need_dk) {
-		ALG_OPERATION(p, OP_ALG_ALGSEL_AES, cipherdata->algmode |
-			      OP_ALG_AAI_DK, OP_ALG_AS_INITFINAL,
-			      ICV_CHECK_DISABLE, dir);
-		SET_LABEL(p, skipkeys);
-	} else {
-		SET_LABEL(p, skipkeys);
-		ALG_OPERATION(p, cipherdata->algtype, cipherdata->algmode,
-			      OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, dir);
-	}
+    if (need_dk) {
+        ALG_OPERATION(p, OP_ALG_ALGSEL_AES, cipherdata->algmode |
+                  OP_ALG_AAI_DK, OP_ALG_AS_INITFINAL,
+                  ICV_CHECK_DISABLE, dir);
+        SET_LABEL(p, skipkeys);
+    } else {
+        SET_LABEL(p, skipkeys);
+        ALG_OPERATION(p, cipherdata->algtype, cipherdata->algmode,
+                  OP_ALG_AS_INITFINAL, ICV_CHECK_DISABLE, dir);
+    }
 
-	/* Read IV */
-	if (cipherdata->algmode == OP_ALG_AAI_CTR)
-		SEQLOAD(p, CONTEXT1, 16, ivlen, 0);
-	else
-		SEQLOAD(p, CONTEXT1, 0, ivlen, 0);
+    /* Read IV */
+    if (cipherdata->algmode == OP_ALG_AAI_CTR)
+        SEQLOAD(p, CONTEXT1, 16, ivlen, 0);
+    else
+        SEQLOAD(p, CONTEXT1, 0, ivlen, 0);
 
-	/*
-	 * authenticate auth_hdr data
-	 */
-	MATHB(p, MATH0, ADD, ZERO, VSEQINSZ, 4, 0);
-	SEQFIFOLOAD(p, MSG2, 0, VLF);
+    /*
+     * authenticate auth_hdr data
+     */
+    MATHB(p, MATH0, ADD, ZERO, VSEQINSZ, 4, 0);
+    SEQFIFOLOAD(p, MSG2, 0, VLF);
 
-	/*
-	 * Prepare the length of the data to be both encrypted/decrypted
-	 * and authenticated/checked
-	 */
-	MATHB(p, SEQINSZ, SUB, MATH2, VSEQINSZ, 4, 0);
-	if (dir == DIR_DEC) {
-		MATHB(p, VSEQINSZ, SUB, trunc_len, VSEQINSZ, 4, IMMED2);
-		data_type = MSGINSNOOP;
-	} else {
-		data_type = MSGOUTSNOOP;
-	}
+    /*
+     * Prepare the length of the data to be both encrypted/decrypted
+     * and authenticated/checked
+     */
+    MATHB(p, SEQINSZ, SUB, MATH2, VSEQINSZ, 4, 0);
+    if (dir == DIR_DEC) {
+        MATHB(p, VSEQINSZ, SUB, trunc_len, VSEQINSZ, 4, IMMED2);
+        data_type = MSGINSNOOP;
+    } else {
+        data_type = MSGOUTSNOOP;
+    }
 
-	MATHB(p, VSEQINSZ, ADD, ZERO, VSEQOUTSZ, 4, 0);
+    MATHB(p, VSEQINSZ, ADD, ZERO, VSEQOUTSZ, 4, 0);
 
-	/* Prepare for writing the output frame */
-	SEQFIFOSTORE(p, MSG, 0, 0, VLF);
+    /* Prepare for writing the output frame */
+    SEQFIFOSTORE(p, MSG, 0, 0, VLF);
 
 
-	/* Check if there is no auth-tail */
-	MATHB(p, MATH2, ADD, ZERO, MATH2, 4, 0);
-	p_no_auth_tail = JUMP(p, no_auth_tail, LOCAL_JUMP, ALL_TRUE, MATH_Z);
+    /* Check if there is no auth-tail */
+    MATHB(p, MATH2, ADD, ZERO, MATH2, 4, 0);
+    p_no_auth_tail = JUMP(p, no_auth_tail, LOCAL_JUMP, ALL_TRUE, MATH_Z);
 
-	/*
-	 * Read input plain/cipher text, encrypt/decrypt & auth & write
-	 * to output
-	 */
-	SEQFIFOLOAD(p, data_type, 0, VLF | LAST1 | FLUSH1);
+    /*
+     * Read input plain/cipher text, encrypt/decrypt & auth & write
+     * to output
+     */
+    SEQFIFOLOAD(p, data_type, 0, VLF | LAST1 | FLUSH1);
 
-	/* Authenticate auth tail */
-	MATHB(p, MATH2, ADD, ZERO, VSEQINSZ, 4, 0);
-	SEQFIFOLOAD(p, MSG2, 0, VLF | LAST2);
+    /* Authenticate auth tail */
+    MATHB(p, MATH2, ADD, ZERO, VSEQINSZ, 4, 0);
+    SEQFIFOLOAD(p, MSG2, 0, VLF | LAST2);
 
-	/* Jump to process icv */
-	p_proc_icv = JUMP(p, proc_icv, LOCAL_JUMP, ALL_FALSE, MATH_Z);
+    /* Jump to process icv */
+    p_proc_icv = JUMP(p, proc_icv, LOCAL_JUMP, ALL_FALSE, MATH_Z);
 
-	SET_LABEL(p, no_auth_tail);
+    SET_LABEL(p, no_auth_tail);
 
-	SEQFIFOLOAD(p, data_type, 0, VLF | LAST1 | LAST2 | FLUSH1);
+    SEQFIFOLOAD(p, data_type, 0, VLF | LAST1 | LAST2 | FLUSH1);
 
-	SET_LABEL(p, proc_icv);
+    SET_LABEL(p, proc_icv);
 
-	if (dir == DIR_ENC)
-		/* Finally, write the ICV */
-		SEQSTORE(p, CONTEXT2, 0, trunc_len, 0);
-	else
-		/* Read the ICV to check */
-		SEQFIFOLOAD(p, ICV2, trunc_len, LAST2);
+    if (dir == DIR_ENC)
+        /* Finally, write the ICV */
+        SEQSTORE(p, CONTEXT2, 0, trunc_len, 0);
+    else
+        /* Read the ICV to check */
+        SEQFIFOLOAD(p, ICV2, trunc_len, LAST2);
 
-	PATCH_JUMP(p, pkeyjmp, keyjmp);
-	PATCH_JUMP(p, pskipkeys, skipkeys);
-	PATCH_JUMP(p, p_no_auth_tail, no_auth_tail);
-	PATCH_JUMP(p, p_proc_icv, proc_icv);
-	return PROGRAM_FINALIZE(p);
+    PATCH_JUMP(p, pkeyjmp, keyjmp);
+    PATCH_JUMP(p, pskipkeys, skipkeys);
+    PATCH_JUMP(p, p_no_auth_tail, no_auth_tail);
+    PATCH_JUMP(p, p_proc_icv, proc_icv);
+    return PROGRAM_FINALIZE(p);
 }
 
 #endif /* __DESC_IPSEC_H__ */

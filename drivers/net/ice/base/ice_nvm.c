@@ -19,34 +19,34 @@
  */
 static enum ice_status
 ice_aq_read_nvm(struct ice_hw *hw, u16 module_typeid, u32 offset, u16 length,
-		void *data, bool last_command, bool read_shadow_ram,
-		struct ice_sq_cd *cd)
+        void *data, bool last_command, bool read_shadow_ram,
+        struct ice_sq_cd *cd)
 {
-	struct ice_aq_desc desc;
-	struct ice_aqc_nvm *cmd;
+    struct ice_aq_desc desc;
+    struct ice_aqc_nvm *cmd;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	cmd = &desc.params.nvm;
+    cmd = &desc.params.nvm;
 
-	/* In offset the highest byte must be zeroed. */
-	if (offset & 0xFF000000)
-		return ICE_ERR_PARAM;
+    /* In offset the highest byte must be zeroed. */
+    if (offset & 0xFF000000)
+        return ICE_ERR_PARAM;
 
-	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_nvm_read);
+    ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_nvm_read);
 
-	if (!read_shadow_ram && module_typeid == ICE_AQC_NVM_START_POINT)
-		cmd->cmd_flags |= ICE_AQC_NVM_FLASH_ONLY;
+    if (!read_shadow_ram && module_typeid == ICE_AQC_NVM_START_POINT)
+        cmd->cmd_flags |= ICE_AQC_NVM_FLASH_ONLY;
 
-	/* If this is the last command in a series, set the proper flag. */
-	if (last_command)
-		cmd->cmd_flags |= ICE_AQC_NVM_LAST_CMD;
-	cmd->module_typeid = CPU_TO_LE16(module_typeid);
-	cmd->offset_low = CPU_TO_LE16(offset & 0xFFFF);
-	cmd->offset_high = (offset >> 16) & 0xFF;
-	cmd->length = CPU_TO_LE16(length);
+    /* If this is the last command in a series, set the proper flag. */
+    if (last_command)
+        cmd->cmd_flags |= ICE_AQC_NVM_LAST_CMD;
+    cmd->module_typeid = CPU_TO_LE16(module_typeid);
+    cmd->offset_low = CPU_TO_LE16(offset & 0xFFFF);
+    cmd->offset_high = (offset >> 16) & 0xFF;
+    cmd->length = CPU_TO_LE16(length);
 
-	return ice_aq_send_cmd(hw, &desc, data, length, cd);
+    return ice_aq_send_cmd(hw, &desc, data, length, cd);
 }
 
 /**
@@ -58,29 +58,29 @@ ice_aq_read_nvm(struct ice_hw *hw, u16 module_typeid, u32 offset, u16 length,
 static enum ice_status
 ice_check_sr_access_params(struct ice_hw *hw, u32 offset, u16 words)
 {
-	if ((offset + words) > hw->nvm.sr_words) {
-		ice_debug(hw, ICE_DBG_NVM,
-			  "NVM error: offset beyond SR lmt.\n");
-		return ICE_ERR_PARAM;
-	}
+    if ((offset + words) > hw->nvm.sr_words) {
+        ice_debug(hw, ICE_DBG_NVM,
+              "NVM error: offset beyond SR lmt.\n");
+        return ICE_ERR_PARAM;
+    }
 
-	if (words > ICE_SR_SECTOR_SIZE_IN_WORDS) {
-		/* We can access only up to 4KB (one sector), in one AQ write */
-		ice_debug(hw, ICE_DBG_NVM,
-			  "NVM error: tried to access %d words, limit is %d.\n",
-			  words, ICE_SR_SECTOR_SIZE_IN_WORDS);
-		return ICE_ERR_PARAM;
-	}
+    if (words > ICE_SR_SECTOR_SIZE_IN_WORDS) {
+        /* We can access only up to 4KB (one sector), in one AQ write */
+        ice_debug(hw, ICE_DBG_NVM,
+              "NVM error: tried to access %d words, limit is %d.\n",
+              words, ICE_SR_SECTOR_SIZE_IN_WORDS);
+        return ICE_ERR_PARAM;
+    }
 
-	if (((offset + (words - 1)) / ICE_SR_SECTOR_SIZE_IN_WORDS) !=
-	    (offset / ICE_SR_SECTOR_SIZE_IN_WORDS)) {
-		/* A single access cannot spread over two sectors */
-		ice_debug(hw, ICE_DBG_NVM,
-			  "NVM error: cannot spread over two sectors.\n");
-		return ICE_ERR_PARAM;
-	}
+    if (((offset + (words - 1)) / ICE_SR_SECTOR_SIZE_IN_WORDS) !=
+        (offset / ICE_SR_SECTOR_SIZE_IN_WORDS)) {
+        /* A single access cannot spread over two sectors */
+        ice_debug(hw, ICE_DBG_NVM,
+              "NVM error: cannot spread over two sectors.\n");
+        return ICE_ERR_PARAM;
+    }
 
-	return ICE_SUCCESS;
+    return ICE_SUCCESS;
 }
 
 /**
@@ -95,24 +95,24 @@ ice_check_sr_access_params(struct ice_hw *hw, u32 offset, u16 words)
  */
 static enum ice_status
 ice_read_sr_aq(struct ice_hw *hw, u32 offset, u16 words, u16 *data,
-	       bool last_command)
+           bool last_command)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	status = ice_check_sr_access_params(hw, offset, words);
+    status = ice_check_sr_access_params(hw, offset, words);
 
-	/* values in "offset" and "words" parameters are sized as words
-	 * (16 bits) but ice_aq_read_nvm expects these values in bytes.
-	 * So do this conversion while calling ice_aq_read_nvm.
-	 */
-	if (!status)
-		status = ice_aq_read_nvm(hw, ICE_AQC_NVM_START_POINT,
-					 2 * offset, 2 * words, data,
-					 last_command, true, NULL);
+    /* values in "offset" and "words" parameters are sized as words
+     * (16 bits) but ice_aq_read_nvm expects these values in bytes.
+     * So do this conversion while calling ice_aq_read_nvm.
+     */
+    if (!status)
+        status = ice_aq_read_nvm(hw, ICE_AQC_NVM_START_POINT,
+                     2 * offset, 2 * words, data,
+                     last_command, true, NULL);
 
-	return status;
+    return status;
 }
 
 /**
@@ -126,15 +126,15 @@ ice_read_sr_aq(struct ice_hw *hw, u32 offset, u16 words, u16 *data,
 static enum ice_status
 ice_read_sr_word_aq(struct ice_hw *hw, u16 offset, u16 *data)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	status = ice_read_sr_aq(hw, offset, 1, data, true);
-	if (!status)
-		*data = LE16_TO_CPU(*(_FORCE_ __le16 *)data);
+    status = ice_read_sr_aq(hw, offset, 1, data, true);
+    if (!status)
+        *data = LE16_TO_CPU(*(_FORCE_ __le16 *)data);
 
-	return status;
+    return status;
 }
 
 /**
@@ -151,49 +151,49 @@ ice_read_sr_word_aq(struct ice_hw *hw, u16 offset, u16 *data)
 static enum ice_status
 ice_read_sr_buf_aq(struct ice_hw *hw, u16 offset, u16 *words, u16 *data)
 {
-	enum ice_status status;
-	bool last_cmd = false;
-	u16 words_read = 0;
-	u16 i = 0;
+    enum ice_status status;
+    bool last_cmd = false;
+    u16 words_read = 0;
+    u16 i = 0;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	do {
-		u16 read_size, off_w;
+    do {
+        u16 read_size, off_w;
 
-		/* Calculate number of bytes we should read in this step.
-		 * It's not allowed to read more than one page at a time or
-		 * to cross page boundaries.
-		 */
-		off_w = offset % ICE_SR_SECTOR_SIZE_IN_WORDS;
-		read_size = off_w ?
-			MIN_T(u16, *words,
-			      (ICE_SR_SECTOR_SIZE_IN_WORDS - off_w)) :
-			MIN_T(u16, (*words - words_read),
-			      ICE_SR_SECTOR_SIZE_IN_WORDS);
+        /* Calculate number of bytes we should read in this step.
+         * It's not allowed to read more than one page at a time or
+         * to cross page boundaries.
+         */
+        off_w = offset % ICE_SR_SECTOR_SIZE_IN_WORDS;
+        read_size = off_w ?
+            MIN_T(u16, *words,
+                  (ICE_SR_SECTOR_SIZE_IN_WORDS - off_w)) :
+            MIN_T(u16, (*words - words_read),
+                  ICE_SR_SECTOR_SIZE_IN_WORDS);
 
-		/* Check if this is last command, if so set proper flag */
-		if ((words_read + read_size) >= *words)
-			last_cmd = true;
+        /* Check if this is last command, if so set proper flag */
+        if ((words_read + read_size) >= *words)
+            last_cmd = true;
 
-		status = ice_read_sr_aq(hw, offset, read_size,
-					data + words_read, last_cmd);
-		if (status)
-			goto read_nvm_buf_aq_exit;
+        status = ice_read_sr_aq(hw, offset, read_size,
+                    data + words_read, last_cmd);
+        if (status)
+            goto read_nvm_buf_aq_exit;
 
-		/* Increment counter for words already read and move offset to
-		 * new read location
-		 */
-		words_read += read_size;
-		offset += read_size;
-	} while (words_read < *words);
+        /* Increment counter for words already read and move offset to
+         * new read location
+         */
+        words_read += read_size;
+        offset += read_size;
+    } while (words_read < *words);
 
-	for (i = 0; i < *words; i++)
-		data[i] = LE16_TO_CPU(((_FORCE_ __le16 *)data)[i]);
+    for (i = 0; i < *words; i++)
+        data[i] = LE16_TO_CPU(((_FORCE_ __le16 *)data)[i]);
 
 read_nvm_buf_aq_exit:
-	*words = words_read;
-	return status;
+    *words = words_read;
+    return status;
 }
 
 /**
@@ -206,12 +206,12 @@ read_nvm_buf_aq_exit:
 static enum ice_status
 ice_acquire_nvm(struct ice_hw *hw, enum ice_aq_res_access_type access)
 {
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	if (hw->nvm.blank_nvm_mode)
-		return ICE_SUCCESS;
+    if (hw->nvm.blank_nvm_mode)
+        return ICE_SUCCESS;
 
-	return ice_acquire_res(hw, ICE_NVM_RES_ID, access, ICE_NVM_TIMEOUT);
+    return ice_acquire_res(hw, ICE_NVM_RES_ID, access, ICE_NVM_TIMEOUT);
 }
 
 /**
@@ -222,12 +222,12 @@ ice_acquire_nvm(struct ice_hw *hw, enum ice_aq_res_access_type access)
  */
 static void ice_release_nvm(struct ice_hw *hw)
 {
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	if (hw->nvm.blank_nvm_mode)
-		return;
+    if (hw->nvm.blank_nvm_mode)
+        return;
 
-	ice_release_res(hw, ICE_NVM_RES_ID);
+    ice_release_res(hw, ICE_NVM_RES_ID);
 }
 
 /**
@@ -240,15 +240,15 @@ static void ice_release_nvm(struct ice_hw *hw)
  */
 enum ice_status ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	status = ice_acquire_nvm(hw, ICE_RES_READ);
-	if (!status) {
-		status = ice_read_sr_word_aq(hw, offset, data);
-		ice_release_nvm(hw);
-	}
+    status = ice_acquire_nvm(hw, ICE_RES_READ);
+    if (!status) {
+        status = ice_read_sr_word_aq(hw, offset, data);
+        ice_release_nvm(hw);
+    }
 
-	return status;
+    return status;
 }
 
 /**
@@ -260,96 +260,96 @@ enum ice_status ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data)
  */
 enum ice_status ice_init_nvm(struct ice_hw *hw)
 {
-	u16 oem_hi, oem_lo, boot_cfg_tlv, boot_cfg_tlv_len;
-	struct ice_nvm_info *nvm = &hw->nvm;
-	u16 eetrack_lo, eetrack_hi;
-	enum ice_status status;
-	u32 fla, gens_stat;
-	u8 sr_size;
+    u16 oem_hi, oem_lo, boot_cfg_tlv, boot_cfg_tlv_len;
+    struct ice_nvm_info *nvm = &hw->nvm;
+    u16 eetrack_lo, eetrack_hi;
+    enum ice_status status;
+    u32 fla, gens_stat;
+    u8 sr_size;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	/* The SR size is stored regardless of the NVM programming mode
-	 * as the blank mode may be used in the factory line.
-	 */
-	gens_stat = rd32(hw, GLNVM_GENS);
-	sr_size = (gens_stat & GLNVM_GENS_SR_SIZE_M) >> GLNVM_GENS_SR_SIZE_S;
+    /* The SR size is stored regardless of the NVM programming mode
+     * as the blank mode may be used in the factory line.
+     */
+    gens_stat = rd32(hw, GLNVM_GENS);
+    sr_size = (gens_stat & GLNVM_GENS_SR_SIZE_M) >> GLNVM_GENS_SR_SIZE_S;
 
-	/* Switching to words (sr_size contains power of 2) */
-	nvm->sr_words = BIT(sr_size) * ICE_SR_WORDS_IN_1KB;
+    /* Switching to words (sr_size contains power of 2) */
+    nvm->sr_words = BIT(sr_size) * ICE_SR_WORDS_IN_1KB;
 
-	/* Check if we are in the normal or blank NVM programming mode */
-	fla = rd32(hw, GLNVM_FLA);
-	if (fla & GLNVM_FLA_LOCKED_M) { /* Normal programming mode */
-		nvm->blank_nvm_mode = false;
-	} else {
-		/* Blank programming mode */
-		nvm->blank_nvm_mode = true;
-		ice_debug(hw, ICE_DBG_NVM,
-			  "NVM init error: unsupported blank mode.\n");
-		return ICE_ERR_NVM_BLANK_MODE;
-	}
+    /* Check if we are in the normal or blank NVM programming mode */
+    fla = rd32(hw, GLNVM_FLA);
+    if (fla & GLNVM_FLA_LOCKED_M) { /* Normal programming mode */
+        nvm->blank_nvm_mode = false;
+    } else {
+        /* Blank programming mode */
+        nvm->blank_nvm_mode = true;
+        ice_debug(hw, ICE_DBG_NVM,
+              "NVM init error: unsupported blank mode.\n");
+        return ICE_ERR_NVM_BLANK_MODE;
+    }
 
-	status = ice_read_sr_word(hw, ICE_SR_NVM_DEV_STARTER_VER, &nvm->ver);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT,
-			  "Failed to read DEV starter version.\n");
-		return status;
-	}
+    status = ice_read_sr_word(hw, ICE_SR_NVM_DEV_STARTER_VER, &nvm->ver);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT,
+              "Failed to read DEV starter version.\n");
+        return status;
+    }
 
-	status = ice_read_sr_word(hw, ICE_SR_NVM_EETRACK_LO, &eetrack_lo);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT, "Failed to read EETRACK lo.\n");
-		return status;
-	}
-	status = ice_read_sr_word(hw, ICE_SR_NVM_EETRACK_HI, &eetrack_hi);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT, "Failed to read EETRACK hi.\n");
-		return status;
-	}
+    status = ice_read_sr_word(hw, ICE_SR_NVM_EETRACK_LO, &eetrack_lo);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT, "Failed to read EETRACK lo.\n");
+        return status;
+    }
+    status = ice_read_sr_word(hw, ICE_SR_NVM_EETRACK_HI, &eetrack_hi);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT, "Failed to read EETRACK hi.\n");
+        return status;
+    }
 
-	nvm->eetrack = (eetrack_hi << 16) | eetrack_lo;
+    nvm->eetrack = (eetrack_hi << 16) | eetrack_lo;
 
-	/* the following devices do not have boot_cfg_tlv yet */
-	if (hw->device_id == ICE_DEV_ID_C822N_BACKPLANE ||
-	    hw->device_id == ICE_DEV_ID_C822N_QSFP ||
-	    hw->device_id == ICE_DEV_ID_C822N_SFP)
-		return status;
+    /* the following devices do not have boot_cfg_tlv yet */
+    if (hw->device_id == ICE_DEV_ID_C822N_BACKPLANE ||
+        hw->device_id == ICE_DEV_ID_C822N_QSFP ||
+        hw->device_id == ICE_DEV_ID_C822N_SFP)
+        return status;
 
-	status = ice_get_pfa_module_tlv(hw, &boot_cfg_tlv, &boot_cfg_tlv_len,
-					ICE_SR_BOOT_CFG_PTR);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT,
-			  "Failed to read Boot Configuration Block TLV.\n");
-		return status;
-	}
+    status = ice_get_pfa_module_tlv(hw, &boot_cfg_tlv, &boot_cfg_tlv_len,
+                    ICE_SR_BOOT_CFG_PTR);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT,
+              "Failed to read Boot Configuration Block TLV.\n");
+        return status;
+    }
 
-	/* Boot Configuration Block must have length at least 2 words
-	 * (Combo Image Version High and Combo Image Version Low)
-	 */
-	if (boot_cfg_tlv_len < 2) {
-		ice_debug(hw, ICE_DBG_INIT,
-			  "Invalid Boot Configuration Block TLV size.\n");
-		return ICE_ERR_INVAL_SIZE;
-	}
+    /* Boot Configuration Block must have length at least 2 words
+     * (Combo Image Version High and Combo Image Version Low)
+     */
+    if (boot_cfg_tlv_len < 2) {
+        ice_debug(hw, ICE_DBG_INIT,
+              "Invalid Boot Configuration Block TLV size.\n");
+        return ICE_ERR_INVAL_SIZE;
+    }
 
-	status = ice_read_sr_word(hw, (boot_cfg_tlv + ICE_NVM_OEM_VER_OFF),
-				  &oem_hi);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT, "Failed to read OEM_VER hi.\n");
-		return status;
-	}
+    status = ice_read_sr_word(hw, (boot_cfg_tlv + ICE_NVM_OEM_VER_OFF),
+                  &oem_hi);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT, "Failed to read OEM_VER hi.\n");
+        return status;
+    }
 
-	status = ice_read_sr_word(hw, (boot_cfg_tlv + ICE_NVM_OEM_VER_OFF + 1),
-				  &oem_lo);
-	if (status) {
-		ice_debug(hw, ICE_DBG_INIT, "Failed to read OEM_VER lo.\n");
-		return status;
-	}
+    status = ice_read_sr_word(hw, (boot_cfg_tlv + ICE_NVM_OEM_VER_OFF + 1),
+                  &oem_lo);
+    if (status) {
+        ice_debug(hw, ICE_DBG_INIT, "Failed to read OEM_VER lo.\n");
+        return status;
+    }
 
-	nvm->oem_ver = ((u32)oem_hi << 16) | oem_lo;
+    nvm->oem_ver = ((u32)oem_hi << 16) | oem_lo;
 
-	return ICE_SUCCESS;
+    return ICE_SUCCESS;
 }
 
 /**
@@ -366,15 +366,15 @@ enum ice_status ice_init_nvm(struct ice_hw *hw)
 enum ice_status
 ice_read_sr_buf(struct ice_hw *hw, u16 offset, u16 *words, u16 *data)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	status = ice_acquire_nvm(hw, ICE_RES_READ);
-	if (!status) {
-		status = ice_read_sr_buf_aq(hw, offset, words, data);
-		ice_release_nvm(hw);
-	}
+    status = ice_acquire_nvm(hw, ICE_RES_READ);
+    if (!status) {
+        status = ice_read_sr_buf_aq(hw, offset, words, data);
+        ice_release_nvm(hw);
+    }
 
-	return status;
+    return status;
 }
 
 /**
@@ -385,27 +385,27 @@ ice_read_sr_buf(struct ice_hw *hw, u16 offset, u16 *words, u16 *data)
  */
 enum ice_status ice_nvm_validate_checksum(struct ice_hw *hw)
 {
-	struct ice_aqc_nvm_checksum *cmd;
-	struct ice_aq_desc desc;
-	enum ice_status status;
+    struct ice_aqc_nvm_checksum *cmd;
+    struct ice_aq_desc desc;
+    enum ice_status status;
 
-	status = ice_acquire_nvm(hw, ICE_RES_READ);
-	if (status)
-		return status;
+    status = ice_acquire_nvm(hw, ICE_RES_READ);
+    if (status)
+        return status;
 
-	cmd = &desc.params.nvm_checksum;
+    cmd = &desc.params.nvm_checksum;
 
-	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_nvm_checksum);
-	cmd->flags = ICE_AQC_NVM_CHECKSUM_VERIFY;
+    ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_nvm_checksum);
+    cmd->flags = ICE_AQC_NVM_CHECKSUM_VERIFY;
 
-	status = ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
-	ice_release_nvm(hw);
+    status = ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
+    ice_release_nvm(hw);
 
-	if (!status)
-		if (LE16_TO_CPU(cmd->checksum) != ICE_AQC_NVM_CHECKSUM_CORRECT)
-			status = ICE_ERR_NVM_CHECKSUM;
+    if (!status)
+        if (LE16_TO_CPU(cmd->checksum) != ICE_AQC_NVM_CHECKSUM_CORRECT)
+            status = ICE_ERR_NVM_CHECKSUM;
 
-	return status;
+    return status;
 }
 
 /**
@@ -418,26 +418,26 @@ enum ice_status ice_nvm_validate_checksum(struct ice_hw *hw)
  */
 enum ice_status
 ice_nvm_access_get_features(struct ice_nvm_access_cmd *cmd,
-			    union ice_nvm_access_data *data)
+                union ice_nvm_access_data *data)
 {
-	/* The provided data_size must be at least as large as our NVM
-	 * features structure. A larger size should not be treated as an
-	 * error, to allow future extensions to to the features structure to
-	 * work on older drivers.
-	 */
-	if (cmd->data_size < sizeof(struct ice_nvm_features))
-		return ICE_ERR_NO_MEMORY;
+    /* The provided data_size must be at least as large as our NVM
+     * features structure. A larger size should not be treated as an
+     * error, to allow future extensions to to the features structure to
+     * work on older drivers.
+     */
+    if (cmd->data_size < sizeof(struct ice_nvm_features))
+        return ICE_ERR_NO_MEMORY;
 
-	/* Initialize the data buffer to zeros */
-	ice_memset(data, 0, cmd->data_size, ICE_NONDMA_MEM);
+    /* Initialize the data buffer to zeros */
+    ice_memset(data, 0, cmd->data_size, ICE_NONDMA_MEM);
 
-	/* Fill in the features data */
-	data->drv_features.major = ICE_NVM_ACCESS_MAJOR_VER;
-	data->drv_features.minor = ICE_NVM_ACCESS_MINOR_VER;
-	data->drv_features.size = sizeof(struct ice_nvm_features);
-	data->drv_features.features[0] = ICE_NVM_FEATURES_0_REG_ACCESS;
+    /* Fill in the features data */
+    data->drv_features.major = ICE_NVM_ACCESS_MAJOR_VER;
+    data->drv_features.minor = ICE_NVM_ACCESS_MINOR_VER;
+    data->drv_features.size = sizeof(struct ice_nvm_features);
+    data->drv_features.features[0] = ICE_NVM_FEATURES_0_REG_ACCESS;
 
-	return ICE_SUCCESS;
+    return ICE_SUCCESS;
 }
 
 /**
@@ -448,7 +448,7 @@ ice_nvm_access_get_features(struct ice_nvm_access_cmd *cmd,
  */
 u32 ice_nvm_access_get_module(struct ice_nvm_access_cmd *cmd)
 {
-	return ((cmd->config & ICE_NVM_CFG_MODULE_M) >> ICE_NVM_CFG_MODULE_S);
+    return ((cmd->config & ICE_NVM_CFG_MODULE_M) >> ICE_NVM_CFG_MODULE_S);
 }
 
 /**
@@ -459,7 +459,7 @@ u32 ice_nvm_access_get_module(struct ice_nvm_access_cmd *cmd)
  */
 u32 ice_nvm_access_get_flags(struct ice_nvm_access_cmd *cmd)
 {
-	return ((cmd->config & ICE_NVM_CFG_FLAGS_M) >> ICE_NVM_CFG_FLAGS_S);
+    return ((cmd->config & ICE_NVM_CFG_FLAGS_M) >> ICE_NVM_CFG_FLAGS_S);
 }
 
 /**
@@ -470,8 +470,8 @@ u32 ice_nvm_access_get_flags(struct ice_nvm_access_cmd *cmd)
  */
 u32 ice_nvm_access_get_adapter(struct ice_nvm_access_cmd *cmd)
 {
-	return ((cmd->config & ICE_NVM_CFG_ADAPTER_INFO_M) >>
-		ICE_NVM_CFG_ADAPTER_INFO_S);
+    return ((cmd->config & ICE_NVM_CFG_ADAPTER_INFO_M) >>
+        ICE_NVM_CFG_ADAPTER_INFO_S);
 }
 
 /**
@@ -485,44 +485,44 @@ u32 ice_nvm_access_get_adapter(struct ice_nvm_access_cmd *cmd)
 static enum ice_status
 ice_validate_nvm_rw_reg(struct ice_nvm_access_cmd *cmd)
 {
-	u32 module, flags, offset;
-	u16 i;
+    u32 module, flags, offset;
+    u16 i;
 
-	module = ice_nvm_access_get_module(cmd);
-	flags = ice_nvm_access_get_flags(cmd);
-	offset = cmd->offset;
+    module = ice_nvm_access_get_module(cmd);
+    flags = ice_nvm_access_get_flags(cmd);
+    offset = cmd->offset;
 
-	/* Make sure the module and flags indicate a read/write request */
-	if (module != ICE_NVM_REG_RW_MODULE ||
-	    flags != ICE_NVM_REG_RW_FLAGS ||
-	    cmd->data_size != FIELD_SIZEOF(union ice_nvm_access_data, regval))
-		return ICE_ERR_PARAM;
+    /* Make sure the module and flags indicate a read/write request */
+    if (module != ICE_NVM_REG_RW_MODULE ||
+        flags != ICE_NVM_REG_RW_FLAGS ||
+        cmd->data_size != FIELD_SIZEOF(union ice_nvm_access_data, regval))
+        return ICE_ERR_PARAM;
 
-	switch (offset) {
-	case GL_HICR:
-	case GL_HICR_EN: /* Note, this register is read only */
-	case GL_FWSTS:
-	case GL_MNG_FWSM:
-	case GLGEN_CSR_DEBUG_C:
-	case GLPCI_LBARCTRL:
-	case GLNVM_GENS:
-	case GLNVM_FLA:
-	case PF_FUNC_RID:
-		return ICE_SUCCESS;
-	default:
-		break;
-	}
+    switch (offset) {
+    case GL_HICR:
+    case GL_HICR_EN: /* Note, this register is read only */
+    case GL_FWSTS:
+    case GL_MNG_FWSM:
+    case GLGEN_CSR_DEBUG_C:
+    case GLPCI_LBARCTRL:
+    case GLNVM_GENS:
+    case GLNVM_FLA:
+    case PF_FUNC_RID:
+        return ICE_SUCCESS;
+    default:
+        break;
+    }
 
-	for (i = 0; i <= ICE_NVM_ACCESS_GL_HIDA_MAX; i++)
-		if (offset == (u32)GL_HIDA(i))
-			return ICE_SUCCESS;
+    for (i = 0; i <= ICE_NVM_ACCESS_GL_HIDA_MAX; i++)
+        if (offset == (u32)GL_HIDA(i))
+            return ICE_SUCCESS;
 
-	for (i = 0; i <= ICE_NVM_ACCESS_GL_HIBA_MAX; i++)
-		if (offset == (u32)GL_HIBA(i))
-			return ICE_SUCCESS;
+    for (i = 0; i <= ICE_NVM_ACCESS_GL_HIBA_MAX; i++)
+        if (offset == (u32)GL_HIBA(i))
+            return ICE_SUCCESS;
 
-	/* All other register offsets are not valid */
-	return ICE_ERR_OUT_OF_RANGE;
+    /* All other register offsets are not valid */
+    return ICE_ERR_OUT_OF_RANGE;
 }
 
 /**
@@ -535,27 +535,27 @@ ice_validate_nvm_rw_reg(struct ice_nvm_access_cmd *cmd)
  */
 enum ice_status
 ice_nvm_access_read(struct ice_hw *hw, struct ice_nvm_access_cmd *cmd,
-		    union ice_nvm_access_data *data)
+            union ice_nvm_access_data *data)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	/* Always initialize the output data, even on failure */
-	ice_memset(data, 0, cmd->data_size, ICE_NONDMA_MEM);
+    /* Always initialize the output data, even on failure */
+    ice_memset(data, 0, cmd->data_size, ICE_NONDMA_MEM);
 
-	/* Make sure this is a valid read/write access request */
-	status = ice_validate_nvm_rw_reg(cmd);
-	if (status)
-		return status;
+    /* Make sure this is a valid read/write access request */
+    status = ice_validate_nvm_rw_reg(cmd);
+    if (status)
+        return status;
 
-	ice_debug(hw, ICE_DBG_NVM, "NVM access: reading register %08x\n",
-		  cmd->offset);
+    ice_debug(hw, ICE_DBG_NVM, "NVM access: reading register %08x\n",
+          cmd->offset);
 
-	/* Read the register and store the contents in the data field */
-	data->regval = rd32(hw, cmd->offset);
+    /* Read the register and store the contents in the data field */
+    data->regval = rd32(hw, cmd->offset);
 
-	return ICE_SUCCESS;
+    return ICE_SUCCESS;
 }
 
 /**
@@ -568,29 +568,29 @@ ice_nvm_access_read(struct ice_hw *hw, struct ice_nvm_access_cmd *cmd,
  */
 enum ice_status
 ice_nvm_access_write(struct ice_hw *hw, struct ice_nvm_access_cmd *cmd,
-		     union ice_nvm_access_data *data)
+             union ice_nvm_access_data *data)
 {
-	enum ice_status status;
+    enum ice_status status;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	/* Make sure this is a valid read/write access request */
-	status = ice_validate_nvm_rw_reg(cmd);
-	if (status)
-		return status;
+    /* Make sure this is a valid read/write access request */
+    status = ice_validate_nvm_rw_reg(cmd);
+    if (status)
+        return status;
 
-	/* The HICR_EN register is read-only */
-	if (cmd->offset == GL_HICR_EN)
-		return ICE_ERR_OUT_OF_RANGE;
+    /* The HICR_EN register is read-only */
+    if (cmd->offset == GL_HICR_EN)
+        return ICE_ERR_OUT_OF_RANGE;
 
-	ice_debug(hw, ICE_DBG_NVM,
-		  "NVM access: writing register %08x with value %08x\n",
-		  cmd->offset, data->regval);
+    ice_debug(hw, ICE_DBG_NVM,
+          "NVM access: writing register %08x with value %08x\n",
+          cmd->offset, data->regval);
 
-	/* Write the data field to the specified register */
-	wr32(hw, cmd->offset, data->regval);
+    /* Write the data field to the specified register */
+    wr32(hw, cmd->offset, data->regval);
 
-	return ICE_SUCCESS;
+    return ICE_SUCCESS;
 }
 
 /**
@@ -608,39 +608,39 @@ ice_nvm_access_write(struct ice_hw *hw, struct ice_nvm_access_cmd *cmd,
  */
 enum ice_status
 ice_handle_nvm_access(struct ice_hw *hw, struct ice_nvm_access_cmd *cmd,
-		      union ice_nvm_access_data *data)
+              union ice_nvm_access_data *data)
 {
-	u32 module, flags, adapter_info;
+    u32 module, flags, adapter_info;
 
-	ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
+    ice_debug(hw, ICE_DBG_TRACE, "%s\n", __func__);
 
-	/* Extended flags are currently reserved and must be zero */
-	if ((cmd->config & ICE_NVM_CFG_EXT_FLAGS_M) != 0)
-		return ICE_ERR_PARAM;
+    /* Extended flags are currently reserved and must be zero */
+    if ((cmd->config & ICE_NVM_CFG_EXT_FLAGS_M) != 0)
+        return ICE_ERR_PARAM;
 
-	/* Adapter info must match the HW device ID */
-	adapter_info = ice_nvm_access_get_adapter(cmd);
-	if (adapter_info != hw->device_id)
-		return ICE_ERR_PARAM;
+    /* Adapter info must match the HW device ID */
+    adapter_info = ice_nvm_access_get_adapter(cmd);
+    if (adapter_info != hw->device_id)
+        return ICE_ERR_PARAM;
 
-	switch (cmd->command) {
-	case ICE_NVM_CMD_READ:
-		module = ice_nvm_access_get_module(cmd);
-		flags = ice_nvm_access_get_flags(cmd);
+    switch (cmd->command) {
+    case ICE_NVM_CMD_READ:
+        module = ice_nvm_access_get_module(cmd);
+        flags = ice_nvm_access_get_flags(cmd);
 
-		/* Getting the driver's NVM features structure shares the same
-		 * command type as reading a register. Read the config field
-		 * to determine if this is a request to get features.
-		 */
-		if (module == ICE_NVM_GET_FEATURES_MODULE &&
-		    flags == ICE_NVM_GET_FEATURES_FLAGS &&
-		    cmd->offset == 0)
-			return ice_nvm_access_get_features(cmd, data);
-		else
-			return ice_nvm_access_read(hw, cmd, data);
-	case ICE_NVM_CMD_WRITE:
-		return ice_nvm_access_write(hw, cmd, data);
-	default:
-		return ICE_ERR_PARAM;
-	}
+        /* Getting the driver's NVM features structure shares the same
+         * command type as reading a register. Read the config field
+         * to determine if this is a request to get features.
+         */
+        if (module == ICE_NVM_GET_FEATURES_MODULE &&
+            flags == ICE_NVM_GET_FEATURES_FLAGS &&
+            cmd->offset == 0)
+            return ice_nvm_access_get_features(cmd, data);
+        else
+            return ice_nvm_access_read(hw, cmd, data);
+    case ICE_NVM_CMD_WRITE:
+        return ice_nvm_access_write(hw, cmd, data);
+    default:
+        return ICE_ERR_PARAM;
+    }
 }

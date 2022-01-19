@@ -8,47 +8,47 @@
 #include <rte_cpuflags.h>
 /* 
  *RTE_COMPILE_TIME_CPUFLAGS=RTE_CPUFLAG_SSE,
- 							RTE_CPUFLAG_SSE2,
- 							RTE_CPUFLAG_SSE3,
- 							RTE_CPUFLAG_SSSE3,
- 							RTE_CPUFLAG_SSE4_1,
- 							RTE_CPUFLAG_SSE4_2,
- 							RTE_CPUFLAG_AES,
- 							RTE_CPUFLAG_PCLMULQDQ,
- 							RTE_CPUFLAG_AVX,
- 							RTE_CPUFLAG_RDRAND,
- 							RTE_CPUFLAG_RDSEED,
- 							RTE_CPUFLAG_FSGSBASE,
- 							RTE_CPUFLAG_F16C,
- 							RTE_CPUFLAG_AVX2  
+                             RTE_CPUFLAG_SSE2,
+                             RTE_CPUFLAG_SSE3,
+                             RTE_CPUFLAG_SSSE3,
+                             RTE_CPUFLAG_SSE4_1,
+                             RTE_CPUFLAG_SSE4_2,
+                             RTE_CPUFLAG_AES,
+                             RTE_CPUFLAG_PCLMULQDQ,
+                             RTE_CPUFLAG_AVX,
+                             RTE_CPUFLAG_RDRAND,
+                             RTE_CPUFLAG_RDSEED,
+                             RTE_CPUFLAG_FSGSBASE,
+                             RTE_CPUFLAG_F16C,
+                             RTE_CPUFLAG_AVX2  
  */
 int
 rte_cpu_is_supported(void)
 {
-	/* This is generated at compile-time by the build system */
-	static const enum rte_cpu_flag_t compile_time_flags[] = {
-			RTE_COMPILE_TIME_CPUFLAGS
-	};
-	unsigned count = RTE_DIM(compile_time_flags), i;
-	int ret;
+    /* This is generated at compile-time by the build system */
+    static const enum rte_cpu_flag_t compile_time_flags[] = {
+            RTE_COMPILE_TIME_CPUFLAGS
+    };
+    unsigned count = RTE_DIM(compile_time_flags), i;
+    int ret;
 
-	for (i = 0; i < count; i++) { /* 判断cpu特性 */
-		ret = rte_cpu_get_flag_enabled(compile_time_flags[i]);
+    for (i = 0; i < count; i++) { /* 判断cpu特性 */
+        ret = rte_cpu_get_flag_enabled(compile_time_flags[i]);
 
-		if (ret < 0) {
-			fprintf(stderr,
-				"ERROR: CPU feature flag lookup failed with error %d\n",
-				ret);
-			return 0;
-		}
-		if (!ret) {
-			fprintf(stderr,
-			        "ERROR: This system does not support \"%s\".\n"
-			        "Please check that RTE_MACHINE is set correctly.\n",
-			        rte_cpu_get_flag_name(compile_time_flags[i]));
-			return 0;
-		}
-	}
+        if (ret < 0) {
+            fprintf(stderr,
+                "ERROR: CPU feature flag lookup failed with error %d\n",
+                ret);
+            return 0;
+        }
+        if (!ret) {
+            fprintf(stderr,
+                    "ERROR: This system does not support \"%s\".\n"
+                    "Please check that RTE_MACHINE is set correctly.\n",
+                    rte_cpu_get_flag_name(compile_time_flags[i]));
+            return 0;
+        }
+    }
 
-	return 1;
+    return 1;
 }

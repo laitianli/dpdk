@@ -7,16 +7,16 @@
 
 /* Memory types */
 enum ice_memset_type {
-	ICE_NONDMA_MEM = 0,
-	ICE_DMA_MEM
+    ICE_NONDMA_MEM = 0,
+    ICE_DMA_MEM
 };
 
 /* Memcpy types */
 enum ice_memcpy_type {
-	ICE_NONDMA_TO_NONDMA = 0,
-	ICE_NONDMA_TO_DMA,
-	ICE_DMA_TO_DMA,
-	ICE_DMA_TO_NONDMA
+    ICE_NONDMA_TO_NONDMA = 0,
+    ICE_NONDMA_TO_DMA,
+    ICE_DMA_TO_DMA,
+    ICE_DMA_TO_NONDMA
 };
 
 #endif /* _ICE_ALLOC_H_ */

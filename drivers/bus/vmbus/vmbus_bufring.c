@@ -26,18 +26,18 @@
 /* Increase bufring index by inc with wraparound */
 static inline uint32_t vmbus_br_idxinc(uint32_t idx, uint32_t inc, uint32_t sz)
 {
-	idx += inc;
-	if (idx >= sz)
-		idx -= sz;
+    idx += inc;
+    if (idx >= sz)
+        idx -= sz;
 
-	return idx;
+    return idx;
 }
 
 void vmbus_br_setup(struct vmbus_br *br, void *buf, unsigned int blen)
 {
-	br->vbr = buf;
-	br->windex = br->vbr->windex;
-	br->dsize = blen - sizeof(struct vmbus_bufring);
+    br->vbr = buf;
+    br->windex = br->vbr->windex;
+    br->dsize = blen - sizeof(struct vmbus_bufring);
 }
 
 /*
@@ -56,39 +56,39 @@ void vmbus_br_setup(struct vmbus_br *br, void *buf, unsigned int blen)
 static inline bool
 vmbus_txbr_need_signal(const struct vmbus_br *tbr, uint32_t old_windex)
 {
-	rte_smp_mb();
-	if (tbr->vbr->imask)
-		return false;
+    rte_smp_mb();
+    if (tbr->vbr->imask)
+        return false;
 
-	rte_smp_rmb();
+    rte_smp_rmb();
 
-	/*
-	 * This is the only case we need to signal when the
-	 * ring transitions from being empty to non-empty.
-	 */
-	return old_windex == tbr->vbr->rindex;
+    /*
+     * This is the only case we need to signal when the
+     * ring transitions from being empty to non-empty.
+     */
+    return old_windex == tbr->vbr->rindex;
 }
 
 static inline uint32_t
 vmbus_txbr_copyto(const struct vmbus_br *tbr, uint32_t windex,
-		  const void *src0, uint32_t cplen)
+          const void *src0, uint32_t cplen)
 {
-	uint8_t *br_data = tbr->vbr->data;
-	uint32_t br_dsize = tbr->dsize;
-	const uint8_t *src = src0;
+    uint8_t *br_data = tbr->vbr->data;
+    uint32_t br_dsize = tbr->dsize;
+    const uint8_t *src = src0;
 
-	/* XXX use double mapping like Linux kernel? */
-	if (cplen > br_dsize - windex) {
-		uint32_t fraglen = br_dsize - windex;
+    /* XXX use double mapping like Linux kernel? */
+    if (cplen > br_dsize - windex) {
+        uint32_t fraglen = br_dsize - windex;
 
-		/* Wrap-around detected */
-		memcpy(br_data + windex, src, fraglen);
-		memcpy(br_data, src + fraglen, cplen - fraglen);
-	} else {
-		memcpy(br_data + windex, src, cplen);
-	}
+        /* Wrap-around detected */
+        memcpy(br_data + windex, src, fraglen);
+        memcpy(br_data, src + fraglen, cplen - fraglen);
+    } else {
+        memcpy(br_data + windex, src, cplen);
+    }
 
-	return vmbus_br_idxinc(windex, cplen, br_dsize);
+    return vmbus_br_idxinc(windex, cplen, br_dsize);
 }
 
 /*
@@ -106,104 +106,104 @@ vmbus_txbr_copyto(const struct vmbus_br *tbr, uint32_t windex,
  */
 int
 vmbus_txbr_write(struct vmbus_br *tbr, const struct iovec iov[], int iovlen,
-		 bool *need_sig)
+         bool *need_sig)
 {
-	struct vmbus_bufring *vbr = tbr->vbr;
-	uint32_t ring_size = tbr->dsize;
-	uint32_t old_windex, next_windex, windex, total;
-	uint64_t save_windex;
-	int i;
+    struct vmbus_bufring *vbr = tbr->vbr;
+    uint32_t ring_size = tbr->dsize;
+    uint32_t old_windex, next_windex, windex, total;
+    uint64_t save_windex;
+    int i;
 
-	total = 0;
-	for (i = 0; i < iovlen; i++)
-		total += iov[i].iov_len;
-	total += sizeof(save_windex);
+    total = 0;
+    for (i = 0; i < iovlen; i++)
+        total += iov[i].iov_len;
+    total += sizeof(save_windex);
 
-	/* Reserve space in ring */
-	do {
-		uint32_t avail;
+    /* Reserve space in ring */
+    do {
+        uint32_t avail;
 
-		/* Get current free location */
-		old_windex = tbr->windex;
+        /* Get current free location */
+        old_windex = tbr->windex;
 
-		/* Prevent compiler reordering this with calculation */
-		rte_compiler_barrier();
+        /* Prevent compiler reordering this with calculation */
+        rte_compiler_barrier();
 
-		avail = vmbus_br_availwrite(tbr, old_windex);
+        avail = vmbus_br_availwrite(tbr, old_windex);
 
-		/* If not enough space in ring, then tell caller. */
-		if (avail <= total)
-			return -EAGAIN;
+        /* If not enough space in ring, then tell caller. */
+        if (avail <= total)
+            return -EAGAIN;
 
-		next_windex = vmbus_br_idxinc(old_windex, total, ring_size);
+        next_windex = vmbus_br_idxinc(old_windex, total, ring_size);
 
-		/* Atomic update of next write_index for other threads */
-	} while (!rte_atomic32_cmpset(&tbr->windex, old_windex, next_windex));
+        /* Atomic update of next write_index for other threads */
+    } while (!rte_atomic32_cmpset(&tbr->windex, old_windex, next_windex));
 
-	/* Space from old..new is now reserved */
-	windex = old_windex;
-	for (i = 0; i < iovlen; i++) {
-		windex = vmbus_txbr_copyto(tbr, windex,
-					   iov[i].iov_base, iov[i].iov_len);
-	}
+    /* Space from old..new is now reserved */
+    windex = old_windex;
+    for (i = 0; i < iovlen; i++) {
+        windex = vmbus_txbr_copyto(tbr, windex,
+                       iov[i].iov_base, iov[i].iov_len);
+    }
 
-	/* Set the offset of the current channel packet. */
-	save_windex = ((uint64_t)old_windex) << 32;
-	windex = vmbus_txbr_copyto(tbr, windex, &save_windex,
-				   sizeof(save_windex));
+    /* Set the offset of the current channel packet. */
+    save_windex = ((uint64_t)old_windex) << 32;
+    windex = vmbus_txbr_copyto(tbr, windex, &save_windex,
+                   sizeof(save_windex));
 
-	/* The region reserved should match region used */
-	RTE_ASSERT(windex == next_windex);
+    /* The region reserved should match region used */
+    RTE_ASSERT(windex == next_windex);
 
-	/* Ensure that data is available before updating host index */
-	rte_smp_wmb();
+    /* Ensure that data is available before updating host index */
+    rte_smp_wmb();
 
-	/* Checkin for our reservation. wait for our turn to update host */
-	while (!rte_atomic32_cmpset(&vbr->windex, old_windex, next_windex))
-		rte_pause();
+    /* Checkin for our reservation. wait for our turn to update host */
+    while (!rte_atomic32_cmpset(&vbr->windex, old_windex, next_windex))
+        rte_pause();
 
-	/* If host had read all data before this, then need to signal */
-	*need_sig |= vmbus_txbr_need_signal(tbr, old_windex);
-	return 0;
+    /* If host had read all data before this, then need to signal */
+    *need_sig |= vmbus_txbr_need_signal(tbr, old_windex);
+    return 0;
 }
 
 static inline uint32_t
 vmbus_rxbr_copyfrom(const struct vmbus_br *rbr, uint32_t rindex,
-		    void *dst0, size_t cplen)
+            void *dst0, size_t cplen)
 {
-	const uint8_t *br_data = rbr->vbr->data;
-	uint32_t br_dsize = rbr->dsize;
-	uint8_t *dst = dst0;
+    const uint8_t *br_data = rbr->vbr->data;
+    uint32_t br_dsize = rbr->dsize;
+    uint8_t *dst = dst0;
 
-	if (cplen > br_dsize - rindex) {
-		uint32_t fraglen = br_dsize - rindex;
+    if (cplen > br_dsize - rindex) {
+        uint32_t fraglen = br_dsize - rindex;
 
-		/* Wrap-around detected. */
-		memcpy(dst, br_data + rindex, fraglen);
-		memcpy(dst + fraglen, br_data, cplen - fraglen);
-	} else {
-		memcpy(dst, br_data + rindex, cplen);
-	}
+        /* Wrap-around detected. */
+        memcpy(dst, br_data + rindex, fraglen);
+        memcpy(dst + fraglen, br_data, cplen - fraglen);
+    } else {
+        memcpy(dst, br_data + rindex, cplen);
+    }
 
-	return vmbus_br_idxinc(rindex, cplen, br_dsize);
+    return vmbus_br_idxinc(rindex, cplen, br_dsize);
 }
 
 /* Copy data from receive ring but don't change index */
 int
 vmbus_rxbr_peek(const struct vmbus_br *rbr, void *data, size_t dlen)
 {
-	uint32_t avail;
+    uint32_t avail;
 
-	/*
-	 * The requested data and the 64bits channel packet
-	 * offset should be there at least.
-	 */
-	avail = vmbus_br_availread(rbr);
-	if (avail < dlen + sizeof(uint64_t))
-		return -EAGAIN;
+    /*
+     * The requested data and the 64bits channel packet
+     * offset should be there at least.
+     */
+    avail = vmbus_br_availread(rbr);
+    if (avail < dlen + sizeof(uint64_t))
+        return -EAGAIN;
 
-	vmbus_rxbr_copyfrom(rbr, rbr->vbr->rindex, data, dlen);
-	return 0;
+    vmbus_rxbr_copyfrom(rbr, rbr->vbr->rindex, data, dlen);
+    return 0;
 }
 
 /*
@@ -214,31 +214,31 @@ vmbus_rxbr_peek(const struct vmbus_br *rbr, void *data, size_t dlen)
 int
 vmbus_rxbr_read(struct vmbus_br *rbr, void *data, size_t dlen, size_t skip)
 {
-	struct vmbus_bufring *vbr = rbr->vbr;
-	uint32_t br_dsize = rbr->dsize;
-	uint32_t rindex;
+    struct vmbus_bufring *vbr = rbr->vbr;
+    uint32_t br_dsize = rbr->dsize;
+    uint32_t rindex;
 
-	if (vmbus_br_availread(rbr) < dlen + skip + sizeof(uint64_t))
-		return -EAGAIN;
+    if (vmbus_br_availread(rbr) < dlen + skip + sizeof(uint64_t))
+        return -EAGAIN;
 
-	/* Record where host was when we started read (for debug) */
-	rbr->windex = rbr->vbr->windex;
+    /* Record where host was when we started read (for debug) */
+    rbr->windex = rbr->vbr->windex;
 
-	/*
-	 * Copy channel packet from RX bufring.
-	 */
-	rindex = vmbus_br_idxinc(rbr->vbr->rindex, skip, br_dsize);
-	rindex = vmbus_rxbr_copyfrom(rbr, rindex, data, dlen);
+    /*
+     * Copy channel packet from RX bufring.
+     */
+    rindex = vmbus_br_idxinc(rbr->vbr->rindex, skip, br_dsize);
+    rindex = vmbus_rxbr_copyfrom(rbr, rindex, data, dlen);
 
-	/*
-	 * Discard this channel packet's 64bits offset, which is useless to us.
-	 */
-	rindex = vmbus_br_idxinc(rindex, sizeof(uint64_t), br_dsize);
+    /*
+     * Discard this channel packet's 64bits offset, which is useless to us.
+     */
+    rindex = vmbus_br_idxinc(rindex, sizeof(uint64_t), br_dsize);
 
-	/* Update the read index _after_ the channel packet is fetched.	 */
-	rte_compiler_barrier();
+    /* Update the read index _after_ the channel packet is fetched.     */
+    rte_compiler_barrier();
 
-	vbr->rindex = rindex;
+    vbr->rindex = rindex;
 
-	return 0;
+    return 0;
 }

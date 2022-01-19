@@ -37,10 +37,10 @@
  *   - Return -EINVAL for invalid parameters.
  */
 int gso_tunnel_tcp4_segment(struct rte_mbuf *pkt,
-		uint16_t gso_size,
-		uint8_t ipid_delta,
-		struct rte_mempool *direct_pool,
-		struct rte_mempool *indirect_pool,
-		struct rte_mbuf **pkts_out,
-		uint16_t nb_pkts_out);
+        uint16_t gso_size,
+        uint8_t ipid_delta,
+        struct rte_mempool *direct_pool,
+        struct rte_mempool *indirect_pool,
+        struct rte_mbuf **pkts_out,
+        uint16_t nb_pkts_out);
 #endif

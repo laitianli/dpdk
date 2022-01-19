@@ -30,10 +30,10 @@ extern struct resource_list resource_list;
  * The semantics of the binary data are defined by the target test.
  */
 struct resource {
-	const char *name;  /**< Unique name of the resource */
-	const char *begin; /**< Start of resource data */
-	const char *end;   /**< End of resource data */
-	TAILQ_ENTRY(resource) next;
+    const char *name;  /**< Unique name of the resource */
+    const char *begin; /**< Start of resource data */
+    const char *end;   /**< End of resource data */
+    TAILQ_ENTRY(resource) next;
 };
 
 /**
@@ -94,13 +94,13 @@ REGISTER_RESOURCE(n, &beg_ ##n, &end_ ##n) \
  */
 #define REGISTER_RESOURCE(n, b, e) \
 static struct resource linkres_ ##n = {       \
-	.name = RTE_STR(n),     \
-	.begin = b,             \
-	.end = e,               \
+    .name = RTE_STR(n),     \
+    .begin = b,             \
+    .end = e,               \
 };                              \
-RTE_INIT(resinitfn_ ##n)	\
+RTE_INIT(resinitfn_ ##n)    \
 {                               \
-	resource_register(&linkres_ ##n);  \
+    resource_register(&linkres_ ##n);  \
 }
 
 #endif

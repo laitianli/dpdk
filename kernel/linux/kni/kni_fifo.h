@@ -22,22 +22,22 @@
 static inline uint32_t
 kni_fifo_put(struct rte_kni_fifo *fifo, void **data, uint32_t num)
 {
-	uint32_t i = 0;
-	uint32_t fifo_write = fifo->write;
-	uint32_t fifo_read = smp_load_acquire(&fifo->read);
-	uint32_t new_write = fifo_write;
+    uint32_t i = 0;
+    uint32_t fifo_write = fifo->write;
+    uint32_t fifo_read = smp_load_acquire(&fifo->read);
+    uint32_t new_write = fifo_write;
 
-	for (i = 0; i < num; i++) {
-		new_write = (new_write + 1) & (fifo->len - 1);
+    for (i = 0; i < num; i++) {
+        new_write = (new_write + 1) & (fifo->len - 1);
 
-		if (new_write == fifo_read)
-			break;
-		fifo->buffer[fifo_write] = data[i];
-		fifo_write = new_write;
-	}
-	smp_store_release(&fifo->write, fifo_write);
+        if (new_write == fifo_read)
+            break;
+        fifo->buffer[fifo_write] = data[i];
+        fifo_write = new_write;
+    }
+    smp_store_release(&fifo->write, fifo_write);
 
-	return i;
+    return i;
 }
 
 /**
@@ -46,20 +46,20 @@ kni_fifo_put(struct rte_kni_fifo *fifo, void **data, uint32_t num)
 static inline uint32_t
 kni_fifo_get(struct rte_kni_fifo *fifo, void **data, uint32_t num)
 {
-	uint32_t i = 0;
-	uint32_t new_read = fifo->read;
-	uint32_t fifo_write = smp_load_acquire(&fifo->write);
+    uint32_t i = 0;
+    uint32_t new_read = fifo->read;
+    uint32_t fifo_write = smp_load_acquire(&fifo->write);
 
-	for (i = 0; i < num; i++) {
-		if (new_read == fifo_write)
-			break;
+    for (i = 0; i < num; i++) {
+        if (new_read == fifo_write)
+            break;
 
-		data[i] = fifo->buffer[new_read];
-		new_read = (new_read + 1) & (fifo->len - 1);
-	}
-	smp_store_release(&fifo->read, new_read);
+        data[i] = fifo->buffer[new_read];
+        new_read = (new_read + 1) & (fifo->len - 1);
+    }
+    smp_store_release(&fifo->read, new_read);
 
-	return i;
+    return i;
 }
 
 /**
@@ -68,9 +68,9 @@ kni_fifo_get(struct rte_kni_fifo *fifo, void **data, uint32_t num)
 static inline uint32_t
 kni_fifo_count(struct rte_kni_fifo *fifo)
 {
-	uint32_t fifo_write = smp_load_acquire(&fifo->write);
-	uint32_t fifo_read = smp_load_acquire(&fifo->read);
-	return (fifo->len + fifo_write - fifo_read) & (fifo->len - 1);
+    uint32_t fifo_write = smp_load_acquire(&fifo->write);
+    uint32_t fifo_read = smp_load_acquire(&fifo->read);
+    return (fifo->len + fifo_write - fifo_read) & (fifo->len - 1);
 }
 
 /**
@@ -79,9 +79,9 @@ kni_fifo_count(struct rte_kni_fifo *fifo)
 static inline uint32_t
 kni_fifo_free_count(struct rte_kni_fifo *fifo)
 {
-	uint32_t fifo_write = smp_load_acquire(&fifo->write);
-	uint32_t fifo_read = smp_load_acquire(&fifo->read);
-	return (fifo_read - fifo_write - 1) & (fifo->len - 1);
+    uint32_t fifo_write = smp_load_acquire(&fifo->write);
+    uint32_t fifo_read = smp_load_acquire(&fifo->read);
+    return (fifo_read - fifo_write - 1) & (fifo->len - 1);
 }
 
 #endif /* _KNI_FIFO_H_ */

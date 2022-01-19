@@ -21,11 +21,11 @@
 uint64_t
 entry(void *pkt)
 {
-	struct rte_mbuf *mb;
+    struct rte_mbuf *mb;
 
-	mb = pkt;
-	mb->vlan_tci = 0;
-	mb->ol_flags &= ~(PKT_RX_VLAN | PKT_RX_VLAN_STRIPPED);
+    mb = pkt;
+    mb->vlan_tci = 0;
+    mb->ol_flags &= ~(PKT_RX_VLAN | PKT_RX_VLAN_STRIPPED);
 
-	return 1;
+    return 1;
 }

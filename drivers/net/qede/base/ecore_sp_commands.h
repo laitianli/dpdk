@@ -15,16 +15,16 @@
 #define ECORE_SP_CQE_COMPLETION 0x02
 
 struct ecore_sp_init_data {
-	/* The CID and FID aren't necessarily derived from hwfn,
-	 * e.g., in IOV scenarios. CID might defer between SPQ and
-	 * other elements.
-	 */
-	u32				cid;
-	u16				opaque_fid;
+    /* The CID and FID aren't necessarily derived from hwfn,
+     * e.g., in IOV scenarios. CID might defer between SPQ and
+     * other elements.
+     */
+    u32                cid;
+    u16                opaque_fid;
 
-	/* Information regarding operation upon sending & completion */
-	enum spq_mode			comp_mode;
-	struct ecore_spq_comp_cb	*p_comp_data;
+    /* Information regarding operation upon sending & completion */
+    enum spq_mode            comp_mode;
+    struct ecore_spq_comp_cb    *p_comp_data;
 
 };
 
@@ -40,10 +40,10 @@ struct ecore_sp_init_data {
  * @return ECORE_SUCCESS upon success, otherwise failure.
  */
 enum _ecore_status_t ecore_sp_init_request(struct ecore_hwfn *p_hwfn,
-					   struct ecore_spq_entry **pp_ent,
-					   u8 cmd,
-					   u8 protocol,
-					   struct ecore_sp_init_data *p_data);
+                       struct ecore_spq_entry **pp_ent,
+                       u8 cmd,
+                       u8 protocol,
+                       struct ecore_sp_init_data *p_data);
 
 /**
  * @brief ecore_sp_pf_start - PF Function Start Ramrod
@@ -60,15 +60,15 @@ enum _ecore_status_t ecore_sp_init_request(struct ecore_hwfn *p_hwfn,
  * @param p_ptt
  * @param p_tunn - pf start tunneling configuration
  * @param allow_npar_tx_switch - npar tx switching to be used
- *	  for vports configured for tx-switching.
+ *      for vports configured for tx-switching.
  *
  * @return enum _ecore_status_t
  */
 
 enum _ecore_status_t ecore_sp_pf_start(struct ecore_hwfn *p_hwfn,
-				       struct ecore_ptt *p_ptt,
-				       struct ecore_tunnel_info *p_tunn,
-				       bool allow_npar_tx_switch);
+                       struct ecore_ptt *p_ptt,
+                       struct ecore_tunnel_info *p_tunn,
+                       bool allow_npar_tx_switch);
 
 /**
  * @brief ecore_sp_pf_update - PF Function Update Ramrod
@@ -112,25 +112,25 @@ enum _ecore_status_t ecore_sp_pf_stop(struct ecore_hwfn *p_hwfn);
 enum _ecore_status_t ecore_sp_heartbeat_ramrod(struct ecore_hwfn *p_hwfn);
 
 struct ecore_rl_update_params {
-	u8 qcn_update_param_flg;
-	u8 dcqcn_update_param_flg;
-	u8 rl_init_flg;
-	u8 rl_start_flg;
-	u8 rl_stop_flg;
-	u8 rl_id_first;
-	u8 rl_id_last;
-	u8 dcqcn_reset_alpha_on_idle;
-	u8 rl_bc_stage_th;
-	u8 rl_timer_stage_th;
-	u8 rl_dc_qcn_flg; /* If set, RL will used for DCQCN */
-	u32 rl_bc_rate; /* Byte Counter Limit */
-	u32 rl_max_rate; /* Maximum rate in Mbps resolution */
-	u32 rl_r_ai; /* Active increase rate */
-	u32 rl_r_hai; /* Hyper active increase rate */
-	u32 dcqcn_gd; /* DCQCN Alpha update gain */
-	u32 dcqcn_k_us; /* DCQCN Alpha update interval */
-	u32 dcqcn_timeuot_us;
-	u32 qcn_timeuot_us;
+    u8 qcn_update_param_flg;
+    u8 dcqcn_update_param_flg;
+    u8 rl_init_flg;
+    u8 rl_start_flg;
+    u8 rl_stop_flg;
+    u8 rl_id_first;
+    u8 rl_id_last;
+    u8 dcqcn_reset_alpha_on_idle;
+    u8 rl_bc_stage_th;
+    u8 rl_timer_stage_th;
+    u8 rl_dc_qcn_flg; /* If set, RL will used for DCQCN */
+    u32 rl_bc_rate; /* Byte Counter Limit */
+    u32 rl_max_rate; /* Maximum rate in Mbps resolution */
+    u32 rl_r_ai; /* Active increase rate */
+    u32 rl_r_hai; /* Hyper active increase rate */
+    u32 dcqcn_gd; /* DCQCN Alpha update gain */
+    u32 dcqcn_k_us; /* DCQCN Alpha update interval */
+    u32 dcqcn_timeuot_us;
+    u32 qcn_timeuot_us;
 };
 
 /**
@@ -142,7 +142,7 @@ struct ecore_rl_update_params {
  * @return enum _ecore_status_t
  */
 enum _ecore_status_t ecore_sp_rl_update(struct ecore_hwfn *p_hwfn,
-					struct ecore_rl_update_params *params);
+                    struct ecore_rl_update_params *params);
 
 /**
  * @brief ecore_sp_pf_update_stag - PF STAG value update Ramrod

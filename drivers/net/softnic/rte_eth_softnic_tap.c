@@ -24,95 +24,95 @@
 int
 softnic_tap_init(struct pmd_internals *p)
 {
-	TAILQ_INIT(&p->tap_list);
+    TAILQ_INIT(&p->tap_list);
 
-	return 0;
+    return 0;
 }
 
 void
 softnic_tap_free(struct pmd_internals *p)
 {
-	for ( ; ; ) {
-		struct softnic_tap *tap;
+    for ( ; ; ) {
+        struct softnic_tap *tap;
 
-		tap = TAILQ_FIRST(&p->tap_list);
-		if (tap == NULL)
-			break;
+        tap = TAILQ_FIRST(&p->tap_list);
+        if (tap == NULL)
+            break;
 
-		TAILQ_REMOVE(&p->tap_list, tap, node);
-		free(tap);
-	}
+        TAILQ_REMOVE(&p->tap_list, tap, node);
+        free(tap);
+    }
 }
 
 struct softnic_tap *
 softnic_tap_find(struct pmd_internals *p,
-	const char *name)
+    const char *name)
 {
-	struct softnic_tap *tap;
+    struct softnic_tap *tap;
 
-	if (name == NULL)
-		return NULL;
+    if (name == NULL)
+        return NULL;
 
-	TAILQ_FOREACH(tap, &p->tap_list, node)
-		if (strcmp(tap->name, name) == 0)
-			return tap;
+    TAILQ_FOREACH(tap, &p->tap_list, node)
+        if (strcmp(tap->name, name) == 0)
+            return tap;
 
-	return NULL;
+    return NULL;
 }
 
 #ifndef RTE_EXEC_ENV_LINUX
 
 struct softnic_tap *
 softnic_tap_create(struct pmd_internals *p __rte_unused,
-	const char *name __rte_unused)
+    const char *name __rte_unused)
 {
-	return NULL;
+    return NULL;
 }
 
 #else
 
 struct softnic_tap *
 softnic_tap_create(struct pmd_internals *p,
-	const char *name)
+    const char *name)
 {
-	struct softnic_tap *tap;
-	struct ifreq ifr;
-	int fd, status;
+    struct softnic_tap *tap;
+    struct ifreq ifr;
+    int fd, status;
 
-	/* Check input params */
-	if (name == NULL ||
-		softnic_tap_find(p, name))
-		return NULL;
+    /* Check input params */
+    if (name == NULL ||
+        softnic_tap_find(p, name))
+        return NULL;
 
-	/* Resource create */
-	fd = open(TAP_DEV, O_RDWR | O_NONBLOCK);
-	if (fd < 0)
-		return NULL;
+    /* Resource create */
+    fd = open(TAP_DEV, O_RDWR | O_NONBLOCK);
+    if (fd < 0)
+        return NULL;
 
-	memset(&ifr, 0, sizeof(ifr));
-	ifr.ifr_flags = IFF_TAP | IFF_NO_PI; /* No packet information */
-	strlcpy(ifr.ifr_name, name, IFNAMSIZ);
+    memset(&ifr, 0, sizeof(ifr));
+    ifr.ifr_flags = IFF_TAP | IFF_NO_PI; /* No packet information */
+    strlcpy(ifr.ifr_name, name, IFNAMSIZ);
 
-	status = ioctl(fd, TUNSETIFF, (void *)&ifr);
-	if (status < 0) {
-		close(fd);
-		return NULL;
-	}
+    status = ioctl(fd, TUNSETIFF, (void *)&ifr);
+    if (status < 0) {
+        close(fd);
+        return NULL;
+    }
 
-	/* Node allocation */
-	tap = calloc(1, sizeof(struct softnic_tap));
-	if (tap == NULL) {
-		close(fd);
-		return NULL;
-	}
-	/* Node fill in */
-	strlcpy(tap->name, name, sizeof(tap->name));
-	tap->fd = fd;
+    /* Node allocation */
+    tap = calloc(1, sizeof(struct softnic_tap));
+    if (tap == NULL) {
+        close(fd);
+        return NULL;
+    }
+    /* Node fill in */
+    strlcpy(tap->name, name, sizeof(tap->name));
+    tap->fd = fd;
 
-	/* Node add to list */
-	TAILQ_INSERT_TAIL(&p->tap_list, tap, node);
+    /* Node add to list */
+    TAILQ_INSERT_TAIL(&p->tap_list, tap, node);
 
-	return tap;
+    return tap;
 }
 
 #endif

@@ -32,8 +32,8 @@ extern "C" {
 #endif
 
 enum {
-	RTE_BPF_ETH_F_NONE = 0,
-	RTE_BPF_ETH_F_JIT  = 0x1, /*< use compiled into native ISA code */
+    RTE_BPF_ETH_F_NONE = 0,
+    RTE_BPF_ETH_F_JIT  = 0x1, /*< use compiled into native ISA code */
 };
 
 /**
@@ -85,8 +85,8 @@ rte_bpf_eth_tx_unload(uint16_t port, uint16_t queue);
 __rte_experimental
 int
 rte_bpf_eth_rx_elf_load(uint16_t port, uint16_t queue,
-	const struct rte_bpf_prm *prm, const char *fname, const char *sname,
-	uint32_t flags);
+    const struct rte_bpf_prm *prm, const char *fname, const char *sname,
+    uint32_t flags);
 
 /**
  * Load BPF program from the ELF file and install callback to execute it
@@ -111,8 +111,8 @@ rte_bpf_eth_rx_elf_load(uint16_t port, uint16_t queue,
 __rte_experimental
 int
 rte_bpf_eth_tx_elf_load(uint16_t port, uint16_t queue,
-	const struct rte_bpf_prm *prm, const char *fname, const char *sname,
-	uint32_t flags);
+    const struct rte_bpf_prm *prm, const char *fname, const char *sname,
+    uint32_t flags);
 
 #ifdef __cplusplus
 }

@@ -15,31 +15,31 @@ extern "C" {
  * Refer to field description in FM BG.
  */
 struct fm_status_t {
-	unsigned int reserved0:3;
-	unsigned int dcl4c:1; /* Don't Check L4 Checksum */
-	unsigned int reserved1:1;
-	unsigned int ufd:1; /* Unsupported Format */
-	unsigned int lge:1; /* Length Error */
-	unsigned int dme:1; /* DMA Error */
+    unsigned int reserved0:3;
+    unsigned int dcl4c:1; /* Don't Check L4 Checksum */
+    unsigned int reserved1:1;
+    unsigned int ufd:1; /* Unsupported Format */
+    unsigned int lge:1; /* Length Error */
+    unsigned int dme:1; /* DMA Error */
 
-	unsigned int reserved2:4;
-	unsigned int fpe:1; /* Frame physical Error */
-	unsigned int fse:1; /* Frame Size Error */
-	unsigned int dis:1; /* Discard by Classification */
-	unsigned int reserved3:1;
+    unsigned int reserved2:4;
+    unsigned int fpe:1; /* Frame physical Error */
+    unsigned int fse:1; /* Frame Size Error */
+    unsigned int dis:1; /* Discard by Classification */
+    unsigned int reserved3:1;
 
-	unsigned int eof:1; /* Key Extraction goes out of frame */
-	unsigned int nss:1; /* No Scheme selected */
-	unsigned int kso:1; /* Key Size Overflow */
-	unsigned int reserved4:1;
-	unsigned int fcl:2; /* Frame Color */
-	unsigned int ipp:1; /* Illegal Policer Profile Selected */
-	unsigned int flm:1; /* Frame Length Mismatch */
-	unsigned int pte:1; /* Parser Timeout */
-	unsigned int isp:1; /* Invalid Soft Parser Instruction */
-	unsigned int phe:1; /* Header Error during parsing */
-	unsigned int frdr:1; /* Frame Dropped by disabled port */
-	unsigned int reserved5:4;
+    unsigned int eof:1; /* Key Extraction goes out of frame */
+    unsigned int nss:1; /* No Scheme selected */
+    unsigned int kso:1; /* Key Size Overflow */
+    unsigned int reserved4:1;
+    unsigned int fcl:2; /* Frame Color */
+    unsigned int ipp:1; /* Illegal Policer Profile Selected */
+    unsigned int flm:1; /* Frame Length Mismatch */
+    unsigned int pte:1; /* Parser Timeout */
+    unsigned int isp:1; /* Invalid Soft Parser Instruction */
+    unsigned int phe:1; /* Header Error during parsing */
+    unsigned int frdr:1; /* Frame Dropped by disabled port */
+    unsigned int reserved5:4;
 } __attribute__ ((__packed__));
 
 /* Set MAC address for a particular interface */
@@ -77,14 +77,14 @@ void fman_if_loopback_disable(struct fman_if *p);
 
 /* Set buffer pool on specific interface */
 void fman_if_set_bp(struct fman_if *fm_if, unsigned int num, int bpid,
-		    size_t bufsize);
+            size_t bufsize);
 
 /* Get Flow Control threshold parameters on specific interface */
 int fman_if_get_fc_threshold(struct fman_if *fm_if);
 
 /* Enable and Set Flow Control threshold parameters on specific interface */
 int fman_if_set_fc_threshold(struct fman_if *fm_if,
-			u32 high_water, u32 low_water, u32 bpid);
+            u32 high_water, u32 low_water, u32 bpid);
 
 /* Get Flow Control pause quanta on specific interface */
 int fman_if_get_fc_quanta(struct fman_if *fm_if);
@@ -100,7 +100,7 @@ int fman_if_get_ic_params(struct fman_if *fm_if, struct fman_if_ic_params *icp);
 
 /* Set IC transfer params */
 int fman_if_set_ic_params(struct fman_if *fm_if,
-			  const struct fman_if_ic_params *icp);
+              const struct fman_if_ic_params *icp);
 
 /* Get interface fd->offset value */
 int fman_if_get_fdoff(struct fman_if *fm_if);
@@ -138,17 +138,17 @@ int fman_if_get_primary_mac_addr(struct fman_if *p, uint8_t *eth);
 /* Enable/disable Rx on all interfaces */
 static inline void fman_if_enable_all_rx(void)
 {
-	struct fman_if *__if;
+    struct fman_if *__if;
 
-	list_for_each_entry(__if, fman_if_list, node)
-		fman_if_enable_rx(__if);
+    list_for_each_entry(__if, fman_if_list, node)
+        fman_if_enable_rx(__if);
 }
 
 static inline void fman_if_disable_all_rx(void)
 {
-	struct fman_if *__if;
+    struct fman_if *__if;
 
-	list_for_each_entry(__if, fman_if_list, node)
-		fman_if_disable_rx(__if);
+    list_for_each_entry(__if, fman_if_list, node)
+        fman_if_disable_rx(__if);
 }
 #endif /* __FSL_FMAN_H */

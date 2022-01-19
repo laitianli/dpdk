@@ -63,120 +63,120 @@
 #define ICE_INSET_ETHERTYPE    (ICE_ETHERTYPE)
 
 #define ICE_INSET_IPV4_SRC \
-	(ICE_PROT_IPV4_OUTER | ICE_IP_SRC)
+    (ICE_PROT_IPV4_OUTER | ICE_IP_SRC)
 #define ICE_INSET_IPV4_DST \
-	(ICE_PROT_IPV4_OUTER | ICE_IP_DST)
+    (ICE_PROT_IPV4_OUTER | ICE_IP_DST)
 #define ICE_INSET_IPV4_TOS \
-	(ICE_PROT_IPV4_OUTER | ICE_IP_TOS)
+    (ICE_PROT_IPV4_OUTER | ICE_IP_TOS)
 #define ICE_INSET_IPV4_PROTO \
-	(ICE_PROT_IPV4_OUTER | ICE_IP_PROTO)
+    (ICE_PROT_IPV4_OUTER | ICE_IP_PROTO)
 #define ICE_INSET_IPV4_TTL \
-	(ICE_PROT_IPV4_OUTER | ICE_IP_TTL)
+    (ICE_PROT_IPV4_OUTER | ICE_IP_TTL)
 #define ICE_INSET_IPV6_SRC \
-	(ICE_PROT_IPV6_OUTER | ICE_IP_SRC)
+    (ICE_PROT_IPV6_OUTER | ICE_IP_SRC)
 #define ICE_INSET_IPV6_DST \
-	(ICE_PROT_IPV6_OUTER | ICE_IP_DST)
+    (ICE_PROT_IPV6_OUTER | ICE_IP_DST)
 #define ICE_INSET_IPV6_NEXT_HDR \
-	(ICE_PROT_IPV6_OUTER | ICE_IP_PROTO)
+    (ICE_PROT_IPV6_OUTER | ICE_IP_PROTO)
 #define ICE_INSET_IPV6_HOP_LIMIT \
-	(ICE_PROT_IPV6_OUTER | ICE_IP_TTL)
+    (ICE_PROT_IPV6_OUTER | ICE_IP_TTL)
 #define ICE_INSET_IPV6_TC \
-	(ICE_PROT_IPV6_OUTER | ICE_IP_TOS)
+    (ICE_PROT_IPV6_OUTER | ICE_IP_TOS)
 
 #define ICE_INSET_TCP_SRC_PORT \
-	(ICE_PROT_TCP_OUTER | ICE_SPORT)
+    (ICE_PROT_TCP_OUTER | ICE_SPORT)
 #define ICE_INSET_TCP_DST_PORT \
-	(ICE_PROT_TCP_OUTER | ICE_DPORT)
+    (ICE_PROT_TCP_OUTER | ICE_DPORT)
 #define ICE_INSET_UDP_SRC_PORT \
-	(ICE_PROT_UDP_OUTER | ICE_SPORT)
+    (ICE_PROT_UDP_OUTER | ICE_SPORT)
 #define ICE_INSET_UDP_DST_PORT \
-	(ICE_PROT_UDP_OUTER | ICE_DPORT)
+    (ICE_PROT_UDP_OUTER | ICE_DPORT)
 #define ICE_INSET_SCTP_SRC_PORT \
-	(ICE_PROT_SCTP_OUTER | ICE_SPORT)
+    (ICE_PROT_SCTP_OUTER | ICE_SPORT)
 #define ICE_INSET_SCTP_DST_PORT \
-	(ICE_PROT_SCTP_OUTER | ICE_DPORT)
+    (ICE_PROT_SCTP_OUTER | ICE_DPORT)
 #define ICE_INSET_ICMP4_SRC_PORT \
-	(ICE_PROT_ICMP4_OUTER | ICE_SPORT)
+    (ICE_PROT_ICMP4_OUTER | ICE_SPORT)
 #define ICE_INSET_ICMP4_DST_PORT \
-	(ICE_PROT_ICMP4_OUTER | ICE_DPORT)
+    (ICE_PROT_ICMP4_OUTER | ICE_DPORT)
 #define ICE_INSET_ICMP6_SRC_PORT \
-	(ICE_PROT_ICMP6_OUTER | ICE_SPORT)
+    (ICE_PROT_ICMP6_OUTER | ICE_SPORT)
 #define ICE_INSET_ICMP6_DST_PORT \
-	(ICE_PROT_ICMP6_OUTER | ICE_DPORT)
+    (ICE_PROT_ICMP6_OUTER | ICE_DPORT)
 #define ICE_INSET_ICMP4_TYPE \
-	(ICE_PROT_ICMP4_OUTER | ICE_ICMP_TYPE)
+    (ICE_PROT_ICMP4_OUTER | ICE_ICMP_TYPE)
 #define ICE_INSET_ICMP4_CODE \
-	(ICE_PROT_ICMP4_OUTER | ICE_ICMP_CODE)
+    (ICE_PROT_ICMP4_OUTER | ICE_ICMP_CODE)
 #define ICE_INSET_ICMP6_TYPE \
-	(ICE_PROT_ICMP6_OUTER | ICE_ICMP_TYPE)
+    (ICE_PROT_ICMP6_OUTER | ICE_ICMP_TYPE)
 #define ICE_INSET_ICMP6_CODE \
-	(ICE_PROT_ICMP6_OUTER | ICE_ICMP_CODE)
+    (ICE_PROT_ICMP6_OUTER | ICE_ICMP_CODE)
 
 /* tunnel */
 
 #define ICE_INSET_TUN_SMAC \
-	(ICE_PROT_MAC_INNER | ICE_SMAC)
+    (ICE_PROT_MAC_INNER | ICE_SMAC)
 #define ICE_INSET_TUN_DMAC \
-	(ICE_PROT_MAC_INNER | ICE_DMAC)
+    (ICE_PROT_MAC_INNER | ICE_DMAC)
 
 #define ICE_INSET_TUN_IPV4_SRC \
-	(ICE_PROT_IPV4_INNER | ICE_IP_SRC)
+    (ICE_PROT_IPV4_INNER | ICE_IP_SRC)
 #define ICE_INSET_TUN_IPV4_DST \
-	(ICE_PROT_IPV4_INNER | ICE_IP_DST)
+    (ICE_PROT_IPV4_INNER | ICE_IP_DST)
 #define ICE_INSET_TUN_IPV4_TTL \
-	(ICE_PROT_IPV4_INNER | ICE_IP_TTL)
+    (ICE_PROT_IPV4_INNER | ICE_IP_TTL)
 #define ICE_INSET_TUN_IPV4_PROTO \
-	(ICE_PROT_IPV4_INNER | ICE_IP_PROTO)
+    (ICE_PROT_IPV4_INNER | ICE_IP_PROTO)
 #define ICE_INSET_TUN_IPV4_TOS \
-	(ICE_PROT_IPV4_INNER | ICE_IP_TOS)
+    (ICE_PROT_IPV4_INNER | ICE_IP_TOS)
 #define ICE_INSET_TUN_IPV6_SRC \
-	(ICE_PROT_IPV6_INNER | ICE_IP_SRC)
+    (ICE_PROT_IPV6_INNER | ICE_IP_SRC)
 #define ICE_INSET_TUN_IPV6_DST \
-	(ICE_PROT_IPV6_INNER | ICE_IP_DST)
+    (ICE_PROT_IPV6_INNER | ICE_IP_DST)
 #define ICE_INSET_TUN_IPV6_HOP_LIMIT \
-	(ICE_PROT_IPV6_INNER | ICE_IP_TTL)
+    (ICE_PROT_IPV6_INNER | ICE_IP_TTL)
 #define ICE_INSET_TUN_IPV6_NEXT_HDR \
-	(ICE_PROT_IPV6_INNER | ICE_IP_PROTO)
+    (ICE_PROT_IPV6_INNER | ICE_IP_PROTO)
 #define ICE_INSET_TUN_IPV6_TC \
-	(ICE_PROT_IPV6_INNER | ICE_IP_TOS)
+    (ICE_PROT_IPV6_INNER | ICE_IP_TOS)
 
 #define ICE_INSET_TUN_TCP_SRC_PORT \
-	(ICE_PROT_TCP_INNER | ICE_SPORT)
+    (ICE_PROT_TCP_INNER | ICE_SPORT)
 #define ICE_INSET_TUN_TCP_DST_PORT \
-	(ICE_PROT_TCP_INNER | ICE_DPORT)
+    (ICE_PROT_TCP_INNER | ICE_DPORT)
 #define ICE_INSET_TUN_UDP_SRC_PORT \
-	(ICE_PROT_UDP_INNER | ICE_SPORT)
+    (ICE_PROT_UDP_INNER | ICE_SPORT)
 #define ICE_INSET_TUN_UDP_DST_PORT \
-	(ICE_PROT_UDP_INNER | ICE_DPORT)
+    (ICE_PROT_UDP_INNER | ICE_DPORT)
 #define ICE_INSET_TUN_SCTP_SRC_PORT \
-	(ICE_PROT_SCTP_INNER | ICE_SPORT)
+    (ICE_PROT_SCTP_INNER | ICE_SPORT)
 #define ICE_INSET_TUN_SCTP_DST_PORT \
-	(ICE_PROT_SCTP_INNER | ICE_DPORT)
+    (ICE_PROT_SCTP_INNER | ICE_DPORT)
 #define ICE_INSET_TUN_ICMP4_SRC_PORT \
-	(ICE_PROT_ICMP4_INNER | ICE_SPORT)
+    (ICE_PROT_ICMP4_INNER | ICE_SPORT)
 #define ICE_INSET_TUN_ICMP4_DST_PORT \
-	(ICE_PROT_ICMP4_INNER | ICE_DPORT)
+    (ICE_PROT_ICMP4_INNER | ICE_DPORT)
 #define ICE_INSET_TUN_ICMP6_SRC_PORT \
-	(ICE_PROT_ICMP6_INNER | ICE_SPORT)
+    (ICE_PROT_ICMP6_INNER | ICE_SPORT)
 #define ICE_INSET_TUN_ICMP6_DST_PORT \
-	(ICE_PROT_ICMP6_INNER | ICE_DPORT)
+    (ICE_PROT_ICMP6_INNER | ICE_DPORT)
 #define ICE_INSET_TUN_ICMP4_TYPE \
-	(ICE_PROT_ICMP4_INNER | ICE_ICMP_TYPE)
+    (ICE_PROT_ICMP4_INNER | ICE_ICMP_TYPE)
 #define ICE_INSET_TUN_ICMP4_CODE \
-	(ICE_PROT_ICMP4_INNER | ICE_ICMP_CODE)
+    (ICE_PROT_ICMP4_INNER | ICE_ICMP_CODE)
 #define ICE_INSET_TUN_ICMP6_TYPE \
-	(ICE_PROT_ICMP6_INNER | ICE_ICMP_TYPE)
+    (ICE_PROT_ICMP6_INNER | ICE_ICMP_TYPE)
 #define ICE_INSET_TUN_ICMP6_CODE \
-	(ICE_PROT_ICMP6_INNER | ICE_ICMP_CODE)
+    (ICE_PROT_ICMP6_INNER | ICE_ICMP_CODE)
 
 #define ICE_INSET_TUN_VXLAN_VNI \
-	(ICE_PROT_VXLAN | ICE_VXLAN_VNI)
+    (ICE_PROT_VXLAN | ICE_VXLAN_VNI)
 #define ICE_INSET_TUN_NVGRE_TNI \
-	(ICE_PROT_NVGRE | ICE_NVGRE_TNI)
+    (ICE_PROT_NVGRE | ICE_NVGRE_TNI)
 #define ICE_INSET_GTPU_TEID \
-	(ICE_PROT_GTPU | ICE_GTPU_TEID)
+    (ICE_PROT_GTPU | ICE_GTPU_TEID)
 #define ICE_INSET_GTPU_QFI \
-	(ICE_PROT_GTPU | ICE_GTPU_QFI)
+    (ICE_PROT_GTPU | ICE_GTPU_QFI)
 
 /* empty pattern */
 extern enum rte_flow_item_type pattern_empty[];
@@ -386,12 +386,12 @@ extern const struct rte_flow_ops ice_flow_ops;
 
 /* engine types. */
 enum ice_flow_engine_type {
-	ICE_FLOW_ENGINE_NONE = 0,
-	ICE_FLOW_ENGINE_FDIR,
-	ICE_FLOW_ENGINE_SWITCH,
-	ICE_FLOW_ENGINE_HASH,
-	ICE_FLOW_ENGINE_ACL,
-	ICE_FLOW_ENGINE_MAX,
+    ICE_FLOW_ENGINE_NONE = 0,
+    ICE_FLOW_ENGINE_FDIR,
+    ICE_FLOW_ENGINE_SWITCH,
+    ICE_FLOW_ENGINE_HASH,
+    ICE_FLOW_ENGINE_ACL,
+    ICE_FLOW_ENGINE_MAX,
 };
 
 /**
@@ -401,86 +401,86 @@ enum ice_flow_engine_type {
  * Permission/Distributor/RSS
  */
 enum ice_flow_classification_stage {
-	ICE_FLOW_STAGE_NONE = 0,
-	ICE_FLOW_STAGE_RSS,
-	ICE_FLOW_STAGE_PERMISSION,
-	ICE_FLOW_STAGE_DISTRIBUTOR,
-	ICE_FLOW_STAGE_MAX,
+    ICE_FLOW_STAGE_NONE = 0,
+    ICE_FLOW_STAGE_RSS,
+    ICE_FLOW_STAGE_PERMISSION,
+    ICE_FLOW_STAGE_DISTRIBUTOR,
+    ICE_FLOW_STAGE_MAX,
 };
 /* pattern structure */
 struct ice_pattern_match_item {
-	enum rte_flow_item_type *pattern_list;
-	/* pattern_list must end with RTE_FLOW_ITEM_TYPE_END */
-	uint64_t input_set_mask;
-	void *meta;
+    enum rte_flow_item_type *pattern_list;
+    /* pattern_list must end with RTE_FLOW_ITEM_TYPE_END */
+    uint64_t input_set_mask;
+    void *meta;
 };
 
 typedef int (*engine_init_t)(struct ice_adapter *ad);
 typedef void (*engine_uninit_t)(struct ice_adapter *ad);
 typedef int (*engine_create_t)(struct ice_adapter *ad,
-		struct rte_flow *flow,
-		void *meta,
-		struct rte_flow_error *error);
+        struct rte_flow *flow,
+        void *meta,
+        struct rte_flow_error *error);
 typedef int (*engine_destroy_t)(struct ice_adapter *ad,
-		struct rte_flow *flow,
-		struct rte_flow_error *error);
+        struct rte_flow *flow,
+        struct rte_flow_error *error);
 typedef int (*engine_query_t)(struct ice_adapter *ad,
-		struct rte_flow *flow,
-		struct rte_flow_query_count *count,
-		struct rte_flow_error *error);
+        struct rte_flow *flow,
+        struct rte_flow_query_count *count,
+        struct rte_flow_error *error);
 typedef void (*engine_free_t) (struct rte_flow *flow);
 typedef int (*parse_pattern_action_t)(struct ice_adapter *ad,
-		struct ice_pattern_match_item *array,
-		uint32_t array_len,
-		const struct rte_flow_item pattern[],
-		const struct rte_flow_action actions[],
-		void **meta,
-		struct rte_flow_error *error);
+        struct ice_pattern_match_item *array,
+        uint32_t array_len,
+        const struct rte_flow_item pattern[],
+        const struct rte_flow_action actions[],
+        void **meta,
+        struct rte_flow_error *error);
 
 /* Struct to store engine created. */
 struct ice_flow_engine {
-	TAILQ_ENTRY(ice_flow_engine) node;
-	engine_init_t init;
-	engine_uninit_t uninit;
-	engine_create_t create;
-	engine_destroy_t destroy;
-	engine_query_t query_count;
-	engine_free_t free;
-	enum ice_flow_engine_type type;
+    TAILQ_ENTRY(ice_flow_engine) node;
+    engine_init_t init;
+    engine_uninit_t uninit;
+    engine_create_t create;
+    engine_destroy_t destroy;
+    engine_query_t query_count;
+    engine_free_t free;
+    enum ice_flow_engine_type type;
 };
 TAILQ_HEAD(ice_engine_list, ice_flow_engine);
 
 /* Struct to store flow created. */
 struct rte_flow {
-	TAILQ_ENTRY(rte_flow) node;
-	struct ice_flow_engine *engine;
-	void *rule;
+    TAILQ_ENTRY(rte_flow) node;
+    struct ice_flow_engine *engine;
+    void *rule;
 };
 
 struct ice_flow_parser {
-	struct ice_flow_engine *engine;
-	struct ice_pattern_match_item *array;
-	uint32_t array_len;
-	parse_pattern_action_t parse_pattern_action;
-	enum ice_flow_classification_stage stage;
+    struct ice_flow_engine *engine;
+    struct ice_pattern_match_item *array;
+    uint32_t array_len;
+    parse_pattern_action_t parse_pattern_action;
+    enum ice_flow_classification_stage stage;
 };
 
 /* Struct to store parser created. */
 struct ice_flow_parser_node {
-	TAILQ_ENTRY(ice_flow_parser_node) node;
-	struct ice_flow_parser *parser;
+    TAILQ_ENTRY(ice_flow_parser_node) node;
+    struct ice_flow_parser *parser;
 };
 
 void ice_register_flow_engine(struct ice_flow_engine *engine);
 int ice_flow_init(struct ice_adapter *ad);
 void ice_flow_uninit(struct ice_adapter *ad);
 int ice_register_parser(struct ice_flow_parser *parser,
-		struct ice_adapter *ad);
+        struct ice_adapter *ad);
 void ice_unregister_parser(struct ice_flow_parser *parser,
-		struct ice_adapter *ad);
+        struct ice_adapter *ad);
 struct ice_pattern_match_item *
 ice_search_pattern_match_item(const struct rte_flow_item pattern[],
-		struct ice_pattern_match_item *array,
-		uint32_t array_len,
-		struct rte_flow_error *error);
+        struct ice_pattern_match_item *array,
+        uint32_t array_len,
+        struct rte_flow_error *error);
 #endif

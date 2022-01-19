@@ -26,21 +26,21 @@ extern "C" {
 
 /** Function prototype for reader post action. */
 typedef void (*rte_port_sym_crypto_reader_callback_fn)(struct rte_mbuf **pkts,
-		uint16_t n_pkts, void *arg);
+        uint16_t n_pkts, void *arg);
 
 /** Crypto_reader port parameters */
 struct rte_port_sym_crypto_reader_params {
-	/** Target cryptodev ID. */
-	uint8_t cryptodev_id;
+    /** Target cryptodev ID. */
+    uint8_t cryptodev_id;
 
-	/** Target cryptodev Queue Pair ID. */
-	uint16_t queue_id;
+    /** Target cryptodev Queue Pair ID. */
+    uint16_t queue_id;
 
-	/** Crypto reader post callback function. */
-	rte_port_sym_crypto_reader_callback_fn f_callback;
+    /** Crypto reader post callback function. */
+    rte_port_sym_crypto_reader_callback_fn f_callback;
 
-	/** Crypto reader post callback function arguments. */
-	void *arg_callback;
+    /** Crypto reader post callback function arguments. */
+    void *arg_callback;
 };
 
 /** Crypto_reader port operations. */
@@ -49,17 +49,17 @@ extern struct rte_port_in_ops rte_port_sym_crypto_reader_ops;
 
 /** Crypto_writer port parameters. */
 struct rte_port_sym_crypto_writer_params {
-	/** Target cryptodev ID. */
-	uint8_t cryptodev_id;
+    /** Target cryptodev ID. */
+    uint8_t cryptodev_id;
 
-	/** Target cryptodev Queue Pair ID. */
-	uint16_t queue_id;
+    /** Target cryptodev Queue Pair ID. */
+    uint16_t queue_id;
 
-	/** offset to rte_crypto_op in the mbufs. */
-	uint16_t crypto_op_offset;
+    /** offset to rte_crypto_op in the mbufs. */
+    uint16_t crypto_op_offset;
 
-	/** Burst size to crypto interface. */
-	uint32_t tx_burst_sz;
+    /** Burst size to crypto interface. */
+    uint32_t tx_burst_sz;
 };
 
 /** Crypto_writer port operations. */
@@ -67,20 +67,20 @@ extern struct rte_port_out_ops rte_port_sym_crypto_writer_ops;
 
 /** Crypto_writer_nodrop port parameters. */
 struct rte_port_sym_crypto_writer_nodrop_params {
-	/** Target cryptodev ID. */
-	uint8_t cryptodev_id;
+    /** Target cryptodev ID. */
+    uint8_t cryptodev_id;
 
-	/** Target cryptodev queue pair id. */
-	uint16_t queue_id;
+    /** Target cryptodev queue pair id. */
+    uint16_t queue_id;
 
-	/** Offset to rte_crypto_op in the mbufs. */
-	uint16_t crypto_op_offset;
+    /** Offset to rte_crypto_op in the mbufs. */
+    uint16_t crypto_op_offset;
 
-	/** Burst size to crypto interface. */
-	uint32_t tx_burst_sz;
+    /** Burst size to crypto interface. */
+    uint32_t tx_burst_sz;
 
-	/** Maximum number of retries, 0 for no limit. */
-	uint32_t n_retries;
+    /** Maximum number of retries, 0 for no limit. */
+    uint32_t n_retries;
 };
 
 /** Crypto_writer_nodrop port operations. */

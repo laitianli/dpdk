@@ -42,12 +42,12 @@ extern "C" {
 #define RTE_FBARRAY_NAME_LEN 64
 
 struct rte_fbarray {
-	char name[RTE_FBARRAY_NAME_LEN]; /**< name associated with an array */
-	unsigned int count;              /**< number of entries stored */
-	unsigned int len;                /**< current length of the array */
-	unsigned int elt_sz;             /**< size of each element */
-	void *data;                      /**< data pointer */
-	rte_rwlock_t rwlock;             /**< multiprocess lock */
+    char name[RTE_FBARRAY_NAME_LEN]; /**< name associated with an array */
+    unsigned int count;              /**< number of entries stored */
+    unsigned int len;                /**< current length of the array */
+    unsigned int elt_sz;             /**< size of each element */
+    void *data;                      /**< data pointer */
+    rte_rwlock_t rwlock;             /**< multiprocess lock */
 };
 
 /**
@@ -77,7 +77,7 @@ struct rte_fbarray {
 __rte_experimental
 int
 rte_fbarray_init(struct rte_fbarray *arr, const char *name, unsigned int len,
-		unsigned int elt_sz);
+        unsigned int elt_sz);
 
 
 /**
@@ -289,7 +289,7 @@ rte_fbarray_find_next_used(struct rte_fbarray *arr, unsigned int start);
 __rte_experimental
 int
 rte_fbarray_find_next_n_free(struct rte_fbarray *arr, unsigned int start,
-		unsigned int n);
+        unsigned int n);
 
 
 /**
@@ -311,7 +311,7 @@ rte_fbarray_find_next_n_free(struct rte_fbarray *arr, unsigned int start,
 __rte_experimental
 int
 rte_fbarray_find_next_n_used(struct rte_fbarray *arr, unsigned int start,
-		unsigned int n);
+        unsigned int n);
 
 
 /**
@@ -330,7 +330,7 @@ rte_fbarray_find_next_n_used(struct rte_fbarray *arr, unsigned int start,
 __rte_experimental
 int
 rte_fbarray_find_contig_free(struct rte_fbarray *arr,
-		unsigned int start);
+        unsigned int start);
 
 
 /**
@@ -406,7 +406,7 @@ rte_fbarray_find_prev_used(struct rte_fbarray *arr, unsigned int start);
 __rte_experimental
 int
 rte_fbarray_find_prev_n_free(struct rte_fbarray *arr, unsigned int start,
-		unsigned int n);
+        unsigned int n);
 
 
 /**
@@ -429,7 +429,7 @@ rte_fbarray_find_prev_n_free(struct rte_fbarray *arr, unsigned int start,
 __rte_experimental
 int
 rte_fbarray_find_prev_n_used(struct rte_fbarray *arr, unsigned int start,
-		unsigned int n);
+        unsigned int n);
 
 
 /**
@@ -449,7 +449,7 @@ rte_fbarray_find_prev_n_used(struct rte_fbarray *arr, unsigned int start,
 __rte_experimental
 int
 rte_fbarray_find_rev_contig_free(struct rte_fbarray *arr,
-		unsigned int start);
+        unsigned int start);
 
 
 /**

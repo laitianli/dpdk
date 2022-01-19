@@ -19,19 +19,19 @@
  * cache lines for each client to use.
  */
 struct rx_stats{
-	uint64_t rx[RTE_MAX_ETHPORTS];
+    uint64_t rx[RTE_MAX_ETHPORTS];
 } __rte_cache_aligned;
 
 struct tx_stats{
-	uint64_t tx[RTE_MAX_ETHPORTS];
-	uint64_t tx_drop[RTE_MAX_ETHPORTS];
+    uint64_t tx[RTE_MAX_ETHPORTS];
+    uint64_t tx_drop[RTE_MAX_ETHPORTS];
 } __rte_cache_aligned;
 
 struct port_info {
-	uint16_t num_ports;
-	uint16_t id[RTE_MAX_ETHPORTS];
-	volatile struct rx_stats rx_stats;
-	volatile struct tx_stats tx_stats[MAX_CLIENTS];
+    uint16_t num_ports;
+    uint16_t id[RTE_MAX_ETHPORTS];
+    volatile struct rx_stats rx_stats;
+    volatile struct tx_stats tx_stats[MAX_CLIENTS];
 };
 
 /* define common names for structures shared between server and client */
@@ -45,12 +45,12 @@ struct port_info {
 static inline const char *
 get_rx_queue_name(unsigned id)
 {
-	/* buffer for return value. Size calculated by %u being replaced
-	 * by maximum 3 digits (plus an extra byte for safety) */
-	static char buffer[sizeof(MP_CLIENT_RXQ_NAME) + 2];
+    /* buffer for return value. Size calculated by %u being replaced
+     * by maximum 3 digits (plus an extra byte for safety) */
+    static char buffer[sizeof(MP_CLIENT_RXQ_NAME) + 2];
 
-	snprintf(buffer, sizeof(buffer), MP_CLIENT_RXQ_NAME, id);
-	return buffer;
+    snprintf(buffer, sizeof(buffer), MP_CLIENT_RXQ_NAME, id);
+    return buffer;
 }
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1

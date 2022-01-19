@@ -31,87 +31,87 @@ struct rte_jobstats;
  *  Result of calling job callback.
  */
 typedef void (*rte_job_update_period_cb_t)(struct rte_jobstats *job,
-		int64_t job_result);
+        int64_t job_result);
 
 struct rte_jobstats {
-	uint64_t period;
-	/**< Estimated period of execution. */
+    uint64_t period;
+    /**< Estimated period of execution. */
 
-	uint64_t min_period;
-	/**< Minimum period. */
+    uint64_t min_period;
+    /**< Minimum period. */
 
-	uint64_t max_period;
-	/**< Maximum period. */
+    uint64_t max_period;
+    /**< Maximum period. */
 
-	int64_t target;
-	/**< Desired value for this job. */
+    int64_t target;
+    /**< Desired value for this job. */
 
-	rte_job_update_period_cb_t update_period_cb;
-	/**< Period update callback. */
+    rte_job_update_period_cb_t update_period_cb;
+    /**< Period update callback. */
 
-	uint64_t exec_time;
-	/**< Total time (sum) that this job was executing. */
+    uint64_t exec_time;
+    /**< Total time (sum) that this job was executing. */
 
-	uint64_t min_exec_time;
-	/**< Minimum execute time. */
+    uint64_t min_exec_time;
+    /**< Minimum execute time. */
 
-	uint64_t max_exec_time;
-	/**< Maximum execute time. */
+    uint64_t max_exec_time;
+    /**< Maximum execute time. */
 
-	uint64_t exec_cnt;
-	/**< Execute count. */
+    uint64_t exec_cnt;
+    /**< Execute count. */
 
-	char name[RTE_JOBSTATS_NAMESIZE];
-	/**< Name of this job */
+    char name[RTE_JOBSTATS_NAMESIZE];
+    /**< Name of this job */
 
-	struct rte_jobstats_context *context;
-	/**< Job stats context object that is executing this job. */
+    struct rte_jobstats_context *context;
+    /**< Job stats context object that is executing this job. */
 } __rte_cache_aligned;
 
 struct rte_jobstats_context {
-	/** Variable holding time at different points:
-	 * -# loop start time if loop was started but no job executed yet.
-	 * -# job start time if job is currently executing.
-	 * -# job finish time if job finished its execution.
-	 * -# loop finish time if loop finished its execution. */
-	uint64_t state_time;
+    /** Variable holding time at different points:
+     * -# loop start time if loop was started but no job executed yet.
+     * -# job start time if job is currently executing.
+     * -# job finish time if job finished its execution.
+     * -# loop finish time if loop finished its execution. */
+    uint64_t state_time;
 
-	uint64_t loop_executed_jobs;
-	/**< Count of executed jobs in this loop. */
+    uint64_t loop_executed_jobs;
+    /**< Count of executed jobs in this loop. */
 
-	/* Statistics start. */
+    /* Statistics start. */
 
-	uint64_t exec_time;
-	/**< Total time taken to execute jobs, not including management time. */
+    uint64_t exec_time;
+    /**< Total time taken to execute jobs, not including management time. */
 
-	uint64_t min_exec_time;
-	/**< Minimum loop execute time. */
+    uint64_t min_exec_time;
+    /**< Minimum loop execute time. */
 
-	uint64_t max_exec_time;
-	/**< Maximum loop execute time. */
+    uint64_t max_exec_time;
+    /**< Maximum loop execute time. */
 
-	/**
-	 * Sum of time that is not the execute time (ex: from job finish to next
-	 * job start).
-	 *
-	 * This time might be considered as overhead of library + job scheduling.
-	 */
-	uint64_t management_time;
+    /**
+     * Sum of time that is not the execute time (ex: from job finish to next
+     * job start).
+     *
+     * This time might be considered as overhead of library + job scheduling.
+     */
+    uint64_t management_time;
 
-	uint64_t min_management_time;
-	/**< Minimum management time */
+    uint64_t min_management_time;
+    /**< Minimum management time */
 
-	uint64_t max_management_time;
-	/**< Maximum management time */
+    uint64_t max_management_time;
+    /**< Maximum management time */
 
-	uint64_t start_time;
-	/**< Time since last reset stats. */
+    uint64_t start_time;
+    /**< Time since last reset stats. */
 
-	uint64_t job_exec_cnt;
-	/**< Total count of executed jobs. */
+    uint64_t job_exec_cnt;
+    /**< Total count of executed jobs. */
 
-	uint64_t loop_cnt;
-	/**< Total count of executed loops with at least one executed job. */
+    uint64_t loop_cnt;
+    /**< Total count of executed loops with at least one executed job. */
 } __rte_cache_aligned;
 
 /**
@@ -177,8 +177,8 @@ rte_jobstats_context_reset(struct rte_jobstats_context *ctx);
  */
 int
 rte_jobstats_init(struct rte_jobstats *job, const char *name,
-		uint64_t min_period, uint64_t max_period, uint64_t initial_period,
-		int64_t target);
+        uint64_t min_period, uint64_t max_period, uint64_t initial_period,
+        int64_t target);
 
 /**
  * Set job desired target value. Difference between target and job value
@@ -252,7 +252,7 @@ rte_jobstats_finish(struct rte_jobstats *job, int64_t job_value);
  */
 void
 rte_jobstats_set_period(struct rte_jobstats *job, uint64_t period,
-		uint8_t saturate);
+        uint8_t saturate);
 /**
  * Set minimum execute period of given job. Current period will be checked
  * against new minimum value.
@@ -289,7 +289,7 @@ rte_jobstats_set_max(struct rte_jobstats *job, uint64_t period);
  */
 void
 rte_jobstats_set_update_period_function(struct rte_jobstats *job,
-		rte_job_update_period_cb_t update_period_cb);
+        rte_job_update_period_cb_t update_period_cb);
 
 /**
  * Function resets job statistics.

@@ -26,10 +26,10 @@ extern "C" {
  * SCTP Header
  */
 struct rte_sctp_hdr {
-	rte_be16_t src_port; /**< Source port. */
-	rte_be16_t dst_port; /**< Destin port. */
-	rte_be32_t tag;      /**< Validation tag. */
-	rte_be32_t cksum;    /**< Checksum. */
+    rte_be16_t src_port; /**< Source port. */
+    rte_be16_t dst_port; /**< Destin port. */
+    rte_be32_t tag;      /**< Validation tag. */
+    rte_be32_t cksum;    /**< Checksum. */
 } __attribute__((__packed__));
 
 #ifdef __cplusplus

@@ -24,24 +24,24 @@ typedef char cmdline_fixed_string_t[STR_TOKEN_SIZE];
 typedef char cmdline_multi_string_t[STR_MULTI_TOKEN_SIZE];
 
 struct cmdline_token_string_data {
-	const char *str;
+    const char *str;
 };
 
 struct cmdline_token_string {
-	struct cmdline_token_hdr hdr;
-	struct cmdline_token_string_data string_data;
+    struct cmdline_token_hdr hdr;
+    struct cmdline_token_string_data string_data;
 };
 typedef struct cmdline_token_string cmdline_parse_token_string_t;
 
 extern struct cmdline_token_ops cmdline_token_string_ops;
 
 int cmdline_parse_string(cmdline_parse_token_hdr_t *tk, const char *srcbuf,
-	void *res, unsigned ressize);
+    void *res, unsigned ressize);
 int cmdline_complete_get_nb_string(cmdline_parse_token_hdr_t *tk);
 int cmdline_complete_get_elt_string(cmdline_parse_token_hdr_t *tk, int idx,
-				    char *dstbuf, unsigned int size);
+                    char *dstbuf, unsigned int size);
 int cmdline_get_help_string(cmdline_parse_token_hdr_t *tk, char *dstbuf,
-			    unsigned int size);
+                unsigned int size);
 
 /**
 * Token marked as TOKEN_STRING_MULTI takes entire parsing string
@@ -55,15 +55,15 @@ int cmdline_get_help_string(cmdline_parse_token_hdr_t *tk, char *dstbuf,
 
 #define TOKEN_STRING_INITIALIZER(structure, field, string)  \
 {                                                           \
-	/* hdr */                                               \
-	{                                                       \
-		&cmdline_token_string_ops,      /* ops */           \
-		offsetof(structure, field),     /* offset */        \
-	},                                                      \
-	/* string_data */                                       \
-	{                                                       \
-		string,                         /* str */           \
-	},                                                      \
+    /* hdr */                                               \
+    {                                                       \
+        &cmdline_token_string_ops,      /* ops */           \
+        offsetof(structure, field),     /* offset */        \
+    },                                                      \
+    /* string_data */                                       \
+    {                                                       \
+        string,                         /* str */           \
+    },                                                      \
 }
 
 #ifdef __cplusplus

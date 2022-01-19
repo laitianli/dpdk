@@ -13,28 +13,28 @@
 struct malloc_heap;
 
 enum elem_state {
-	ELEM_FREE = 0,
-	ELEM_BUSY,
-	ELEM_PAD  /* element is a padding-only header */
+    ELEM_FREE = 0,
+    ELEM_BUSY,
+    ELEM_PAD  /* element is a padding-only header */
 };
 
 struct malloc_elem {
-	struct malloc_heap *heap;
-	struct malloc_elem *volatile prev;
-	/**< points to prev elem in memseg */
-	struct malloc_elem *volatile next;
-	/**< points to next elem in memseg */
-	LIST_ENTRY(malloc_elem) free_list;
-	/**< list of free elements in heap */
-	struct rte_memseg_list *msl;
-	volatile enum elem_state state;
-	uint32_t pad;
-	size_t size;
-	struct malloc_elem *orig_elem;
-	size_t orig_size;
+    struct malloc_heap *heap;
+    struct malloc_elem *volatile prev;
+    /**< points to prev elem in memseg */
+    struct malloc_elem *volatile next;
+    /**< points to next elem in memseg */
+    LIST_ENTRY(malloc_elem) free_list;
+    /**< list of free elements in heap */
+    struct rte_memseg_list *msl;
+    volatile enum elem_state state;
+    uint32_t pad;
+    size_t size;
+    struct malloc_elem *orig_elem;
+    size_t orig_size;
 #ifdef RTE_MALLOC_DEBUG
-	uint64_t header_cookie;         /* Cookie marking start of data */
-	                                /* trailer cookie at start + size */
+    uint64_t header_cookie;         /* Cookie marking start of data */
+                                    /* trailer cookie at start + size */
 #endif
 } __rte_cache_aligned;
 
@@ -62,30 +62,30 @@ static const unsigned MALLOC_ELEM_TRAILER_LEN = RTE_CACHE_LINE_SIZE;
 
 /* define macros to make referencing the header and trailer cookies easier */
 #define MALLOC_ELEM_TRAILER(elem) (*((uint64_t*)RTE_PTR_ADD(elem, \
-		elem->size - MALLOC_ELEM_TRAILER_LEN)))
+        elem->size - MALLOC_ELEM_TRAILER_LEN)))
 #define MALLOC_ELEM_HEADER(elem) (elem->header_cookie)
 
 static inline void
 set_header(struct malloc_elem *elem)
 {
-	if (elem != NULL)
-		MALLOC_ELEM_HEADER(elem) = MALLOC_HEADER_COOKIE;
+    if (elem != NULL)
+        MALLOC_ELEM_HEADER(elem) = MALLOC_HEADER_COOKIE;
 }
 
 static inline void
 set_trailer(struct malloc_elem *elem)
 {
-	if (elem != NULL)
-		MALLOC_ELEM_TRAILER(elem) = MALLOC_TRAILER_COOKIE;
+    if (elem != NULL)
+        MALLOC_ELEM_TRAILER(elem) = MALLOC_TRAILER_COOKIE;
 }
 
 /* check that the header and trailer cookies are set correctly */
 static inline int
 malloc_elem_cookies_ok(const struct malloc_elem *elem)
 {
-	return elem != NULL &&
-			MALLOC_ELEM_HEADER(elem) == MALLOC_HEADER_COOKIE &&
-			MALLOC_ELEM_TRAILER(elem) == MALLOC_TRAILER_COOKIE;
+    return elem != NULL &&
+            MALLOC_ELEM_HEADER(elem) == MALLOC_HEADER_COOKIE &&
+            MALLOC_ELEM_TRAILER(elem) == MALLOC_TRAILER_COOKIE;
 }
 
 #endif
@@ -100,13 +100,13 @@ static const unsigned MALLOC_ELEM_HEADER_LEN = sizeof(struct malloc_elem);
 static inline struct malloc_elem *
 malloc_elem_from_data(const void *data)
 {
-	if (data == NULL)
-		return NULL;
+    if (data == NULL)
+        return NULL;
 
-	struct malloc_elem *elem = RTE_PTR_SUB(data, MALLOC_ELEM_HEADER_LEN);
-	if (!malloc_elem_cookies_ok(elem))
-		return NULL;
-	return elem->state != ELEM_PAD ? elem:  RTE_PTR_SUB(elem, elem->pad);
+    struct malloc_elem *elem = RTE_PTR_SUB(data, MALLOC_ELEM_HEADER_LEN);
+    if (!malloc_elem_cookies_ok(elem))
+        return NULL;
+    return elem->state != ELEM_PAD ? elem:  RTE_PTR_SUB(elem, elem->pad);
 }
 
 /*
@@ -114,11 +114,11 @@ malloc_elem_from_data(const void *data)
  */
 void
 malloc_elem_init(struct malloc_elem *elem,
-		struct malloc_heap *heap,
-		struct rte_memseg_list *msl,
-		size_t size,
-		struct malloc_elem *orig_elem,
-		size_t orig_size);
+        struct malloc_heap *heap,
+        struct rte_memseg_list *msl,
+        size_t size,
+        struct malloc_elem *orig_elem,
+        size_t orig_size);
 
 void
 malloc_elem_insert(struct malloc_elem *elem);
@@ -129,7 +129,7 @@ malloc_elem_insert(struct malloc_elem *elem);
  */
 int
 malloc_elem_can_hold(struct malloc_elem *elem, size_t size,
-		unsigned int align, size_t bound, bool contig);
+        unsigned int align, size_t bound, bool contig);
 
 /*
  * reserve a block of data in an existing malloc_elem. If the malloc_elem
@@ -137,7 +137,7 @@ malloc_elem_can_hold(struct malloc_elem *elem, size_t size,
  */
 struct malloc_elem *
 malloc_elem_alloc(struct malloc_elem *elem, size_t size,
-		unsigned int align, size_t bound, bool contig);
+        unsigned int align, size_t bound, bool contig);
 
 /*
  * free a malloc_elem block by adding it to the free list. If the

@@ -3,5 +3,5 @@
  * All rights reserved.
  */
 
-#define	ENA_GEN_DATE	"Wed Sep 26 13:46:28 DST 2018"
-#define	ENA_GEN_COMMIT	"aac865f"
+#define    ENA_GEN_DATE    "Wed Sep 26 13:46:28 DST 2018"
+#define    ENA_GEN_COMMIT    "aac865f"

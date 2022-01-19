@@ -42,7 +42,7 @@
 
 #define false               0
 #define true                1
-#define min(a,b)	RTE_MIN(a,b) 
+#define min(a,b)    RTE_MIN(a,b) 
 
 #define EWARN(hw, S, args...)     DEBUGOUT1(S, ##args)
 
@@ -56,17 +56,17 @@
 
 /* Shared code error reporting */
 enum {
-	IXGBE_ERROR_SOFTWARE,
-	IXGBE_ERROR_POLLING,
-	IXGBE_ERROR_INVALID_STATE,
-	IXGBE_ERROR_UNSUPPORTED,
-	IXGBE_ERROR_ARGUMENT,
-	IXGBE_ERROR_CAUTION,
+    IXGBE_ERROR_SOFTWARE,
+    IXGBE_ERROR_POLLING,
+    IXGBE_ERROR_INVALID_STATE,
+    IXGBE_ERROR_UNSUPPORTED,
+    IXGBE_ERROR_ARGUMENT,
+    IXGBE_ERROR_CAUTION,
 };
 
 #define STATIC static
-#define IXGBE_NTOHL(_i)	rte_be_to_cpu_32(_i)
-#define IXGBE_NTOHS(_i)	rte_be_to_cpu_16(_i)
+#define IXGBE_NTOHL(_i)    rte_be_to_cpu_32(_i)
+#define IXGBE_NTOHS(_i)    rte_be_to_cpu_16(_i)
 #define IXGBE_CPU_TO_LE16(_i)  rte_cpu_to_le_16(_i)
 #define IXGBE_CPU_TO_LE32(_i)  rte_cpu_to_le_32(_i)
 #define IXGBE_LE32_TO_CPU(_i)  rte_le_to_cpu_32(_i)
@@ -75,20 +75,20 @@ enum {
 #define IXGBE_CPU_TO_BE32(_i)  rte_cpu_to_be_32(_i)
 #define IXGBE_BE32_TO_CPU(_i)  rte_be_to_cpu_32(_i)
 
-typedef uint8_t		u8;
-typedef int8_t		s8;
-typedef uint16_t	u16;
-typedef int16_t		s16;
-typedef uint32_t	u32;
-typedef int32_t		s32;
-typedef uint64_t	u64;
+typedef uint8_t        u8;
+typedef int8_t        s8;
+typedef uint16_t    u16;
+typedef int16_t        s16;
+typedef uint32_t    u32;
+typedef int32_t        s32;
+typedef uint64_t    u64;
 #ifndef __cplusplus
-typedef int		bool;
+typedef int        bool;
 #endif
 
-#define mb()	rte_mb()
-#define wmb()	rte_wmb()
-#define rmb()	rte_rmb()
+#define mb()    rte_mb()
+#define wmb()    rte_wmb()
+#define rmb()    rte_rmb()
 
 #define IOMEM
 
@@ -98,45 +98,45 @@ typedef int		bool;
 
 static inline uint32_t ixgbe_read_addr(volatile void* addr)
 {
-	return rte_le_to_cpu_32(IXGBE_PCI_REG(addr));
+    return rte_le_to_cpu_32(IXGBE_PCI_REG(addr));
 }
 
-#define IXGBE_PCI_REG_WRITE(reg, value)			\
-	rte_write32((rte_cpu_to_le_32(value)), reg)
+#define IXGBE_PCI_REG_WRITE(reg, value)            \
+    rte_write32((rte_cpu_to_le_32(value)), reg)
 
-#define IXGBE_PCI_REG_WRITE_RELAXED(reg, value)		\
-	rte_write32_relaxed((rte_cpu_to_le_32(value)), reg)
+#define IXGBE_PCI_REG_WRITE_RELAXED(reg, value)        \
+    rte_write32_relaxed((rte_cpu_to_le_32(value)), reg)
 
 #define IXGBE_PCI_REG_ADDR(hw, reg) \
-	((volatile uint32_t *)((char *)(hw)->hw_addr + (reg)))
+    ((volatile uint32_t *)((char *)(hw)->hw_addr + (reg)))
 
 #define IXGBE_PCI_REG_ARRAY_ADDR(hw, reg, index) \
-	IXGBE_PCI_REG_ADDR((hw), (reg) + ((index) << 2))
+    IXGBE_PCI_REG_ADDR((hw), (reg) + ((index) << 2))
 
 /* Not implemented !! */
-#define IXGBE_READ_PCIE_WORD(hw, reg) 0	
+#define IXGBE_READ_PCIE_WORD(hw, reg) 0    
 #define IXGBE_WRITE_PCIE_WORD(hw, reg, value) do { } while(0)
 
 #define IXGBE_WRITE_FLUSH(a) IXGBE_READ_REG(a, IXGBE_STATUS)
 
 #define IXGBE_READ_REG(hw, reg) \
-	ixgbe_read_addr(IXGBE_PCI_REG_ADDR((hw), (reg)))
+    ixgbe_read_addr(IXGBE_PCI_REG_ADDR((hw), (reg)))
 
 #define IXGBE_WRITE_REG(hw, reg, value) \
-	IXGBE_PCI_REG_WRITE(IXGBE_PCI_REG_ADDR((hw), (reg)), (value))
+    IXGBE_PCI_REG_WRITE(IXGBE_PCI_REG_ADDR((hw), (reg)), (value))
 
 #define IXGBE_READ_REG_ARRAY(hw, reg, index) \
-	IXGBE_PCI_REG(IXGBE_PCI_REG_ARRAY_ADDR((hw), (reg), (index)))
+    IXGBE_PCI_REG(IXGBE_PCI_REG_ARRAY_ADDR((hw), (reg), (index)))
 
 #define IXGBE_WRITE_REG_ARRAY(hw, reg, index, value) \
-	IXGBE_PCI_REG_WRITE(IXGBE_PCI_REG_ARRAY_ADDR((hw), (reg), (index)), (value))
+    IXGBE_PCI_REG_WRITE(IXGBE_PCI_REG_ARRAY_ADDR((hw), (reg), (index)), (value))
 
-#define IXGBE_WRITE_REG_THEN_POLL_MASK(hw, reg, val, mask, poll_ms)	\
-do {									\
-	uint32_t cnt = poll_ms;						\
-	IXGBE_WRITE_REG(hw, (reg), (val));				\
-	while (((IXGBE_READ_REG(hw, (reg))) & (mask)) && (cnt--))	\
-		rte_delay_ms(1);					\
+#define IXGBE_WRITE_REG_THEN_POLL_MASK(hw, reg, val, mask, poll_ms)    \
+do {                                    \
+    uint32_t cnt = poll_ms;                        \
+    IXGBE_WRITE_REG(hw, (reg), (val));                \
+    while (((IXGBE_READ_REG(hw, (reg))) & (mask)) && (cnt--))    \
+        rte_delay_ms(1);                    \
 } while (0)
 
 #endif /* _IXGBE_OS_H_ */

@@ -31,25 +31,25 @@ extern "C" {
 #define RTE_KVARGS_MAX 32
 
 /** separator character used between each pair */
-#define RTE_KVARGS_PAIRS_DELIM	","
+#define RTE_KVARGS_PAIRS_DELIM    ","
 
 /** separator character used between key and value */
-#define RTE_KVARGS_KV_DELIM	"="
+#define RTE_KVARGS_KV_DELIM    "="
 
 /** Type of callback function used by rte_kvargs_process() */
 typedef int (*arg_handler_t)(const char *key, const char *value, void *opaque);
 
 /** A key/value association */
 struct rte_kvargs_pair {
-	char *key;      /**< the name (key) of the association  */
-	char *value;    /**< the value associated to that key */
+    char *key;      /**< the name (key) of the association  */
+    char *value;    /**< the value associated to that key */
 };
 
 /** Store a list of key/value associations */
 struct rte_kvargs {
-	char *str;      /**< copy of the argument string */
-	unsigned count; /**< number of entries in the list */
-	struct rte_kvargs_pair pairs[RTE_KVARGS_MAX]; /**< list of key/values */
+    char *str;      /**< copy of the argument string */
+    unsigned count; /**< number of entries in the list */
+    struct rte_kvargs_pair pairs[RTE_KVARGS_MAX]; /**< list of key/values */
 };
 
 /**
@@ -71,7 +71,7 @@ struct rte_kvargs {
  *   - NULL on error
  */
 struct rte_kvargs *rte_kvargs_parse(const char *args,
-		const char *const valid_keys[]);
+        const char *const valid_keys[]);
 
 /**
  * Allocate a rte_kvargs and store key/value associations from a string.
@@ -100,8 +100,8 @@ struct rte_kvargs *rte_kvargs_parse(const char *args,
  */
 __rte_experimental
 struct rte_kvargs *rte_kvargs_parse_delim(const char *args,
-		const char *const valid_keys[],
-		const char *valid_ends);
+        const char *const valid_keys[],
+        const char *valid_ends);
 
 /**
  * Free a rte_kvargs structure
@@ -136,7 +136,7 @@ void rte_kvargs_free(struct rte_kvargs *kvlist);
  *   - Negative on error
  */
 int rte_kvargs_process(const struct rte_kvargs *kvlist,
-	const char *key_match, arg_handler_t handler, void *opaque_arg);
+    const char *key_match, arg_handler_t handler, void *opaque_arg);
 
 /**
  * Count the number of associations matching the given key
@@ -150,7 +150,7 @@ int rte_kvargs_process(const struct rte_kvargs *kvlist,
  *   The number of entries
  */
 unsigned rte_kvargs_count(const struct rte_kvargs *kvlist,
-	const char *key_match);
+    const char *key_match);
 
 /**
  * Generic kvarg handler for string comparison.

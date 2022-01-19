@@ -17,27 +17,27 @@ extern "C" {
 extern enum rte_flow_classify_table_type table_type;
 
 struct classify_action {
-	/* Flow action mask */
-	uint64_t action_mask;
+    /* Flow action mask */
+    uint64_t action_mask;
 
-	struct action {
-		/** Integer value to return with packets */
-		struct rte_flow_action_mark mark;
-		/** Flow rule counter */
-		struct rte_flow_query_count counter;
-	} act;
+    struct action {
+        /** Integer value to return with packets */
+        struct rte_flow_action_mark mark;
+        /** Flow rule counter */
+        struct rte_flow_query_count counter;
+    } act;
 };
 
 typedef int (*parse_filter_t)(const struct rte_flow_attr *attr,
-			      const struct rte_flow_item pattern[],
-			      const struct rte_flow_action actions[],
-			      struct rte_eth_ntuple_filter *filter,
-			      struct rte_flow_error *error);
+                  const struct rte_flow_item pattern[],
+                  const struct rte_flow_action actions[],
+                  struct rte_eth_ntuple_filter *filter,
+                  struct rte_flow_error *error);
 
 /* Skip all VOID items of the pattern */
 void
 classify_pattern_skip_void_item(struct rte_flow_item *items,
-			    const struct rte_flow_item *pattern);
+                const struct rte_flow_item *pattern);
 
 /* Find the first VOID or non-VOID item pointer */
 const struct rte_flow_item *

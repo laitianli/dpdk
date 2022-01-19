@@ -22,43 +22,43 @@ static struct kni_list kni_list;
 int
 kni_init(void)
 {
-	TAILQ_INIT(&kni_list);
+    TAILQ_INIT(&kni_list);
 
 #ifdef RTE_LIBRTE_KNI
-	rte_kni_init(KNI_MAX);
+    rte_kni_init(KNI_MAX);
 #endif
 
-	return 0;
+    return 0;
 }
 
 struct kni *
 kni_find(const char *name)
 {
-	struct kni *kni;
+    struct kni *kni;
 
-	if (name == NULL)
-		return NULL;
+    if (name == NULL)
+        return NULL;
 
-	TAILQ_FOREACH(kni, &kni_list, node)
-		if (strcmp(kni->name, name) == 0)
-			return kni;
+    TAILQ_FOREACH(kni, &kni_list, node)
+        if (strcmp(kni->name, name) == 0)
+            return kni;
 
-	return NULL;
+    return NULL;
 }
 
 #ifndef RTE_LIBRTE_KNI
 
 struct kni *
 kni_create(const char *name __rte_unused,
-	struct kni_params *params __rte_unused)
+    struct kni_params *params __rte_unused)
 {
-	return NULL;
+    return NULL;
 }
 
 void
 kni_handle_request(void)
 {
-	return;
+    return;
 }
 
 #else
@@ -66,113 +66,113 @@ kni_handle_request(void)
 static int
 kni_config_network_interface(uint16_t port_id, uint8_t if_up)
 {
-	int ret = 0;
+    int ret = 0;
 
-	if (!rte_eth_dev_is_valid_port(port_id))
-		return -EINVAL;
+    if (!rte_eth_dev_is_valid_port(port_id))
+        return -EINVAL;
 
-	ret = (if_up) ?
-		rte_eth_dev_set_link_up(port_id) :
-		rte_eth_dev_set_link_down(port_id);
+    ret = (if_up) ?
+        rte_eth_dev_set_link_up(port_id) :
+        rte_eth_dev_set_link_down(port_id);
 
-	return ret;
+    return ret;
 }
 
 static int
 kni_change_mtu(uint16_t port_id, unsigned int new_mtu)
 {
-	int ret;
+    int ret;
 
-	if (!rte_eth_dev_is_valid_port(port_id))
-		return -EINVAL;
+    if (!rte_eth_dev_is_valid_port(port_id))
+        return -EINVAL;
 
-	if (new_mtu > RTE_ETHER_MAX_LEN)
-		return -EINVAL;
+    if (new_mtu > RTE_ETHER_MAX_LEN)
+        return -EINVAL;
 
-	/* Set new MTU */
-	ret = rte_eth_dev_set_mtu(port_id, new_mtu);
-	if (ret < 0)
-		return ret;
+    /* Set new MTU */
+    ret = rte_eth_dev_set_mtu(port_id, new_mtu);
+    if (ret < 0)
+        return ret;
 
-	return 0;
+    return 0;
 }
 
 struct kni *
 kni_create(const char *name, struct kni_params *params)
 {
-	struct rte_eth_dev_info dev_info;
-	struct rte_kni_conf kni_conf;
-	struct rte_kni_ops kni_ops;
-	struct kni *kni;
-	struct mempool *mempool;
-	struct link *link;
-	struct rte_kni *k;
-	const struct rte_pci_device *pci_dev;
-	const struct rte_bus *bus = NULL;
-	int ret;
+    struct rte_eth_dev_info dev_info;
+    struct rte_kni_conf kni_conf;
+    struct rte_kni_ops kni_ops;
+    struct kni *kni;
+    struct mempool *mempool;
+    struct link *link;
+    struct rte_kni *k;
+    const struct rte_pci_device *pci_dev;
+    const struct rte_bus *bus = NULL;
+    int ret;
 
-	/* Check input params */
-	if ((name == NULL) ||
-		kni_find(name) ||
-		(params == NULL))
-		return NULL;
+    /* Check input params */
+    if ((name == NULL) ||
+        kni_find(name) ||
+        (params == NULL))
+        return NULL;
 
-	mempool = mempool_find(params->mempool_name);
-	link = link_find(params->link_name);
-	if ((mempool == NULL) ||
-		(link == NULL))
-		return NULL;
+    mempool = mempool_find(params->mempool_name);
+    link = link_find(params->link_name);
+    if ((mempool == NULL) ||
+        (link == NULL))
+        return NULL;
 
-	/* Resource create */
-	ret = rte_eth_dev_info_get(link->port_id, &dev_info);
-	if (ret != 0)
-		return NULL;
+    /* Resource create */
+    ret = rte_eth_dev_info_get(link->port_id, &dev_info);
+    if (ret != 0)
+        return NULL;
 
-	memset(&kni_conf, 0, sizeof(kni_conf));
-	strlcpy(kni_conf.name, name, RTE_KNI_NAMESIZE);
-	kni_conf.force_bind = params->force_bind;
-	kni_conf.core_id = params->thread_id;
-	kni_conf.group_id = link->port_id;
-	kni_conf.mbuf_size = mempool->buffer_size;
-	if (dev_info.device)
-		bus = rte_bus_find_by_device(dev_info.device);
-	if (bus && !strcmp(bus->name, "pci")) {
-		pci_dev = RTE_DEV_TO_PCI(dev_info.device);
-		kni_conf.addr = pci_dev->addr;
-		kni_conf.id = pci_dev->id;
-	}
+    memset(&kni_conf, 0, sizeof(kni_conf));
+    strlcpy(kni_conf.name, name, RTE_KNI_NAMESIZE);
+    kni_conf.force_bind = params->force_bind;
+    kni_conf.core_id = params->thread_id;
+    kni_conf.group_id = link->port_id;
+    kni_conf.mbuf_size = mempool->buffer_size;
+    if (dev_info.device)
+        bus = rte_bus_find_by_device(dev_info.device);
+    if (bus && !strcmp(bus->name, "pci")) {
+        pci_dev = RTE_DEV_TO_PCI(dev_info.device);
+        kni_conf.addr = pci_dev->addr;
+        kni_conf.id = pci_dev->id;
+    }
 
-	memset(&kni_ops, 0, sizeof(kni_ops));
-	kni_ops.port_id = link->port_id;
-	kni_ops.config_network_if = kni_config_network_interface;
-	kni_ops.change_mtu = kni_change_mtu;
+    memset(&kni_ops, 0, sizeof(kni_ops));
+    kni_ops.port_id = link->port_id;
+    kni_ops.config_network_if = kni_config_network_interface;
+    kni_ops.change_mtu = kni_change_mtu;
 
-	k = rte_kni_alloc(mempool->m, &kni_conf, &kni_ops);
-	if (k == NULL)
-		return NULL;
+    k = rte_kni_alloc(mempool->m, &kni_conf, &kni_ops);
+    if (k == NULL)
+        return NULL;
 
-	/* Node allocation */
-	kni = calloc(1, sizeof(struct kni));
-	if (kni == NULL)
-		return NULL;
+    /* Node allocation */
+    kni = calloc(1, sizeof(struct kni));
+    if (kni == NULL)
+        return NULL;
 
-	/* Node fill in */
-	strlcpy(kni->name, name, sizeof(kni->name));
-	kni->k = k;
+    /* Node fill in */
+    strlcpy(kni->name, name, sizeof(kni->name));
+    kni->k = k;
 
-	/* Node add to list */
-	TAILQ_INSERT_TAIL(&kni_list, kni, node);
+    /* Node add to list */
+    TAILQ_INSERT_TAIL(&kni_list, kni, node);
 
-	return kni;
+    return kni;
 }
 
 void
 kni_handle_request(void)
 {
-	struct kni *kni;
+    struct kni *kni;
 
-	TAILQ_FOREACH(kni, &kni_list, node)
-		rte_kni_handle_request(kni->k);
+    TAILQ_FOREACH(kni, &kni_list, node)
+        rte_kni_handle_request(kni->k);
 }
 
 #endif

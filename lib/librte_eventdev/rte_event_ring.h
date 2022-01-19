@@ -31,7 +31,7 @@
  * directly as needed.
  */
 struct rte_event_ring {
-	struct rte_ring r;
+    struct rte_ring r;
 };
 
 /**
@@ -45,7 +45,7 @@ struct rte_event_ring {
 static __rte_always_inline unsigned int
 rte_event_ring_count(const struct rte_event_ring *r)
 {
-	return rte_ring_count(&r->r);
+    return rte_ring_count(&r->r);
 }
 
 /**
@@ -60,7 +60,7 @@ rte_event_ring_count(const struct rte_event_ring *r)
 static __rte_always_inline unsigned int
 rte_event_ring_free_count(const struct rte_event_ring *r)
 {
-	return rte_ring_free_count(&r->r);
+    return rte_ring_free_count(&r->r);
 }
 
 /**
@@ -85,25 +85,25 @@ rte_event_ring_free_count(const struct rte_event_ring *r)
  */
 static __rte_always_inline unsigned int
 rte_event_ring_enqueue_burst(struct rte_event_ring *r,
-		const struct rte_event *events,
-		unsigned int n, uint16_t *free_space)
+        const struct rte_event *events,
+        unsigned int n, uint16_t *free_space)
 {
-	uint32_t prod_head, prod_next;
-	uint32_t free_entries;
+    uint32_t prod_head, prod_next;
+    uint32_t free_entries;
 
-	n = __rte_ring_move_prod_head(&r->r, r->r.prod.single, n,
-			RTE_RING_QUEUE_VARIABLE,
-			&prod_head, &prod_next, &free_entries);
-	if (n == 0)
-		goto end;
+    n = __rte_ring_move_prod_head(&r->r, r->r.prod.single, n,
+            RTE_RING_QUEUE_VARIABLE,
+            &prod_head, &prod_next, &free_entries);
+    if (n == 0)
+        goto end;
 
-	ENQUEUE_PTRS(&r->r, &r[1], prod_head, events, n, struct rte_event);
+    ENQUEUE_PTRS(&r->r, &r[1], prod_head, events, n, struct rte_event);
 
-	update_tail(&r->r.prod, prod_head, prod_next, r->r.prod.single, 1);
+    update_tail(&r->r.prod, prod_head, prod_next, r->r.prod.single, 1);
 end:
-	if (free_space != NULL)
-		*free_space = free_entries - n;
-	return n;
+    if (free_space != NULL)
+        *free_space = free_entries - n;
+    return n;
 }
 
 /**
@@ -126,26 +126,26 @@ end:
  */
 static __rte_always_inline unsigned int
 rte_event_ring_dequeue_burst(struct rte_event_ring *r,
-		struct rte_event *events,
-		unsigned int n, uint16_t *available)
+        struct rte_event *events,
+        unsigned int n, uint16_t *available)
 {
-	uint32_t cons_head, cons_next;
-	uint32_t entries;
+    uint32_t cons_head, cons_next;
+    uint32_t entries;
 
-	n = __rte_ring_move_cons_head(&r->r, r->r.cons.single, n,
-			RTE_RING_QUEUE_VARIABLE,
-			&cons_head, &cons_next, &entries);
-	if (n == 0)
-		goto end;
+    n = __rte_ring_move_cons_head(&r->r, r->r.cons.single, n,
+            RTE_RING_QUEUE_VARIABLE,
+            &cons_head, &cons_next, &entries);
+    if (n == 0)
+        goto end;
 
-	DEQUEUE_PTRS(&r->r, &r[1], cons_head, events, n, struct rte_event);
+    DEQUEUE_PTRS(&r->r, &r[1], cons_head, events, n, struct rte_event);
 
-	update_tail(&r->r.cons, cons_head, cons_next, r->r.cons.single, 0);
+    update_tail(&r->r.cons, cons_head, cons_next, r->r.cons.single, 0);
 
 end:
-	if (available != NULL)
-		*available = entries - n;
-	return n;
+    if (available != NULL)
+        *available = entries - n;
+    return n;
 }
 
 /*
@@ -178,7 +178,7 @@ end:
  */
 int
 rte_event_ring_init(struct rte_event_ring *r, const char *name,
-	unsigned int count, unsigned int flags);
+    unsigned int count, unsigned int flags);
 
 /*
  * Create an event ring structure
@@ -222,7 +222,7 @@ rte_event_ring_init(struct rte_event_ring *r, const char *name,
  */
 struct rte_event_ring *
 rte_event_ring_create(const char *name, unsigned int count, int socket_id,
-		unsigned int flags);
+        unsigned int flags);
 
 /**
  * Search for an event ring based on its name
@@ -259,7 +259,7 @@ rte_event_ring_free(struct rte_event_ring *r);
 static inline unsigned int
 rte_event_ring_get_size(const struct rte_event_ring *r)
 {
-	return rte_ring_get_size(&r->r);
+    return rte_ring_get_size(&r->r);
 }
 
 /**
@@ -273,6 +273,6 @@ rte_event_ring_get_size(const struct rte_event_ring *r)
 static inline unsigned int
 rte_event_ring_get_capacity(const struct rte_event_ring *r)
 {
-	return rte_ring_get_capacity(&r->r);
+    return rte_ring_get_capacity(&r->r);
 }
 #endif

@@ -56,8 +56,8 @@ extern "C" {
  * Only 64-bits of the memory is actually used though.
  */
 union rte_distributor_buffer_single {
-	volatile int64_t bufptr64;
-	char pad[RTE_CACHE_LINE_SIZE*3];
+    volatile int64_t bufptr64;
+    char pad[RTE_CACHE_LINE_SIZE*3];
 } __rte_cache_aligned;
 
 /*
@@ -67,45 +67,45 @@ union rte_distributor_buffer_single {
 #define RTE_DIST_BURST_SIZE 8
 
 struct rte_distributor_backlog {
-	unsigned int start;
-	unsigned int count;
-	int64_t pkts[RTE_DIST_BURST_SIZE] __rte_cache_aligned;
-	uint16_t *tags; /* will point to second cacheline of inflights */
+    unsigned int start;
+    unsigned int count;
+    int64_t pkts[RTE_DIST_BURST_SIZE] __rte_cache_aligned;
+    uint16_t *tags; /* will point to second cacheline of inflights */
 } __rte_cache_aligned;
 
 
 struct rte_distributor_returned_pkts {
-	unsigned int start;
-	unsigned int count;
-	struct rte_mbuf *mbufs[RTE_DISTRIB_MAX_RETURNS];
+    unsigned int start;
+    unsigned int count;
+    struct rte_mbuf *mbufs[RTE_DISTRIB_MAX_RETURNS];
 };
 
 struct rte_distributor_single {
-	TAILQ_ENTRY(rte_distributor_single) next;    /**< Next in list. */
+    TAILQ_ENTRY(rte_distributor_single) next;    /**< Next in list. */
 
-	char name[RTE_DISTRIBUTOR_NAMESIZE];  /**< Name of the ring. */
-	unsigned int num_workers;             /**< Number of workers polling */
+    char name[RTE_DISTRIBUTOR_NAMESIZE];  /**< Name of the ring. */
+    unsigned int num_workers;             /**< Number of workers polling */
 
-	uint32_t in_flight_tags[RTE_DISTRIB_MAX_WORKERS];
-		/**< Tracks the tag being processed per core */
-	uint64_t in_flight_bitmask;
-		/**< on/off bits for in-flight tags.
-		 * Note that if RTE_DISTRIB_MAX_WORKERS is larger than 64 then
-		 * the bitmask has to expand.
-		 */
+    uint32_t in_flight_tags[RTE_DISTRIB_MAX_WORKERS];
+        /**< Tracks the tag being processed per core */
+    uint64_t in_flight_bitmask;
+        /**< on/off bits for in-flight tags.
+         * Note that if RTE_DISTRIB_MAX_WORKERS is larger than 64 then
+         * the bitmask has to expand.
+         */
 
-	struct rte_distributor_backlog backlog[RTE_DISTRIB_MAX_WORKERS];
+    struct rte_distributor_backlog backlog[RTE_DISTRIB_MAX_WORKERS];
 
-	union rte_distributor_buffer_single bufs[RTE_DISTRIB_MAX_WORKERS];
+    union rte_distributor_buffer_single bufs[RTE_DISTRIB_MAX_WORKERS];
 
-	struct rte_distributor_returned_pkts returns;
+    struct rte_distributor_returned_pkts returns;
 };
 
 /* All different signature compare functions */
 enum rte_distributor_match_function {
-	RTE_DIST_MATCH_SCALAR = 0,
-	RTE_DIST_MATCH_VECTOR,
-	RTE_DIST_NUM_MATCH_FNS
+    RTE_DIST_MATCH_SCALAR = 0,
+    RTE_DIST_MATCH_VECTOR,
+    RTE_DIST_NUM_MATCH_FNS
 };
 
 /**
@@ -117,55 +117,55 @@ enum rte_distributor_match_function {
  * There is a separate cacheline for returns in the burst API.
  */
 struct rte_distributor_buffer {
-	volatile int64_t bufptr64[RTE_DIST_BURST_SIZE]
-		__rte_cache_aligned; /* <= outgoing to worker */
+    volatile int64_t bufptr64[RTE_DIST_BURST_SIZE]
+        __rte_cache_aligned; /* <= outgoing to worker */
 
-	int64_t pad1 __rte_cache_aligned;    /* <= one cache line  */
+    int64_t pad1 __rte_cache_aligned;    /* <= one cache line  */
 
-	volatile int64_t retptr64[RTE_DIST_BURST_SIZE]
-		__rte_cache_aligned; /* <= incoming from worker */
+    volatile int64_t retptr64[RTE_DIST_BURST_SIZE]
+        __rte_cache_aligned; /* <= incoming from worker */
 
-	int64_t pad2 __rte_cache_aligned;    /* <= one cache line  */
+    int64_t pad2 __rte_cache_aligned;    /* <= one cache line  */
 
-	int count __rte_cache_aligned;       /* <= number of current mbufs */
+    int count __rte_cache_aligned;       /* <= number of current mbufs */
 };
 
 struct rte_distributor {
-	TAILQ_ENTRY(rte_distributor) next;    /**< Next in list. */
+    TAILQ_ENTRY(rte_distributor) next;    /**< Next in list. */
 
-	char name[RTE_DISTRIBUTOR_NAMESIZE];  /**< Name of the ring. */
-	unsigned int num_workers;             /**< Number of workers polling */
-	unsigned int alg_type;                /**< Number of alg types */
+    char name[RTE_DISTRIBUTOR_NAMESIZE];  /**< Name of the ring. */
+    unsigned int num_workers;             /**< Number of workers polling */
+    unsigned int alg_type;                /**< Number of alg types */
 
-	/**>
-	 * First cache line in the this array are the tags inflight
-	 * on the worker core. Second cache line are the backlog
-	 * that are going to go to the worker core.
-	 */
-	uint16_t in_flight_tags[RTE_DISTRIB_MAX_WORKERS][RTE_DIST_BURST_SIZE*2]
-			__rte_cache_aligned;
+    /**>
+     * First cache line in the this array are the tags inflight
+     * on the worker core. Second cache line are the backlog
+     * that are going to go to the worker core.
+     */
+    uint16_t in_flight_tags[RTE_DISTRIB_MAX_WORKERS][RTE_DIST_BURST_SIZE*2]
+            __rte_cache_aligned;
 
-	struct rte_distributor_backlog backlog[RTE_DISTRIB_MAX_WORKERS]
-			__rte_cache_aligned;
+    struct rte_distributor_backlog backlog[RTE_DISTRIB_MAX_WORKERS]
+            __rte_cache_aligned;
 
-	struct rte_distributor_buffer bufs[RTE_DISTRIB_MAX_WORKERS];
+    struct rte_distributor_buffer bufs[RTE_DISTRIB_MAX_WORKERS];
 
-	struct rte_distributor_returned_pkts returns;
+    struct rte_distributor_returned_pkts returns;
 
-	enum rte_distributor_match_function dist_match_fn;
+    enum rte_distributor_match_function dist_match_fn;
 
-	struct rte_distributor_single *d_single;
+    struct rte_distributor_single *d_single;
 };
 
 void
 find_match_scalar(struct rte_distributor *d,
-			uint16_t *data_ptr,
-			uint16_t *output_ptr);
+            uint16_t *data_ptr,
+            uint16_t *output_ptr);
 
 void
 find_match_vec(struct rte_distributor *d,
-			uint16_t *data_ptr,
-			uint16_t *output_ptr);
+            uint16_t *data_ptr,
+            uint16_t *output_ptr);
 
 #ifdef __cplusplus
 }

@@ -26,8 +26,8 @@ extern "C" {
 
 /** sched_reader port parameters */
 struct rte_port_sched_reader_params {
-	/** Underlying pre-initialized rte_sched_port */
-	struct rte_sched_port *sched;
+    /** Underlying pre-initialized rte_sched_port */
+    struct rte_sched_port *sched;
 };
 
 /** sched_reader port operations */
@@ -35,12 +35,12 @@ extern struct rte_port_in_ops rte_port_sched_reader_ops;
 
 /** sched_writer port parameters */
 struct rte_port_sched_writer_params {
-	/** Underlying pre-initialized rte_sched_port */
-	struct rte_sched_port *sched;
+    /** Underlying pre-initialized rte_sched_port */
+    struct rte_sched_port *sched;
 
-	/** Recommended burst size. The actual burst size can be bigger or
-	smaller than this value. */
-	uint32_t tx_burst_sz;
+    /** Recommended burst size. The actual burst size can be bigger or
+    smaller than this value. */
+    uint32_t tx_burst_sz;
 };
 
 /** sched_writer port operations */

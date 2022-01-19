@@ -139,8 +139,8 @@ rte_rawdev_configure(uint16_t dev_id, struct rte_rawdev_info *dev_conf);
  */
 int
 rte_rawdev_queue_conf_get(uint16_t dev_id,
-			  uint16_t queue_id,
-			  rte_rawdev_obj_t queue_conf);
+              uint16_t queue_id,
+              rte_rawdev_obj_t queue_conf);
 
 /**
  * Allocate and set up a raw queue for a raw device.
@@ -152,7 +152,7 @@ rte_rawdev_queue_conf_get(uint16_t dev_id,
  *   [0, nb_raw_queues - 1] previously supplied to rte_rawdev_configure().
  * @param queue_conf
  *   The pointer to the configuration data to be used for the raw queue.
- *   NULL value is allowed, in which case default configuration	used.
+ *   NULL value is allowed, in which case default configuration    used.
  *
  * @see rte_rawdev_queue_conf_get()
  *
@@ -162,8 +162,8 @@ rte_rawdev_queue_conf_get(uint16_t dev_id,
  */
 int
 rte_rawdev_queue_setup(uint16_t dev_id,
-		       uint16_t queue_id,
-		       rte_rawdev_obj_t queue_conf);
+               uint16_t queue_id,
+               rte_rawdev_obj_t queue_conf);
 
 /**
  * Release and deallocate a raw queue from a raw device.
@@ -250,7 +250,7 @@ rte_rawdev_close(uint16_t dev_id);
 int
 rte_rawdev_reset(uint16_t dev_id);
 
-#define RTE_RAWDEV_NAME_MAX_LEN	(64)
+#define RTE_RAWDEV_NAME_MAX_LEN    (64)
 /**< @internal Max length of name of raw PMD */
 
 
@@ -261,27 +261,27 @@ rte_rawdev_reset(uint16_t dev_id);
  * related to framework.
  */
 struct rte_rawdev {
-	/**< Socket ID where memory is allocated */
-	int socket_id;
-	/**< Device ID for this instance */
-	uint16_t dev_id;
-	/**< Functions exported by PMD */
-	const struct rte_rawdev_ops *dev_ops;
-	/**< Device info. supplied during device initialization */
-	struct rte_device *device;
-	/**< Driver info. supplied by probing */
-	const char *driver_name;
+    /**< Socket ID where memory is allocated */
+    int socket_id;
+    /**< Device ID for this instance */
+    uint16_t dev_id;
+    /**< Functions exported by PMD */
+    const struct rte_rawdev_ops *dev_ops;
+    /**< Device info. supplied during device initialization */
+    struct rte_device *device;
+    /**< Driver info. supplied by probing */
+    const char *driver_name;
 
-	RTE_STD_C11
-	/**< Flag indicating the device is attached */
-	uint8_t attached : 1;
-	/**< Device state: STARTED(1)/STOPPED(0) */
-	uint8_t started : 1;
+    RTE_STD_C11
+    /**< Flag indicating the device is attached */
+    uint8_t attached : 1;
+    /**< Device state: STARTED(1)/STOPPED(0) */
+    uint8_t started : 1;
 
-	/**< PMD-specific private data */
-	rte_rawdev_obj_t dev_private;
-	/**< Device name */
-	char name[RTE_RAWDEV_NAME_MAX_LEN];
+    /**< PMD-specific private data */
+    rte_rawdev_obj_t dev_private;
+    /**< Device name */
+    char name[RTE_RAWDEV_NAME_MAX_LEN];
 } __rte_cache_aligned;
 
 /** @internal The pool of rte_rawdev structures. */
@@ -289,19 +289,19 @@ extern struct rte_rawdev *rte_rawdevs;
 
 
 struct rte_rawdev_info {
-	/**< Name of driver handling this device */
-	const char *driver_name;
-	/**< Device encapsulation */
-	struct rte_device *device;
-	/**< Socket ID where memory is allocated */
-	int socket_id;
-	/**< PMD-specific private data */
-	rte_rawdev_obj_t dev_private;
+    /**< Name of driver handling this device */
+    const char *driver_name;
+    /**< Device encapsulation */
+    struct rte_device *device;
+    /**< Socket ID where memory is allocated */
+    int socket_id;
+    /**< PMD-specific private data */
+    rte_rawdev_obj_t dev_private;
 };
 
 struct rte_rawdev_buf {
-	/**< Opaque buffer reference */
-	void *buf_addr;
+    /**< Opaque buffer reference */
+    void *buf_addr;
 };
 
 /**
@@ -341,8 +341,8 @@ rte_rawdev_dump(uint16_t dev_id, FILE *f);
  */
 int
 rte_rawdev_get_attr(uint16_t dev_id,
-		    const char *attr_name,
-		    uint64_t *attr_value);
+            const char *attr_name,
+            uint64_t *attr_value);
 
 /**
  * Set an attribute value.
@@ -360,8 +360,8 @@ rte_rawdev_get_attr(uint16_t dev_id,
  */
 int
 rte_rawdev_set_attr(uint16_t dev_id,
-		    const char *attr_name,
-		    const uint64_t attr_value);
+            const char *attr_name,
+            const uint64_t attr_value);
 
 /**
  * Enqueue a stream of buffers to the device.
@@ -386,9 +386,9 @@ rte_rawdev_set_attr(uint16_t dev_id,
  */
 int
 rte_rawdev_enqueue_buffers(uint16_t dev_id,
-			   struct rte_rawdev_buf **buffers,
-			   unsigned int count,
-			   rte_rawdev_obj_t context);
+               struct rte_rawdev_buf **buffers,
+               unsigned int count,
+               rte_rawdev_obj_t context);
 
 /**
  * Dequeue a stream of buffers from the device.
@@ -417,9 +417,9 @@ rte_rawdev_enqueue_buffers(uint16_t dev_id,
  */
 int
 rte_rawdev_dequeue_buffers(uint16_t dev_id,
-			   struct rte_rawdev_buf **buffers,
-			   unsigned int count,
-			   rte_rawdev_obj_t context);
+               struct rte_rawdev_buf **buffers,
+               unsigned int count,
+               rte_rawdev_obj_t context);
 
 /** Maximum name length for extended statistics counters */
 #define RTE_RAW_DEV_XSTATS_NAME_SIZE 64
@@ -431,7 +431,7 @@ rte_rawdev_dequeue_buffers(uint16_t dev_id,
  * for extended ethdev statistics.
  */
 struct rte_rawdev_xstats_name {
-	char name[RTE_RAW_DEV_XSTATS_NAME_SIZE];
+    char name[RTE_RAW_DEV_XSTATS_NAME_SIZE];
 };
 
 /**
@@ -457,8 +457,8 @@ struct rte_rawdev_xstats_name {
  */
 int
 rte_rawdev_xstats_names_get(uint16_t dev_id,
-			    struct rte_rawdev_xstats_name *xstats_names,
-			    unsigned int size);
+                struct rte_rawdev_xstats_name *xstats_names,
+                unsigned int size);
 
 /**
  * Retrieve extended statistics of a raw device.
@@ -481,9 +481,9 @@ rte_rawdev_xstats_names_get(uint16_t dev_id,
  */
 int
 rte_rawdev_xstats_get(uint16_t dev_id,
-		      const unsigned int ids[],
-		      uint64_t values[],
-		      unsigned int n);
+              const unsigned int ids[],
+              uint64_t values[],
+              unsigned int n);
 
 /**
  * Retrieve the value of a single stat by requesting it by name.
@@ -503,8 +503,8 @@ rte_rawdev_xstats_get(uint16_t dev_id,
  */
 uint64_t
 rte_rawdev_xstats_by_name_get(uint16_t dev_id,
-			      const char *name,
-			      unsigned int *id);
+                  const char *name,
+                  unsigned int *id);
 
 /**
  * Reset the values of the xstats of the selected component in the device.
@@ -523,8 +523,8 @@ rte_rawdev_xstats_by_name_get(uint16_t dev_id,
  */
 int
 rte_rawdev_xstats_reset(uint16_t dev_id,
-			const uint32_t ids[],
-			uint32_t nb_ids);
+            const uint32_t ids[],
+            uint32_t nb_ids);
 
 /**
  * Get Firmware status of the device..
@@ -542,7 +542,7 @@ rte_rawdev_xstats_reset(uint16_t dev_id,
  */
 int
 rte_rawdev_firmware_status_get(uint16_t dev_id,
-			       rte_rawdev_obj_t status_info);
+                   rte_rawdev_obj_t status_info);
 
 /**
  * Get Firmware version of the device.
@@ -560,7 +560,7 @@ rte_rawdev_firmware_status_get(uint16_t dev_id,
  */
 int
 rte_rawdev_firmware_version_get(uint16_t dev_id,
-				rte_rawdev_obj_t version_info);
+                rte_rawdev_obj_t version_info);
 
 /**
  * Load firmware on the device.

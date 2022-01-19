@@ -19,18 +19,18 @@
 struct opae_bridge *
 opae_bridge_alloc(const char *name, struct opae_bridge_ops *ops, void *data)
 {
-	struct opae_bridge *br = opae_zmalloc(sizeof(*br));
+    struct opae_bridge *br = opae_zmalloc(sizeof(*br));
 
-	if (!br)
-		return NULL;
+    if (!br)
+        return NULL;
 
-	br->name = name;
-	br->ops = ops;
-	br->data = data;
+    br->name = name;
+    br->ops = ops;
+    br->data = data;
 
-	opae_log("%s %p\n", __func__, br);
+    opae_log("%s %p\n", __func__, br);
 
-	return br;
+    return br;
 }
 
 /**
@@ -41,15 +41,15 @@ opae_bridge_alloc(const char *name, struct opae_bridge_ops *ops, void *data)
  */
 int opae_bridge_reset(struct opae_bridge *br)
 {
-	if (!br)
-		return -EINVAL;
+    if (!br)
+        return -EINVAL;
 
-	if (br->ops && br->ops->reset)
-		return br->ops->reset(br);
+    if (br->ops && br->ops->reset)
+        return br->ops->reset(br);
 
-	opae_log("%s no ops\n", __func__);
+    opae_log("%s no ops\n", __func__);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /* Accelerator Functions */
@@ -64,20 +64,20 @@ int opae_bridge_reset(struct opae_bridge *br)
  */
 struct opae_accelerator *
 opae_accelerator_alloc(const char *name, struct opae_accelerator_ops *ops,
-		       void *data)
+               void *data)
 {
-	struct opae_accelerator *acc = opae_zmalloc(sizeof(*acc));
+    struct opae_accelerator *acc = opae_zmalloc(sizeof(*acc));
 
-	if (!acc)
-		return NULL;
+    if (!acc)
+        return NULL;
 
-	acc->name = name;
-	acc->ops = ops;
-	acc->data = data;
+    acc->name = name;
+    acc->ops = ops;
+    acc->data = data;
 
-	opae_log("%s %p\n", __func__, acc);
+    opae_log("%s %p\n", __func__, acc);
 
-	return acc;
+    return acc;
 }
 
 /**
@@ -91,15 +91,15 @@ opae_accelerator_alloc(const char *name, struct opae_accelerator_ops *ops,
  * Return: 0 on success, otherwise error code.
  */
 int opae_acc_reg_read(struct opae_accelerator *acc, unsigned int region_idx,
-		      u64 offset, unsigned int byte, void *data)
+              u64 offset, unsigned int byte, void *data)
 {
-	if (!acc || !data)
-		return -EINVAL;
+    if (!acc || !data)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->read)
-		return acc->ops->read(acc, region_idx, offset, byte, data);
+    if (acc->ops && acc->ops->read)
+        return acc->ops->read(acc, region_idx, offset, byte, data);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -113,15 +113,15 @@ int opae_acc_reg_read(struct opae_accelerator *acc, unsigned int region_idx,
  * Return: 0 on success, otherwise error code.
  */
 int opae_acc_reg_write(struct opae_accelerator *acc, unsigned int region_idx,
-		       u64 offset, unsigned int byte, void *data)
+               u64 offset, unsigned int byte, void *data)
 {
-	if (!acc || !data)
-		return -EINVAL;
+    if (!acc || !data)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->write)
-		return acc->ops->write(acc, region_idx, offset, byte, data);
+    if (acc->ops && acc->ops->write)
+        return acc->ops->write(acc, region_idx, offset, byte, data);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -133,13 +133,13 @@ int opae_acc_reg_write(struct opae_accelerator *acc, unsigned int region_idx,
  */
 int opae_acc_get_info(struct opae_accelerator *acc, struct opae_acc_info *info)
 {
-	if (!acc || !info)
-		return -EINVAL;
+    if (!acc || !info)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->get_info)
-		return acc->ops->get_info(acc, info);
+    if (acc->ops && acc->ops->get_info)
+        return acc->ops->get_info(acc, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -150,15 +150,15 @@ int opae_acc_get_info(struct opae_accelerator *acc, struct opae_acc_info *info)
  * Return: 0 on success, otherwise error code.
  */
 int opae_acc_get_region_info(struct opae_accelerator *acc,
-			     struct opae_acc_region_info *info)
+                 struct opae_acc_region_info *info)
 {
-	if (!acc || !info)
-		return -EINVAL;
+    if (!acc || !info)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->get_region_info)
-		return acc->ops->get_region_info(acc, info);
+    if (acc->ops && acc->ops->get_region_info)
+        return acc->ops->get_region_info(acc, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -171,18 +171,18 @@ int opae_acc_get_region_info(struct opae_accelerator *acc,
  * Return: 0 on success, otherwise error code.
  */
 int opae_acc_set_irq(struct opae_accelerator *acc,
-		     u32 start, u32 count, s32 evtfds[])
+             u32 start, u32 count, s32 evtfds[])
 {
-	if (!acc || !acc->data)
-		return -EINVAL;
+    if (!acc || !acc->data)
+        return -EINVAL;
 
-	if (start + count <= start)
-		return -EINVAL;
+    if (start + count <= start)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->set_irq)
-		return acc->ops->set_irq(acc, start, count, evtfds);
+    if (acc->ops && acc->ops->set_irq)
+        return acc->ops->set_irq(acc, start, count, evtfds);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -193,15 +193,15 @@ int opae_acc_set_irq(struct opae_accelerator *acc,
  * Return: 0 on success, otherwise error code.
  */
 int opae_acc_get_uuid(struct opae_accelerator *acc,
-		      struct uuid *uuid)
+              struct uuid *uuid)
 {
-	if (!acc || !uuid)
-		return -EINVAL;
+    if (!acc || !uuid)
+        return -EINVAL;
 
-	if (acc->ops && acc->ops->get_uuid)
-		return acc->ops->get_uuid(acc, uuid);
+    if (acc->ops && acc->ops->get_uuid)
+        return acc->ops->get_uuid(acc, uuid);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /* Manager Functions */
@@ -217,21 +217,21 @@ int opae_acc_get_uuid(struct opae_accelerator *acc,
  */
 struct opae_manager *
 opae_manager_alloc(const char *name, struct opae_manager_ops *ops,
-		struct opae_manager_networking_ops *network_ops, void *data)
+        struct opae_manager_networking_ops *network_ops, void *data)
 {
-	struct opae_manager *mgr = opae_zmalloc(sizeof(*mgr));
+    struct opae_manager *mgr = opae_zmalloc(sizeof(*mgr));
 
-	if (!mgr)
-		return NULL;
+    if (!mgr)
+        return NULL;
 
-	mgr->name = name;
-	mgr->ops = ops;
-	mgr->network_ops = network_ops;
-	mgr->data = data;
+    mgr->name = name;
+    mgr->ops = ops;
+    mgr->network_ops = network_ops;
+    mgr->data = data;
 
-	opae_log("%s %p\n", __func__, mgr);
+    opae_log("%s %p\n", __func__, mgr);
 
-	return mgr;
+    return mgr;
 }
 
 /**
@@ -245,15 +245,15 @@ opae_manager_alloc(const char *name, struct opae_manager_ops *ops,
  * Return: 0 on success, otherwise error code.
  */
 int opae_manager_flash(struct opae_manager *mgr, int id, const char *buf,
-		u32 size, u64 *status)
+        u32 size, u64 *status)
 {
-	if (!mgr)
-		return -EINVAL;
+    if (!mgr)
+        return -EINVAL;
 
-	if (mgr && mgr->ops && mgr->ops->flash)
-		return mgr->ops->flash(mgr, id, buf, size, status);
+    if (mgr && mgr->ops && mgr->ops->flash)
+        return mgr->ops->flash(mgr, id, buf, size, status);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /* Adapter Functions */
@@ -266,43 +266,43 @@ int opae_manager_flash(struct opae_manager *mgr, int id, const char *buf,
  */
 void *opae_adapter_data_alloc(enum opae_adapter_type type)
 {
-	struct opae_adapter_data *data;
-	int size;
+    struct opae_adapter_data *data;
+    int size;
 
-	switch (type) {
-	case OPAE_FPGA_PCI:
-		size = sizeof(struct opae_adapter_data_pci);
-		break;
-	case OPAE_FPGA_NET:
-		size = sizeof(struct opae_adapter_data_net);
-		break;
-	default:
-		size = sizeof(struct opae_adapter_data);
-		break;
-	}
+    switch (type) {
+    case OPAE_FPGA_PCI:
+        size = sizeof(struct opae_adapter_data_pci);
+        break;
+    case OPAE_FPGA_NET:
+        size = sizeof(struct opae_adapter_data_net);
+        break;
+    default:
+        size = sizeof(struct opae_adapter_data);
+        break;
+    }
 
-	data = opae_zmalloc(size);
-	if (!data)
-		return NULL;
+    data = opae_zmalloc(size);
+    if (!data)
+        return NULL;
 
-	data->type = type;
+    data->type = type;
 
-	return data;
+    return data;
 }
 
 static struct opae_adapter_ops *match_ops(struct opae_adapter *adapter)
 {
-	struct opae_adapter_data *data;
+    struct opae_adapter_data *data;
 
-	if (!adapter || !adapter->data)
-		return NULL;
+    if (!adapter || !adapter->data)
+        return NULL;
 
-	data = adapter->data;
+    data = adapter->data;
 
-	if (data->type == OPAE_FPGA_PCI)
-		return &ifpga_adapter_ops;
+    if (data->type == OPAE_FPGA_PCI)
+        return &ifpga_adapter_ops;
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -314,17 +314,17 @@ static struct opae_adapter_ops *match_ops(struct opae_adapter *adapter)
  * Return: 0 on success.
  */
 int opae_adapter_init(struct opae_adapter *adapter,
-		const char *name, void *data)
+        const char *name, void *data)
 {
-	if (!adapter)
-		return -ENOMEM;
+    if (!adapter)
+        return -ENOMEM;
 
-	TAILQ_INIT(&adapter->acc_list);
-	adapter->data = data;
-	adapter->name = name;
-	adapter->ops = match_ops(adapter);
+    TAILQ_INIT(&adapter->acc_list);
+    adapter->data = data;
+    adapter->name = name;
+    adapter->ops = match_ops(adapter);
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -335,18 +335,18 @@ int opae_adapter_init(struct opae_adapter *adapter,
  */
 int opae_adapter_enumerate(struct opae_adapter *adapter)
 {
-	int ret = -ENOENT;
+    int ret = -ENOENT;
 
-	if (!adapter)
-		return -EINVAL;
+    if (!adapter)
+        return -EINVAL;
 
-	if (adapter->ops && adapter->ops->enumerate)
-		ret = adapter->ops->enumerate(adapter);
+    if (adapter->ops && adapter->ops->enumerate)
+        ret = adapter->ops->enumerate(adapter);
 
-	if (!ret)
-		opae_adapter_dump(adapter, 0);
+    if (!ret)
+        opae_adapter_dump(adapter, 0);
 
-	return ret;
+    return ret;
 }
 
 /**
@@ -357,8 +357,8 @@ int opae_adapter_enumerate(struct opae_adapter *adapter)
  */
 void opae_adapter_destroy(struct opae_adapter *adapter)
 {
-	if (adapter && adapter->ops && adapter->ops->destroy)
-		adapter->ops->destroy(adapter);
+    if (adapter && adapter->ops && adapter->ops->destroy)
+        adapter->ops->destroy(adapter);
 }
 
 /**
@@ -371,16 +371,16 @@ void opae_adapter_destroy(struct opae_adapter *adapter)
 struct opae_accelerator *
 opae_adapter_get_acc(struct opae_adapter *adapter, int acc_id)
 {
-	struct opae_accelerator *acc = NULL;
+    struct opae_accelerator *acc = NULL;
 
-	if (!adapter)
-		return NULL;
+    if (!adapter)
+        return NULL;
 
-	opae_adapter_for_each_acc(adapter, acc)
-		if (acc->index == acc_id)
-			return acc;
+    opae_adapter_for_each_acc(adapter, acc)
+        if (acc->index == acc_id)
+            return acc;
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -392,17 +392,17 @@ opae_adapter_get_acc(struct opae_adapter *adapter, int acc_id)
  * Return: return the bytes of read successfully
  */
 int opae_manager_read_mac_rom(struct opae_manager *mgr, int port,
-		struct opae_ether_addr *addr)
+        struct opae_ether_addr *addr)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->read_mac_rom)
-		return mgr->network_ops->read_mac_rom(mgr,
-				port * sizeof(struct opae_ether_addr),
-				addr, sizeof(struct opae_ether_addr));
+    if (mgr->network_ops->read_mac_rom)
+        return mgr->network_ops->read_mac_rom(mgr,
+                port * sizeof(struct opae_ether_addr),
+                addr, sizeof(struct opae_ether_addr));
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -414,17 +414,17 @@ int opae_manager_read_mac_rom(struct opae_manager *mgr, int port,
  * Return: return written bytes
  */
 int opae_manager_write_mac_rom(struct opae_manager *mgr, int port,
-		struct opae_ether_addr *addr)
+        struct opae_ether_addr *addr)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops && mgr->network_ops->write_mac_rom)
-		return mgr->network_ops->write_mac_rom(mgr,
-				port * sizeof(struct opae_ether_addr),
-				addr, sizeof(struct opae_ether_addr));
+    if (mgr->network_ops && mgr->network_ops->write_mac_rom)
+        return mgr->network_ops->write_mac_rom(mgr,
+                port * sizeof(struct opae_ether_addr),
+                addr, sizeof(struct opae_ether_addr));
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -435,13 +435,13 @@ int opae_manager_write_mac_rom(struct opae_manager *mgr, int port,
  */
 int opae_manager_get_eth_group_nums(struct opae_manager *mgr)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->get_retimer_info)
-		return mgr->network_ops->get_eth_group_nums(mgr);
+    if (mgr->network_ops->get_retimer_info)
+        return mgr->network_ops->get_eth_group_nums(mgr);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -453,16 +453,16 @@ int opae_manager_get_eth_group_nums(struct opae_manager *mgr)
  * Return: 0 on success, otherwise error code
  */
 int opae_manager_get_eth_group_info(struct opae_manager *mgr,
-	       u8 group_id, struct opae_eth_group_info *info)
+           u8 group_id, struct opae_eth_group_info *info)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->get_retimer_info)
-		return mgr->network_ops->get_eth_group_info(mgr,
-			group_id, info);
+    if (mgr->network_ops->get_retimer_info)
+        return mgr->network_ops->get_eth_group_info(mgr,
+            group_id, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -473,20 +473,20 @@ int opae_manager_get_eth_group_info(struct opae_manager *mgr,
  * Return: 0 on success, otherwise error code.
  */
 int opae_manager_get_eth_group_region_info(struct opae_manager *mgr,
-		u8 group_id, struct opae_eth_group_region_info *info)
+        u8 group_id, struct opae_eth_group_region_info *info)
 {
-	if (!mgr)
-		return -EINVAL;
+    if (!mgr)
+        return -EINVAL;
 
-	if (group_id >= MAX_ETH_GROUP_DEVICES)
-		return -EINVAL;
+    if (group_id >= MAX_ETH_GROUP_DEVICES)
+        return -EINVAL;
 
-	info->group_id = group_id;
+    info->group_id = group_id;
 
-	if (mgr && mgr->ops && mgr->ops->get_eth_group_region_info)
-		return mgr->ops->get_eth_group_region_info(mgr, info);
+    if (mgr && mgr->ops && mgr->ops->get_eth_group_region_info)
+        return mgr->ops->get_eth_group_region_info(mgr, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -501,16 +501,16 @@ int opae_manager_get_eth_group_region_info(struct opae_manager *mgr,
  * Return: 0 on success, otherwise error code
  */
 int opae_manager_eth_group_read_reg(struct opae_manager *mgr, u8 group_id,
-		u8 type, u8 index, u16 addr, u32 *data)
+        u8 type, u8 index, u16 addr, u32 *data)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->eth_group_reg_read)
-		return mgr->network_ops->eth_group_reg_read(mgr, group_id,
-				type, index, addr, data);
+    if (mgr->network_ops->eth_group_reg_read)
+        return mgr->network_ops->eth_group_reg_read(mgr, group_id,
+                type, index, addr, data);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -525,16 +525,16 @@ int opae_manager_eth_group_read_reg(struct opae_manager *mgr, u8 group_id,
  * Return: 0 on success, otherwise error code
  */
 int opae_manager_eth_group_write_reg(struct opae_manager *mgr, u8 group_id,
-		u8 type, u8 index, u16 addr, u32 data)
+        u8 type, u8 index, u16 addr, u32 data)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->eth_group_reg_write)
-		return mgr->network_ops->eth_group_reg_write(mgr, group_id,
-				type, index, addr, data);
+    if (mgr->network_ops->eth_group_reg_write)
+        return mgr->network_ops->eth_group_reg_write(mgr, group_id,
+                type, index, addr, data);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -545,15 +545,15 @@ int opae_manager_eth_group_write_reg(struct opae_manager *mgr, u8 group_id,
  * Return: 0 on success, otherwise error code
  */
 int opae_manager_get_retimer_info(struct opae_manager *mgr,
-	       struct opae_retimer_info *info)
+           struct opae_retimer_info *info)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->get_retimer_info)
-		return mgr->network_ops->get_retimer_info(mgr, info);
+    if (mgr->network_ops->get_retimer_info)
+        return mgr->network_ops->get_retimer_info(mgr, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -564,16 +564,16 @@ int opae_manager_get_retimer_info(struct opae_manager *mgr,
  * Return: 0 on success, otherwise error code
  */
 int opae_manager_get_retimer_status(struct opae_manager *mgr,
-		struct opae_retimer_status *status)
+        struct opae_retimer_status *status)
 {
-	if (!mgr || !mgr->network_ops)
-		return -EINVAL;
+    if (!mgr || !mgr->network_ops)
+        return -EINVAL;
 
-	if (mgr->network_ops->get_retimer_status)
-		return mgr->network_ops->get_retimer_status(mgr,
-				status);
+    if (mgr->network_ops->get_retimer_status)
+        return mgr->network_ops->get_retimer_status(mgr,
+                status);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -584,15 +584,15 @@ int opae_manager_get_retimer_status(struct opae_manager *mgr,
  */
 struct opae_sensor_info *
 opae_mgr_get_sensor_by_id(struct opae_manager *mgr,
-		unsigned int id)
+        unsigned int id)
 {
-	struct opae_sensor_info *sensor;
+    struct opae_sensor_info *sensor;
 
-	opae_mgr_for_each_sensor(mgr, sensor)
-		if (sensor->id == id)
-			return sensor;
+    opae_mgr_for_each_sensor(mgr, sensor)
+        if (sensor->id == id)
+            return sensor;
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -603,15 +603,15 @@ opae_mgr_get_sensor_by_id(struct opae_manager *mgr,
  */
 struct opae_sensor_info *
 opae_mgr_get_sensor_by_name(struct opae_manager *mgr,
-		const char *name)
+        const char *name)
 {
-	struct opae_sensor_info *sensor;
+    struct opae_sensor_info *sensor;
 
-	opae_mgr_for_each_sensor(mgr, sensor)
-		if (!strcmp(sensor->name, name))
-			return sensor;
+    opae_mgr_for_each_sensor(mgr, sensor)
+        if (!strcmp(sensor->name, name))
+            return sensor;
 
-	return NULL;
+    return NULL;
 }
 
 /**
@@ -625,21 +625,21 @@ opae_mgr_get_sensor_by_name(struct opae_manager *mgr,
  */
 int
 opae_mgr_get_sensor_value_by_name(struct opae_manager *mgr,
-		const char *name, unsigned int *value)
+        const char *name, unsigned int *value)
 {
-	struct opae_sensor_info *sensor;
+    struct opae_sensor_info *sensor;
 
-	if (!mgr)
-		return -EINVAL;
+    if (!mgr)
+        return -EINVAL;
 
-	sensor = opae_mgr_get_sensor_by_name(mgr, name);
-	if (!sensor)
-		return -ENODEV;
+    sensor = opae_mgr_get_sensor_by_name(mgr, name);
+    if (!sensor)
+        return -ENODEV;
 
-	if (mgr->ops && mgr->ops->get_sensor_value)
-		return mgr->ops->get_sensor_value(mgr, sensor, value);
+    if (mgr->ops && mgr->ops->get_sensor_value)
+        return mgr->ops->get_sensor_value(mgr, sensor, value);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -653,21 +653,21 @@ opae_mgr_get_sensor_value_by_name(struct opae_manager *mgr,
  */
 int
 opae_mgr_get_sensor_value_by_id(struct opae_manager *mgr,
-		unsigned int id, unsigned int *value)
+        unsigned int id, unsigned int *value)
 {
-	struct opae_sensor_info *sensor;
+    struct opae_sensor_info *sensor;
 
-	if (!mgr)
-		return -EINVAL;
+    if (!mgr)
+        return -EINVAL;
 
-	sensor = opae_mgr_get_sensor_by_id(mgr, id);
-	if (!sensor)
-		return -ENODEV;
+    sensor = opae_mgr_get_sensor_by_id(mgr, id);
+    if (!sensor)
+        return -ENODEV;
 
-	if (mgr->ops && mgr->ops->get_sensor_value)
-		return mgr->ops->get_sensor_value(mgr, sensor, value);
+    if (mgr->ops && mgr->ops->get_sensor_value)
+        return mgr->ops->get_sensor_value(mgr, sensor, value);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -681,16 +681,16 @@ opae_mgr_get_sensor_value_by_id(struct opae_manager *mgr,
  */
 int
 opae_mgr_get_sensor_value(struct opae_manager *mgr,
-		struct opae_sensor_info *sensor,
-		unsigned int *value)
+        struct opae_sensor_info *sensor,
+        unsigned int *value)
 {
-	if (!mgr || !sensor)
-		return -EINVAL;
+    if (!mgr || !sensor)
+        return -EINVAL;
 
-	if (mgr->ops && mgr->ops->get_sensor_value)
-		return mgr->ops->get_sensor_value(mgr, sensor, value);
+    if (mgr->ops && mgr->ops->get_sensor_value)
+        return mgr->ops->get_sensor_value(mgr, sensor, value);
 
-	return -ENOENT;
+    return -ENOENT;
 }
 
 /**
@@ -702,13 +702,13 @@ opae_mgr_get_sensor_value(struct opae_manager *mgr,
  */
 int
 opae_mgr_get_board_info(struct opae_manager *mgr,
-		struct opae_board_info **info)
+        struct opae_board_info **info)
 {
-	if (!mgr || !info)
-		return -EINVAL;
+    if (!mgr || !info)
+        return -EINVAL;
 
-	if (mgr->ops && mgr->ops->get_board_info)
-		return mgr->ops->get_board_info(mgr, info);
+    if (mgr->ops && mgr->ops->get_board_info)
+        return mgr->ops->get_board_info(mgr, info);
 
-	return -ENOENT;
+    return -ENOENT;
 }

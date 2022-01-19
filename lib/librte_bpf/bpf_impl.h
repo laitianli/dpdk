@@ -12,13 +12,13 @@
 extern "C" {
 #endif
 
-#define MAX_BPF_STACK_SIZE	0x200
+#define MAX_BPF_STACK_SIZE    0x200
 
 struct rte_bpf {
-	struct rte_bpf_prm prm;
-	struct rte_bpf_jit jit;
-	size_t sz;
-	uint32_t stack_sz;
+    struct rte_bpf_prm prm;
+    struct rte_bpf_jit jit;
+    size_t sz;
+    uint32_t stack_sz;
 };
 
 extern int bpf_validate(struct rte_bpf *bpf);
@@ -30,21 +30,21 @@ extern int bpf_jit_arm64(struct rte_bpf *);
 
 extern int rte_bpf_logtype;
 
-#define	RTE_BPF_LOG(lvl, fmt, args...) \
-	rte_log(RTE_LOG_## lvl, rte_bpf_logtype, fmt, ##args)
+#define    RTE_BPF_LOG(lvl, fmt, args...) \
+    rte_log(RTE_LOG_## lvl, rte_bpf_logtype, fmt, ##args)
 
 static inline size_t
 bpf_size(uint32_t bpf_op_sz)
 {
-	if (bpf_op_sz == BPF_B)
-		return sizeof(uint8_t);
-	else if (bpf_op_sz == BPF_H)
-		return sizeof(uint16_t);
-	else if (bpf_op_sz == BPF_W)
-		return sizeof(uint32_t);
-	else if (bpf_op_sz == EBPF_DW)
-		return sizeof(uint64_t);
-	return 0;
+    if (bpf_op_sz == BPF_B)
+        return sizeof(uint8_t);
+    else if (bpf_op_sz == BPF_H)
+        return sizeof(uint16_t);
+    else if (bpf_op_sz == BPF_W)
+        return sizeof(uint32_t);
+    else if (bpf_op_sz == EBPF_DW)
+        return sizeof(uint64_t);
+    return 0;
 }
 
 #ifdef __cplusplus

@@ -5,17 +5,17 @@
 #ifndef __INCLUDE_RTE_TABLE_HASH_FUNC_ARM64_H__
 #define __INCLUDE_RTE_TABLE_HASH_FUNC_ARM64_H__
 
-#define _CRC32CX(crc, val)	\
-	__asm__("crc32cx %w[c], %w[c], %x[v]":[c] "+r" (crc):[v] "r" (val))
+#define _CRC32CX(crc, val)    \
+    __asm__("crc32cx %w[c], %w[c], %x[v]":[c] "+r" (crc):[v] "r" (val))
 
 static inline uint64_t
 rte_crc32_u64(uint64_t crc, uint64_t v)
 {
-	uint32_t crc32 = crc;
+    uint32_t crc32 = crc;
 
-	_CRC32CX(crc32, v);
+    _CRC32CX(crc32, v);
 
-	return crc32;
+    return crc32;
 }
 
 #endif

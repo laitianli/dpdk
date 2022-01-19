@@ -56,24 +56,24 @@
 /* ARM64 specific functions */
 #if defined(RTE_ARCH_ARM64)
 #define nicvf_prefetch_store_keep(_ptr) ({\
-	asm volatile("prfm pstl1keep, [%x0]\n" : : "r" (_ptr)); })
+    asm volatile("prfm pstl1keep, [%x0]\n" : : "r" (_ptr)); })
 
 
-#define NICVF_LOAD_PAIR(reg1, reg2, addr) ({		\
-			asm volatile(			\
-			"ldp %x[x1], %x[x0], [%x[p1]]"	\
-			: [x1]"=r"(reg1), [x0]"=r"(reg2)\
-			: [p1]"r"(addr)			\
-			); })
+#define NICVF_LOAD_PAIR(reg1, reg2, addr) ({        \
+            asm volatile(            \
+            "ldp %x[x1], %x[x0], [%x[p1]]"    \
+            : [x1]"=r"(reg1), [x0]"=r"(reg2)\
+            : [p1]"r"(addr)            \
+            ); })
 
 #else /* non optimized functions for building on non arm64 arch */
 
 #define nicvf_prefetch_store_keep(_ptr) do {} while (0)
 
-#define NICVF_LOAD_PAIR(reg1, reg2, addr)		\
-do {							\
-	reg1 = nicvf_addr_read((uintptr_t)addr);	\
-	reg2 = nicvf_addr_read((uintptr_t)addr + 8);	\
+#define NICVF_LOAD_PAIR(reg1, reg2, addr)        \
+do {                            \
+    reg1 = nicvf_addr_read((uintptr_t)addr);    \
+    reg2 = nicvf_addr_read((uintptr_t)addr + 8);    \
 } while (0)
 
 #endif

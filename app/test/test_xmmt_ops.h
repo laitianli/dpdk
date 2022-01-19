@@ -18,9 +18,9 @@
 static __rte_always_inline xmm_t
 vect_set_epi32(int i3, int i2, int i1, int i0)
 {
-	int32_t data[4] = {i0, i1, i2, i3};
+    int32_t data[4] = {i0, i1, i2, i3};
 
-	return vld1q_s32(data);
+    return vld1q_s32(data);
 }
 
 #elif defined(RTE_ARCH_X86)
@@ -44,9 +44,9 @@ vect_set_epi32(int i3, int i2, int i1, int i0)
 static __rte_always_inline xmm_t
 vect_set_epi32(int i3, int i2, int i1, int i0)
 {
-	xmm_t data = (xmm_t){i0, i1, i2, i3};
+    xmm_t data = (xmm_t){i0, i1, i2, i3};
 
-	return data;
+    return data;
 }
 
 #endif

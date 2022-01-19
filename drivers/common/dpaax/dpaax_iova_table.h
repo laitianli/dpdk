@@ -25,14 +25,14 @@
 #include <rte_malloc.h>
 
 struct dpaax_iovat_element {
-	phys_addr_t start; /**< Start address of block of physical pages */
-	size_t len; /**< Difference of end-start for quick access */
-	uint64_t *pages; /**< VA for each physical page in this block */
+    phys_addr_t start; /**< Start address of block of physical pages */
+    size_t len; /**< Difference of end-start for quick access */
+    uint64_t *pages; /**< VA for each physical page in this block */
 };
 
 struct dpaax_iova_table {
-	unsigned int count; /**< No. of blocks of contiguous physical pages */
-	struct dpaax_iovat_element entries[0];
+    unsigned int count; /**< No. of blocks of contiguous physical pages */
+    struct dpaax_iovat_element entries[0];
 };
 
 /* Pointer to the table, which is common for DPAA/DPAA2 and only a single
@@ -70,38 +70,38 @@ static inline void *dpaax_iova_table_get_va(phys_addr_t paddr) __attribute__((ho
 
 static inline void *
 dpaax_iova_table_get_va(phys_addr_t paddr) {
-	unsigned int i = 0, index;
-	void *vaddr = 0;
-	phys_addr_t paddr_align = paddr & DPAAX_MEM_SPLIT_MASK;
-	size_t offset = paddr & DPAAX_MEM_SPLIT_MASK_OFF;
-	struct dpaax_iovat_element *entry;
+    unsigned int i = 0, index;
+    void *vaddr = 0;
+    phys_addr_t paddr_align = paddr & DPAAX_MEM_SPLIT_MASK;
+    size_t offset = paddr & DPAAX_MEM_SPLIT_MASK_OFF;
+    struct dpaax_iovat_element *entry;
 
-	if (unlikely(dpaax_iova_table_p == NULL))
-		return NULL;
+    if (unlikely(dpaax_iova_table_p == NULL))
+        return NULL;
 
-	entry = dpaax_iova_table_p->entries;
+    entry = dpaax_iova_table_p->entries;
 
-	do {
-		if (unlikely(i > dpaax_iova_table_p->count))
-			break;
+    do {
+        if (unlikely(i > dpaax_iova_table_p->count))
+            break;
 
-		if (paddr_align < entry[i].start) {
-			/* Incorrect paddr; Not in memory range */
-			return NULL;
-		}
+        if (paddr_align < entry[i].start) {
+            /* Incorrect paddr; Not in memory range */
+            return NULL;
+        }
 
-		if (paddr_align > (entry[i].start + entry[i].len)) {
-			i++;
-			continue;
-		}
+        if (paddr_align > (entry[i].start + entry[i].len)) {
+            i++;
+            continue;
+        }
 
-		/* paddr > entry->start && paddr <= entry->(start+len) */
-		index = (paddr_align - entry[i].start)/DPAAX_MEM_SPLIT;
-		vaddr = (void *)((uintptr_t)entry[i].pages[index] + offset);
-		break;
-	} while (1);
+        /* paddr > entry->start && paddr <= entry->(start+len) */
+        index = (paddr_align - entry[i].start)/DPAAX_MEM_SPLIT;
+        vaddr = (void *)((uintptr_t)entry[i].pages[index] + offset);
+        break;
+    } while (1);
 
-	return vaddr;
+    return vaddr;
 }
 
 #endif /* _DPAAX_IOVA_TABLE_H_ */

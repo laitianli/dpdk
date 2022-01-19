@@ -11,13 +11,13 @@ extern "C" {
 
 struct rte_device *
 rte_vdev_find_device(const struct rte_device *start,
-		     rte_dev_cmp_t cmp,
-		     const void *data);
+             rte_dev_cmp_t cmp,
+             const void *data);
 
 void *
 rte_vdev_dev_iterate(const void *start,
-		     const char *str,
-		     const struct rte_dev_iterator *it);
+             const char *str,
+             const struct rte_dev_iterator *it);
 
 #ifdef __cplusplus
 }

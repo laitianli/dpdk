@@ -7,7 +7,7 @@
 #define __NFP_RESID_H__
 
 #if (!defined(_NFP_RESID_NO_C_FUNC) && \
-	(defined(__NFP_TOOL_NFCC) || defined(__NFP_TOOL_NFAS)))
+    (defined(__NFP_TOOL_NFCC) || defined(__NFP_TOOL_NFAS)))
 #define _NFP_RESID_NO_C_FUNC
 #endif
 
@@ -22,8 +22,8 @@
  * They serve as a software view of a group of chip families, not necessarily a
  * direct mapping to actual hardware design.
  */
-#define NFP_CHIP_ARCH_YD	1
-#define NFP_CHIP_ARCH_TH	2
+#define NFP_CHIP_ARCH_YD    1
+#define NFP_CHIP_ARCH_TH    2
 
 /*
  * NFP Chip Families.
@@ -35,7 +35,7 @@
  * components.
  *
  */
-#define NFP_CHIP_FAMILY_NFP6000 0x6000	/* ARCH_TH */
+#define NFP_CHIP_FAMILY_NFP6000 0x6000    /* ARCH_TH */
 
 /* NFP Microengine/Flow Processing Core Versions */
 #define NFP_CHIP_ME_VERSION_2_7 0x0207
@@ -79,52 +79,52 @@
  * These identifiers are used as parameters to other NFP CPP functions. Some
  * CPP devices may allow wildcard identifiers to be specified.
  *
- * @param[in]	target	NFP CPP target id
- * @param[in]	action	NFP CPP action id
- * @param[in]	token	NFP CPP token id
- * @return		NFP CPP ID
+ * @param[in]    target    NFP CPP target id
+ * @param[in]    action    NFP CPP action id
+ * @param[in]    token    NFP CPP token id
+ * @return        NFP CPP ID
  */
 #define NFP_CPP_ID(target, action, token)                   \
-	((((target) & 0x7f) << 24) | (((token) & 0xff) << 16) | \
-	 (((action) & 0xff) << 8))
+    ((((target) & 0x7f) << 24) | (((token) & 0xff) << 16) | \
+     (((action) & 0xff) << 8))
 
 #define NFP_CPP_ISLAND_ID(target, action, token, island)    \
-	((((target) & 0x7f) << 24) | (((token) & 0xff) << 16) | \
-	 (((action) & 0xff) << 8) | (((island) & 0xff) << 0))
+    ((((target) & 0x7f) << 24) | (((token) & 0xff) << 16) | \
+     (((action) & 0xff) << 8) | (((island) & 0xff) << 0))
 
 #ifndef _NFP_RESID_NO_C_FUNC
 
 /**
  * Return the NFP CPP target of a NFP CPP ID
- * @param[in]	id	NFP CPP ID
- * @return	NFP CPP target
+ * @param[in]    id    NFP CPP ID
+ * @return    NFP CPP target
  */
 static inline uint8_t
 NFP_CPP_ID_TARGET_of(uint32_t id)
 {
-	return (id >> 24) & NFP_CPP_TARGET_ID_MASK;
+    return (id >> 24) & NFP_CPP_TARGET_ID_MASK;
 }
 
 /*
  * Return the NFP CPP token of a NFP CPP ID
- * @param[in]	id	NFP CPP ID
- * @return	NFP CPP token
+ * @param[in]    id    NFP CPP ID
+ * @return    NFP CPP token
  */
 static inline uint8_t
 NFP_CPP_ID_TOKEN_of(uint32_t id)
 {
-	return (id >> 16) & 0xff;
+    return (id >> 16) & 0xff;
 }
 
 /*
  * Return the NFP CPP action of a NFP CPP ID
- * @param[in]	id	NFP CPP ID
- * @return	NFP CPP action
+ * @param[in]    id    NFP CPP ID
+ * @return    NFP CPP action
  */
 static inline uint8_t
 NFP_CPP_ID_ACTION_of(uint32_t id)
 {
-	return (id >> 8) & 0xff;
+    return (id >> 8) & 0xff;
 }
 
 /*
@@ -135,7 +135,7 @@ NFP_CPP_ID_ACTION_of(uint32_t id)
 static inline uint8_t
 NFP_CPP_ID_ISLAND_of(uint32_t id)
 {
-	return (id) & 0xff;
+    return (id) & 0xff;
 }
 
 #endif /* _NFP_RESID_NO_C_FUNC */
@@ -145,25 +145,25 @@ NFP_CPP_ID_ISLAND_of(uint32_t id)
  * @param chip_family One of NFP_CHIP_FAMILY_*
  */
 #define NFP_FAMILY_IS_ARCH_TH(chip_family) \
-	((int)(chip_family) == (int)NFP_CHIP_FAMILY_NFP6000)
+    ((int)(chip_family) == (int)NFP_CHIP_FAMILY_NFP6000)
 
 /*
  *  Get the NFP_CHIP_ARCH_* of @p chip_family.
  * @param chip_family One of NFP_CHIP_FAMILY_*
  */
 #define NFP_FAMILY_ARCH(x) \
-	(__extension__ ({ \
-		typeof(x) _x = (x); \
-		(NFP_FAMILY_IS_ARCH_TH(_x) ? NFP_CHIP_ARCH_TH : \
-		NFP_FAMILY_IS_ARCH_YD(_x) ? NFP_CHIP_ARCH_YD : -1) \
-	}))
+    (__extension__ ({ \
+        typeof(x) _x = (x); \
+        (NFP_FAMILY_IS_ARCH_TH(_x) ? NFP_CHIP_ARCH_TH : \
+        NFP_FAMILY_IS_ARCH_YD(_x) ? NFP_CHIP_ARCH_YD : -1) \
+    }))
 
 /*
  *  Check if @p chip_family is an NFP-6xxx chip.
  * @param chip_family One of NFP_CHIP_FAMILY_*
  */
 #define NFP_FAMILY_IS_NFP6000(chip_family) \
-	((int)(chip_family) == (int)NFP_CHIP_FAMILY_NFP6000)
+    ((int)(chip_family) == (int)NFP_CHIP_FAMILY_NFP6000)
 
 /*
  *  Make microengine ID for NFP-6xxx.
@@ -175,13 +175,13 @@ NFP_CPP_ID_ISLAND_of(uint32_t id)
  * unsigned int hence the cast of the menum to an int in that particular clause
  */
 #define NFP6000_MEID(a, b)                       \
-	(__extension__ ({ \
-		typeof(a) _a = (a); \
-		typeof(b) _b = (b); \
-		(((((int)(_a) & 0x3F) == (int)(_a)) &&   \
-		(((int)(_b) >= 0) && ((int)(_b) < 12))) ?    \
-		(int)(((_a) << 4) | ((_b) + 4)) : -1) \
-	}))
+    (__extension__ ({ \
+        typeof(a) _a = (a); \
+        typeof(b) _b = (b); \
+        (((((int)(_a) & 0x3F) == (int)(_a)) &&   \
+        (((int)(_b) >= 0) && ((int)(_b) < 12))) ?    \
+        (int)(((_a) << 4) | ((_b) + 4)) : -1) \
+    }))
 
 /*
  *  Do a general sanity check on the ME ID.
@@ -190,11 +190,11 @@ NFP_CPP_ID_ISLAND_of(uint32_t id)
  * @param meid      ME ID as created by NFP6000_MEID
  */
 #define NFP6000_MEID_IS_VALID(meid) \
-	(__extension__ ({ \
-		typeof(meid) _a = (meid); \
-		((((_a) >> 4) < 64) && (((_a) >> 4) >= 0) && \
-		 (((_a) & 0xF) >= 4)) \
-	}))
+    (__extension__ ({ \
+        typeof(meid) _a = (meid); \
+        ((((_a) >> 4) < 64) && (((_a) >> 4) >= 0) && \
+         (((_a) & 0xF) >= 4)) \
+    }))
 
 /*
  *  Extract island ID from ME ID.
@@ -582,9 +582,9 @@ const char *nfp_rev2str(char *s, int rev);
  * @return              0 on success, or -1 and errno
  */
 int nfp_str2cpp(int chip_family,
-		const char *tid,
-		uint32_t *cpp_idp,
-		uint64_t *cpp_addrp);
+        const char *tid,
+        uint32_t *cpp_idp,
+        uint64_t *cpp_addrp);
 
 
 #endif /* _NFP_RESID_NO_C_FUNC */

@@ -12,10 +12,10 @@
 #define PCI_VENDOR_ID_FREESCALE 0x1957
 
 /* Max TX rings per ENETC. */
-#define MAX_TX_RINGS	2
+#define MAX_TX_RINGS    2
 
 /* Max RX rings per ENTEC. */
-#define MAX_RX_RINGS	1
+#define MAX_RX_RINGS    1
 
 /* Max BD counts per Ring. */
 #define MAX_BD_COUNT   64000
@@ -25,9 +25,9 @@
 #define BD_ALIGN       8
 
 /* minimum frame size supported */
-#define ENETC_MAC_MINFRM_SIZE	68
+#define ENETC_MAC_MINFRM_SIZE    68
 /* maximum frame size supported */
-#define ENETC_MAC_MAXFRM_SIZE	9600
+#define ENETC_MAC_MAXFRM_SIZE    9600
 
 /*
  * upper_32_bits - return bits 32-63 of a number
@@ -49,56 +49,56 @@
 #define ENETC_RXBD(BDR, i) (&(((union enetc_rx_bd *)((BDR).bd_base))[i]))
 
 struct enetc_swbd {
-	struct rte_mbuf *buffer_addr;
+    struct rte_mbuf *buffer_addr;
 };
 
 struct enetc_bdr {
-	struct rte_eth_dev *ndev;
-	struct rte_mempool *mb_pool;   /* mbuf pool to populate RX ring. */
-	void *bd_base;			/* points to Rx or Tx BD ring */
-	union {
-		void *tcir;
-		void *rcir;
-	};
-	uint16_t index;
-	int bd_count; /* # of BDs */
-	int next_to_use;
-	int next_to_clean;
-	struct enetc_swbd *q_swbd;
-	union {
-		void *tcisr; /* Tx */
-		int next_to_alloc; /* Rx */
-	};
-	uint8_t	crc_len; /* 0 if CRC stripped, 4 otherwise */
+    struct rte_eth_dev *ndev;
+    struct rte_mempool *mb_pool;   /* mbuf pool to populate RX ring. */
+    void *bd_base;            /* points to Rx or Tx BD ring */
+    union {
+        void *tcir;
+        void *rcir;
+    };
+    uint16_t index;
+    int bd_count; /* # of BDs */
+    int next_to_use;
+    int next_to_clean;
+    struct enetc_swbd *q_swbd;
+    union {
+        void *tcisr; /* Tx */
+        int next_to_alloc; /* Rx */
+    };
+    uint8_t    crc_len; /* 0 if CRC stripped, 4 otherwise */
 };
 
 /*
  * Structure to store private data for each driver instance (for each port).
  */
 struct enetc_eth_adapter {
-	struct rte_eth_dev *ndev;
-	struct enetc_eth_hw hw;
+    struct rte_eth_dev *ndev;
+    struct enetc_eth_hw hw;
 };
 
 #define ENETC_DEV_PRIVATE(adapter) \
-	((struct enetc_eth_adapter *)adapter)
+    ((struct enetc_eth_adapter *)adapter)
 
 #define ENETC_DEV_PRIVATE_TO_HW(adapter) \
-	(&((struct enetc_eth_adapter *)adapter)->hw)
+    (&((struct enetc_eth_adapter *)adapter)->hw)
 
 #define ENETC_DEV_PRIVATE_TO_STATS(adapter) \
-	(&((struct enetc_eth_adapter *)adapter)->stats)
+    (&((struct enetc_eth_adapter *)adapter)->stats)
 
 #define ENETC_DEV_PRIVATE_TO_INTR(adapter) \
-	(&((struct enetc_eth_adapter *)adapter)->intr)
+    (&((struct enetc_eth_adapter *)adapter)->intr)
 
 /*
  * RX/TX ENETC function prototypes
  */
 uint16_t enetc_xmit_pkts(void *txq, struct rte_mbuf **tx_pkts,
-		uint16_t nb_pkts);
+        uint16_t nb_pkts);
 uint16_t enetc_recv_pkts(void *rxq, struct rte_mbuf **rx_pkts,
-		uint16_t nb_pkts);
+        uint16_t nb_pkts);
 
 
 int enetc_refill_rx_ring(struct enetc_bdr *rx_ring, const int buff_cnt);
@@ -106,9 +106,9 @@ int enetc_refill_rx_ring(struct enetc_bdr *rx_ring, const int buff_cnt);
 static inline int
 enetc_bd_unused(struct enetc_bdr *bdr)
 {
-	if (bdr->next_to_clean > bdr->next_to_use)
-		return bdr->next_to_clean - bdr->next_to_use - 1;
+    if (bdr->next_to_clean > bdr->next_to_use)
+        return bdr->next_to_clean - bdr->next_to_use - 1;
 
-	return bdr->bd_count + bdr->next_to_clean - bdr->next_to_use - 1;
+    return bdr->bd_count + bdr->next_to_clean - bdr->next_to_use - 1;
 }
 #endif /* _ENETC_H_ */

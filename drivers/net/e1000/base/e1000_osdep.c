@@ -7,21 +7,21 @@
 
 /*
  * NOTE: the following routines using the e1000 
- * 	naming style are provided to the shared
- *	code but are OS specific
+ *     naming style are provided to the shared
+ *    code but are OS specific
  */
 
 void
 e1000_write_pci_cfg(struct e1000_hw *hw, u32 reg, u16 *value)
 {
-	return;
+    return;
 }
 
 void
 e1000_read_pci_cfg(struct e1000_hw *hw, u32 reg, u16 *value)
 {
-	*value = 0;
-	return;
+    *value = 0;
+    return;
 }
 
 void
@@ -41,7 +41,7 @@ e1000_pci_clear_mwi(struct e1000_hw *hw)
 int32_t
 e1000_read_pcie_cap_reg(struct e1000_hw *hw, u32 reg, u16 *value)
 {
-	return E1000_NOT_IMPLEMENTED;
+    return E1000_NOT_IMPLEMENTED;
 }
 
 /*
@@ -50,5 +50,5 @@ e1000_read_pcie_cap_reg(struct e1000_hw *hw, u32 reg, u16 *value)
 int32_t
 e1000_write_pcie_cap_reg(struct e1000_hw *hw, u32 reg, u16 *value)
 {
-	return E1000_NOT_IMPLEMENTED;
+    return E1000_NOT_IMPLEMENTED;
 }

@@ -100,7 +100,7 @@ extern "C" {
 #endif
 
 /** Maximum number of characters in efd name.*/
-#define RTE_EFD_NAMESIZE			32
+#define RTE_EFD_NAMESIZE            32
 
 #if (RTE_EFD_VALUE_NUM_BITS > 0 && RTE_EFD_VALUE_NUM_BITS <= 8)
 typedef uint8_t efd_value_t;
@@ -139,7 +139,7 @@ typedef uint16_t efd_hashfunc_t;
  */
 struct rte_efd_table *
 rte_efd_create(const char *name, uint32_t max_num_rules, uint32_t key_len,
-	uint8_t online_cpu_socket_bitmask, uint8_t offline_cpu_socket);
+    uint8_t online_cpu_socket_bitmask, uint8_t offline_cpu_socket);
 
 /**
  * Releases the resources from an EFD table
@@ -198,7 +198,7 @@ rte_efd_find_existing(const char *name);
  */
 int
 rte_efd_update(struct rte_efd_table *table, unsigned int socket_id,
-	const void *key, efd_value_t value);
+    const void *key, efd_value_t value);
 
 /**
  * Removes any value currently associated with the specified key from the table
@@ -220,7 +220,7 @@ rte_efd_update(struct rte_efd_table *table, unsigned int socket_id,
  */
 int
 rte_efd_delete(struct rte_efd_table *table, unsigned int socket_id,
-	const void *key, efd_value_t *prev_value);
+    const void *key, efd_value_t *prev_value);
 
 /**
  * Looks up the value associated with a key
@@ -244,7 +244,7 @@ rte_efd_delete(struct rte_efd_table *table, unsigned int socket_id,
  */
 efd_value_t
 rte_efd_lookup(const struct rte_efd_table *table, unsigned int socket_id,
-		const void *key);
+        const void *key);
 
 /**
  * Looks up the value associated with several keys.
@@ -269,8 +269,8 @@ rte_efd_lookup(const struct rte_efd_table *table, unsigned int socket_id,
  */
 void
 rte_efd_lookup_bulk(const struct rte_efd_table *table, unsigned int socket_id,
-		int num_keys, const void **key_list,
-		efd_value_t *value_list);
+        int num_keys, const void **key_list,
+        efd_value_t *value_list);
 
 #ifdef __cplusplus
 }

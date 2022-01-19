@@ -5,16 +5,16 @@
 #ifndef _VHOST_CRYPTO_H_
 #define _VHOST_CRYPTO_H_
 
-#define VHOST_CRYPTO_MBUF_POOL_SIZE		(8192)
-#define VHOST_CRYPTO_MAX_BURST_SIZE		(64)
-#define VHOST_CRYPTO_SESSION_MAP_ENTRIES	(1024) /**< Max nb sessions */
+#define VHOST_CRYPTO_MBUF_POOL_SIZE        (8192)
+#define VHOST_CRYPTO_MAX_BURST_SIZE        (64)
+#define VHOST_CRYPTO_SESSION_MAP_ENTRIES    (1024) /**< Max nb sessions */
 /** max nb virtual queues in a burst for finalizing*/
-#define VIRTIO_CRYPTO_MAX_NUM_BURST_VQS		(64)
+#define VIRTIO_CRYPTO_MAX_NUM_BURST_VQS        (64)
 
 enum rte_vhost_crypto_zero_copy {
-	RTE_VHOST_CRYPTO_ZERO_COPY_DISABLE = 0,
-	RTE_VHOST_CRYPTO_ZERO_COPY_ENABLE = 1,
-	RTE_VHOST_CRYPTO_MAX_ZERO_COPY_OPTIONS
+    RTE_VHOST_CRYPTO_ZERO_COPY_DISABLE = 0,
+    RTE_VHOST_CRYPTO_ZERO_COPY_ENABLE = 1,
+    RTE_VHOST_CRYPTO_MAX_ZERO_COPY_OPTIONS
 };
 
 /**
@@ -38,9 +38,9 @@ enum rte_vhost_crypto_zero_copy {
 __rte_experimental
 int
 rte_vhost_crypto_create(int vid, uint8_t cryptodev_id,
-		struct rte_mempool *sess_pool,
-		struct rte_mempool *sess_priv_pool,
-		int socket_id);
+        struct rte_mempool *sess_pool,
+        struct rte_mempool *sess_priv_pool,
+        int socket_id);
 
 /**
  *  Free the Vhost-crypto instance
@@ -90,7 +90,7 @@ rte_vhost_crypto_set_zero_copy(int vid, enum rte_vhost_crypto_zero_copy option);
 __rte_experimental
 uint16_t
 rte_vhost_crypto_fetch_requests(int vid, uint32_t qid,
-		struct rte_crypto_op **ops, uint16_t nb_ops);
+        struct rte_crypto_op **ops, uint16_t nb_ops);
 /**
  * Finalize the dequeued crypto ops. After the translated crypto ops are
  * dequeued from the cryptodev, this function shall be called to write the
@@ -112,6 +112,6 @@ rte_vhost_crypto_fetch_requests(int vid, uint32_t qid,
 __rte_experimental
 uint16_t
 rte_vhost_crypto_finalize_requests(struct rte_crypto_op **ops,
-		uint16_t nb_ops, int *callfds, uint16_t *nb_callfds);
+        uint16_t nb_ops, int *callfds, uint16_t *nb_callfds);
 
 #endif /**< _VHOST_CRYPTO_H_ */

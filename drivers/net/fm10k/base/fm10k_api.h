@@ -23,13 +23,13 @@ s32 fm10k_read_mac_addr(struct fm10k_hw *hw);
 void fm10k_update_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats);
 void fm10k_rebind_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats);
 s32 fm10k_configure_dglort_map(struct fm10k_hw *hw,
-			       struct fm10k_dglort_cfg *dglort);
+                   struct fm10k_dglort_cfg *dglort);
 void fm10k_set_dma_mask(struct fm10k_hw *hw, u64 dma_mask);
 s32 fm10k_get_fault(struct fm10k_hw *hw, int type, struct fm10k_fault *fault);
 s32 fm10k_update_uc_addr(struct fm10k_hw *hw, u16 lport,
-			  const u8 *mac, u16 vid, bool add, u8 flags);
+              const u8 *mac, u16 vid, bool add, u8 flags);
 s32 fm10k_update_mc_addr(struct fm10k_hw *hw, u16 lport,
-			 const u8 *mac, u16 vid, bool add);
+             const u8 *mac, u16 vid, bool add);
 s32 fm10k_adjust_systime(struct fm10k_hw *hw, s32 ppb);
 s32 fm10k_notify_offset(struct fm10k_hw *hw, u64 offset);
 #endif /* _FM10K_API_H_ */

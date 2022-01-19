@@ -55,71 +55,71 @@ volatile int quit = 0;
 static int
 lcore_recv(__attribute__((unused)) void *arg)
 {
-	unsigned lcore_id = rte_lcore_id();
+    unsigned lcore_id = rte_lcore_id();
 
-	printf("Starting core %u\n", lcore_id);
-	while (!quit){
-		void *msg;
-		if (rte_ring_dequeue(recv_ring, &msg) < 0){
-			usleep(5);
-			continue;
-		}
-		printf("core %u: Received '%s'\n", lcore_id, (char *)msg);
-		rte_mempool_put(message_pool, msg);
-	}
+    printf("Starting core %u\n", lcore_id);
+    while (!quit){
+        void *msg;
+        if (rte_ring_dequeue(recv_ring, &msg) < 0){
+            usleep(5);
+            continue;
+        }
+        printf("core %u: Received '%s'\n", lcore_id, (char *)msg);
+        rte_mempool_put(message_pool, msg);
+    }
 
-	return 0;
+    return 0;
 }
 
 int
 main(int argc, char **argv)
 {
-	const unsigned flags = 0;
-	const unsigned ring_size = 64;
-	const unsigned pool_size = 1024;
-	const unsigned pool_cache = 32;
-	const unsigned priv_data_sz = 0;
+    const unsigned flags = 0;
+    const unsigned ring_size = 64;
+    const unsigned pool_size = 1024;
+    const unsigned pool_cache = 32;
+    const unsigned priv_data_sz = 0;
 
-	int ret;
-	unsigned lcore_id;
+    int ret;
+    unsigned lcore_id;
 
-	ret = rte_eal_init(argc, argv);
-	if (ret < 0)
-		rte_exit(EXIT_FAILURE, "Cannot init EAL\n");
+    ret = rte_eal_init(argc, argv);
+    if (ret < 0)
+        rte_exit(EXIT_FAILURE, "Cannot init EAL\n");
 
-	if (rte_eal_process_type() == RTE_PROC_PRIMARY){
-		send_ring = rte_ring_create(_PRI_2_SEC, ring_size, rte_socket_id(), flags);
-		recv_ring = rte_ring_create(_SEC_2_PRI, ring_size, rte_socket_id(), flags);
-		message_pool = rte_mempool_create(_MSG_POOL, pool_size,
-				STR_TOKEN_SIZE, pool_cache, priv_data_sz,
-				NULL, NULL, NULL, NULL,
-				rte_socket_id(), flags);
-	} else {
-		recv_ring = rte_ring_lookup(_PRI_2_SEC);
-		send_ring = rte_ring_lookup(_SEC_2_PRI);
-		message_pool = rte_mempool_lookup(_MSG_POOL);
-	}
-	if (send_ring == NULL)
-		rte_exit(EXIT_FAILURE, "Problem getting sending ring\n");
-	if (recv_ring == NULL)
-		rte_exit(EXIT_FAILURE, "Problem getting receiving ring\n");
-	if (message_pool == NULL)
-		rte_exit(EXIT_FAILURE, "Problem getting message pool\n");
+    if (rte_eal_process_type() == RTE_PROC_PRIMARY){
+        send_ring = rte_ring_create(_PRI_2_SEC, ring_size, rte_socket_id(), flags);
+        recv_ring = rte_ring_create(_SEC_2_PRI, ring_size, rte_socket_id(), flags);
+        message_pool = rte_mempool_create(_MSG_POOL, pool_size,
+                STR_TOKEN_SIZE, pool_cache, priv_data_sz,
+                NULL, NULL, NULL, NULL,
+                rte_socket_id(), flags);
+    } else {
+        recv_ring = rte_ring_lookup(_PRI_2_SEC);
+        send_ring = rte_ring_lookup(_SEC_2_PRI);
+        message_pool = rte_mempool_lookup(_MSG_POOL);
+    }
+    if (send_ring == NULL)
+        rte_exit(EXIT_FAILURE, "Problem getting sending ring\n");
+    if (recv_ring == NULL)
+        rte_exit(EXIT_FAILURE, "Problem getting receiving ring\n");
+    if (message_pool == NULL)
+        rte_exit(EXIT_FAILURE, "Problem getting message pool\n");
 
-	RTE_LOG(INFO, APP, "Finished Process Init.\n");
+    RTE_LOG(INFO, APP, "Finished Process Init.\n");
 
-	/* call lcore_recv() on every slave lcore */
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		rte_eal_remote_launch(lcore_recv, NULL, lcore_id);
-	}
+    /* call lcore_recv() on every slave lcore */
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        rte_eal_remote_launch(lcore_recv, NULL, lcore_id);
+    }
 
-	/* call cmd prompt on master lcore */
-	struct cmdline *cl = cmdline_stdin_new(simple_mp_ctx, "\nsimple_mp > ");
-	if (cl == NULL)
-		rte_exit(EXIT_FAILURE, "Cannot create cmdline instance\n");
-	cmdline_interact(cl);
-	cmdline_stdin_exit(cl);
+    /* call cmd prompt on master lcore */
+    struct cmdline *cl = cmdline_stdin_new(simple_mp_ctx, "\nsimple_mp > ");
+    if (cl == NULL)
+        rte_exit(EXIT_FAILURE, "Cannot create cmdline instance\n");
+    cmdline_interact(cl);
+    cmdline_stdin_exit(cl);
 
-	rte_eal_mp_wait_lcore();
-	return 0;
+    rte_eal_mp_wait_lcore();
+    return 0;
 }

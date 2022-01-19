@@ -35,15 +35,15 @@ extern "C" {
 static inline uint64_t
 __rte_rdtsc_syscall(void)
 {
-	struct timespec val;
-	uint64_t v;
+    struct timespec val;
+    uint64_t v;
 
-	while (clock_gettime(CLOCK_MONOTONIC_RAW, &val) != 0)
-		/* no body */;
+    while (clock_gettime(CLOCK_MONOTONIC_RAW, &val) != 0)
+        /* no body */;
 
-	v  = (uint64_t) val.tv_sec * 1000000000LL;
-	v += (uint64_t) val.tv_nsec;
-	return v;
+    v  = (uint64_t) val.tv_sec * 1000000000LL;
+    v += (uint64_t) val.tv_nsec;
+    return v;
 }
 #define rte_rdtsc __rte_rdtsc_syscall
 
@@ -62,15 +62,15 @@ __rte_rdtsc_syscall(void)
 static inline uint64_t
 __rte_rdtsc_pmccntr(void)
 {
-	unsigned tsc;
-	uint64_t final_tsc;
+    unsigned tsc;
+    uint64_t final_tsc;
 
-	/* Read PMCCNTR */
-	asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(tsc));
-	/* 1 tick = 64 clocks */
-	final_tsc = ((uint64_t)tsc) << 6;
+    /* Read PMCCNTR */
+    asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(tsc));
+    /* 1 tick = 64 clocks */
+    final_tsc = ((uint64_t)tsc) << 6;
 
-	return (uint64_t)final_tsc;
+    return (uint64_t)final_tsc;
 }
 #define rte_rdtsc __rte_rdtsc_pmccntr
 
@@ -79,8 +79,8 @@ __rte_rdtsc_pmccntr(void)
 static inline uint64_t
 rte_rdtsc_precise(void)
 {
-	rte_mb();
-	return rte_rdtsc();
+    rte_mb();
+    return rte_rdtsc();
 }
 
 static inline uint64_t

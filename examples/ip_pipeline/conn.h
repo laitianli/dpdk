@@ -18,18 +18,18 @@ struct conn;
 #endif
 
 typedef void (*conn_msg_handle_t)(char *msg_in,
-	char *msg_out,
-	size_t msg_out_len_max);
+    char *msg_out,
+    size_t msg_out_len_max);
 
 struct conn_params {
-	const char *welcome;
-	const char *prompt;
-	const char *addr;
-	uint16_t port;
-	size_t buf_size;
-	size_t msg_in_len_max;
-	size_t msg_out_len_max;
-	conn_msg_handle_t msg_handle;
+    const char *welcome;
+    const char *prompt;
+    const char *addr;
+    uint16_t port;
+    size_t buf_size;
+    size_t msg_in_len_max;
+    size_t msg_out_len_max;
+    conn_msg_handle_t msg_handle;
 };
 
 struct conn *

@@ -14,41 +14,41 @@
  **/
 s32 fm10k_set_mac_type(struct fm10k_hw *hw)
 {
-	s32 ret_val = FM10K_SUCCESS;
+    s32 ret_val = FM10K_SUCCESS;
 
-	DEBUGFUNC("fm10k_set_mac_type");
+    DEBUGFUNC("fm10k_set_mac_type");
 
-	if (hw->vendor_id != FM10K_INTEL_VENDOR_ID) {
-		ERROR_REPORT2(FM10K_ERROR_UNSUPPORTED,
-			     "Unsupported vendor id: %x\n", hw->vendor_id);
-		return FM10K_ERR_DEVICE_NOT_SUPPORTED;
-	}
+    if (hw->vendor_id != FM10K_INTEL_VENDOR_ID) {
+        ERROR_REPORT2(FM10K_ERROR_UNSUPPORTED,
+                 "Unsupported vendor id: %x\n", hw->vendor_id);
+        return FM10K_ERR_DEVICE_NOT_SUPPORTED;
+    }
 
-	switch (hw->device_id) {
-	case FM10K_DEV_ID_PF:
+    switch (hw->device_id) {
+    case FM10K_DEV_ID_PF:
 #ifdef BOULDER_RAPIDS_HW
-	case FM10K_DEV_ID_SDI_FM10420_QDA2:
+    case FM10K_DEV_ID_SDI_FM10420_QDA2:
 #endif /* BOULDER_RAPIDS_HW */
 #ifdef ATWOOD_CHANNEL_HW
-	case FM10K_DEV_ID_SDI_FM10420_DA2:
+    case FM10K_DEV_ID_SDI_FM10420_DA2:
 #endif /* ATWOOD_CHANNEL_HW */
-		hw->mac.type = fm10k_mac_pf;
-		break;
-	case FM10K_DEV_ID_VF:
-		hw->mac.type = fm10k_mac_vf;
-		break;
-	default:
-		ret_val = FM10K_ERR_DEVICE_NOT_SUPPORTED;
-		ERROR_REPORT2(FM10K_ERROR_UNSUPPORTED,
-			     "Unsupported device id: %x\n",
-			     hw->device_id);
-		break;
-	}
+        hw->mac.type = fm10k_mac_pf;
+        break;
+    case FM10K_DEV_ID_VF:
+        hw->mac.type = fm10k_mac_vf;
+        break;
+    default:
+        ret_val = FM10K_ERR_DEVICE_NOT_SUPPORTED;
+        ERROR_REPORT2(FM10K_ERROR_UNSUPPORTED,
+                 "Unsupported device id: %x\n",
+                 hw->device_id);
+        break;
+    }
 
-	DEBUGOUT2("fm10k_set_mac_type found mac: %d, returns: %d\n",
-		  hw->mac.type, ret_val);
+    DEBUGOUT2("fm10k_set_mac_type found mac: %d, returns: %d\n",
+          hw->mac.type, ret_val);
 
-	return ret_val;
+    return ret_val;
 }
 
 /**
@@ -65,30 +65,30 @@ s32 fm10k_set_mac_type(struct fm10k_hw *hw)
  **/
 s32 fm10k_init_shared_code(struct fm10k_hw *hw)
 {
-	s32 status;
+    s32 status;
 
-	DEBUGFUNC("fm10k_init_shared_code");
+    DEBUGFUNC("fm10k_init_shared_code");
 
-	/* Set the mac type */
-	fm10k_set_mac_type(hw);
+    /* Set the mac type */
+    fm10k_set_mac_type(hw);
 
-	switch (hw->mac.type) {
-	case fm10k_mac_pf:
-		status = fm10k_init_ops_pf(hw);
-		break;
-	case fm10k_mac_vf:
-		status = fm10k_init_ops_vf(hw);
-		break;
-	default:
-		status = FM10K_ERR_DEVICE_NOT_SUPPORTED;
-		break;
-	}
+    switch (hw->mac.type) {
+    case fm10k_mac_pf:
+        status = fm10k_init_ops_pf(hw);
+        break;
+    case fm10k_mac_vf:
+        status = fm10k_init_ops_vf(hw);
+        break;
+    default:
+        status = FM10K_ERR_DEVICE_NOT_SUPPORTED;
+        break;
+    }
 
-	return status;
+    return status;
 }
 
 #define fm10k_call_func(hw, func, params, error) \
-		 ((func) ? (func params) : (error))
+         ((func) ? (func params) : (error))
 
 /**
  *  fm10k_reset_hw - Reset the hardware to known good state
@@ -99,8 +99,8 @@ s32 fm10k_init_shared_code(struct fm10k_hw *hw)
  **/
 s32 fm10k_reset_hw(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.reset_hw, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.reset_hw, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -111,8 +111,8 @@ s32 fm10k_reset_hw(struct fm10k_hw *hw)
  **/
 s32 fm10k_init_hw(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.init_hw, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.init_hw, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -123,8 +123,8 @@ s32 fm10k_init_hw(struct fm10k_hw *hw)
  **/
 s32 fm10k_stop_hw(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.stop_hw, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.stop_hw, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -136,8 +136,8 @@ s32 fm10k_stop_hw(struct fm10k_hw *hw)
  **/
 s32 fm10k_start_hw(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.start_hw, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.start_hw, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -148,8 +148,8 @@ s32 fm10k_start_hw(struct fm10k_hw *hw)
  **/
 s32 fm10k_get_bus_info(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.get_bus_info, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.get_bus_info, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 #ifndef NO_IS_SLOT_APPROPRIATE_CHECK
@@ -162,9 +162,9 @@ s32 fm10k_get_bus_info(struct fm10k_hw *hw)
  **/
 bool fm10k_is_slot_appropriate(struct fm10k_hw *hw)
 {
-	if (hw->mac.ops.is_slot_appropriate)
-		return hw->mac.ops.is_slot_appropriate(hw);
-	return true;
+    if (hw->mac.ops.is_slot_appropriate)
+        return hw->mac.ops.is_slot_appropriate(hw);
+    return true;
 }
 
 #endif
@@ -180,8 +180,8 @@ bool fm10k_is_slot_appropriate(struct fm10k_hw *hw)
  **/
 s32 fm10k_update_vlan(struct fm10k_hw *hw, u32 vid, u8 idx, bool set)
 {
-	return fm10k_call_func(hw, hw->mac.ops.update_vlan, (hw, vid, idx, set),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.update_vlan, (hw, vid, idx, set),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -193,8 +193,8 @@ s32 fm10k_update_vlan(struct fm10k_hw *hw, u32 vid, u8 idx, bool set)
  **/
 s32 fm10k_read_mac_addr(struct fm10k_hw *hw)
 {
-	return fm10k_call_func(hw, hw->mac.ops.read_mac_addr, (hw),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.read_mac_addr, (hw),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -205,14 +205,14 @@ s32 fm10k_read_mac_addr(struct fm10k_hw *hw)
  * */
 void fm10k_update_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats)
 {
-	switch (hw->mac.type) {
-	case fm10k_mac_pf:
-		return fm10k_update_hw_stats_pf(hw, stats);
-	case fm10k_mac_vf:
-		return fm10k_update_hw_stats_vf(hw, stats);
-	default:
-		break;
-	}
+    switch (hw->mac.type) {
+    case fm10k_mac_pf:
+        return fm10k_update_hw_stats_pf(hw, stats);
+    case fm10k_mac_vf:
+        return fm10k_update_hw_stats_vf(hw, stats);
+    default:
+        break;
+    }
 }
 
 /**
@@ -223,14 +223,14 @@ void fm10k_update_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats)
  * */
 void fm10k_rebind_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats)
 {
-	switch (hw->mac.type) {
-	case fm10k_mac_pf:
-		return fm10k_rebind_hw_stats_pf(hw, stats);
-	case fm10k_mac_vf:
-		return fm10k_rebind_hw_stats_vf(hw, stats);
-	default:
-		break;
-	}
+    switch (hw->mac.type) {
+    case fm10k_mac_pf:
+        return fm10k_rebind_hw_stats_pf(hw, stats);
+    case fm10k_mac_vf:
+        return fm10k_rebind_hw_stats_vf(hw, stats);
+    default:
+        break;
+    }
 }
 
 /**
@@ -243,10 +243,10 @@ void fm10k_rebind_hw_stats(struct fm10k_hw *hw, struct fm10k_hw_stats *stats)
  *  to which it has been assigned.
  **/
 s32 fm10k_configure_dglort_map(struct fm10k_hw *hw,
-			       struct fm10k_dglort_cfg *dglort)
+                   struct fm10k_dglort_cfg *dglort)
 {
-	return fm10k_call_func(hw, hw->mac.ops.configure_dglort_map,
-			       (hw, dglort), FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.configure_dglort_map,
+                   (hw, dglort), FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -259,8 +259,8 @@ s32 fm10k_configure_dglort_map(struct fm10k_hw *hw,
  **/
 void fm10k_set_dma_mask(struct fm10k_hw *hw, u64 dma_mask)
 {
-	if (hw->mac.ops.set_dma_mask)
-		hw->mac.ops.set_dma_mask(hw, dma_mask);
+    if (hw->mac.ops.set_dma_mask)
+        hw->mac.ops.set_dma_mask(hw, dma_mask);
 }
 
 /**
@@ -276,8 +276,8 @@ void fm10k_set_dma_mask(struct fm10k_hw *hw, u64 dma_mask)
  **/
 s32 fm10k_get_fault(struct fm10k_hw *hw, int type, struct fm10k_fault *fault)
 {
-	return fm10k_call_func(hw, hw->mac.ops.get_fault, (hw, type, fault),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.get_fault, (hw, type, fault),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -292,11 +292,11 @@ s32 fm10k_get_fault(struct fm10k_hw *hw, int type, struct fm10k_fault *fault)
  *  This function is used to add or remove unicast MAC addresses
  **/
 s32 fm10k_update_uc_addr(struct fm10k_hw *hw, u16 lport,
-			  const u8 *mac, u16 vid, bool add, u8 flags)
+              const u8 *mac, u16 vid, bool add, u8 flags)
 {
-	return fm10k_call_func(hw, hw->mac.ops.update_uc_addr,
-			       (hw, lport, mac, vid, add, flags),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.update_uc_addr,
+                   (hw, lport, mac, vid, add, flags),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -310,11 +310,11 @@ s32 fm10k_update_uc_addr(struct fm10k_hw *hw, u16 lport,
  *  This function is used to add or remove multicast MAC addresses
  **/
 s32 fm10k_update_mc_addr(struct fm10k_hw *hw, u16 lport,
-			 const u8 *mac, u16 vid, bool add)
+             const u8 *mac, u16 vid, bool add)
 {
-	return fm10k_call_func(hw, hw->mac.ops.update_mc_addr,
-			       (hw, lport, mac, vid, add),
-			       FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.update_mc_addr,
+                   (hw, lport, mac, vid, add),
+                   FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -327,8 +327,8 @@ s32 fm10k_update_mc_addr(struct fm10k_hw *hw, u16 lport,
  **/
 s32 fm10k_adjust_systime(struct fm10k_hw *hw, s32 ppb)
 {
-	return fm10k_call_func(hw, hw->mac.ops.adjust_systime,
-			       (hw, ppb), FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.adjust_systime,
+                   (hw, ppb), FM10K_NOT_IMPLEMENTED);
 }
 
 /**
@@ -341,6 +341,6 @@ s32 fm10k_adjust_systime(struct fm10k_hw *hw, s32 ppb)
  **/
 s32 fm10k_notify_offset(struct fm10k_hw *hw, u64 offset)
 {
-	return fm10k_call_func(hw, hw->mac.ops.notify_offset,
-			       (hw, offset), FM10K_NOT_IMPLEMENTED);
+    return fm10k_call_func(hw, hw->mac.ops.notify_offset,
+                   (hw, offset), FM10K_NOT_IMPLEMENTED);
 }

@@ -13,30 +13,30 @@ static STAILQ_HEAD(, evt_test_entry) head = STAILQ_HEAD_INITIALIZER(head);
 void
 evt_test_register(struct evt_test_entry *entry)
 {
-	STAILQ_INSERT_TAIL(&head, entry, next);
+    STAILQ_INSERT_TAIL(&head, entry, next);
 }
 
 struct evt_test*
 evt_test_get(const char *name)
 {
-	struct evt_test_entry *entry;
+    struct evt_test_entry *entry;
 
-	if (!name)
-		return NULL;
+    if (!name)
+        return NULL;
 
-	STAILQ_FOREACH(entry, &head, next)
-		if (!strncmp(entry->test.name, name, strlen(name)))
-			return &entry->test;
+    STAILQ_FOREACH(entry, &head, next)
+        if (!strncmp(entry->test.name, name, strlen(name)))
+            return &entry->test;
 
-	return NULL;
+    return NULL;
 }
 
 void
 evt_test_dump_names(void)
 {
-	struct evt_test_entry *entry;
+    struct evt_test_entry *entry;
 
-	STAILQ_FOREACH(entry, &head, next)
-		if (entry->test.name)
-			printf("\t %s\n", entry->test.name);
+    STAILQ_FOREACH(entry, &head, next)
+        if (entry->test.name)
+            printf("\t %s\n", entry->test.name);
 }

@@ -7,61 +7,61 @@
 #define __T4_HW_H
 
 enum {
-	NCHAN           = 4,     /* # of HW channels */
-	EEPROMSIZE      = 17408, /* Serial EEPROM physical size */
-	EEPROMVSIZE     = 32768, /* Serial EEPROM virtual address space size */
-	EEPROMPFSIZE    = 1024,  /* EEPROM writable area size for PFn, n>0 */
-	NMTUS           = 16,    /* size of MTU table */
-	NCCTRL_WIN      = 32,    /* # of congestion control windows */
-	MBOX_LEN        = 64,    /* mailbox size in bytes */
-	UDBS_SEG_SIZE   = 128,   /* segment size for BAR2 user doorbells */
+    NCHAN           = 4,     /* # of HW channels */
+    EEPROMSIZE      = 17408, /* Serial EEPROM physical size */
+    EEPROMVSIZE     = 32768, /* Serial EEPROM virtual address space size */
+    EEPROMPFSIZE    = 1024,  /* EEPROM writable area size for PFn, n>0 */
+    NMTUS           = 16,    /* size of MTU table */
+    NCCTRL_WIN      = 32,    /* # of congestion control windows */
+    MBOX_LEN        = 64,    /* mailbox size in bytes */
+    UDBS_SEG_SIZE   = 128,   /* segment size for BAR2 user doorbells */
 };
 
 enum {
-	CIMLA_SIZE     = 2048,  /* # of 32-bit words in CIM LA */
+    CIMLA_SIZE     = 2048,  /* # of 32-bit words in CIM LA */
 };
 
 enum {
-	SF_SEC_SIZE = 64 * 1024,      /* serial flash sector size */
+    SF_SEC_SIZE = 64 * 1024,      /* serial flash sector size */
 };
 
 enum {
-	SGE_NTIMERS = 6,          /* # of interrupt holdoff timer values */
-	SGE_NCOUNTERS = 4,        /* # of interrupt packet counter values */
+    SGE_NTIMERS = 6,          /* # of interrupt holdoff timer values */
+    SGE_NCOUNTERS = 4,        /* # of interrupt packet counter values */
 };
 
 /* PCI-e memory window access */
 enum pcie_memwin {
-	MEMWIN_NIC      = 0,
+    MEMWIN_NIC      = 0,
 };
 
 enum {
-	SGE_MAX_WR_LEN = 512,     /* max WR size in bytes */
-	SGE_EQ_IDXSIZE = 64,      /* egress queue pidx/cidx unit size */
-	/* max no. of desc allowed in WR */
-	SGE_MAX_WR_NDESC = SGE_MAX_WR_LEN / SGE_EQ_IDXSIZE,
+    SGE_MAX_WR_LEN = 512,     /* max WR size in bytes */
+    SGE_EQ_IDXSIZE = 64,      /* egress queue pidx/cidx unit size */
+    /* max no. of desc allowed in WR */
+    SGE_MAX_WR_NDESC = SGE_MAX_WR_LEN / SGE_EQ_IDXSIZE,
 };
 
 enum {
-	TCB_SIZE        = 128,   /* TCB size */
+    TCB_SIZE        = 128,   /* TCB size */
 };
 
 struct sge_qstat {                /* data written to SGE queue status entries */
-	__be32 qid;
-	__be16 cidx;
-	__be16 pidx;
+    __be32 qid;
+    __be16 cidx;
+    __be16 pidx;
 };
 
 /*
  * Structure for last 128 bits of response descriptors
  */
 struct rsp_ctrl {
-	__be32 hdrbuflen_pidx;
-	__be32 pldbuflen_qid;
-	union {
-		u8 type_gen;
-		__be64 last_flit;
-	} u;
+    __be32 hdrbuflen_pidx;
+    __be32 pldbuflen_qid;
+    union {
+        u8 type_gen;
+        __be64 last_flit;
+    } u;
 };
 
 #define S_RSPD_NEWBUF    31
@@ -99,43 +99,43 @@ struct rsp_ctrl {
 #define FLASH_MAX_SIZE(nsecs)   ((nsecs) * SF_SEC_SIZE)
 
 enum {
-	/*
-	 * Various Expansion-ROM boot images, etc.
-	 */
-	FLASH_EXP_ROM_START_SEC = 0,
-	FLASH_EXP_ROM_NSECS = 6,
-	FLASH_EXP_ROM_START = FLASH_START(FLASH_EXP_ROM_START_SEC),
-	FLASH_EXP_ROM_MAX_SIZE = FLASH_MAX_SIZE(FLASH_EXP_ROM_NSECS),
+    /*
+     * Various Expansion-ROM boot images, etc.
+     */
+    FLASH_EXP_ROM_START_SEC = 0,
+    FLASH_EXP_ROM_NSECS = 6,
+    FLASH_EXP_ROM_START = FLASH_START(FLASH_EXP_ROM_START_SEC),
+    FLASH_EXP_ROM_MAX_SIZE = FLASH_MAX_SIZE(FLASH_EXP_ROM_NSECS),
 
-	/*
-	 * Location of firmware image in FLASH.
-	 */
-	FLASH_FW_START_SEC = 8,
-	FLASH_FW_NSECS = 16,
-	FLASH_FW_START = FLASH_START(FLASH_FW_START_SEC),
-	FLASH_FW_MAX_SIZE = FLASH_MAX_SIZE(FLASH_FW_NSECS),
+    /*
+     * Location of firmware image in FLASH.
+     */
+    FLASH_FW_START_SEC = 8,
+    FLASH_FW_NSECS = 16,
+    FLASH_FW_START = FLASH_START(FLASH_FW_START_SEC),
+    FLASH_FW_MAX_SIZE = FLASH_MAX_SIZE(FLASH_FW_NSECS),
 
-	/*
-	 * Location of bootstrap firmware image in FLASH.
-	 */
-	FLASH_FWBOOTSTRAP_START_SEC = 27,
-	FLASH_FWBOOTSTRAP_NSECS = 1,
-	FLASH_FWBOOTSTRAP_START = FLASH_START(FLASH_FWBOOTSTRAP_START_SEC),
-	FLASH_FWBOOTSTRAP_MAX_SIZE = FLASH_MAX_SIZE(FLASH_FWBOOTSTRAP_NSECS),
+    /*
+     * Location of bootstrap firmware image in FLASH.
+     */
+    FLASH_FWBOOTSTRAP_START_SEC = 27,
+    FLASH_FWBOOTSTRAP_NSECS = 1,
+    FLASH_FWBOOTSTRAP_START = FLASH_START(FLASH_FWBOOTSTRAP_START_SEC),
+    FLASH_FWBOOTSTRAP_MAX_SIZE = FLASH_MAX_SIZE(FLASH_FWBOOTSTRAP_NSECS),
 
-	/*
-	 * Location of Firmware Configuration File in FLASH.
-	 */
-	FLASH_CFG_START_SEC = 31,
-	FLASH_CFG_NSECS = 1,
-	FLASH_CFG_START = FLASH_START(FLASH_CFG_START_SEC),
-	FLASH_CFG_MAX_SIZE = FLASH_MAX_SIZE(FLASH_CFG_NSECS),
+    /*
+     * Location of Firmware Configuration File in FLASH.
+     */
+    FLASH_CFG_START_SEC = 31,
+    FLASH_CFG_NSECS = 1,
+    FLASH_CFG_START = FLASH_START(FLASH_CFG_START_SEC),
+    FLASH_CFG_MAX_SIZE = FLASH_MAX_SIZE(FLASH_CFG_NSECS),
 
-	/*
-	 * We don't support FLASH devices which can't support the full
-	 * standard set of sections which we need for normal operations.
-	 */
-	FLASH_MIN_SIZE = FLASH_CFG_START + FLASH_CFG_MAX_SIZE,
+    /*
+     * We don't support FLASH devices which can't support the full
+     * standard set of sections which we need for normal operations.
+     */
+    FLASH_MIN_SIZE = FLASH_CFG_START + FLASH_CFG_MAX_SIZE,
 };
 
 #undef FLASH_START

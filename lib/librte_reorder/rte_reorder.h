@@ -63,7 +63,7 @@ rte_reorder_create(const char *name, unsigned socket_id, unsigned int size);
  */
 struct rte_reorder_buffer *
 rte_reorder_init(struct rte_reorder_buffer *b, unsigned int bufsize,
-		const char *name, unsigned int size);
+        const char *name, unsigned int size);
 
 /**
  * Find an existing reorder buffer instance
@@ -144,7 +144,7 @@ rte_reorder_insert(struct rte_reorder_buffer *b, struct rte_mbuf *mbuf);
  */
 unsigned int
 rte_reorder_drain(struct rte_reorder_buffer *b, struct rte_mbuf **mbufs,
-		unsigned max_mbufs);
+        unsigned max_mbufs);
 
 #ifdef __cplusplus
 }

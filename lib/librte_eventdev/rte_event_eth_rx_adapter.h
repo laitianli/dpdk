@@ -92,7 +92,7 @@ extern "C" {
 #define RTE_EVENT_ETH_RX_ADAPTER_MAX_INSTANCE 32
 
 /* struct rte_event_eth_rx_adapter_queue_conf flags definitions */
-#define RTE_EVENT_ETH_RX_ADAPTER_QUEUE_FLOW_ID_VALID	0x1
+#define RTE_EVENT_ETH_RX_ADAPTER_QUEUE_FLOW_ID_VALID    0x1
 /**< This flag indicates the flow identifier is valid
  * @see rte_event_eth_rx_adapter_queue_conf::rx_queue_flags
  */
@@ -103,15 +103,15 @@ extern "C" {
  * @see rte_event_eth_rx_adapter_conf_cb
  */
 struct rte_event_eth_rx_adapter_conf {
-	uint8_t event_port_id;
-	/**< Event port identifier, the adapter enqueues mbuf events to this
-	 * port.
-	 */
-	uint32_t max_nb_rx;
-	/**< The adapter can return early if it has processed at least
-	 * max_nb_rx mbufs. This isn't treated as a requirement; batching may
-	 * cause the adapter to process more than max_nb_rx mbufs.
-	 */
+    uint8_t event_port_id;
+    /**< Event port identifier, the adapter enqueues mbuf events to this
+     * port.
+     */
+    uint32_t max_nb_rx;
+    /**< The adapter can return early if it has processed at least
+     * max_nb_rx mbufs. This isn't treated as a requirement; batching may
+     * cause the adapter to process more than max_nb_rx mbufs.
+     */
 };
 
 /**
@@ -136,71 +136,71 @@ struct rte_event_eth_rx_adapter_conf {
  *  rte_event_eth_rx_adapter_create_ext().
  */
 typedef int (*rte_event_eth_rx_adapter_conf_cb) (uint8_t id, uint8_t dev_id,
-			struct rte_event_eth_rx_adapter_conf *conf,
-			void *arg);
+            struct rte_event_eth_rx_adapter_conf *conf,
+            void *arg);
 
 /**
  * Rx queue configuration structure
  */
 struct rte_event_eth_rx_adapter_queue_conf {
-	uint32_t rx_queue_flags;
-	 /**< Flags for handling received packets
-	  * @see RTE_EVENT_ETH_RX_ADAPTER_QUEUE_FLOW_ID_VALID
-	  */
-	uint16_t servicing_weight;
-	/**< Relative polling frequency of ethernet receive queue when the
-	 * adapter uses a service core function for ethernet to event device
-	 * transfers. If it is set to zero, the Rx queue is interrupt driven
-	 * (unless rx queue interrupts are not enabled for the ethernet
-	 * device).
-	 */
-	struct rte_event ev;
-	/**<
-	 *  The values from the following event fields will be used when
-	 *  queuing mbuf events:
-	 *   - event_queue_id: Targeted event queue ID for received packets.
-	 *   - event_priority: Event priority of packets from this Rx queue in
-	 *                     the event queue relative to other events.
-	 *   - sched_type: Scheduling type for packets from this Rx queue.
-	 *   - flow_id: If the RTE_ETH_RX_EVENT_ADAPTER_QUEUE_FLOW_ID_VALID bit
-	 *		is set in rx_queue_flags, this flow_id is used for all
-	 *		packets received from this queue. Otherwise the flow ID
-	 *		is set to the RSS hash of the src and dst IPv4/6
-	 *		addresses.
-	 *
-	 * The event adapter sets ev.event_type to RTE_EVENT_TYPE_ETHDEV in the
-	 * enqueued event.
-	 */
+    uint32_t rx_queue_flags;
+     /**< Flags for handling received packets
+      * @see RTE_EVENT_ETH_RX_ADAPTER_QUEUE_FLOW_ID_VALID
+      */
+    uint16_t servicing_weight;
+    /**< Relative polling frequency of ethernet receive queue when the
+     * adapter uses a service core function for ethernet to event device
+     * transfers. If it is set to zero, the Rx queue is interrupt driven
+     * (unless rx queue interrupts are not enabled for the ethernet
+     * device).
+     */
+    struct rte_event ev;
+    /**<
+     *  The values from the following event fields will be used when
+     *  queuing mbuf events:
+     *   - event_queue_id: Targeted event queue ID for received packets.
+     *   - event_priority: Event priority of packets from this Rx queue in
+     *                     the event queue relative to other events.
+     *   - sched_type: Scheduling type for packets from this Rx queue.
+     *   - flow_id: If the RTE_ETH_RX_EVENT_ADAPTER_QUEUE_FLOW_ID_VALID bit
+     *        is set in rx_queue_flags, this flow_id is used for all
+     *        packets received from this queue. Otherwise the flow ID
+     *        is set to the RSS hash of the src and dst IPv4/6
+     *        addresses.
+     *
+     * The event adapter sets ev.event_type to RTE_EVENT_TYPE_ETHDEV in the
+     * enqueued event.
+     */
 };
 
 /**
  * A structure used to retrieve statistics for an eth rx adapter instance.
  */
 struct rte_event_eth_rx_adapter_stats {
-	uint64_t rx_poll_count;
-	/**< Receive queue poll count */
-	uint64_t rx_packets;
-	/**< Received packet count */
-	uint64_t rx_enq_count;
-	/**< Eventdev enqueue count */
-	uint64_t rx_enq_retry;
-	/**< Eventdev enqueue retry count */
-	uint64_t rx_dropped;
-	/**< Received packet dropped count */
-	uint64_t rx_enq_start_ts;
-	/**< Rx enqueue start timestamp */
-	uint64_t rx_enq_block_cycles;
-	/**< Cycles for which the service is blocked by the event device,
-	 * i.e, the service fails to enqueue to the event device.
-	 */
-	uint64_t rx_enq_end_ts;
-	/**< Latest timestamp at which the service is unblocked
-	 * by the event device. The start, end timestamps and
-	 * block cycles can be used to compute the percentage of
-	 * cycles the service is blocked by the event device.
-	 */
-	uint64_t rx_intr_packets;
-	/**< Received packet count for interrupt mode Rx queues */
+    uint64_t rx_poll_count;
+    /**< Receive queue poll count */
+    uint64_t rx_packets;
+    /**< Received packet count */
+    uint64_t rx_enq_count;
+    /**< Eventdev enqueue count */
+    uint64_t rx_enq_retry;
+    /**< Eventdev enqueue retry count */
+    uint64_t rx_dropped;
+    /**< Received packet dropped count */
+    uint64_t rx_enq_start_ts;
+    /**< Rx enqueue start timestamp */
+    uint64_t rx_enq_block_cycles;
+    /**< Cycles for which the service is blocked by the event device,
+     * i.e, the service fails to enqueue to the event device.
+     */
+    uint64_t rx_enq_end_ts;
+    /**< Latest timestamp at which the service is unblocked
+     * by the event device. The start, end timestamps and
+     * block cycles can be used to compute the percentage of
+     * cycles the service is blocked by the event device.
+     */
+    uint64_t rx_intr_packets;
+    /**< Received packet count for interrupt mode Rx queues */
 };
 
 /**
@@ -244,13 +244,13 @@ struct rte_event_eth_rx_adapter_stats {
  *  - The number of events to be enqueued by the SW adapter.
  */
 typedef uint16_t (*rte_event_eth_rx_adapter_cb_fn)(uint16_t eth_dev_id,
-						uint16_t queue_id,
-						uint32_t enqueue_buf_size,
-						uint32_t enqueue_buf_count,
-						struct rte_event *ev,
-						uint16_t nb_event,
-						void *cb_arg,
-						uint16_t *nb_dropped);
+                        uint16_t queue_id,
+                        uint32_t enqueue_buf_size,
+                        uint32_t enqueue_buf_count,
+                        struct rte_event *ev,
+                        uint16_t nb_event,
+                        void *cb_arg,
+                        uint16_t *nb_dropped);
 
 /**
  * Create a new ethernet Rx event adapter with the specified identifier.
@@ -274,8 +274,8 @@ typedef uint16_t (*rte_event_eth_rx_adapter_cb_fn)(uint16_t eth_dev_id,
  *   - <0: Error code on failure
  */
 int rte_event_eth_rx_adapter_create_ext(uint8_t id, uint8_t dev_id,
-				rte_event_eth_rx_adapter_conf_cb conf_cb,
-				void *conf_arg);
+                rte_event_eth_rx_adapter_conf_cb conf_cb,
+                void *conf_arg);
 
 /**
  * Create a new ethernet Rx event adapter with the specified identifier.
@@ -301,7 +301,7 @@ int rte_event_eth_rx_adapter_create_ext(uint8_t id, uint8_t dev_id,
  *   - <0: Error code on failure
  */
 int rte_event_eth_rx_adapter_create(uint8_t id, uint8_t dev_id,
-				struct rte_event_port_conf *port_config);
+                struct rte_event_port_conf *port_config);
 
 /**
  * Free an event adapter
@@ -349,9 +349,9 @@ int rte_event_eth_rx_adapter_free(uint8_t id);
  *  combination of the two error codes.
  */
 int rte_event_eth_rx_adapter_queue_add(uint8_t id,
-			uint16_t eth_dev_id,
-			int32_t rx_queue_id,
-			const struct rte_event_eth_rx_adapter_queue_conf *conf);
+            uint16_t eth_dev_id,
+            int32_t rx_queue_id,
+            const struct rte_event_eth_rx_adapter_queue_conf *conf);
 
 /**
  * Delete receive queue from an event adapter.
@@ -375,7 +375,7 @@ int rte_event_eth_rx_adapter_queue_add(uint8_t id,
  *  - <0: Error code on failure.
  */
 int rte_event_eth_rx_adapter_queue_del(uint8_t id, uint16_t eth_dev_id,
-				       int32_t rx_queue_id);
+                       int32_t rx_queue_id);
 
 /**
  * Start ethernet Rx event adapter
@@ -419,7 +419,7 @@ int rte_event_eth_rx_adapter_stop(uint8_t id);
  *  - <0: Error code on failure.
  */
 int rte_event_eth_rx_adapter_stats_get(uint8_t id,
-				  struct rte_event_eth_rx_adapter_stats *stats);
+                  struct rte_event_eth_rx_adapter_stats *stats);
 
 /**
  * Reset statistics for an adapter.
@@ -468,10 +468,10 @@ int rte_event_eth_rx_adapter_service_id_get(uint8_t id, uint32_t *service_id);
  *  - <0: Error code on failure.
  */
 int rte_event_eth_rx_adapter_cb_register(uint8_t id, uint16_t eth_dev_id,
-					 rte_event_eth_rx_adapter_cb_fn cb_fn,
-					 void *cb_arg);
+                     rte_event_eth_rx_adapter_cb_fn cb_fn,
+                     void *cb_arg);
 
 #ifdef __cplusplus
 }
 #endif
-#endif	/* _RTE_EVENT_ETH_RX_ADAPTER_ */
+#endif    /* _RTE_EVENT_ETH_RX_ADAPTER_ */

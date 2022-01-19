@@ -41,17 +41,17 @@
 static const char * const VALID_KEYS[] = {TIMESTAMP_ARG, NULL};
 
 struct pmd_internals {
-	uint16_t         max_rxmac;
-	uint16_t         max_txmac;
-	struct nc_rxmac *rxmac[RTE_MAX_NC_RXMAC];
-	struct nc_txmac *txmac[RTE_MAX_NC_TXMAC];
+    uint16_t         max_rxmac;
+    uint16_t         max_txmac;
+    struct nc_rxmac *rxmac[RTE_MAX_NC_RXMAC];
+    struct nc_txmac *txmac[RTE_MAX_NC_TXMAC];
 
-	char             nfb_dev[PATH_MAX];
-	struct nfb_device *nfb;
-	/* Place to remember if filter was promiscuous or filtering by table,
-	 * when disabling allmulticast
-	 */
-	enum nc_rxmac_mac_filter rx_filter_original;
+    char             nfb_dev[PATH_MAX];
+    struct nfb_device *nfb;
+    /* Place to remember if filter was promiscuous or filtering by table,
+     * when disabling allmulticast
+     */
+    enum nc_rxmac_mac_filter rx_filter_original;
 };
 
 #endif /* _NFB_H_ */

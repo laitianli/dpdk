@@ -26,96 +26,96 @@ static struct rte_timer timer1;
 /* timer0 callback */
 static void
 timer0_cb(__attribute__((unused)) struct rte_timer *tim,
-	  __attribute__((unused)) void *arg)
+      __attribute__((unused)) void *arg)
 {
-	static unsigned counter = 0;
-	unsigned lcore_id = rte_lcore_id();
+    static unsigned counter = 0;
+    unsigned lcore_id = rte_lcore_id();
 
-	printf("%s() on lcore %u\n", __func__, lcore_id);
+    printf("%s() on lcore %u\n", __func__, lcore_id);
 
-	/* this timer is automatically reloaded until we decide to
-	 * stop it, when counter reaches 20. */
-	if ((counter ++) == 20)
-		rte_timer_stop(tim);
+    /* this timer is automatically reloaded until we decide to
+     * stop it, when counter reaches 20. */
+    if ((counter ++) == 20)
+        rte_timer_stop(tim);
 }
 
 /* timer1 callback */
 static void
 timer1_cb(__attribute__((unused)) struct rte_timer *tim,
-	  __attribute__((unused)) void *arg)
+      __attribute__((unused)) void *arg)
 {
-	unsigned lcore_id = rte_lcore_id();
-	uint64_t hz;
+    unsigned lcore_id = rte_lcore_id();
+    uint64_t hz;
 
-	printf("%s() on lcore %u\n", __func__, lcore_id);
+    printf("%s() on lcore %u\n", __func__, lcore_id);
 
-	/* reload it on another lcore */
-	hz = rte_get_timer_hz();
-	lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
-	rte_timer_reset(tim, hz/3, SINGLE, lcore_id, timer1_cb, NULL);
+    /* reload it on another lcore */
+    hz = rte_get_timer_hz();
+    lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
+    rte_timer_reset(tim, hz/3, SINGLE, lcore_id, timer1_cb, NULL);
 }
 
 static __attribute__((noreturn)) int
 lcore_mainloop(__attribute__((unused)) void *arg)
 {
-	uint64_t prev_tsc = 0, cur_tsc, diff_tsc;
-	unsigned lcore_id;
+    uint64_t prev_tsc = 0, cur_tsc, diff_tsc;
+    unsigned lcore_id;
 
-	lcore_id = rte_lcore_id();
-	printf("Starting mainloop on core %u\n", lcore_id);
+    lcore_id = rte_lcore_id();
+    printf("Starting mainloop on core %u\n", lcore_id);
 
-	while (1) {
-		/*
-		 * Call the timer handler on each core: as we don't
-		 * need a very precise timer, so only call
-		 * rte_timer_manage() every ~10ms (at 2Ghz). In a real
-		 * application, this will enhance performances as
-		 * reading the HPET timer is not efficient.
-		 */
-		cur_tsc = rte_rdtsc();
-		diff_tsc = cur_tsc - prev_tsc;
-		if (diff_tsc > TIMER_RESOLUTION_CYCLES) {
-			rte_timer_manage();
-			prev_tsc = cur_tsc;
-		}
-	}
+    while (1) {
+        /*
+         * Call the timer handler on each core: as we don't
+         * need a very precise timer, so only call
+         * rte_timer_manage() every ~10ms (at 2Ghz). In a real
+         * application, this will enhance performances as
+         * reading the HPET timer is not efficient.
+         */
+        cur_tsc = rte_rdtsc();
+        diff_tsc = cur_tsc - prev_tsc;
+        if (diff_tsc > TIMER_RESOLUTION_CYCLES) {
+            rte_timer_manage();
+            prev_tsc = cur_tsc;
+        }
+    }
 }
 
 int
 main(int argc, char **argv)
 {
-	int ret;
-	uint64_t hz;
-	unsigned lcore_id;
+    int ret;
+    uint64_t hz;
+    unsigned lcore_id;
 
-	/* init EAL */
-	ret = rte_eal_init(argc, argv);
-	if (ret < 0)
-		rte_panic("Cannot init EAL\n");
+    /* init EAL */
+    ret = rte_eal_init(argc, argv);
+    if (ret < 0)
+        rte_panic("Cannot init EAL\n");
 
-	/* init RTE timer library */
-	rte_timer_subsystem_init();
+    /* init RTE timer library */
+    rte_timer_subsystem_init();
 
-	/* init timer structures */
-	rte_timer_init(&timer0);
-	rte_timer_init(&timer1);
+    /* init timer structures */
+    rte_timer_init(&timer0);
+    rte_timer_init(&timer1);
 
-	/* load timer0, every second, on master lcore, reloaded automatically */
-	hz = rte_get_timer_hz();
-	lcore_id = rte_lcore_id();
-	rte_timer_reset(&timer0, hz, PERIODICAL, lcore_id, timer0_cb, NULL);
+    /* load timer0, every second, on master lcore, reloaded automatically */
+    hz = rte_get_timer_hz();
+    lcore_id = rte_lcore_id();
+    rte_timer_reset(&timer0, hz, PERIODICAL, lcore_id, timer0_cb, NULL);
 
-	/* load timer1, every second/3, on next lcore, reloaded manually */
-	lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
-	rte_timer_reset(&timer1, hz/3, SINGLE, lcore_id, timer1_cb, NULL);
+    /* load timer1, every second/3, on next lcore, reloaded manually */
+    lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
+    rte_timer_reset(&timer1, hz/3, SINGLE, lcore_id, timer1_cb, NULL);
 
-	/* call lcore_mainloop() on every slave lcore */
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		rte_eal_remote_launch(lcore_mainloop, NULL, lcore_id);
-	}
+    /* call lcore_mainloop() on every slave lcore */
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        rte_eal_remote_launch(lcore_mainloop, NULL, lcore_id);
+    }
 
-	/* call it on master lcore too */
-	(void) lcore_mainloop(NULL);
+    /* call it on master lcore too */
+    (void) lcore_mainloop(NULL);
 
-	return 0;
+    return 0;
 }

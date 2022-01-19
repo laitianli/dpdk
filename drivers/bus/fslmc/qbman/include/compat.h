@@ -28,22 +28,22 @@
  */
 
 /* Required compiler attributes */
-#define likely(x)	__builtin_expect(!!(x), 1)
-#define unlikely(x)	__builtin_expect(!!(x), 0)
+#define likely(x)    __builtin_expect(!!(x), 1)
+#define unlikely(x)    __builtin_expect(!!(x), 0)
 
 /* Required types */
-typedef uint64_t	dma_addr_t;
+typedef uint64_t    dma_addr_t;
 
 /* Debugging */
 #define prflush(fmt, args...) \
-	do { \
-		printf(fmt, ##args); \
-		fflush(stdout); \
-	} while (0)
-#define pr_crit(fmt, args...)	 prflush("CRIT:" fmt, ##args)
-#define pr_err(fmt, args...)	 prflush("ERR:" fmt, ##args)
-#define pr_warn(fmt, args...)	 prflush("WARN:" fmt, ##args)
-#define pr_info(fmt, args...)	 prflush(fmt, ##args)
+    do { \
+        printf(fmt, ##args); \
+        fflush(stdout); \
+    } while (0)
+#define pr_crit(fmt, args...)     prflush("CRIT:" fmt, ##args)
+#define pr_err(fmt, args...)     prflush("ERR:" fmt, ##args)
+#define pr_warn(fmt, args...)     prflush("WARN:" fmt, ##args)
+#define pr_info(fmt, args...)     prflush(fmt, ##args)
 
 #ifdef RTE_LIBRTE_DPAA2_DEBUG_BUS
 
@@ -59,14 +59,14 @@ typedef uint64_t	dma_addr_t;
 #ifdef pr_debug
 #undef pr_debug
 #endif
-#define pr_debug(fmt, args...)	printf(fmt, ##args)
+#define pr_debug(fmt, args...)    printf(fmt, ##args)
 #define QBMAN_BUG_ON(c) \
 do { \
-	static int warned_##__LINE__; \
-	if ((c) && !warned_##__LINE__) { \
-		pr_warn("(%s:%d)\n", __FILE__, __LINE__); \
-		warned_##__LINE__ = 1; \
-	} \
+    static int warned_##__LINE__; \
+    if ((c) && !warned_##__LINE__) { \
+        pr_warn("(%s:%d)\n", __FILE__, __LINE__); \
+        warned_##__LINE__ = 1; \
+    } \
 } while (0)
 #else
 #define QBMAN_BUG_ON(c) {}
@@ -80,11 +80,11 @@ do { \
 
 #define __iomem
 
-#define __raw_readb(p)	(*(const volatile unsigned char *)(p))
-#define __raw_readl(p)	(*(const volatile unsigned int *)(p))
+#define __raw_readb(p)    (*(const volatile unsigned char *)(p))
+#define __raw_readl(p)    (*(const volatile unsigned int *)(p))
 #define __raw_writel(v, p) {*(volatile unsigned int *)(p) = (v); }
 
-#define dma_wmb()		rte_smp_mb()
+#define dma_wmb()        rte_smp_mb()
 
 #define atomic_t                rte_atomic32_t
 #define atomic_read(v)          rte_atomic32_read(v)

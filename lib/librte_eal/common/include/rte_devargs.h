@@ -29,9 +29,9 @@ extern "C" {
  * Type of generic device
  */
 enum rte_devtype {
-	RTE_DEVTYPE_WHITELISTED_PCI,
-	RTE_DEVTYPE_BLACKLISTED_PCI,
-	RTE_DEVTYPE_VIRTUAL,
+    RTE_DEVTYPE_WHITELISTED_PCI,
+    RTE_DEVTYPE_BLACKLISTED_PCI,
+    RTE_DEVTYPE_VIRTUAL,
 };
 
 /**
@@ -45,25 +45,25 @@ enum rte_devtype {
  * device.
  */
 struct rte_devargs {
-	/** Next in list. */
-	TAILQ_ENTRY(rte_devargs) next;
-	/** Type of device. */
-	enum rte_devtype type;
-	/** Device policy. */
-	enum rte_dev_policy policy;
-	/** Name of the device. */
-	char name[RTE_DEV_NAME_MAX_LEN];
-	RTE_STD_C11
-	union {
-	/** Arguments string as given by user or "" for no argument. */
-		char *args;
-		const char *drv_str;
-	};
-	struct rte_bus *bus; /**< bus handle. */
-	struct rte_class *cls; /**< class handle. */
-	const char *bus_str; /**< bus-related part of device string. */
-	const char *cls_str; /**< class-related part of device string. */
-	const char *data; /**< Device string storage. */
+    /** Next in list. */
+    TAILQ_ENTRY(rte_devargs) next;
+    /** Type of device. */
+    enum rte_devtype type;
+    /** Device policy. */
+    enum rte_dev_policy policy;
+    /** Name of the device. */
+    char name[RTE_DEV_NAME_MAX_LEN];
+    RTE_STD_C11
+    union {
+    /** Arguments string as given by user or "" for no argument. */
+        char *args;
+        const char *drv_str;
+    };
+    struct rte_bus *bus; /**< bus handle. */
+    struct rte_class *cls; /**< class handle. */
+    const char *bus_str; /**< bus-related part of device string. */
+    const char *cls_str; /**< class-related part of device string. */
+    const char *data; /**< Device string storage. */
 };
 
 /**
@@ -136,7 +136,7 @@ rte_devargs_parse(struct rte_devargs *da, const char *dev);
  */
 int
 rte_devargs_parsef(struct rte_devargs *da,
-		   const char *format, ...)
+           const char *format, ...)
 __attribute__((format(printf, 2, 0)));
 
 /**
@@ -227,9 +227,9 @@ rte_devargs_next(const char *busname, const struct rte_devargs *start);
  * Iterate over all rte_devargs for a specific bus.
  */
 #define RTE_EAL_DEVARGS_FOREACH(busname, da) \
-	for (da = rte_devargs_next(busname, NULL); \
-	     da != NULL; \
-	     da = rte_devargs_next(busname, da)) \
+    for (da = rte_devargs_next(busname, NULL); \
+         da != NULL; \
+         da = rte_devargs_next(busname, da)) \
 
 #ifdef __cplusplus
 }

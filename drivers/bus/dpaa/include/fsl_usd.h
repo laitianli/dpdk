@@ -28,27 +28,27 @@ int bman_thread_finish(void);
 /* Obtain and free raw (unitialized) portals */
 
 struct dpaa_raw_portal {
-	/* inputs */
+    /* inputs */
 
-	/* set to non zero to turn on stashing */
-	uint8_t enable_stash;
-	/* Stashing attributes for the portal */
-	uint32_t cpu;
-	uint32_t cache;
-	uint32_t window;
+    /* set to non zero to turn on stashing */
+    uint8_t enable_stash;
+    /* Stashing attributes for the portal */
+    uint32_t cpu;
+    uint32_t cache;
+    uint32_t window;
 
-	/* Specifies the stash request queue this portal should use */
-	uint8_t sdest;
+    /* Specifies the stash request queue this portal should use */
+    uint8_t sdest;
 
-	/* Specifes a specific portal index to map or QBMAN_ANY_PORTAL_IDX
-	 * for don't care.  The portal index will be populated by the
-	 * driver when the ioctl() successfully completes.
-	 */
-	uint32_t index;
+    /* Specifes a specific portal index to map or QBMAN_ANY_PORTAL_IDX
+     * for don't care.  The portal index will be populated by the
+     * driver when the ioctl() successfully completes.
+     */
+    uint32_t index;
 
-	/* outputs */
-	uint64_t cinh;
-	uint64_t cena;
+    /* outputs */
+    uint64_t cinh;
+    uint64_t cena;
 };
 
 int qman_allocate_raw_portal(struct dpaa_raw_portal *portal);

@@ -71,56 +71,56 @@ struct rte_pipeline;
 
 /** Parameters for pipeline creation  */
 struct rte_pipeline_params {
-	/** Pipeline name */
-	const char *name;
+    /** Pipeline name */
+    const char *name;
 
-	/** CPU socket ID where memory for the pipeline and its elements (ports
-	and tables) should be allocated */
-	int socket_id;
+    /** CPU socket ID where memory for the pipeline and its elements (ports
+    and tables) should be allocated */
+    int socket_id;
 
-	/** Offset within packet meta-data to port_id to be used by action
-	"Send packet to output port read from packet meta-data". Has to be
-	4-byte aligned. */
-	uint32_t offset_port_id;
+    /** Offset within packet meta-data to port_id to be used by action
+    "Send packet to output port read from packet meta-data". Has to be
+    4-byte aligned. */
+    uint32_t offset_port_id;
 };
 
 /** Pipeline port in stats. */
 struct rte_pipeline_port_in_stats {
-	/** Port in stats. */
-	struct rte_port_in_stats stats;
+    /** Port in stats. */
+    struct rte_port_in_stats stats;
 
-	/** Number of packets dropped by action handler. */
-	uint64_t n_pkts_dropped_by_ah;
+    /** Number of packets dropped by action handler. */
+    uint64_t n_pkts_dropped_by_ah;
 
 };
 
 /** Pipeline port out stats. */
 struct rte_pipeline_port_out_stats {
-	/** Port out stats. */
-	struct rte_port_out_stats stats;
+    /** Port out stats. */
+    struct rte_port_out_stats stats;
 
-	/** Number of packets dropped by action handler. */
-	uint64_t n_pkts_dropped_by_ah;
+    /** Number of packets dropped by action handler. */
+    uint64_t n_pkts_dropped_by_ah;
 };
 
 /** Pipeline table stats. */
 struct rte_pipeline_table_stats {
-	/** Table stats. */
-	struct rte_table_stats stats;
+    /** Table stats. */
+    struct rte_table_stats stats;
 
-	/** Number of packets dropped by lookup hit action handler. */
-	uint64_t n_pkts_dropped_by_lkp_hit_ah;
+    /** Number of packets dropped by lookup hit action handler. */
+    uint64_t n_pkts_dropped_by_lkp_hit_ah;
 
-	/** Number of packets dropped by lookup miss action handler. */
-	uint64_t n_pkts_dropped_by_lkp_miss_ah;
+    /** Number of packets dropped by lookup miss action handler. */
+    uint64_t n_pkts_dropped_by_lkp_miss_ah;
 
-	/** Number of packets dropped by pipeline in behalf of this
-	 * table based on action specified in table entry. */
-	uint64_t n_pkts_dropped_lkp_hit;
+    /** Number of packets dropped by pipeline in behalf of this
+     * table based on action specified in table entry. */
+    uint64_t n_pkts_dropped_lkp_hit;
 
-	/** Number of packets dropped by pipeline in behalf of this
-	 *  table based on action specified in table entry. */
-	uint64_t n_pkts_dropped_lkp_miss;
+    /** Number of packets dropped by pipeline in behalf of this
+     *  table based on action specified in table entry. */
+    uint64_t n_pkts_dropped_lkp_miss;
 };
 
 /**
@@ -179,20 +179,20 @@ int rte_pipeline_flush(struct rte_pipeline *p);
  */
 /** Reserved actions */
 enum rte_pipeline_action {
-	/** Drop the packet */
-	RTE_PIPELINE_ACTION_DROP = 0,
+    /** Drop the packet */
+    RTE_PIPELINE_ACTION_DROP = 0,
 
-	/** Send packet to output port */
-	RTE_PIPELINE_ACTION_PORT,
+    /** Send packet to output port */
+    RTE_PIPELINE_ACTION_PORT,
 
-	/** Send packet to output port read from packet meta-data */
-	RTE_PIPELINE_ACTION_PORT_META,
+    /** Send packet to output port read from packet meta-data */
+    RTE_PIPELINE_ACTION_PORT_META,
 
-	/** Send packet to table */
-	RTE_PIPELINE_ACTION_TABLE,
+    /** Send packet to table */
+    RTE_PIPELINE_ACTION_TABLE,
 
-	/** Number of reserved actions */
-	RTE_PIPELINE_ACTIONS
+    /** Number of reserved actions */
+    RTE_PIPELINE_ACTIONS
 };
 
 /*
@@ -200,7 +200,7 @@ enum rte_pipeline_action {
  *
  */
 /** Maximum number of tables allowed for any given pipeline instance. The
-	value of this parameter cannot be changed. */
+    value of this parameter cannot be changed. */
 #define RTE_PIPELINE_TABLE_MAX                                     64
 
 /**
@@ -213,19 +213,19 @@ enum rte_pipeline_action {
  * mutually exclusive, only one reserved action can be set per table entry.
  */
 struct rte_pipeline_table_entry {
-	/** Reserved action */
-	enum rte_pipeline_action action;
+    /** Reserved action */
+    enum rte_pipeline_action action;
 
-	RTE_STD_C11
-	union {
-		/** Output port ID (meta-data for "Send packet to output port"
-		action) */
-		uint32_t port_id;
-		/** Table ID (meta-data for "Send packet to table" action) */
-		uint32_t table_id;
-	};
-	/** Start of table entry area for user defined actions and meta-data */
-	__extension__ uint8_t action_data[0];
+    RTE_STD_C11
+    union {
+        /** Output port ID (meta-data for "Send packet to output port"
+        action) */
+        uint32_t port_id;
+        /** Table ID (meta-data for "Send packet to table" action) */
+        uint32_t table_id;
+    };
+    /** Start of table entry area for user defined actions and meta-data */
+    __extension__ uint8_t action_data[0];
 };
 
 /**
@@ -258,11 +258,11 @@ struct rte_pipeline_table_entry {
  *   0 on success, error code otherwise
  */
 typedef int (*rte_pipeline_table_action_handler_hit)(
-	struct rte_pipeline *p,
-	struct rte_mbuf **pkts,
-	uint64_t pkts_mask,
-	struct rte_pipeline_table_entry **entries,
-	void *arg);
+    struct rte_pipeline *p,
+    struct rte_mbuf **pkts,
+    uint64_t pkts_mask,
+    struct rte_pipeline_table_entry **entries,
+    void *arg);
 
 /**
  * Pipeline table action handler on lookup miss
@@ -294,34 +294,34 @@ typedef int (*rte_pipeline_table_action_handler_hit)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_pipeline_table_action_handler_miss)(
-	struct rte_pipeline *p,
-	struct rte_mbuf **pkts,
-	uint64_t pkts_mask,
-	struct rte_pipeline_table_entry *entry,
-	void *arg);
+    struct rte_pipeline *p,
+    struct rte_mbuf **pkts,
+    uint64_t pkts_mask,
+    struct rte_pipeline_table_entry *entry,
+    void *arg);
 
 /** Parameters for pipeline table creation. Action handlers have to be either
     both enabled or both disabled (they can be disabled by setting them to
     NULL). */
 struct rte_pipeline_table_params {
-	/** Table operations (specific to each table type) */
-	struct rte_table_ops *ops;
-	/** Opaque param to be passed to the table create operation when
-	invoked */
-	void *arg_create;
-	/** Callback function to execute the user actions on input packets in
-	case of lookup hit */
-	rte_pipeline_table_action_handler_hit f_action_hit;
-	/** Callback function to execute the user actions on input packets in
-	case of lookup miss */
-	rte_pipeline_table_action_handler_miss f_action_miss;
+    /** Table operations (specific to each table type) */
+    struct rte_table_ops *ops;
+    /** Opaque param to be passed to the table create operation when
+    invoked */
+    void *arg_create;
+    /** Callback function to execute the user actions on input packets in
+    case of lookup hit */
+    rte_pipeline_table_action_handler_hit f_action_hit;
+    /** Callback function to execute the user actions on input packets in
+    case of lookup miss */
+    rte_pipeline_table_action_handler_miss f_action_miss;
 
-	/** Opaque parameter to be passed to lookup hit and/or lookup miss
-	action handlers when invoked */
-	void *arg_ah;
-	/** Memory size to be reserved per table entry for storing the user
-	actions and their meta-data */
-	uint32_t action_data_size;
+    /** Opaque parameter to be passed to lookup hit and/or lookup miss
+    action handlers when invoked */
+    void *arg_ah;
+    /** Memory size to be reserved per table entry for storing the user
+    actions and their meta-data */
+    uint32_t action_data_size;
 };
 
 /**
@@ -338,8 +338,8 @@ struct rte_pipeline_table_params {
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_create(struct rte_pipeline *p,
-	struct rte_pipeline_table_params *params,
-	uint32_t *table_id);
+    struct rte_pipeline_table_params *params,
+    uint32_t *table_id);
 
 /**
  * Pipeline table default entry add
@@ -363,9 +363,9 @@ int rte_pipeline_table_create(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_default_entry_add(struct rte_pipeline *p,
-	uint32_t table_id,
-	struct rte_pipeline_table_entry *default_entry,
-	struct rte_pipeline_table_entry **default_entry_ptr);
+    uint32_t table_id,
+    struct rte_pipeline_table_entry *default_entry,
+    struct rte_pipeline_table_entry **default_entry_ptr);
 
 /**
  * Pipeline table default entry delete
@@ -385,8 +385,8 @@ int rte_pipeline_table_default_entry_add(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_default_entry_delete(struct rte_pipeline *p,
-	uint32_t table_id,
-	struct rte_pipeline_table_entry *entry);
+    uint32_t table_id,
+    struct rte_pipeline_table_entry *entry);
 
 /**
  * Pipeline table entry add
@@ -412,11 +412,11 @@ int rte_pipeline_table_default_entry_delete(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_entry_add(struct rte_pipeline *p,
-	uint32_t table_id,
-	void *key,
-	struct rte_pipeline_table_entry *entry,
-	int *key_found,
-	struct rte_pipeline_table_entry **entry_ptr);
+    uint32_t table_id,
+    void *key,
+    struct rte_pipeline_table_entry *entry,
+    int *key_found,
+    struct rte_pipeline_table_entry **entry_ptr);
 
 /**
  * Pipeline table entry delete
@@ -439,10 +439,10 @@ int rte_pipeline_table_entry_add(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_entry_delete(struct rte_pipeline *p,
-	uint32_t table_id,
-	void *key,
-	int *key_found,
-	struct rte_pipeline_table_entry *entry);
+    uint32_t table_id,
+    void *key,
+    int *key_found,
+    struct rte_pipeline_table_entry *entry);
 
 /**
  * Pipeline table entry add bulk
@@ -471,12 +471,12 @@ int rte_pipeline_table_entry_delete(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_entry_add_bulk(struct rte_pipeline *p,
-	uint32_t table_id,
-	void **keys,
-	struct rte_pipeline_table_entry **entries,
-	uint32_t n_keys,
-	int *key_found,
-	struct rte_pipeline_table_entry **entries_ptr);
+    uint32_t table_id,
+    void **keys,
+    struct rte_pipeline_table_entry **entries,
+    uint32_t n_keys,
+    int *key_found,
+    struct rte_pipeline_table_entry **entries_ptr);
 
 /**
  * Pipeline table entry delete bulk
@@ -502,11 +502,11 @@ int rte_pipeline_table_entry_add_bulk(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_entry_delete_bulk(struct rte_pipeline *p,
-	uint32_t table_id,
-	void **keys,
-	uint32_t n_keys,
-	int *key_found,
-	struct rte_pipeline_table_entry **entries);
+    uint32_t table_id,
+    void **keys,
+    uint32_t n_keys,
+    int *key_found,
+    struct rte_pipeline_table_entry **entries);
 
 /**
  * Read pipeline table stats.
@@ -526,14 +526,14 @@ int rte_pipeline_table_entry_delete_bulk(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_table_stats_read(struct rte_pipeline *p, uint32_t table_id,
-	struct rte_pipeline_table_stats *stats, int clear);
+    struct rte_pipeline_table_stats *stats, int clear);
 
 /*
  * Port IN
  *
  */
 /** Maximum number of input ports allowed for any given pipeline instance. The
-	value of this parameter cannot be changed. */
+    value of this parameter cannot be changed. */
 #define RTE_PIPELINE_PORT_IN_MAX                                    64
 
 /**
@@ -559,26 +559,26 @@ int rte_pipeline_table_stats_read(struct rte_pipeline *p, uint32_t table_id,
  *   0 on success, error code otherwise
  */
 typedef int (*rte_pipeline_port_in_action_handler)(
-	struct rte_pipeline *p,
-	struct rte_mbuf **pkts,
-	uint32_t n,
-	void *arg);
+    struct rte_pipeline *p,
+    struct rte_mbuf **pkts,
+    uint32_t n,
+    void *arg);
 
 /** Parameters for pipeline input port creation */
 struct rte_pipeline_port_in_params {
-	/** Input port operations (specific to each table type) */
-	struct rte_port_in_ops *ops;
-	/** Opaque parameter to be passed to create operation when invoked */
-	void *arg_create;
+    /** Input port operations (specific to each table type) */
+    struct rte_port_in_ops *ops;
+    /** Opaque parameter to be passed to create operation when invoked */
+    void *arg_create;
 
-	/** Callback function to execute the user actions on input packets.
-		Disabled if set to NULL. */
-	rte_pipeline_port_in_action_handler f_action;
-	/** Opaque parameter to be passed to the action handler when invoked */
-	void *arg_ah;
+    /** Callback function to execute the user actions on input packets.
+        Disabled if set to NULL. */
+    rte_pipeline_port_in_action_handler f_action;
+    /** Opaque parameter to be passed to the action handler when invoked */
+    void *arg_ah;
 
-	/** Recommended burst size for the RX operation(in number of pkts) */
-	uint32_t burst_size;
+    /** Recommended burst size for the RX operation(in number of pkts) */
+    uint32_t burst_size;
 };
 
 /**
@@ -595,8 +595,8 @@ struct rte_pipeline_port_in_params {
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_in_create(struct rte_pipeline *p,
-	struct rte_pipeline_port_in_params *params,
-	uint32_t *port_id);
+    struct rte_pipeline_port_in_params *params,
+    uint32_t *port_id);
 
 /**
  * Pipeline input port connect to table
@@ -611,8 +611,8 @@ int rte_pipeline_port_in_create(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_in_connect_to_table(struct rte_pipeline *p,
-	uint32_t port_id,
-	uint32_t table_id);
+    uint32_t port_id,
+    uint32_t table_id);
 
 /**
  * Pipeline input port enable
@@ -625,7 +625,7 @@ int rte_pipeline_port_in_connect_to_table(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_in_enable(struct rte_pipeline *p,
-	uint32_t port_id);
+    uint32_t port_id);
 
 /**
  * Pipeline input port disable
@@ -638,7 +638,7 @@ int rte_pipeline_port_in_enable(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_in_disable(struct rte_pipeline *p,
-	uint32_t port_id);
+    uint32_t port_id);
 
 /**
  * Read pipeline port in stats.
@@ -658,14 +658,14 @@ int rte_pipeline_port_in_disable(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_in_stats_read(struct rte_pipeline *p, uint32_t port_id,
-	struct rte_pipeline_port_in_stats *stats, int clear);
+    struct rte_pipeline_port_in_stats *stats, int clear);
 
 /*
  * Port OUT
  *
  */
 /** Maximum number of output ports allowed for any given pipeline instance. The
-	value of this parameter cannot be changed. */
+    value of this parameter cannot be changed. */
 #define RTE_PIPELINE_PORT_OUT_MAX                                   64
 
 /**
@@ -692,26 +692,26 @@ int rte_pipeline_port_in_stats_read(struct rte_pipeline *p, uint32_t port_id,
  *   0 on success, error code otherwise
  */
 typedef int (*rte_pipeline_port_out_action_handler)(
-	struct rte_pipeline *p,
-	struct rte_mbuf **pkts,
-	uint64_t pkts_mask,
-	void *arg);
+    struct rte_pipeline *p,
+    struct rte_mbuf **pkts,
+    uint64_t pkts_mask,
+    void *arg);
 
 /** Parameters for pipeline output port creation. The action handlers have to
 be either both enabled or both disabled (by setting them to NULL). When
 enabled, the pipeline selects between them at different moments, based on the
 number of packets that have to be sent to the same output port. */
 struct rte_pipeline_port_out_params {
-	/** Output port operations (specific to each table type) */
-	struct rte_port_out_ops *ops;
-	/** Opaque parameter to be passed to create operation when invoked */
-	void *arg_create;
+    /** Output port operations (specific to each table type) */
+    struct rte_port_out_ops *ops;
+    /** Opaque parameter to be passed to create operation when invoked */
+    void *arg_create;
 
-	/** Callback function executing the user actions on bust of input
-	packets */
-	rte_pipeline_port_out_action_handler f_action;
-	/** Opaque parameter to be passed to the action handler when invoked */
-	void *arg_ah;
+    /** Callback function executing the user actions on bust of input
+    packets */
+    rte_pipeline_port_out_action_handler f_action;
+    /** Opaque parameter to be passed to the action handler when invoked */
+    void *arg_ah;
 };
 
 /**
@@ -728,8 +728,8 @@ struct rte_pipeline_port_out_params {
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_out_create(struct rte_pipeline *p,
-	struct rte_pipeline_port_out_params *params,
-	uint32_t *port_id);
+    struct rte_pipeline_port_out_params *params,
+    uint32_t *port_id);
 
 /**
  * Read pipeline port out stats.
@@ -749,7 +749,7 @@ int rte_pipeline_port_out_create(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_out_stats_read(struct rte_pipeline *p, uint32_t port_id,
-	struct rte_pipeline_port_out_stats *stats, int clear);
+    struct rte_pipeline_port_out_stats *stats, int clear);
 
 /*
  * Functions to be called as part of the port IN/OUT or table action handlers
@@ -776,11 +776,11 @@ int rte_pipeline_port_out_stats_read(struct rte_pipeline *p, uint32_t port_id,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_port_out_packet_insert(struct rte_pipeline *p,
-	uint32_t port_id,
-	struct rte_mbuf *pkt);
+    uint32_t port_id,
+    struct rte_mbuf *pkt);
 
 #define rte_pipeline_ah_port_out_packet_insert \
-	rte_pipeline_port_out_packet_insert
+    rte_pipeline_port_out_packet_insert
 
 /**
  * Action handler packet hijack
@@ -808,7 +808,7 @@ int rte_pipeline_port_out_packet_insert(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_ah_packet_hijack(struct rte_pipeline *p,
-	uint64_t pkts_mask);
+    uint64_t pkts_mask);
 
 /**
  * Action handler packet drop
@@ -839,7 +839,7 @@ int rte_pipeline_ah_packet_hijack(struct rte_pipeline *p,
  *   0 on success, error code otherwise
  */
 int rte_pipeline_ah_packet_drop(struct rte_pipeline *p,
-	uint64_t pkts_mask);
+    uint64_t pkts_mask);
 
 #ifdef __cplusplus
 }

@@ -24,8 +24,8 @@
 
 #define EVENT_RING_PAGE_SIZE_BYTES          4096
 
-#define NUM_OF_GLOBAL_QUEUES				128
-#define COMMON_QUEUE_ENTRY_MAX_BYTE_SIZE	64
+#define NUM_OF_GLOBAL_QUEUES                128
+#define COMMON_QUEUE_ENTRY_MAX_BYTE_SIZE    64
 
 #define ISCSI_CDU_TASK_SEG_TYPE       0
 #define FCOE_CDU_TASK_SEG_TYPE        0
@@ -34,7 +34,7 @@
 
 #define FW_ASSERT_GENERAL_ATTN_IDX    32
 
-#define EAGLE_ENG1_WORKAROUND_NIG_FLOWCTRL_MODE	3
+#define EAGLE_ENG1_WORKAROUND_NIG_FLOWCTRL_MODE    3
 
 /* Queue Zone sizes in bytes */
 #define TSTORM_QZONE_SIZE    8   /*tstorm_queue_zone*/
@@ -66,13 +66,13 @@
 /* CORE (LIGHT L2) FW CONSTANTS */
 /********************************/
 
-#define CORE_LL2_MAX_RAMROD_PER_CON				8
-#define CORE_LL2_TX_BD_PAGE_SIZE_BYTES			4096
-#define CORE_LL2_RX_BD_PAGE_SIZE_BYTES			4096
-#define CORE_LL2_RX_CQE_PAGE_SIZE_BYTES			4096
-#define CORE_LL2_RX_NUM_NEXT_PAGE_BDS			1
+#define CORE_LL2_MAX_RAMROD_PER_CON                8
+#define CORE_LL2_TX_BD_PAGE_SIZE_BYTES            4096
+#define CORE_LL2_RX_BD_PAGE_SIZE_BYTES            4096
+#define CORE_LL2_RX_CQE_PAGE_SIZE_BYTES            4096
+#define CORE_LL2_RX_NUM_NEXT_PAGE_BDS            1
 
-#define CORE_LL2_TX_MAX_BDS_PER_PACKET				12
+#define CORE_LL2_TX_MAX_BDS_PER_PACKET                12
 
 #define CORE_SPQE_PAGE_SIZE_BYTES                       4096
 
@@ -81,9 +81,9 @@
 /* Number of LL2 context based (RX producers and statistics) queues */
 #define MAX_NUM_LL2_RX_CTX_QUEUES               208
 #define MAX_NUM_LL2_RX_QUEUES (MAX_NUM_LL2_RX_RAM_QUEUES + \
-			       MAX_NUM_LL2_RX_CTX_QUEUES)
+                   MAX_NUM_LL2_RX_CTX_QUEUES)
 
-#define MAX_NUM_LL2_TX_STATS_COUNTERS			48
+#define MAX_NUM_LL2_TX_STATS_COUNTERS            48
 
 
 /****************************************************************************/
@@ -92,10 +92,10 @@
 /****************************************************************************/
 
 
-#define FW_MAJOR_VERSION		8
-#define FW_MINOR_VERSION		40
-#define FW_REVISION_VERSION		33
-#define FW_ENGINEERING_VERSION	0
+#define FW_MAJOR_VERSION        8
+#define FW_MINOR_VERSION        40
+#define FW_REVISION_VERSION        33
+#define FW_ENGINEERING_VERSION    0
 
 /***********************/
 /* COMMON HW CONSTANTS */
@@ -129,7 +129,7 @@
 #define MAX_NUM_VPORTS_BB       (160)
 #define COMMON_MAX_NUM_VPORTS   (MAX_NUM_VPORTS_K2)
 
-#define MAX_NUM_L2_QUEUES_BB	(256)
+#define MAX_NUM_L2_QUEUES_BB    (256)
 #define MAX_NUM_L2_QUEUES_K2    (320)
 
 #define FW_LOWEST_CONSUMEDDMAE_CHANNEL   (26)
@@ -161,28 +161,28 @@
 #define CDU_SEG_TYPE_OFFSET_REG_TYPE_SHIFT              (17)
 #define CDU_SEG_TYPE_OFFSET_REG_OFFSET_MASK             (0x1ffff)
 
-#define CDU_VF_FL_SEG_TYPE_OFFSET_REG_TYPE_SHIFT	(12)
-#define CDU_VF_FL_SEG_TYPE_OFFSET_REG_OFFSET_MASK	(0xfff)
+#define CDU_VF_FL_SEG_TYPE_OFFSET_REG_TYPE_SHIFT    (12)
+#define CDU_VF_FL_SEG_TYPE_OFFSET_REG_OFFSET_MASK    (0xfff)
 
-#define	CDU_CONTEXT_VALIDATION_CFG_ENABLE_SHIFT				(0)
-#define	CDU_CONTEXT_VALIDATION_CFG_VALIDATION_TYPE_SHIFT	(1)
-#define	CDU_CONTEXT_VALIDATION_CFG_USE_TYPE				(2)
-#define	CDU_CONTEXT_VALIDATION_CFG_USE_REGION				(3)
-#define	CDU_CONTEXT_VALIDATION_CFG_USE_CID				(4)
-#define	CDU_CONTEXT_VALIDATION_CFG_USE_ACTIVE				(5)
+#define    CDU_CONTEXT_VALIDATION_CFG_ENABLE_SHIFT                (0)
+#define    CDU_CONTEXT_VALIDATION_CFG_VALIDATION_TYPE_SHIFT    (1)
+#define    CDU_CONTEXT_VALIDATION_CFG_USE_TYPE                (2)
+#define    CDU_CONTEXT_VALIDATION_CFG_USE_REGION                (3)
+#define    CDU_CONTEXT_VALIDATION_CFG_USE_CID                (4)
+#define    CDU_CONTEXT_VALIDATION_CFG_USE_ACTIVE                (5)
 
 /*enabled, type A, use all */
-#define	CDU_CONTEXT_VALIDATION_DEFAULT_CFG				(0x3D)
+#define    CDU_CONTEXT_VALIDATION_DEFAULT_CFG                (0x3D)
 
 /*****************/
 /* DQ CONSTANTS  */
 /*****************/
 
 /* DEMS */
-#define DQ_DEMS_LEGACY			0
-#define DQ_DEMS_TOE_MORE_TO_SEND			3
-#define DQ_DEMS_TOE_LOCAL_ADV_WND			4
-#define DQ_DEMS_ROCE_CQ_CONS				7
+#define DQ_DEMS_LEGACY            0
+#define DQ_DEMS_TOE_MORE_TO_SEND            3
+#define DQ_DEMS_TOE_LOCAL_ADV_WND            4
+#define DQ_DEMS_ROCE_CQ_CONS                7
 
 /* XCM agg val selection (HW) */
 #define DQ_XCM_AGG_VAL_SEL_WORD2  0
@@ -196,17 +196,17 @@
 
 /* XCM agg val selection (FW) */
 #define DQ_XCM_ETH_EDPM_NUM_BDS_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD2
+    DQ_XCM_AGG_VAL_SEL_WORD2
 #define DQ_XCM_ETH_TX_BD_CONS_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD3
+    DQ_XCM_AGG_VAL_SEL_WORD3
 #define DQ_XCM_CORE_TX_BD_CONS_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD3
+    DQ_XCM_AGG_VAL_SEL_WORD3
 #define DQ_XCM_ETH_TX_BD_PROD_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD4
+    DQ_XCM_AGG_VAL_SEL_WORD4
 #define DQ_XCM_CORE_TX_BD_PROD_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD4
+    DQ_XCM_AGG_VAL_SEL_WORD4
 #define DQ_XCM_CORE_SPQ_PROD_CMD \
-	DQ_XCM_AGG_VAL_SEL_WORD4
+    DQ_XCM_AGG_VAL_SEL_WORD4
 #define DQ_XCM_ETH_GO_TO_BD_CONS_CMD            DQ_XCM_AGG_VAL_SEL_WORD5
 #define DQ_XCM_FCOE_SQ_CONS_CMD             DQ_XCM_AGG_VAL_SEL_WORD3
 #define DQ_XCM_FCOE_SQ_PROD_CMD             DQ_XCM_AGG_VAL_SEL_WORD4
@@ -232,10 +232,10 @@
 #define DQ_UCM_AGG_VAL_SEL_REG3   7
 
 /* UCM agg val selection (FW) */
-#define DQ_UCM_ETH_PMD_TX_CONS_CMD			DQ_UCM_AGG_VAL_SEL_WORD2
-#define DQ_UCM_ETH_PMD_RX_CONS_CMD			DQ_UCM_AGG_VAL_SEL_WORD3
-#define DQ_UCM_ROCE_CQ_CONS_CMD				DQ_UCM_AGG_VAL_SEL_REG0
-#define DQ_UCM_ROCE_CQ_PROD_CMD				DQ_UCM_AGG_VAL_SEL_REG2
+#define DQ_UCM_ETH_PMD_TX_CONS_CMD            DQ_UCM_AGG_VAL_SEL_WORD2
+#define DQ_UCM_ETH_PMD_RX_CONS_CMD            DQ_UCM_AGG_VAL_SEL_WORD3
+#define DQ_UCM_ROCE_CQ_CONS_CMD                DQ_UCM_AGG_VAL_SEL_REG0
+#define DQ_UCM_ROCE_CQ_PROD_CMD                DQ_UCM_AGG_VAL_SEL_REG2
 
 /* TCM agg val selection (HW) */
 #define DQ_TCM_AGG_VAL_SEL_WORD0  0
@@ -248,8 +248,8 @@
 #define DQ_TCM_AGG_VAL_SEL_REG9   7
 
 /* TCM agg val selection (FW) */
-#define DQ_TCM_L2B_BD_PROD_CMD				DQ_TCM_AGG_VAL_SEL_WORD1
-#define DQ_TCM_ROCE_RQ_PROD_CMD				DQ_TCM_AGG_VAL_SEL_WORD0
+#define DQ_TCM_L2B_BD_PROD_CMD                DQ_TCM_AGG_VAL_SEL_WORD1
+#define DQ_TCM_ROCE_RQ_PROD_CMD                DQ_TCM_AGG_VAL_SEL_WORD0
 
 /* XCM agg counter flag selection (HW) */
 #define DQ_XCM_AGG_FLG_SHIFT_BIT14  0
@@ -262,20 +262,20 @@
 #define DQ_XCM_AGG_FLG_SHIFT_CF23   7
 
 /* XCM agg counter flag selection (FW) */
-#define DQ_XCM_ETH_DQ_CF_CMD		(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF18)
-#define DQ_XCM_CORE_DQ_CF_CMD		(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF18)
-#define DQ_XCM_ETH_TERMINATE_CMD	(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF19)
-#define DQ_XCM_CORE_TERMINATE_CMD	(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF19)
-#define DQ_XCM_ETH_SLOW_PATH_CMD	(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF22)
-#define DQ_XCM_CORE_SLOW_PATH_CMD	(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF22)
-#define DQ_XCM_ETH_TPH_EN_CMD		(1 << \
-					DQ_XCM_AGG_FLG_SHIFT_CF23)
+#define DQ_XCM_ETH_DQ_CF_CMD        (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF18)
+#define DQ_XCM_CORE_DQ_CF_CMD        (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF18)
+#define DQ_XCM_ETH_TERMINATE_CMD    (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF19)
+#define DQ_XCM_CORE_TERMINATE_CMD    (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF19)
+#define DQ_XCM_ETH_SLOW_PATH_CMD    (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF22)
+#define DQ_XCM_CORE_SLOW_PATH_CMD    (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF22)
+#define DQ_XCM_ETH_TPH_EN_CMD        (1 << \
+                    DQ_XCM_AGG_FLG_SHIFT_CF23)
 #define DQ_XCM_FCOE_SLOW_PATH_CMD           (1 << DQ_XCM_AGG_FLG_SHIFT_CF22)
 #define DQ_XCM_ISCSI_DQ_FLUSH_CMD           (1 << DQ_XCM_AGG_FLG_SHIFT_CF19)
 #define DQ_XCM_ISCSI_SLOW_PATH_CMD          (1 << DQ_XCM_AGG_FLG_SHIFT_CF22)
@@ -324,86 +324,86 @@
 #define DQ_TCM_IWARP_POST_RQ_CF_CMD         (1 << DQ_TCM_AGG_FLG_SHIFT_CF1)
 
 /* PWM address mapping */
-#define DQ_PWM_OFFSET_DPM_BASE				0x0
-#define DQ_PWM_OFFSET_DPM_END				0x27
-#define DQ_PWM_OFFSET_XCM32_24ICID_BASE		0x28
-#define DQ_PWM_OFFSET_UCM32_24ICID_BASE		0x30
-#define DQ_PWM_OFFSET_TCM32_24ICID_BASE		0x38
-#define DQ_PWM_OFFSET_XCM16_BASE			0x40
-#define DQ_PWM_OFFSET_XCM32_BASE			0x44
-#define DQ_PWM_OFFSET_UCM16_BASE			0x48
-#define DQ_PWM_OFFSET_UCM32_BASE			0x4C
-#define DQ_PWM_OFFSET_UCM16_4				0x50
-#define DQ_PWM_OFFSET_TCM16_BASE			0x58
-#define DQ_PWM_OFFSET_TCM32_BASE			0x5C
-#define DQ_PWM_OFFSET_XCM_FLAGS				0x68
-#define DQ_PWM_OFFSET_UCM_FLAGS				0x69
-#define DQ_PWM_OFFSET_TCM_FLAGS				0x6B
+#define DQ_PWM_OFFSET_DPM_BASE                0x0
+#define DQ_PWM_OFFSET_DPM_END                0x27
+#define DQ_PWM_OFFSET_XCM32_24ICID_BASE        0x28
+#define DQ_PWM_OFFSET_UCM32_24ICID_BASE        0x30
+#define DQ_PWM_OFFSET_TCM32_24ICID_BASE        0x38
+#define DQ_PWM_OFFSET_XCM16_BASE            0x40
+#define DQ_PWM_OFFSET_XCM32_BASE            0x44
+#define DQ_PWM_OFFSET_UCM16_BASE            0x48
+#define DQ_PWM_OFFSET_UCM32_BASE            0x4C
+#define DQ_PWM_OFFSET_UCM16_4                0x50
+#define DQ_PWM_OFFSET_TCM16_BASE            0x58
+#define DQ_PWM_OFFSET_TCM32_BASE            0x5C
+#define DQ_PWM_OFFSET_XCM_FLAGS                0x68
+#define DQ_PWM_OFFSET_UCM_FLAGS                0x69
+#define DQ_PWM_OFFSET_TCM_FLAGS                0x6B
 
-#define DQ_PWM_OFFSET_XCM_RDMA_SQ_PROD		(DQ_PWM_OFFSET_XCM16_BASE + 2)
-#define DQ_PWM_OFFSET_UCM_RDMA_CQ_CONS_32BIT	(DQ_PWM_OFFSET_UCM32_BASE)
-#define DQ_PWM_OFFSET_UCM_RDMA_CQ_CONS_16BIT	(DQ_PWM_OFFSET_UCM16_4)
-#define DQ_PWM_OFFSET_UCM_RDMA_INT_TIMEOUT	(DQ_PWM_OFFSET_UCM16_BASE + 2)
-#define DQ_PWM_OFFSET_UCM_RDMA_ARM_FLAGS	(DQ_PWM_OFFSET_UCM_FLAGS)
-#define DQ_PWM_OFFSET_TCM_ROCE_RQ_PROD		(DQ_PWM_OFFSET_TCM16_BASE + 1)
-#define DQ_PWM_OFFSET_TCM_IWARP_RQ_PROD		(DQ_PWM_OFFSET_TCM16_BASE + 3)
+#define DQ_PWM_OFFSET_XCM_RDMA_SQ_PROD        (DQ_PWM_OFFSET_XCM16_BASE + 2)
+#define DQ_PWM_OFFSET_UCM_RDMA_CQ_CONS_32BIT    (DQ_PWM_OFFSET_UCM32_BASE)
+#define DQ_PWM_OFFSET_UCM_RDMA_CQ_CONS_16BIT    (DQ_PWM_OFFSET_UCM16_4)
+#define DQ_PWM_OFFSET_UCM_RDMA_INT_TIMEOUT    (DQ_PWM_OFFSET_UCM16_BASE + 2)
+#define DQ_PWM_OFFSET_UCM_RDMA_ARM_FLAGS    (DQ_PWM_OFFSET_UCM_FLAGS)
+#define DQ_PWM_OFFSET_TCM_ROCE_RQ_PROD        (DQ_PWM_OFFSET_TCM16_BASE + 1)
+#define DQ_PWM_OFFSET_TCM_IWARP_RQ_PROD        (DQ_PWM_OFFSET_TCM16_BASE + 3)
 
 #define DQ_PWM_OFFSET_XCM_RDMA_24B_ICID_SQ_PROD \
-	(DQ_PWM_OFFSET_XCM32_24ICID_BASE + 2)
+    (DQ_PWM_OFFSET_XCM32_24ICID_BASE + 2)
 #define DQ_PWM_OFFSET_UCM_RDMA_24B_ICID_CQ_CONS_32BIT \
-	(DQ_PWM_OFFSET_UCM32_24ICID_BASE + 4)
-#define DQ_PWM_OFFSET_TCM_ROCE_24B_ICID_RQ_PROD	\
-	(DQ_PWM_OFFSET_TCM32_24ICID_BASE + 1)
+    (DQ_PWM_OFFSET_UCM32_24ICID_BASE + 4)
+#define DQ_PWM_OFFSET_TCM_ROCE_24B_ICID_RQ_PROD    \
+    (DQ_PWM_OFFSET_TCM32_24ICID_BASE + 1)
 
-#define DQ_REGION_SHIFT				        (12)
+#define DQ_REGION_SHIFT                        (12)
 
 /* DPM */
-#define	DQ_DPM_WQE_BUFF_SIZE			    (320)
+#define    DQ_DPM_WQE_BUFF_SIZE                (320)
 
 /* Conn type ranges */
-#define DQ_CONN_TYPE_RANGE_SHIFT			(4)
+#define DQ_CONN_TYPE_RANGE_SHIFT            (4)
 
 /*****************/
 /* QM CONSTANTS  */
 /*****************/
 
 /* number of TX queues in the QM */
-#define MAX_QM_TX_QUEUES_K2	512
-#define MAX_QM_TX_QUEUES_BB	448
-#define MAX_QM_TX_QUEUES	MAX_QM_TX_QUEUES_K2
+#define MAX_QM_TX_QUEUES_K2    512
+#define MAX_QM_TX_QUEUES_BB    448
+#define MAX_QM_TX_QUEUES    MAX_QM_TX_QUEUES_K2
 
 /* number of Other queues in the QM */
-#define MAX_QM_OTHER_QUEUES_BB	64
-#define MAX_QM_OTHER_QUEUES_K2	128
-#define MAX_QM_OTHER_QUEUES	MAX_QM_OTHER_QUEUES_K2
+#define MAX_QM_OTHER_QUEUES_BB    64
+#define MAX_QM_OTHER_QUEUES_K2    128
+#define MAX_QM_OTHER_QUEUES    MAX_QM_OTHER_QUEUES_K2
 
 /* number of queues in a PF queue group */
-#define QM_PF_QUEUE_GROUP_SIZE	8
+#define QM_PF_QUEUE_GROUP_SIZE    8
 
 /* the size of a single queue element in bytes */
-#define QM_PQ_ELEMENT_SIZE			4
+#define QM_PQ_ELEMENT_SIZE            4
 
 /* base number of Tx PQs in the CM PQ representation.
  * should be used when storing PQ IDs in CM PQ registers and context
  */
-#define CM_TX_PQ_BASE	0x200
+#define CM_TX_PQ_BASE    0x200
 
 /* number of global Vport/QCN rate limiters */
-#define MAX_QM_GLOBAL_RLS			256
+#define MAX_QM_GLOBAL_RLS            256
 
 /* number of global rate limiters */
-#define MAX_QM_GLOBAL_RLS		256
-#define COMMON_MAX_QM_GLOBAL_RLS	(MAX_QM_GLOBAL_RLS)
+#define MAX_QM_GLOBAL_RLS        256
+#define COMMON_MAX_QM_GLOBAL_RLS    (MAX_QM_GLOBAL_RLS)
 
 /* QM registers data */
-#define QM_LINE_CRD_REG_WIDTH		16
-#define QM_LINE_CRD_REG_SIGN_BIT	(1 << (QM_LINE_CRD_REG_WIDTH - 1))
-#define QM_BYTE_CRD_REG_WIDTH		24
-#define QM_BYTE_CRD_REG_SIGN_BIT	(1 << (QM_BYTE_CRD_REG_WIDTH - 1))
-#define QM_WFQ_CRD_REG_WIDTH		32
-#define QM_WFQ_CRD_REG_SIGN_BIT		(1U << (QM_WFQ_CRD_REG_WIDTH - 1))
-#define QM_RL_CRD_REG_WIDTH		32
-#define QM_RL_CRD_REG_SIGN_BIT		(1U << (QM_RL_CRD_REG_WIDTH - 1))
+#define QM_LINE_CRD_REG_WIDTH        16
+#define QM_LINE_CRD_REG_SIGN_BIT    (1 << (QM_LINE_CRD_REG_WIDTH - 1))
+#define QM_BYTE_CRD_REG_WIDTH        24
+#define QM_BYTE_CRD_REG_SIGN_BIT    (1 << (QM_BYTE_CRD_REG_WIDTH - 1))
+#define QM_WFQ_CRD_REG_WIDTH        32
+#define QM_WFQ_CRD_REG_SIGN_BIT        (1U << (QM_WFQ_CRD_REG_WIDTH - 1))
+#define QM_RL_CRD_REG_WIDTH        32
+#define QM_RL_CRD_REG_SIGN_BIT        (1U << (QM_RL_CRD_REG_WIDTH - 1))
 
 /*****************/
 /* CAU CONSTANTS */
@@ -414,53 +414,53 @@
 
 /* Number of Protocol Indices per Status Block */
 #define PIS_PER_SB    12
-#define MAX_PIS_PER_SB	 PIS_PER_SB
+#define MAX_PIS_PER_SB     PIS_PER_SB
 
 /* fsm is stopped or not valid for this sb */
-#define CAU_HC_STOPPED_STATE		3
+#define CAU_HC_STOPPED_STATE        3
 /* fsm is working without interrupt coalescing for this sb*/
-#define CAU_HC_DISABLE_STATE		4
+#define CAU_HC_DISABLE_STATE        4
 /* fsm is working with interrupt coalescing for this sb*/
-#define CAU_HC_ENABLE_STATE			0
+#define CAU_HC_ENABLE_STATE            0
 
 
 /*****************/
 /* IGU CONSTANTS */
 /*****************/
 
-#define MAX_SB_PER_PATH_K2			(368)
-#define MAX_SB_PER_PATH_BB			(288)
-#define MAX_TOT_SB_PER_PATH			MAX_SB_PER_PATH_K2
+#define MAX_SB_PER_PATH_K2            (368)
+#define MAX_SB_PER_PATH_BB            (288)
+#define MAX_TOT_SB_PER_PATH            MAX_SB_PER_PATH_K2
 
-#define MAX_SB_PER_PF_MIMD			129
-#define MAX_SB_PER_PF_SIMD			64
-#define MAX_SB_PER_VF				64
+#define MAX_SB_PER_PF_MIMD            129
+#define MAX_SB_PER_PF_SIMD            64
+#define MAX_SB_PER_VF                64
 
 /* Memory addresses on the BAR for the IGU Sub Block */
-#define IGU_MEM_BASE				0x0000
+#define IGU_MEM_BASE                0x0000
 
-#define IGU_MEM_MSIX_BASE			0x0000
-#define IGU_MEM_MSIX_UPPER			0x0101
-#define IGU_MEM_MSIX_RESERVED_UPPER		0x01ff
+#define IGU_MEM_MSIX_BASE            0x0000
+#define IGU_MEM_MSIX_UPPER            0x0101
+#define IGU_MEM_MSIX_RESERVED_UPPER        0x01ff
 
-#define IGU_MEM_PBA_MSIX_BASE			0x0200
-#define IGU_MEM_PBA_MSIX_UPPER			0x0202
-#define IGU_MEM_PBA_MSIX_RESERVED_UPPER		0x03ff
+#define IGU_MEM_PBA_MSIX_BASE            0x0200
+#define IGU_MEM_PBA_MSIX_UPPER            0x0202
+#define IGU_MEM_PBA_MSIX_RESERVED_UPPER        0x03ff
 
-#define IGU_CMD_INT_ACK_BASE			0x0400
-#define IGU_CMD_INT_ACK_RESERVED_UPPER		0x05ff
+#define IGU_CMD_INT_ACK_BASE            0x0400
+#define IGU_CMD_INT_ACK_RESERVED_UPPER        0x05ff
 
-#define IGU_CMD_ATTN_BIT_UPD_UPPER		0x05f0
-#define IGU_CMD_ATTN_BIT_SET_UPPER		0x05f1
-#define IGU_CMD_ATTN_BIT_CLR_UPPER		0x05f2
+#define IGU_CMD_ATTN_BIT_UPD_UPPER        0x05f0
+#define IGU_CMD_ATTN_BIT_SET_UPPER        0x05f1
+#define IGU_CMD_ATTN_BIT_CLR_UPPER        0x05f2
 
-#define IGU_REG_SISR_MDPC_WMASK_UPPER		0x05f3
-#define IGU_REG_SISR_MDPC_WMASK_LSB_UPPER	0x05f4
-#define IGU_REG_SISR_MDPC_WMASK_MSB_UPPER	0x05f5
-#define IGU_REG_SISR_MDPC_WOMASK_UPPER		0x05f6
+#define IGU_REG_SISR_MDPC_WMASK_UPPER        0x05f3
+#define IGU_REG_SISR_MDPC_WMASK_LSB_UPPER    0x05f4
+#define IGU_REG_SISR_MDPC_WMASK_MSB_UPPER    0x05f5
+#define IGU_REG_SISR_MDPC_WOMASK_UPPER        0x05f6
 
-#define IGU_CMD_PROD_UPD_BASE			0x0600
-#define IGU_CMD_PROD_UPD_RESERVED_UPPER		0x07ff
+#define IGU_CMD_PROD_UPD_BASE            0x0600
+#define IGU_CMD_PROD_UPD_RESERVED_UPPER        0x07ff
 
 /*****************/
 /* PXP CONSTANTS */
@@ -478,92 +478,92 @@
 #define PXP_BAR_DQ                                          1
 
 /* PTT and GTT */
-#define PXP_PER_PF_ENTRY_SIZE		8
-#define PXP_NUM_GLOBAL_WINDOWS		243
-#define PXP_GLOBAL_ENTRY_SIZE		4
-#define PXP_ADMIN_WINDOW_ALLOWED_LENGTH		4
-#define PXP_PF_WINDOW_ADMIN_START	0
-#define PXP_PF_WINDOW_ADMIN_LENGTH	0x1000
-#define PXP_PF_WINDOW_ADMIN_END		(PXP_PF_WINDOW_ADMIN_START + \
-				PXP_PF_WINDOW_ADMIN_LENGTH - 1)
-#define PXP_PF_WINDOW_ADMIN_PER_PF_START	0
-#define PXP_PF_WINDOW_ADMIN_PER_PF_LENGTH	(PXP_NUM_PF_WINDOWS * \
-						 PXP_PER_PF_ENTRY_SIZE)
+#define PXP_PER_PF_ENTRY_SIZE        8
+#define PXP_NUM_GLOBAL_WINDOWS        243
+#define PXP_GLOBAL_ENTRY_SIZE        4
+#define PXP_ADMIN_WINDOW_ALLOWED_LENGTH        4
+#define PXP_PF_WINDOW_ADMIN_START    0
+#define PXP_PF_WINDOW_ADMIN_LENGTH    0x1000
+#define PXP_PF_WINDOW_ADMIN_END        (PXP_PF_WINDOW_ADMIN_START + \
+                PXP_PF_WINDOW_ADMIN_LENGTH - 1)
+#define PXP_PF_WINDOW_ADMIN_PER_PF_START    0
+#define PXP_PF_WINDOW_ADMIN_PER_PF_LENGTH    (PXP_NUM_PF_WINDOWS * \
+                         PXP_PER_PF_ENTRY_SIZE)
 #define PXP_PF_WINDOW_ADMIN_PER_PF_END (PXP_PF_WINDOW_ADMIN_PER_PF_START + \
-					PXP_PF_WINDOW_ADMIN_PER_PF_LENGTH - 1)
-#define PXP_PF_WINDOW_ADMIN_GLOBAL_START	0x200
-#define PXP_PF_WINDOW_ADMIN_GLOBAL_LENGTH	(PXP_NUM_GLOBAL_WINDOWS * \
-						 PXP_GLOBAL_ENTRY_SIZE)
+                    PXP_PF_WINDOW_ADMIN_PER_PF_LENGTH - 1)
+#define PXP_PF_WINDOW_ADMIN_GLOBAL_START    0x200
+#define PXP_PF_WINDOW_ADMIN_GLOBAL_LENGTH    (PXP_NUM_GLOBAL_WINDOWS * \
+                         PXP_GLOBAL_ENTRY_SIZE)
 #define PXP_PF_WINDOW_ADMIN_GLOBAL_END \
-		(PXP_PF_WINDOW_ADMIN_GLOBAL_START + \
-		 PXP_PF_WINDOW_ADMIN_GLOBAL_LENGTH - 1)
-#define PXP_PF_GLOBAL_PRETEND_ADDR	0x1f0
-#define PXP_PF_ME_OPAQUE_MASK_ADDR	0xf4
-#define PXP_PF_ME_OPAQUE_ADDR		0x1f8
-#define PXP_PF_ME_CONCRETE_ADDR		0x1fc
+        (PXP_PF_WINDOW_ADMIN_GLOBAL_START + \
+         PXP_PF_WINDOW_ADMIN_GLOBAL_LENGTH - 1)
+#define PXP_PF_GLOBAL_PRETEND_ADDR    0x1f0
+#define PXP_PF_ME_OPAQUE_MASK_ADDR    0xf4
+#define PXP_PF_ME_OPAQUE_ADDR        0x1f8
+#define PXP_PF_ME_CONCRETE_ADDR        0x1fc
 
-#define PXP_NUM_PF_WINDOWS		12
+#define PXP_NUM_PF_WINDOWS        12
 
-#define PXP_EXTERNAL_BAR_PF_WINDOW_START	0x1000
-#define PXP_EXTERNAL_BAR_PF_WINDOW_NUM		PXP_NUM_PF_WINDOWS
-#define PXP_EXTERNAL_BAR_PF_WINDOW_SINGLE_SIZE	0x1000
+#define PXP_EXTERNAL_BAR_PF_WINDOW_START    0x1000
+#define PXP_EXTERNAL_BAR_PF_WINDOW_NUM        PXP_NUM_PF_WINDOWS
+#define PXP_EXTERNAL_BAR_PF_WINDOW_SINGLE_SIZE    0x1000
 #define PXP_EXTERNAL_BAR_PF_WINDOW_LENGTH \
-	(PXP_EXTERNAL_BAR_PF_WINDOW_NUM * \
-	 PXP_EXTERNAL_BAR_PF_WINDOW_SINGLE_SIZE)
+    (PXP_EXTERNAL_BAR_PF_WINDOW_NUM * \
+     PXP_EXTERNAL_BAR_PF_WINDOW_SINGLE_SIZE)
 #define PXP_EXTERNAL_BAR_PF_WINDOW_END \
-	(PXP_EXTERNAL_BAR_PF_WINDOW_START + \
-	 PXP_EXTERNAL_BAR_PF_WINDOW_LENGTH - 1)
+    (PXP_EXTERNAL_BAR_PF_WINDOW_START + \
+     PXP_EXTERNAL_BAR_PF_WINDOW_LENGTH - 1)
 
 #define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_START \
-	(PXP_EXTERNAL_BAR_PF_WINDOW_END + 1)
-#define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_NUM		PXP_NUM_GLOBAL_WINDOWS
-#define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_SINGLE_SIZE	0x1000
+    (PXP_EXTERNAL_BAR_PF_WINDOW_END + 1)
+#define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_NUM        PXP_NUM_GLOBAL_WINDOWS
+#define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_SINGLE_SIZE    0x1000
 #define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_LENGTH \
-	(PXP_EXTERNAL_BAR_GLOBAL_WINDOW_NUM * \
-	 PXP_EXTERNAL_BAR_GLOBAL_WINDOW_SINGLE_SIZE)
+    (PXP_EXTERNAL_BAR_GLOBAL_WINDOW_NUM * \
+     PXP_EXTERNAL_BAR_GLOBAL_WINDOW_SINGLE_SIZE)
 #define PXP_EXTERNAL_BAR_GLOBAL_WINDOW_END \
-	(PXP_EXTERNAL_BAR_GLOBAL_WINDOW_START + \
-	 PXP_EXTERNAL_BAR_GLOBAL_WINDOW_LENGTH - 1)
+    (PXP_EXTERNAL_BAR_GLOBAL_WINDOW_START + \
+     PXP_EXTERNAL_BAR_GLOBAL_WINDOW_LENGTH - 1)
 
 /* PF BAR */
 #define PXP_BAR0_START_GRC                      0x0000
 #define PXP_BAR0_GRC_LENGTH                     0x1C00000
 #define PXP_BAR0_END_GRC                        \
-	(PXP_BAR0_START_GRC + PXP_BAR0_GRC_LENGTH - 1)
+    (PXP_BAR0_START_GRC + PXP_BAR0_GRC_LENGTH - 1)
 
 #define PXP_BAR0_START_IGU                      0x1C00000
 #define PXP_BAR0_IGU_LENGTH                     0x10000
 #define PXP_BAR0_END_IGU                        \
-	(PXP_BAR0_START_IGU + PXP_BAR0_IGU_LENGTH - 1)
+    (PXP_BAR0_START_IGU + PXP_BAR0_IGU_LENGTH - 1)
 
 #define PXP_BAR0_START_TSDM                     0x1C80000
 #define PXP_BAR0_SDM_LENGTH                     0x40000
 #define PXP_BAR0_SDM_RESERVED_LENGTH            0x40000
 #define PXP_BAR0_END_TSDM                       \
-	(PXP_BAR0_START_TSDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_TSDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_START_MSDM                     0x1D00000
 #define PXP_BAR0_END_MSDM                       \
-	(PXP_BAR0_START_MSDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_MSDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_START_USDM                     0x1D80000
 #define PXP_BAR0_END_USDM                       \
-	(PXP_BAR0_START_USDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_USDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_START_XSDM                     0x1E00000
 #define PXP_BAR0_END_XSDM                       \
-	(PXP_BAR0_START_XSDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_XSDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_START_YSDM                     0x1E80000
 #define PXP_BAR0_END_YSDM                       \
-	(PXP_BAR0_START_YSDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_YSDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_START_PSDM                     0x1F00000
 #define PXP_BAR0_END_PSDM                       \
-	(PXP_BAR0_START_PSDM + PXP_BAR0_SDM_LENGTH - 1)
+    (PXP_BAR0_START_PSDM + PXP_BAR0_SDM_LENGTH - 1)
 
 #define PXP_BAR0_FIRST_INVALID_ADDRESS          \
-	(PXP_BAR0_END_PSDM + 1)
+    (PXP_BAR0_END_PSDM + 1)
 
 /* VF BAR */
 #define PXP_VF_BAR0                             0
@@ -571,47 +571,47 @@
 #define PXP_VF_BAR0_START_IGU                   0
 #define PXP_VF_BAR0_IGU_LENGTH                  0x3000
 #define PXP_VF_BAR0_END_IGU                     \
-	(PXP_VF_BAR0_START_IGU + PXP_VF_BAR0_IGU_LENGTH - 1)
+    (PXP_VF_BAR0_START_IGU + PXP_VF_BAR0_IGU_LENGTH - 1)
 
 #define PXP_VF_BAR0_START_DQ                    0x3000
 #define PXP_VF_BAR0_DQ_LENGTH                   0x200
 #define PXP_VF_BAR0_DQ_OPAQUE_OFFSET            0
 #define PXP_VF_BAR0_ME_OPAQUE_ADDRESS           \
-	(PXP_VF_BAR0_START_DQ + PXP_VF_BAR0_DQ_OPAQUE_OFFSET)
+    (PXP_VF_BAR0_START_DQ + PXP_VF_BAR0_DQ_OPAQUE_OFFSET)
 #define PXP_VF_BAR0_ME_CONCRETE_ADDRESS         \
-	(PXP_VF_BAR0_ME_OPAQUE_ADDRESS + 4)
+    (PXP_VF_BAR0_ME_OPAQUE_ADDRESS + 4)
 #define PXP_VF_BAR0_END_DQ                      \
-	(PXP_VF_BAR0_START_DQ + PXP_VF_BAR0_DQ_LENGTH - 1)
+    (PXP_VF_BAR0_START_DQ + PXP_VF_BAR0_DQ_LENGTH - 1)
 
 #define PXP_VF_BAR0_START_TSDM_ZONE_B           0x3200
 #define PXP_VF_BAR0_SDM_LENGTH_ZONE_B           0x200
 #define PXP_VF_BAR0_END_TSDM_ZONE_B             \
-	(PXP_VF_BAR0_START_TSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_TSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_MSDM_ZONE_B           0x3400
 #define PXP_VF_BAR0_END_MSDM_ZONE_B             \
-	(PXP_VF_BAR0_START_MSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_MSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_USDM_ZONE_B           0x3600
 #define PXP_VF_BAR0_END_USDM_ZONE_B             \
-	(PXP_VF_BAR0_START_USDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_USDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_XSDM_ZONE_B           0x3800
 #define PXP_VF_BAR0_END_XSDM_ZONE_B             \
-	(PXP_VF_BAR0_START_XSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_XSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_YSDM_ZONE_B           0x3a00
 #define PXP_VF_BAR0_END_YSDM_ZONE_B             \
-	(PXP_VF_BAR0_START_YSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_YSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_PSDM_ZONE_B           0x3c00
 #define PXP_VF_BAR0_END_PSDM_ZONE_B             \
-	(PXP_VF_BAR0_START_PSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
+    (PXP_VF_BAR0_START_PSDM_ZONE_B + PXP_VF_BAR0_SDM_LENGTH_ZONE_B - 1)
 
 #define PXP_VF_BAR0_START_GRC                   0x3E00
 #define PXP_VF_BAR0_GRC_LENGTH                  0x200
 #define PXP_VF_BAR0_END_GRC                     \
-	(PXP_VF_BAR0_START_GRC + PXP_VF_BAR0_GRC_LENGTH - 1)
+    (PXP_VF_BAR0_START_GRC + PXP_VF_BAR0_GRC_LENGTH - 1)
 
 #define PXP_VF_BAR0_START_SDM_ZONE_A            0x4000
 #define PXP_VF_BAR0_END_SDM_ZONE_A              0x10000
@@ -619,7 +619,7 @@
 #define PXP_VF_BAR0_START_IGU2                   0x10000
 #define PXP_VF_BAR0_IGU2_LENGTH                  0xD000
 #define PXP_VF_BAR0_END_IGU2                     \
-	(PXP_VF_BAR0_START_IGU2 + PXP_VF_BAR0_IGU2_LENGTH - 1)
+    (PXP_VF_BAR0_START_IGU2 + PXP_VF_BAR0_IGU2_LENGTH - 1)
 
 #define PXP_VF_BAR0_GRC_WINDOW_LENGTH           32
 
@@ -630,10 +630,10 @@
 #define PXP_NUM_ILT_RECORDS_BB 7600
 #define PXP_NUM_ILT_RECORDS_K2 11000
 #define MAX_NUM_ILT_RECORDS \
-	OSAL_MAX_T(PXP_NUM_ILT_RECORDS_BB, PXP_NUM_ILT_RECORDS_K2)
+    OSAL_MAX_T(PXP_NUM_ILT_RECORDS_BB, PXP_NUM_ILT_RECORDS_K2)
 
 // Host Interface
-#define PXP_QUEUES_ZONE_MAX_NUM	320
+#define PXP_QUEUES_ZONE_MAX_NUM    320
 
 
 /*****************/
@@ -645,35 +645,35 @@
 /*****************/
 
 
-#define SDM_OP_GEN_TRIG_NONE			0
-#define SDM_OP_GEN_TRIG_WAKE_THREAD		1
-#define SDM_OP_GEN_TRIG_AGG_INT			2
-#define SDM_OP_GEN_TRIG_LOADER			4
-#define SDM_OP_GEN_TRIG_INDICATE_ERROR	6
-#define SDM_OP_GEN_TRIG_INC_ORDER_CNT	9
+#define SDM_OP_GEN_TRIG_NONE            0
+#define SDM_OP_GEN_TRIG_WAKE_THREAD        1
+#define SDM_OP_GEN_TRIG_AGG_INT            2
+#define SDM_OP_GEN_TRIG_LOADER            4
+#define SDM_OP_GEN_TRIG_INDICATE_ERROR    6
+#define SDM_OP_GEN_TRIG_INC_ORDER_CNT    9
 
 /***********************************************************/
 /* Completion types                                        */
 /***********************************************************/
 
-#define SDM_COMP_TYPE_NONE		0
-#define SDM_COMP_TYPE_WAKE_THREAD	1
-#define SDM_COMP_TYPE_AGG_INT		2
+#define SDM_COMP_TYPE_NONE        0
+#define SDM_COMP_TYPE_WAKE_THREAD    1
+#define SDM_COMP_TYPE_AGG_INT        2
 /* Send direct message to local CM and/or remote CMs. Destinations are defined
  * by vector in CompParams.
  */
-#define SDM_COMP_TYPE_CM		3
-#define SDM_COMP_TYPE_LOADER		4
+#define SDM_COMP_TYPE_CM        3
+#define SDM_COMP_TYPE_LOADER        4
 /* Send direct message to PXP (like "internal write" command) to write to remote
  * Storm RAM via remote SDM
  */
-#define SDM_COMP_TYPE_PXP		5
+#define SDM_COMP_TYPE_PXP        5
 /* Indicate error per thread */
-#define SDM_COMP_TYPE_INDICATE_ERROR	6
-#define SDM_COMP_TYPE_RELEASE_THREAD	7
+#define SDM_COMP_TYPE_INDICATE_ERROR    6
+#define SDM_COMP_TYPE_RELEASE_THREAD    7
 /* Write to local RAM as a completion */
-#define SDM_COMP_TYPE_RAM		8
-#define SDM_COMP_TYPE_INC_ORDER_CNT	9 /* Applicable only for E4 */
+#define SDM_COMP_TYPE_RAM        8
+#define SDM_COMP_TYPE_INC_ORDER_CNT    9 /* Applicable only for E4 */
 
 
 /******************/
@@ -698,7 +698,7 @@
  * Interrupt coalescing TimeSet
  */
 struct coalescing_timeset {
-	u8 value;
+    u8 value;
 /* Interrupt coalescing TimeSet (timeout_ticks = TimeSet shl (TimerRes+1)) */
 #define COALESCING_TIMESET_TIMESET_MASK  0x7F
 #define COALESCING_TIMESET_TIMESET_SHIFT 0
@@ -708,13 +708,13 @@ struct coalescing_timeset {
 };
 
 struct common_queue_zone {
-	__le16 ring_drv_data_consumer;
-	__le16 reserved;
+    __le16 ring_drv_data_consumer;
+    __le16 reserved;
 };
 
 struct nvmf_eqe_data {
-	__le16 icid /* The connection ID for which the EQE is written. */;
-	u8 reserved0[6] /* Alignment to line */;
+    __le16 icid /* The connection ID for which the EQE is written. */;
+    u8 reserved0[6] /* Alignment to line */;
 };
 
 
@@ -722,15 +722,15 @@ struct nvmf_eqe_data {
  * ETH Rx producers data
  */
 struct eth_rx_prod_data {
-	__le16 bd_prod /* BD producer. */;
-	__le16 cqe_prod /* CQE producer. */;
+    __le16 bd_prod /* BD producer. */;
+    __le16 cqe_prod /* CQE producer. */;
 };
 
 
 struct tcp_ulp_connect_done_params {
-	__le16 mss;
-	u8 snd_wnd_scale;
-	u8 flags;
+    __le16 mss;
+    u8 snd_wnd_scale;
+    u8 flags;
 #define TCP_ULP_CONNECT_DONE_PARAMS_TS_EN_MASK     0x1
 #define TCP_ULP_CONNECT_DONE_PARAMS_TS_EN_SHIFT    0
 #define TCP_ULP_CONNECT_DONE_PARAMS_RESERVED_MASK  0x7F
@@ -738,20 +738,20 @@ struct tcp_ulp_connect_done_params {
 };
 
 struct iscsi_connect_done_results {
-	__le16 icid /* Context ID of the connection */;
-	__le16 conn_id /* Driver connection ID */;
+    __le16 icid /* Context ID of the connection */;
+    __le16 conn_id /* Driver connection ID */;
 /* decided tcp params after connect done */
-	struct tcp_ulp_connect_done_params params;
+    struct tcp_ulp_connect_done_params params;
 };
 
 
 struct iscsi_eqe_data {
-	__le16 icid /* Context ID of the connection */;
-	__le16 conn_id /* Driver connection ID */;
-	__le16 reserved;
+    __le16 icid /* Context ID of the connection */;
+    __le16 conn_id /* Driver connection ID */;
+    __le16 reserved;
 /* error code - relevant only if the opcode indicates its an error */
-	u8 error_code;
-	u8 error_pdu_opcode_reserved;
+    u8 error_code;
+    u8 error_pdu_opcode_reserved;
 /* The processed PDUs opcode on which happened the error - updated for specific
  * error codes, by default=0xFF
  */
@@ -769,64 +769,64 @@ struct iscsi_eqe_data {
  * Multi function mode
  */
 enum mf_mode {
-	ERROR_MODE /* Unsupported mode */,
-	MF_OVLAN /* Multi function based on outer VLAN */,
-	MF_NPAR /* Multi function based on MAC address (NIC partitioning) */,
-	MAX_MF_MODE
+    ERROR_MODE /* Unsupported mode */,
+    MF_OVLAN /* Multi function based on outer VLAN */,
+    MF_NPAR /* Multi function based on MAC address (NIC partitioning) */,
+    MAX_MF_MODE
 };
 
 /* Per-protocol connection types */
 enum protocol_type {
-	PROTOCOLID_ISCSI /* iSCSI */,
-	PROTOCOLID_FCOE /* FCoE */,
-	PROTOCOLID_ROCE /* RoCE */,
-	PROTOCOLID_CORE /* Core (light L2, slow path core) */,
-	PROTOCOLID_ETH /* Ethernet */,
-	PROTOCOLID_IWARP /* iWARP */,
-	PROTOCOLID_TOE /* TOE */,
-	PROTOCOLID_PREROCE /* Pre (tapeout) RoCE */,
-	PROTOCOLID_COMMON /* ProtocolCommon */,
-	PROTOCOLID_TCP /* TCP */,
-	PROTOCOLID_RDMA /* RDMA */,
-	PROTOCOLID_SCSI /* SCSI */,
-	MAX_PROTOCOL_TYPE
+    PROTOCOLID_ISCSI /* iSCSI */,
+    PROTOCOLID_FCOE /* FCoE */,
+    PROTOCOLID_ROCE /* RoCE */,
+    PROTOCOLID_CORE /* Core (light L2, slow path core) */,
+    PROTOCOLID_ETH /* Ethernet */,
+    PROTOCOLID_IWARP /* iWARP */,
+    PROTOCOLID_TOE /* TOE */,
+    PROTOCOLID_PREROCE /* Pre (tapeout) RoCE */,
+    PROTOCOLID_COMMON /* ProtocolCommon */,
+    PROTOCOLID_TCP /* TCP */,
+    PROTOCOLID_RDMA /* RDMA */,
+    PROTOCOLID_SCSI /* SCSI */,
+    MAX_PROTOCOL_TYPE
 };
 
 
 struct regpair {
-	__le32 lo /* low word for reg-pair */;
-	__le32 hi /* high word for reg-pair */;
+    __le32 lo /* low word for reg-pair */;
+    __le32 hi /* high word for reg-pair */;
 };
 
 /*
  * RoCE Destroy Event Data
  */
 struct rdma_eqe_destroy_qp {
-	__le32 cid /* Dedicated field RoCE destroy QP event */;
-	u8 reserved[4];
+    __le32 cid /* Dedicated field RoCE destroy QP event */;
+    u8 reserved[4];
 };
 
 /*
  * RoCE Suspend Event Data
  */
 struct rdma_eqe_suspend_qp {
-	__le32 cid /* Dedicated field RoCE Suspend QP event */;
-	u8 reserved[4];
+    __le32 cid /* Dedicated field RoCE Suspend QP event */;
+    u8 reserved[4];
 };
 
 /*
  * RDMA Event Data Union
  */
 union rdma_eqe_data {
-	struct regpair async_handle /* Host handle for the Async Completions */;
-	/* RoCE Destroy Event Data */
-	struct rdma_eqe_destroy_qp rdma_destroy_qp_data;
-	/* RoCE Suspend QP Event Data */
-	struct rdma_eqe_suspend_qp rdma_suspend_qp_data;
+    struct regpair async_handle /* Host handle for the Async Completions */;
+    /* RoCE Destroy Event Data */
+    struct rdma_eqe_destroy_qp rdma_destroy_qp_data;
+    /* RoCE Suspend QP Event Data */
+    struct rdma_eqe_suspend_qp rdma_suspend_qp_data;
 };
 
 struct tstorm_queue_zone {
-	__le32 reserved[2];
+    __le32 reserved[2];
 };
 
 
@@ -835,19 +835,19 @@ struct tstorm_queue_zone {
  */
 struct ustorm_eth_queue_zone {
 /* Rx interrupt coalescing TimeSet */
-	struct coalescing_timeset int_coalescing_timeset;
-	u8 reserved[3];
+    struct coalescing_timeset int_coalescing_timeset;
+    u8 reserved[3];
 };
 
 
 struct ustorm_queue_zone {
-	struct ustorm_eth_queue_zone eth;
-	struct common_queue_zone common;
+    struct ustorm_eth_queue_zone eth;
+    struct common_queue_zone common;
 };
 
 /* status block structure */
 struct cau_pi_entry {
-	__le32 prod;
+    __le32 prod;
 /* A per protocol indexPROD value. */
 #define CAU_PI_ENTRY_PROD_VAL_MASK    0xFFFF
 #define CAU_PI_ENTRY_PROD_VAL_SHIFT   0
@@ -864,7 +864,7 @@ struct cau_pi_entry {
 
 /* status block structure */
 struct cau_sb_entry {
-	__le32 data;
+    __le32 data;
 /* The SB PROD index which is sent to the IGU. */
 #define CAU_SB_ENTRY_SB_PROD_MASK      0xFFFFFF
 #define CAU_SB_ENTRY_SB_PROD_SHIFT     0
@@ -872,7 +872,7 @@ struct cau_sb_entry {
 #define CAU_SB_ENTRY_STATE0_SHIFT      24
 #define CAU_SB_ENTRY_STATE1_MASK       0xF /* TX state */
 #define CAU_SB_ENTRY_STATE1_SHIFT      28
-	__le32 params;
+    __le32 params;
 /* Indicates the RX TimeSet that this SB is associated with. */
 #define CAU_SB_ENTRY_SB_TIMESET0_MASK  0x7F
 #define CAU_SB_ENTRY_SB_TIMESET0_SHIFT 0
@@ -904,15 +904,15 @@ struct cau_sb_entry {
  * update.
  */
 enum command_type_bit {
-	IGU_COMMAND_TYPE_NOP = 0,
-	IGU_COMMAND_TYPE_SET = 1,
-	MAX_COMMAND_TYPE_BIT
+    IGU_COMMAND_TYPE_NOP = 0,
+    IGU_COMMAND_TYPE_SET = 1,
+    MAX_COMMAND_TYPE_BIT
 };
 
 
 /* core doorbell data */
 struct core_db_data {
-	u8 params;
+    u8 params;
 /* destination of doorbell (use enum db_dest) */
 #define CORE_DB_DATA_DEST_MASK         0x3
 #define CORE_DB_DATA_DEST_SHIFT        0
@@ -927,26 +927,26 @@ struct core_db_data {
 #define CORE_DB_DATA_AGG_VAL_SEL_MASK  0x3
 #define CORE_DB_DATA_AGG_VAL_SEL_SHIFT 6
 /* bit for every DQ counter flags in CM context that DQ can increment */
-	u8	agg_flags;
-	__le16	spq_prod;
+    u8    agg_flags;
+    __le16    spq_prod;
 };
 
 /* Enum of doorbell aggregative command selection */
 enum db_agg_cmd_sel {
-	DB_AGG_CMD_NOP /* No operation */,
-	DB_AGG_CMD_SET /* Set the value */,
-	DB_AGG_CMD_ADD /* Add the value */,
-	DB_AGG_CMD_MAX /* Set max of current and new value */,
-	MAX_DB_AGG_CMD_SEL
+    DB_AGG_CMD_NOP /* No operation */,
+    DB_AGG_CMD_SET /* Set the value */,
+    DB_AGG_CMD_ADD /* Add the value */,
+    DB_AGG_CMD_MAX /* Set max of current and new value */,
+    MAX_DB_AGG_CMD_SEL
 };
 
 /* Enum of doorbell destination */
 enum db_dest {
-	DB_DEST_XCM /* TX doorbell to XCM */,
-	DB_DEST_UCM /* RX doorbell to UCM */,
-	DB_DEST_TCM /* RX doorbell to TCM */,
-	DB_NUM_DESTINATIONS,
-	MAX_DB_DEST
+    DB_DEST_XCM /* TX doorbell to XCM */,
+    DB_DEST_UCM /* RX doorbell to UCM */,
+    DB_DEST_TCM /* RX doorbell to TCM */,
+    DB_NUM_DESTINATIONS,
+    MAX_DB_DEST
 };
 
 
@@ -954,12 +954,12 @@ enum db_dest {
  * Enum of doorbell DPM types
  */
 enum db_dpm_type {
-	DPM_LEGACY /* Legacy DPM- to Xstorm RAM */,
-	DPM_RDMA /* RDMA DPM (only RoCE in E4) - to NIG */,
+    DPM_LEGACY /* Legacy DPM- to Xstorm RAM */,
+    DPM_RDMA /* RDMA DPM (only RoCE in E4) - to NIG */,
 /* L2 DPM inline- to PBF, with packet data on doorbell */
-	DPM_L2_INLINE,
-	DPM_L2_BD /* L2 DPM with BD- to PBF, with TX BD data on doorbell */,
-	MAX_DB_DPM_TYPE
+    DPM_L2_INLINE,
+    DPM_L2_BD /* L2 DPM with BD- to PBF, with TX BD data on doorbell */,
+    MAX_DB_DPM_TYPE
 };
 
 /*
@@ -967,9 +967,9 @@ enum db_dpm_type {
  * burst
  */
 struct db_l2_dpm_data {
-	__le16 icid /* internal CID */;
-	__le16 bd_prod /* bd producer value to update */;
-	__le32 params;
+    __le16 icid /* internal CID */;
+    __le16 bd_prod /* bd producer value to update */;
+    __le32 params;
 /* Size in QWORD-s of the DPM burst */
 #define DB_L2_DPM_DATA_SIZE_MASK        0x3F
 #define DB_L2_DPM_DATA_SIZE_SHIFT       0
@@ -996,9 +996,9 @@ struct db_l2_dpm_data {
  * Structure for SGE in a DPM doorbell of type DPM_L2_BD
  */
 struct db_l2_dpm_sge {
-	struct regpair addr /* Single continuous buffer */;
-	__le16 nbytes /* Number of bytes in this BD. */;
-	__le16 bitfields;
+    struct regpair addr /* Single continuous buffer */;
+    __le16 nbytes /* Number of bytes in this BD. */;
+    __le16 bitfields;
 /* The TPH STAG index value */
 #define DB_L2_DPM_SGE_TPH_ST_INDEX_MASK  0x1FF
 #define DB_L2_DPM_SGE_TPH_ST_INDEX_SHIFT 0
@@ -1009,12 +1009,12 @@ struct db_l2_dpm_sge {
 #define DB_L2_DPM_SGE_ST_VALID_SHIFT     11
 #define DB_L2_DPM_SGE_RESERVED1_MASK     0xF
 #define DB_L2_DPM_SGE_RESERVED1_SHIFT    12
-	__le32 reserved2;
+    __le32 reserved2;
 };
 
 /* Structure for doorbell address, in legacy mode */
 struct db_legacy_addr {
-	__le32 addr;
+    __le32 addr;
 #define DB_LEGACY_ADDR_RESERVED0_MASK  0x3
 #define DB_LEGACY_ADDR_RESERVED0_SHIFT 0
 /* doorbell extraction mode specifier- 0 if not used */
@@ -1028,7 +1028,7 @@ struct db_legacy_addr {
  * Structure for doorbell address, in PWM mode
  */
 struct db_pwm_addr {
-	__le32 addr;
+    __le32 addr;
 #define DB_PWM_ADDR_RESERVED0_MASK  0x7
 #define DB_PWM_ADDR_RESERVED0_SHIFT 0
 /* Offset in PWM address space */
@@ -1046,7 +1046,7 @@ struct db_pwm_addr {
  * Structure for doorbell address, in legacy mode, without DEMS
  */
 struct db_legacy_wo_dems_addr {
-	__le32 addr;
+    __le32 addr;
 #define DB_LEGACY_WO_DEMS_ADDR_RESERVED0_MASK  0x3
 #define DB_LEGACY_WO_DEMS_ADDR_RESERVED0_SHIFT 0
 #define DB_LEGACY_WO_DEMS_ADDR_ICID_MASK       0x3FFFFFFF /* internal CID */
@@ -1058,7 +1058,7 @@ struct db_legacy_wo_dems_addr {
  * Parameters to RDMA firmware, passed in EDPM doorbell
  */
 struct db_rdma_dpm_params {
-	__le32 params;
+    __le32 params;
 /* Size in QWORD-s of the DPM burst */
 #define DB_RDMA_DPM_PARAMS_SIZE_MASK                0x3F
 #define DB_RDMA_DPM_PARAMS_SIZE_SHIFT               0
@@ -1090,7 +1090,7 @@ struct db_rdma_dpm_params {
  * Parameters to RDMA firmware, passed in EDPM doorbell
  */
 struct db_rdma_24b_icid_dpm_params {
-	__le32 params;
+    __le32 params;
 /* Size in QWORD-s of the DPM burst */
 #define DB_RDMA_24B_ICID_DPM_PARAMS_SIZE_MASK                0x3F
 #define DB_RDMA_24B_ICID_DPM_PARAMS_SIZE_SHIFT               0
@@ -1128,24 +1128,24 @@ struct db_rdma_24b_icid_dpm_params {
  * DPM burst
  */
 struct db_rdma_dpm_data {
-	__le16 icid /* internal CID */;
-	__le16 prod_val /* aggregated value to update */;
+    __le16 icid /* internal CID */;
+    __le16 prod_val /* aggregated value to update */;
 /* parameters passed to RDMA firmware */
-	struct db_rdma_dpm_params params;
+    struct db_rdma_dpm_params params;
 };
 
 /* Igu interrupt command */
 enum igu_int_cmd {
-	IGU_INT_ENABLE	= 0,
-	IGU_INT_DISABLE = 1,
-	IGU_INT_NOP	= 2,
-	IGU_INT_NOP2	= 3,
-	MAX_IGU_INT_CMD
+    IGU_INT_ENABLE    = 0,
+    IGU_INT_DISABLE = 1,
+    IGU_INT_NOP    = 2,
+    IGU_INT_NOP2    = 3,
+    MAX_IGU_INT_CMD
 };
 
 /* IGU producer or consumer update command */
 struct igu_prod_cons_update {
-	__le32 sb_id_and_flags;
+    __le32 sb_id_and_flags;
 #define IGU_PROD_CONS_UPDATE_SB_INDEX_MASK        0xFFFFFF
 #define IGU_PROD_CONS_UPDATE_SB_INDEX_SHIFT       0
 #define IGU_PROD_CONS_UPDATE_UPDATE_FLAG_MASK     0x1
@@ -1163,14 +1163,14 @@ struct igu_prod_cons_update {
 /* must always be set cleared (use enum command_type_bit) */
 #define IGU_PROD_CONS_UPDATE_COMMAND_TYPE_MASK    0x1
 #define IGU_PROD_CONS_UPDATE_COMMAND_TYPE_SHIFT   31
-	__le32 reserved1;
+    __le32 reserved1;
 };
 
 /* Igu segments access for default status block only */
 enum igu_seg_access {
-	IGU_SEG_ACCESS_REG	= 0,
-	IGU_SEG_ACCESS_ATTN	= 1,
-	MAX_IGU_SEG_ACCESS
+    IGU_SEG_ACCESS_REG    = 0,
+    IGU_SEG_ACCESS_ATTN    = 1,
+    MAX_IGU_SEG_ACCESS
 };
 
 
@@ -1180,10 +1180,10 @@ enum igu_seg_access {
  * to the last-ethertype)
  */
 enum l3_type {
-	e_l3_type_unknown,
-	e_l3_type_ipv4,
-	e_l3_type_ipv6,
-	MAX_L3_TYPE
+    e_l3_type_unknown,
+    e_l3_type_ipv4,
+    e_l3_type_ipv6,
+    MAX_L3_TYPE
 };
 
 
@@ -1193,10 +1193,10 @@ enum l3_type {
  * first fragment, the protocol-type should be set to none.
  */
 enum l4_protocol {
-	e_l4_protocol_none,
-	e_l4_protocol_tcp,
-	e_l4_protocol_udp,
-	MAX_L4_PROTOCOL
+    e_l4_protocol_none,
+    e_l4_protocol_tcp,
+    e_l4_protocol_udp,
+    MAX_L4_PROTOCOL
 };
 
 
@@ -1204,7 +1204,7 @@ enum l4_protocol {
  * Parsing and error flags field.
  */
 struct parsing_and_err_flags {
-	__le16 flags;
+    __le16 flags;
 /* L3Type: 0 - unknown (not ip) ,1 - Ipv4, 2 - Ipv6 (this field can be filled
  * according to the last-ethertype) (use enum l3_type)
  */
@@ -1267,7 +1267,7 @@ struct parsing_and_err_flags {
  * Parsing error flags bitmap.
  */
 struct parsing_err_flags {
-	__le16 flags;
+    __le16 flags;
 /* MAC error indication */
 #define PARSING_ERR_FLAGS_MAC_ERROR_MASK                          0x1
 #define PARSING_ERR_FLAGS_MAC_ERROR_SHIFT                         0
@@ -1329,12 +1329,12 @@ struct parsing_err_flags {
  * Pb context
  */
 struct pb_context {
-	__le32 crc[4];
+    __le32 crc[4];
 };
 
 /* Concrete Function ID. */
 struct pxp_concrete_fid {
-	__le16 fid;
+    __le16 fid;
 #define PXP_CONCRETE_FID_PFID_MASK     0xF /* Parent PFID */
 #define PXP_CONCRETE_FID_PFID_SHIFT    0
 #define PXP_CONCRETE_FID_PORT_MASK     0x3 /* port number */
@@ -1348,7 +1348,7 @@ struct pxp_concrete_fid {
 };
 
 struct pxp_pretend_concrete_fid {
-	__le16 fid;
+    __le16 fid;
 #define PXP_PRETEND_CONCRETE_FID_PFID_MASK      0xF
 #define PXP_PRETEND_CONCRETE_FID_PFID_SHIFT     0
 #define PXP_PRETEND_CONCRETE_FID_RESERVED_MASK  0x7
@@ -1360,14 +1360,14 @@ struct pxp_pretend_concrete_fid {
 };
 
 union pxp_pretend_fid {
-	struct pxp_pretend_concrete_fid concrete_fid;
-	__le16				opaque_fid;
+    struct pxp_pretend_concrete_fid concrete_fid;
+    __le16                opaque_fid;
 };
 
 /* Pxp Pretend Command Register. */
 struct pxp_pretend_cmd {
-	union pxp_pretend_fid	fid;
-	__le16			control;
+    union pxp_pretend_fid    fid;
+    __le16            control;
 #define PXP_PRETEND_CMD_PATH_MASK              0x1
 #define PXP_PRETEND_CMD_PATH_SHIFT             0
 #define PXP_PRETEND_CMD_USE_PORT_MASK          0x1
@@ -1390,12 +1390,12 @@ struct pxp_pretend_cmd {
 
 /* PTT Record in PXP Admin Window. */
 struct pxp_ptt_entry {
-	__le32			offset;
+    __le32            offset;
 #define PXP_PTT_ENTRY_OFFSET_MASK     0x7FFFFF
 #define PXP_PTT_ENTRY_OFFSET_SHIFT    0
 #define PXP_PTT_ENTRY_RESERVED0_MASK  0x1FF
 #define PXP_PTT_ENTRY_RESERVED0_SHIFT 23
-	struct pxp_pretend_cmd	pretend;
+    struct pxp_pretend_cmd    pretend;
 };
 
 
@@ -1403,7 +1403,7 @@ struct pxp_ptt_entry {
  * VF Zone A Permission Register.
  */
 struct pxp_vf_zone_a_permission {
-	__le32 control;
+    __le32 control;
 #define PXP_VF_ZONE_A_PERMISSION_VFID_MASK       0xFF
 #define PXP_VF_ZONE_A_PERMISSION_VFID_SHIFT      0
 #define PXP_VF_ZONE_A_PERMISSION_VALID_MASK      0x1
@@ -1419,10 +1419,10 @@ struct pxp_vf_zone_a_permission {
  * Rdif context
  */
 struct rdif_task_context {
-	__le32 initial_ref_tag;
-	__le16 app_tag_value;
-	__le16 app_tag_mask;
-	u8 flags0;
+    __le32 initial_ref_tag;
+    __le16 app_tag_value;
+    __le16 app_tag_mask;
+    u8 flags0;
 #define RDIF_TASK_CONTEXT_IGNORE_APP_TAG_MASK             0x1
 #define RDIF_TASK_CONTEXT_IGNORE_APP_TAG_SHIFT            0
 #define RDIF_TASK_CONTEXT_INITIAL_REF_TAG_VALID_MASK      0x1
@@ -1441,11 +1441,11 @@ struct rdif_task_context {
 /* Keep reference tag constant */
 #define RDIF_TASK_CONTEXT_KEEP_REF_TAG_CONST_MASK         0x1
 #define RDIF_TASK_CONTEXT_KEEP_REF_TAG_CONST_SHIFT        7
-	u8 partial_dif_data[7];
-	__le16 partial_crc_value;
-	__le16 partial_checksum_value;
-	__le32 offset_in_io;
-	__le16 flags1;
+    u8 partial_dif_data[7];
+    __le16 partial_crc_value;
+    __le16 partial_checksum_value;
+    __le32 offset_in_io;
+    __le16 flags1;
 #define RDIF_TASK_CONTEXT_VALIDATE_GUARD_MASK             0x1
 #define RDIF_TASK_CONTEXT_VALIDATE_GUARD_SHIFT            0
 #define RDIF_TASK_CONTEXT_VALIDATE_APP_TAG_MASK           0x1
@@ -1478,7 +1478,7 @@ struct rdif_task_context {
 /* Forward reference tag with mask */
 #define RDIF_TASK_CONTEXT_FORWARD_REF_TAG_WITH_MASK_MASK  0x1
 #define RDIF_TASK_CONTEXT_FORWARD_REF_TAG_WITH_MASK_SHIFT 15
-	__le16 state;
+    __le16 state;
 #define RDIF_TASK_CONTEXT_RECEIVED_DIF_BYTES_LEFT_MASK    0xF
 #define RDIF_TASK_CONTEXT_RECEIVED_DIF_BYTES_LEFT_SHIFT   0
 #define RDIF_TASK_CONTEXT_TRANSMITED_DIF_BYTES_LEFT_MASK  0xF
@@ -1492,36 +1492,36 @@ struct rdif_task_context {
 #define RDIF_TASK_CONTEXT_REF_TAG_MASK_SHIFT              10
 #define RDIF_TASK_CONTEXT_RESERVED1_MASK                  0x3
 #define RDIF_TASK_CONTEXT_RESERVED1_SHIFT                 14
-	__le32 reserved2;
+    __le32 reserved2;
 };
 
 /*
  * RSS hash type
  */
 enum rss_hash_type {
-	RSS_HASH_TYPE_DEFAULT = 0,
-	RSS_HASH_TYPE_IPV4 = 1,
-	RSS_HASH_TYPE_TCP_IPV4 = 2,
-	RSS_HASH_TYPE_IPV6 = 3,
-	RSS_HASH_TYPE_TCP_IPV6 = 4,
-	RSS_HASH_TYPE_UDP_IPV4 = 5,
-	RSS_HASH_TYPE_UDP_IPV6 = 6,
-	MAX_RSS_HASH_TYPE
+    RSS_HASH_TYPE_DEFAULT = 0,
+    RSS_HASH_TYPE_IPV4 = 1,
+    RSS_HASH_TYPE_TCP_IPV4 = 2,
+    RSS_HASH_TYPE_IPV6 = 3,
+    RSS_HASH_TYPE_TCP_IPV6 = 4,
+    RSS_HASH_TYPE_UDP_IPV4 = 5,
+    RSS_HASH_TYPE_UDP_IPV6 = 6,
+    MAX_RSS_HASH_TYPE
 };
 
 /*
  * status block structure
  */
 struct status_block {
-	__le16 pi_array[PIS_PER_SB];
-	__le32 sb_num;
+    __le16 pi_array[PIS_PER_SB];
+    __le32 sb_num;
 #define STATUS_BLOCK_SB_NUM_MASK      0x1FF
 #define STATUS_BLOCK_SB_NUM_SHIFT     0
 #define STATUS_BLOCK_ZERO_PAD_MASK    0x7F
 #define STATUS_BLOCK_ZERO_PAD_SHIFT   9
 #define STATUS_BLOCK_ZERO_PAD2_MASK   0xFFFF
 #define STATUS_BLOCK_ZERO_PAD2_SHIFT  16
-	__le32 prod_index;
+    __le32 prod_index;
 #define STATUS_BLOCK_PROD_INDEX_MASK  0xFFFFFF
 #define STATUS_BLOCK_PROD_INDEX_SHIFT 0
 #define STATUS_BLOCK_ZERO_PAD3_MASK   0xFF
@@ -1533,12 +1533,12 @@ struct status_block {
  * Tdif context
  */
 struct tdif_task_context {
-	__le32 initial_ref_tag;
-	__le16 app_tag_value;
-	__le16 app_tag_mask;
-	__le16 partial_crc_value_b;
-	__le16 partial_checksum_value_b;
-	__le16 stateB;
+    __le32 initial_ref_tag;
+    __le16 app_tag_value;
+    __le16 app_tag_mask;
+    __le16 partial_crc_value_b;
+    __le16 partial_checksum_value_b;
+    __le16 stateB;
 #define TDIF_TASK_CONTEXT_RECEIVED_DIF_BYTES_LEFT_B_MASK    0xF
 #define TDIF_TASK_CONTEXT_RECEIVED_DIF_BYTES_LEFT_B_SHIFT   0
 #define TDIF_TASK_CONTEXT_TRANSMITED_DIF_BYTES_LEFT_B_MASK  0xF
@@ -1549,8 +1549,8 @@ struct tdif_task_context {
 #define TDIF_TASK_CONTEXT_CHECKSUM_VERFLOW_SHIFT            9
 #define TDIF_TASK_CONTEXT_RESERVED0_MASK                    0x3F
 #define TDIF_TASK_CONTEXT_RESERVED0_SHIFT                   10
-	u8 reserved1;
-	u8 flags0;
+    u8 reserved1;
+    u8 flags0;
 #define TDIF_TASK_CONTEXT_IGNORE_APP_TAG_MASK               0x1
 #define TDIF_TASK_CONTEXT_IGNORE_APP_TAG_SHIFT              0
 #define TDIF_TASK_CONTEXT_INITIAL_REF_TAG_VALID_MASK        0x1
@@ -1568,7 +1568,7 @@ struct tdif_task_context {
 #define TDIF_TASK_CONTEXT_CRC_SEED_SHIFT                    6
 #define TDIF_TASK_CONTEXT_RESERVED2_MASK                    0x1
 #define TDIF_TASK_CONTEXT_RESERVED2_SHIFT                   7
-	__le32 flags1;
+    __le32 flags1;
 #define TDIF_TASK_CONTEXT_VALIDATE_GUARD_MASK               0x1
 #define TDIF_TASK_CONTEXT_VALIDATE_GUARD_SHIFT              0
 #define TDIF_TASK_CONTEXT_VALIDATE_APP_TAG_MASK             0x1
@@ -1617,12 +1617,12 @@ struct tdif_task_context {
 #define TDIF_TASK_CONTEXT_KEEP_REF_TAG_CONST_SHIFT          30
 #define TDIF_TASK_CONTEXT_RESERVED4_MASK                    0x1
 #define TDIF_TASK_CONTEXT_RESERVED4_SHIFT                   31
-	__le32 offset_in_io_b;
-	__le16 partial_crc_value_a;
-	__le16 partial_checksum_value_a;
-	__le32 offset_in_io_a;
-	u8 partial_dif_data_a[8];
-	u8 partial_dif_data_b[8];
+    __le32 offset_in_io_b;
+    __le16 partial_crc_value_a;
+    __le16 partial_checksum_value_a;
+    __le32 offset_in_io_a;
+    u8 partial_dif_data_a[8];
+    u8 partial_dif_data_b[8];
 };
 
 
@@ -1630,7 +1630,7 @@ struct tdif_task_context {
  * Timers context
  */
 struct timers_context {
-	__le32 logical_client_0;
+    __le32 logical_client_0;
 /* Expiration time of logical client 0 */
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC0_MASK     0x7FFFFFF
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC0_SHIFT    0
@@ -1644,7 +1644,7 @@ struct timers_context {
 #define TIMERS_CONTEXT_ACTIVELC0_SHIFT            29
 #define TIMERS_CONTEXT_RESERVED1_MASK             0x3
 #define TIMERS_CONTEXT_RESERVED1_SHIFT            30
-	__le32 logical_client_1;
+    __le32 logical_client_1;
 /* Expiration time of logical client 1 */
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC1_MASK     0x7FFFFFF
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC1_SHIFT    0
@@ -1658,7 +1658,7 @@ struct timers_context {
 #define TIMERS_CONTEXT_ACTIVELC1_SHIFT            29
 #define TIMERS_CONTEXT_RESERVED3_MASK             0x3
 #define TIMERS_CONTEXT_RESERVED3_SHIFT            30
-	__le32 logical_client_2;
+    __le32 logical_client_2;
 /* Expiration time of logical client 2 */
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC2_MASK     0x7FFFFFF
 #define TIMERS_CONTEXT_EXPIRATIONTIMELC2_SHIFT    0
@@ -1672,7 +1672,7 @@ struct timers_context {
 #define TIMERS_CONTEXT_ACTIVELC2_SHIFT            29
 #define TIMERS_CONTEXT_RESERVED5_MASK             0x3
 #define TIMERS_CONTEXT_RESERVED5_SHIFT            30
-	__le32 host_expiration_fields;
+    __le32 host_expiration_fields;
 /* Expiration time on host (closest one) */
 #define TIMERS_CONTEXT_HOSTEXPRIRATIONVALUE_MASK  0x7FFFFFF
 #define TIMERS_CONTEXT_HOSTEXPRIRATIONVALUE_SHIFT 0
@@ -1690,11 +1690,11 @@ struct timers_context {
  * Enum for next_protocol field of tunnel_parsing_flags
  */
 enum tunnel_next_protocol {
-	e_unknown = 0,
-	e_l2 = 1,
-	e_ipv4 = 2,
-	e_ipv6 = 3,
-	MAX_TUNNEL_NEXT_PROTOCOL
+    e_unknown = 0,
+    e_l2 = 1,
+    e_ipv4 = 2,
+    e_ipv6 = 3,
+    MAX_TUNNEL_NEXT_PROTOCOL
 };
 
 #endif /* __COMMON_HSI__ */

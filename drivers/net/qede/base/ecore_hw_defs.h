@@ -36,23 +36,23 @@
 /* Igu control commands
  */
 enum igu_ctrl_cmd {
-	IGU_CTRL_CMD_TYPE_RD,
-	IGU_CTRL_CMD_TYPE_WR,
-	MAX_IGU_CTRL_CMD
+    IGU_CTRL_CMD_TYPE_RD,
+    IGU_CTRL_CMD_TYPE_WR,
+    MAX_IGU_CTRL_CMD
 };
 
 /* Control register for the IGU command register
  */
 struct igu_ctrl_reg {
-	u32 ctrl_data;
-#define IGU_CTRL_REG_FID_MASK		0xFFFF /* Opaque_FID	 */
-#define IGU_CTRL_REG_FID_SHIFT		0
-#define IGU_CTRL_REG_PXP_ADDR_MASK	0xFFF /* Command address */
-#define IGU_CTRL_REG_PXP_ADDR_SHIFT	16
-#define IGU_CTRL_REG_RESERVED_MASK	0x1
-#define IGU_CTRL_REG_RESERVED_SHIFT	28
-#define IGU_CTRL_REG_TYPE_MASK		0x1U /* use enum igu_ctrl_cmd */
-#define IGU_CTRL_REG_TYPE_SHIFT		31
+    u32 ctrl_data;
+#define IGU_CTRL_REG_FID_MASK        0xFFFF /* Opaque_FID     */
+#define IGU_CTRL_REG_FID_SHIFT        0
+#define IGU_CTRL_REG_PXP_ADDR_MASK    0xFFF /* Command address */
+#define IGU_CTRL_REG_PXP_ADDR_SHIFT    16
+#define IGU_CTRL_REG_RESERVED_MASK    0x1
+#define IGU_CTRL_REG_RESERVED_SHIFT    28
+#define IGU_CTRL_REG_TYPE_MASK        0x1U /* use enum igu_ctrl_cmd */
+#define IGU_CTRL_REG_TYPE_SHIFT        31
 };
 
 #endif

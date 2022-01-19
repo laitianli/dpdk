@@ -76,18 +76,18 @@
  * Structure describing the parameters of a mbuf dynamic field.
  */
 struct rte_mbuf_dynfield {
-	char name[RTE_MBUF_DYN_NAMESIZE]; /**< Name of the field. */
-	size_t size;        /**< The number of bytes to reserve. */
-	size_t align;       /**< The alignment constraint (power of 2). */
-	unsigned int flags; /**< Reserved for future use, must be 0. */
+    char name[RTE_MBUF_DYN_NAMESIZE]; /**< Name of the field. */
+    size_t size;        /**< The number of bytes to reserve. */
+    size_t align;       /**< The alignment constraint (power of 2). */
+    unsigned int flags; /**< Reserved for future use, must be 0. */
 };
 
 /**
  * Structure describing the parameters of a mbuf dynamic flag.
  */
 struct rte_mbuf_dynflag {
-	char name[RTE_MBUF_DYN_NAMESIZE]; /**< Name of the dynamic flag. */
-	unsigned int flags; /**< Reserved for future use, must be 0. */
+    char name[RTE_MBUF_DYN_NAMESIZE]; /**< Name of the dynamic flag. */
+    unsigned int flags; /**< Reserved for future use, must be 0. */
 };
 
 /**
@@ -136,7 +136,7 @@ int rte_mbuf_dynfield_register(const struct rte_mbuf_dynfield *params);
  */
 __rte_experimental
 int rte_mbuf_dynfield_register_offset(const struct rte_mbuf_dynfield *params,
-				size_t offset);
+                size_t offset);
 
 /**
  * Lookup for a registered dynamic mbuf field.
@@ -153,7 +153,7 @@ int rte_mbuf_dynfield_register_offset(const struct rte_mbuf_dynfield *params,
  */
 __rte_experimental
 int rte_mbuf_dynfield_lookup(const char *name,
-			struct rte_mbuf_dynfield *params);
+            struct rte_mbuf_dynfield *params);
 
 /**
  * Register a dynamic flag in the mbuf structure.
@@ -201,7 +201,7 @@ int rte_mbuf_dynflag_register(const struct rte_mbuf_dynflag *params);
  */
 __rte_experimental
 int rte_mbuf_dynflag_register_bitnum(const struct rte_mbuf_dynflag *params,
-				unsigned int bitnum);
+                unsigned int bitnum);
 
 /**
  * Lookup for a registered dynamic mbuf flag.
@@ -218,7 +218,7 @@ int rte_mbuf_dynflag_register_bitnum(const struct rte_mbuf_dynflag *params,
  */
 __rte_experimental
 int rte_mbuf_dynflag_lookup(const char *name,
-			struct rte_mbuf_dynflag *params);
+            struct rte_mbuf_dynflag *params);
 
 /**
  * Helper macro to access to a dynamic field.

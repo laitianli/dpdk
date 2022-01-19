@@ -30,14 +30,14 @@ extern void rte_pktmbuf_dump(FILE *, const struct rte_mbuf *, unsigned int);
 uint64_t
 entry(const void *pkt)
 {
-	const struct rte_mbuf *mb;
-	const struct ether_header *eth;
+    const struct rte_mbuf *mb;
+    const struct ether_header *eth;
 
-	mb = pkt;
-	eth = rte_pktmbuf_mtod(mb, const struct ether_header *);
+    mb = pkt;
+    eth = rte_pktmbuf_mtod(mb, const struct ether_header *);
 
-	if (eth->ether_type == htons(ETHERTYPE_ARP))
-		rte_pktmbuf_dump(stdout, mb, 64);
+    if (eth->ether_type == htons(ETHERTYPE_ARP))
+        rte_pktmbuf_dump(stdout, mb, 64);
 
-	return 1;
+    return 1;
 }

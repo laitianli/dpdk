@@ -21,8 +21,8 @@ extern "C" {
 
 /** dummy structure type used by the rte_tailq APIs */
 struct rte_tailq_entry {
-	TAILQ_ENTRY(rte_tailq_entry) next; /**< Pointer entries for a tailq list */
-	void *data; /**< Pointer to the data referenced by this tailq entry */
+    TAILQ_ENTRY(rte_tailq_entry) next; /**< Pointer entries for a tailq list */
+    void *data; /**< Pointer to the data referenced by this tailq entry */
 };
 /** dummy */
 TAILQ_HEAD(rte_tailq_entry_head, rte_tailq_entry);
@@ -38,25 +38,25 @@ TAILQ_HEAD(rte_tailq_entry_head, rte_tailq_entry);
  * a multi-process app to find already-created elements in shared memory.
  */
 struct rte_tailq_head {
-	struct rte_tailq_entry_head tailq_head; /**< NOTE: must be first element */
-	char name[RTE_TAILQ_NAMESIZE];
+    struct rte_tailq_entry_head tailq_head; /**< NOTE: must be first element */
+    char name[RTE_TAILQ_NAMESIZE];
 };
 
 struct rte_tailq_elem {
-	/**
-	 * Reference to head in shared mem, updated at init time by
-	 * rte_eal_tailqs_init()
-	 */
-	struct rte_tailq_head *head;
-	TAILQ_ENTRY(rte_tailq_elem) next;
-	const char name[RTE_TAILQ_NAMESIZE];
+    /**
+     * Reference to head in shared mem, updated at init time by
+     * rte_eal_tailqs_init()
+     */
+    struct rte_tailq_head *head;
+    TAILQ_ENTRY(rte_tailq_elem) next;
+    const char name[RTE_TAILQ_NAMESIZE];
 };
 
 /**
  * Return the first tailq entry cast to the right struct.
  */
 #define RTE_TAILQ_CAST(tailq_entry, struct_name) \
-	(struct struct_name *)&(tailq_entry)->tailq_head
+    (struct struct_name *)&(tailq_entry)->tailq_head
 
 /**
  * Utility macro to make looking up a tailqueue for a particular struct easier.
@@ -75,7 +75,7 @@ struct rte_tailq_elem {
  *   element in the rte_tailq_head structure.
  */
 #define RTE_TAILQ_LOOKUP(name, struct_name) \
-	RTE_TAILQ_CAST(rte_eal_tailq_lookup(name), struct_name)
+    RTE_TAILQ_CAST(rte_eal_tailq_lookup(name), struct_name)
 
 /**
  * Dump tail queues to a file.
@@ -121,16 +121,16 @@ int rte_eal_tailq_register(struct rte_tailq_elem *t);
 #define EAL_REGISTER_TAILQ(t) \
 RTE_INIT(tailqinitfn_ ##t) \
 { \
-	if (rte_eal_tailq_register(&t) < 0) \
-		rte_panic("Cannot initialize tailq: %s\n", t.name); \
+    if (rte_eal_tailq_register(&t) < 0) \
+        rte_panic("Cannot initialize tailq: %s\n", t.name); \
 }
 
 /* This macro permits both remove and free var within the loop safely.*/
 #ifndef TAILQ_FOREACH_SAFE
-#define TAILQ_FOREACH_SAFE(var, head, field, tvar)		\
-	for ((var) = TAILQ_FIRST((head));			\
-	    (var) && ((tvar) = TAILQ_NEXT((var), field), 1);	\
-	    (var) = (tvar))
+#define TAILQ_FOREACH_SAFE(var, head, field, tvar)        \
+    for ((var) = TAILQ_FIRST((head));            \
+        (var) && ((tvar) = TAILQ_NEXT((var), field), 1);    \
+        (var) = (tvar))
 #endif
 
 #ifdef __cplusplus

@@ -78,8 +78,8 @@
 #define SSO_AF_HWSX_INV(a)                  (0x400180ull | (uint64_t)(a) << 12)
 #define SSO_AF_HWSX_GMCTL(a)                (0x400200ull | (uint64_t)(a) << 12)
 #define SSO_AF_HWSX_SX_GRPMSKX(a, b, c)     \
-	(0x400400ull | (uint64_t)(a) << 12 | (uint64_t)(b) << 5 | \
-	(uint64_t)(c) << 3)
+    (0x400400ull | (uint64_t)(a) << 12 | (uint64_t)(b) << 5 | \
+    (uint64_t)(c) << 3)
 #define SSO_AF_IPL_FREEX(a)                 (0x800000ull | (uint64_t)(a) << 3)
 #define SSO_AF_IPL_IAQX(a)                  (0x840000ull | (uint64_t)(a) << 3)
 #define SSO_AF_IPL_DESCHEDX(a)              (0x860000ull | (uint64_t)(a) << 3)
@@ -122,9 +122,9 @@
 #define SSO_AF_IENTX_WQP(a)                 (0xaa0000ull | (uint64_t)(a) << 3)
 #define SSO_AF_TAQX_LINK(a)                 (0xc00000ull | (uint64_t)(a) << 3)
 #define SSO_AF_TAQX_WAEX_TAG(a, b)          \
-	(0xe00000ull | (uint64_t)(a) << 8 | (uint64_t)(b) << 4)
+    (0xe00000ull | (uint64_t)(a) << 8 | (uint64_t)(b) << 4)
 #define SSO_AF_TAQX_WAEX_WQP(a, b)          \
-	(0xe00008ull | (uint64_t)(a) << 8 | (uint64_t)(b) << 4)
+    (0xe00008ull | (uint64_t)(a) << 8 | (uint64_t)(b) << 4)
 
 #define SSO_LF_GGRP_OP_ADD_WORK0            (0x0ull)
 #define SSO_LF_GGRP_OP_ADD_WORK1            (0x8ull)

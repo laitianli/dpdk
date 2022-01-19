@@ -118,7 +118,7 @@ int32_t rte_service_probe_capability(uint32_t id, uint32_t capability);
  * @retval -EINVAL An invalid service or lcore was provided.
  */
 int32_t rte_service_map_lcore_set(uint32_t service_id, uint32_t lcore,
-		uint32_t enable);
+        uint32_t enable);
 
 /**
  * Retrieve the mapping of an lcore to a service.
@@ -225,7 +225,7 @@ int32_t rte_service_set_runstate_mapped_check(uint32_t id, int32_t enable);
  * @retval -EINVAL Invalid service id
  */
 int32_t rte_service_run_iter_on_app_lcore(uint32_t id,
-		uint32_t serialize_multithread_unsafe);
+        uint32_t serialize_multithread_unsafe);
 
 /**
  * Start a service core.
@@ -369,7 +369,7 @@ int32_t rte_service_dump(FILE *f, uint32_t id);
  *         -EINVAL Invalid id, attr_id or attr_value was NULL.
  */
 int32_t rte_service_attr_get(uint32_t id, uint32_t attr_id,
-		uint64_t *attr_value);
+        uint64_t *attr_value);
 
 /**
  * Reset all attribute values of a service.
@@ -397,7 +397,7 @@ int32_t rte_service_attr_reset_all(uint32_t id);
  */
 int32_t
 rte_service_lcore_attr_get(uint32_t lcore, uint32_t attr_id,
-			   uint64_t *attr_value);
+               uint64_t *attr_value);
 
 /**
  * Reset all attribute values of a service core.

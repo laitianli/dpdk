@@ -9,6 +9,6 @@
 #define AT24512_SLAVE_ADDR 0x51
 
 int at24_eeprom_read(struct altera_i2c_dev *dev, unsigned int slave_addr,
-		u32 offset, u8 *buf, int count);
+        u32 offset, u8 *buf, int count);
 int at24_eeprom_write(struct altera_i2c_dev *dev, unsigned int slave_addr,
-		u32 offset, u8 *buf, int count);
+        u32 offset, u8 *buf, int count);

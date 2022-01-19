@@ -23,18 +23,18 @@
 int
 rte_eal_wait_lcore(unsigned slave_id)
 {
-	if (lcore_config[slave_id].state == WAIT)
-		return 0;
+    if (lcore_config[slave_id].state == WAIT)
+        return 0;
 
-	while (lcore_config[slave_id].state != WAIT &&
-	       lcore_config[slave_id].state != FINISHED)
-		rte_pause();
+    while (lcore_config[slave_id].state != WAIT &&
+           lcore_config[slave_id].state != FINISHED)
+        rte_pause();
 
-	rte_rmb();
+    rte_rmb();
 
-	/* we are in finished state, go to wait state */
-	lcore_config[slave_id].state = WAIT;
-	return lcore_config[slave_id].ret;
+    /* we are in finished state, go to wait state */
+    lcore_config[slave_id].state = WAIT;
+    return lcore_config[slave_id].ret;
 }
 
 /*
@@ -44,28 +44,28 @@ rte_eal_wait_lcore(unsigned slave_id)
  */
 int
 rte_eal_mp_remote_launch(int (*f)(void *), void *arg,
-			 enum rte_rmt_call_master_t call_master)
+             enum rte_rmt_call_master_t call_master)
 {
-	int lcore_id;
-	int master = rte_get_master_lcore();
+    int lcore_id;
+    int master = rte_get_master_lcore();
 
-	/* check state of lcores */
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		if (lcore_config[lcore_id].state != WAIT)
-			return -EBUSY;
-	}
+    /* check state of lcores */
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        if (lcore_config[lcore_id].state != WAIT)
+            return -EBUSY;
+    }
 
-	/* send messages to cores */
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		rte_eal_remote_launch(f, arg, lcore_id);
-	}
+    /* send messages to cores */
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        rte_eal_remote_launch(f, arg, lcore_id);
+    }
 
-	if (call_master == CALL_MASTER) {
-		lcore_config[master].ret = f(arg);
-		lcore_config[master].state = FINISHED;
-	}
+    if (call_master == CALL_MASTER) {
+        lcore_config[master].ret = f(arg);
+        lcore_config[master].state = FINISHED;
+    }
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -74,7 +74,7 @@ rte_eal_mp_remote_launch(int (*f)(void *), void *arg,
 enum rte_lcore_state_t
 rte_eal_get_lcore_state(unsigned lcore_id)
 {
-	return lcore_config[lcore_id].state;
+    return lcore_config[lcore_id].state;
 }
 
 /*
@@ -84,9 +84,9 @@ rte_eal_get_lcore_state(unsigned lcore_id)
 void
 rte_eal_mp_wait_lcore(void)
 {
-	unsigned lcore_id;
+    unsigned lcore_id;
 
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		rte_eal_wait_lcore(lcore_id);
-	}
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        rte_eal_wait_lcore(lcore_id);
+    }
 }

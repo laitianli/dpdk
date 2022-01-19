@@ -19,11 +19,11 @@ extern "C" {
 
 /* Minimum GSO segment size for TCP based packets. */
 #define RTE_GSO_SEG_SIZE_MIN (sizeof(struct rte_ether_hdr) + \
-		sizeof(struct rte_ipv4_hdr) + sizeof(struct rte_tcp_hdr) + 1)
+        sizeof(struct rte_ipv4_hdr) + sizeof(struct rte_tcp_hdr) + 1)
 
 /* Minimum GSO segment size for UDP based packets. */
 #define RTE_GSO_UDP_SEG_SIZE_MIN (sizeof(struct rte_ether_hdr) + \
-		sizeof(struct rte_ipv4_hdr) + sizeof(struct rte_udp_hdr) + 1)
+        sizeof(struct rte_ipv4_hdr) + sizeof(struct rte_udp_hdr) + 1)
 
 /* GSO flags for rte_gso_ctx. */
 #define RTE_GSO_FLAG_IPID_FIXED (1ULL << 0)
@@ -35,34 +35,34 @@ extern "C" {
  * GSO context structure.
  */
 struct rte_gso_ctx {
-	struct rte_mempool *direct_pool;
-	/**< MBUF pool for allocating direct buffers, which are used
-	 * to store packet headers for GSO segments.
-	 */
-	struct rte_mempool *indirect_pool;
-	/**< MBUF pool for allocating indirect buffers, which are used
-	 * to locate packet payloads for GSO segments. The indirect
-	 * buffer doesn't contain any data, but simply points to an
-	 * offset within the packet to segment.
-	 */
-	uint64_t flag;
-	/**< flag that controls specific attributes of output segments,
-	 * such as the type of IP ID generated (i.e. fixed or incremental).
-	 */
-	uint32_t gso_types;
-	/**< the bit mask of required GSO types. The GSO library
-	 * uses the same macros as that of describing device TX
-	 * offloading capabilities (i.e. DEV_TX_OFFLOAD_*_TSO) for
-	 * gso_types.
-	 *
-	 * For example, if applications want to segment TCP/IPv4
-	 * packets, set DEV_TX_OFFLOAD_TCP_TSO in gso_types.
-	 */
-	uint16_t gso_size;
-	/**< maximum size of an output GSO segment, including packet
-	 * header and payload, measured in bytes. Must exceed
-	 * RTE_GSO_SEG_SIZE_MIN.
-	 */
+    struct rte_mempool *direct_pool;
+    /**< MBUF pool for allocating direct buffers, which are used
+     * to store packet headers for GSO segments.
+     */
+    struct rte_mempool *indirect_pool;
+    /**< MBUF pool for allocating indirect buffers, which are used
+     * to locate packet payloads for GSO segments. The indirect
+     * buffer doesn't contain any data, but simply points to an
+     * offset within the packet to segment.
+     */
+    uint64_t flag;
+    /**< flag that controls specific attributes of output segments,
+     * such as the type of IP ID generated (i.e. fixed or incremental).
+     */
+    uint32_t gso_types;
+    /**< the bit mask of required GSO types. The GSO library
+     * uses the same macros as that of describing device TX
+     * offloading capabilities (i.e. DEV_TX_OFFLOAD_*_TSO) for
+     * gso_types.
+     *
+     * For example, if applications want to segment TCP/IPv4
+     * packets, set DEV_TX_OFFLOAD_TCP_TSO in gso_types.
+     */
+    uint16_t gso_size;
+    /**< maximum size of an output GSO segment, including packet
+     * header and payload, measured in bytes. Must exceed
+     * RTE_GSO_SEG_SIZE_MIN.
+     */
 };
 
 /**
@@ -113,9 +113,9 @@ struct rte_gso_ctx {
  *  - Return -EINVAL for invalid parameters.
  */
 int rte_gso_segment(struct rte_mbuf *pkt,
-		const struct rte_gso_ctx *ctx,
-		struct rte_mbuf **pkts_out,
-		uint16_t nb_pkts_out);
+        const struct rte_gso_ctx *ctx,
+        struct rte_mbuf **pkts_out,
+        uint16_t nb_pkts_out);
 #ifdef __cplusplus
 }
 #endif

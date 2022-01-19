@@ -26,7 +26,7 @@ eal_memalloc_alloc_seg(size_t page_sz, int socket);
  */
 int
 eal_memalloc_alloc_seg_bulk(struct rte_memseg **ms, int n_segs, size_t page_sz,
-		int socket, bool exact);
+        int socket, bool exact);
 
 /*
  * Deallocate segment
@@ -48,7 +48,7 @@ eal_memalloc_free_seg_bulk(struct rte_memseg **ms, int n_segs);
  */
 bool
 eal_memalloc_is_contig(const struct rte_memseg_list *msl, void *start,
-		size_t len);
+        size_t len);
 
 /* synchronize local memory map to primary process */
 int
@@ -56,18 +56,18 @@ eal_memalloc_sync_with_primary(void);
 
 int
 eal_memalloc_mem_event_callback_register(const char *name,
-		rte_mem_event_callback_t clb, void *arg);
+        rte_mem_event_callback_t clb, void *arg);
 
 int
 eal_memalloc_mem_event_callback_unregister(const char *name, void *arg);
 
 void
 eal_memalloc_mem_event_notify(enum rte_mem_event event, const void *start,
-		size_t len);
+        size_t len);
 
 int
 eal_memalloc_mem_alloc_validator_register(const char *name,
-		rte_mem_alloc_validator_t clb, int socket_id, size_t limit);
+        rte_mem_alloc_validator_t clb, int socket_id, size_t limit);
 
 int
 eal_memalloc_mem_alloc_validator_unregister(const char *name, int socket_id);

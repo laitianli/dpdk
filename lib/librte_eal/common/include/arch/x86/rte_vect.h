@@ -35,33 +35,33 @@ extern "C" {
 
 typedef __m128i xmm_t;
 
-#define	XMM_SIZE	(sizeof(xmm_t))
-#define	XMM_MASK	(XMM_SIZE - 1)
+#define    XMM_SIZE    (sizeof(xmm_t))
+#define    XMM_MASK    (XMM_SIZE - 1)
 
 typedef union rte_xmm {
-	xmm_t    x;
-	uint8_t  u8[XMM_SIZE / sizeof(uint8_t)];
-	uint16_t u16[XMM_SIZE / sizeof(uint16_t)];
-	uint32_t u32[XMM_SIZE / sizeof(uint32_t)];
-	uint64_t u64[XMM_SIZE / sizeof(uint64_t)];
-	double   pd[XMM_SIZE / sizeof(double)];
+    xmm_t    x;
+    uint8_t  u8[XMM_SIZE / sizeof(uint8_t)];
+    uint16_t u16[XMM_SIZE / sizeof(uint16_t)];
+    uint32_t u32[XMM_SIZE / sizeof(uint32_t)];
+    uint64_t u64[XMM_SIZE / sizeof(uint64_t)];
+    double   pd[XMM_SIZE / sizeof(double)];
 } rte_xmm_t;
 
 #ifdef __AVX__
 
 typedef __m256i ymm_t;
 
-#define	YMM_SIZE	(sizeof(ymm_t))
-#define	YMM_MASK	(YMM_SIZE - 1)
+#define    YMM_SIZE    (sizeof(ymm_t))
+#define    YMM_MASK    (YMM_SIZE - 1)
 
 typedef union rte_ymm {
-	ymm_t    y;
-	xmm_t    x[YMM_SIZE / sizeof(xmm_t)];
-	uint8_t  u8[YMM_SIZE / sizeof(uint8_t)];
-	uint16_t u16[YMM_SIZE / sizeof(uint16_t)];
-	uint32_t u32[YMM_SIZE / sizeof(uint32_t)];
-	uint64_t u64[YMM_SIZE / sizeof(uint64_t)];
-	double   pd[YMM_SIZE / sizeof(double)];
+    ymm_t    y;
+    xmm_t    x[YMM_SIZE / sizeof(xmm_t)];
+    uint8_t  u8[YMM_SIZE / sizeof(uint8_t)];
+    uint16_t u16[YMM_SIZE / sizeof(uint16_t)];
+    uint32_t u32[YMM_SIZE / sizeof(uint32_t)];
+    uint64_t u64[YMM_SIZE / sizeof(uint64_t)];
+    double   pd[YMM_SIZE / sizeof(double)];
 } rte_ymm_t;
 
 #endif /* __AVX__ */
@@ -69,9 +69,9 @@ typedef union rte_ymm {
 #ifdef RTE_ARCH_I686
 #define _mm_cvtsi128_si64(a)    \
 __extension__ ({                \
-	rte_xmm_t m;            \
-	m.x = (a);              \
-	(m.u64[0]);             \
+    rte_xmm_t m;            \
+    m.x = (a);              \
+    (m.u64[0]);             \
 })
 #endif
 
@@ -81,10 +81,10 @@ __extension__ ({                \
 #if (defined(__ICC) && __ICC < 1210)
 #define _mm_set_epi64x(a, b)     \
 __extension__ ({                 \
-	rte_xmm_t m;             \
-	m.u64[0] = b;            \
-	m.u64[1] = a;            \
-	(m.x);                   \
+    rte_xmm_t m;             \
+    m.u64[0] = b;            \
+    m.u64[1] = a;            \
+    (m.x);                   \
 })
 #endif /* (defined(__ICC) && __ICC < 1210) */
 

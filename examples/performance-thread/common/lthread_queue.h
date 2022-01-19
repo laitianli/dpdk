@@ -44,14 +44,14 @@ struct lthread_queue;
  * define a queue of lthread nodes
  */
 struct lthread_queue {
-	struct qnode *head;
-	struct qnode *tail __rte_cache_aligned;
-	struct lthread_queue *p;
-	char name[LT_MAX_NAME_SIZE];
+    struct qnode *head;
+    struct qnode *tail __rte_cache_aligned;
+    struct lthread_queue *p;
+    char name[LT_MAX_NAME_SIZE];
 
-	DIAG_COUNT_DEFINE(rd);
-	DIAG_COUNT_DEFINE(wr);
-	DIAG_COUNT_DEFINE(size);
+    DIAG_COUNT_DEFINE(rd);
+    DIAG_COUNT_DEFINE(wr);
+    DIAG_COUNT_DEFINE(size);
 
 } __rte_cache_aligned;
 
@@ -60,33 +60,33 @@ struct lthread_queue {
 static inline struct lthread_queue *
 _lthread_queue_create(const char *name)
 {
-	struct qnode *stub;
-	struct lthread_queue *new_queue;
+    struct qnode *stub;
+    struct lthread_queue *new_queue;
 
-	new_queue = rte_malloc_socket(NULL, sizeof(struct lthread_queue),
-					RTE_CACHE_LINE_SIZE,
-					rte_socket_id());
-	if (new_queue == NULL)
-		return NULL;
+    new_queue = rte_malloc_socket(NULL, sizeof(struct lthread_queue),
+                    RTE_CACHE_LINE_SIZE,
+                    rte_socket_id());
+    if (new_queue == NULL)
+        return NULL;
 
-	/* allocated stub node */
-	stub = _qnode_alloc();
-	RTE_ASSERT(stub);
+    /* allocated stub node */
+    stub = _qnode_alloc();
+    RTE_ASSERT(stub);
 
-	if (name != NULL)
-		strncpy(new_queue->name, name, sizeof(new_queue->name));
-	new_queue->name[sizeof(new_queue->name)-1] = 0;
+    if (name != NULL)
+        strncpy(new_queue->name, name, sizeof(new_queue->name));
+    new_queue->name[sizeof(new_queue->name)-1] = 0;
 
-	/* initialize queue as empty */
-	stub->next = NULL;
-	new_queue->head = stub;
-	new_queue->tail = stub;
+    /* initialize queue as empty */
+    stub->next = NULL;
+    new_queue->head = stub;
+    new_queue->tail = stub;
 
-	DIAG_COUNT_INIT(new_queue, rd);
-	DIAG_COUNT_INIT(new_queue, wr);
-	DIAG_COUNT_INIT(new_queue, size);
+    DIAG_COUNT_INIT(new_queue, rd);
+    DIAG_COUNT_INIT(new_queue, wr);
+    DIAG_COUNT_INIT(new_queue, size);
 
-	return new_queue;
+    return new_queue;
 }
 
 /**
@@ -95,7 +95,7 @@ _lthread_queue_create(const char *name)
 static __rte_always_inline int
 _lthread_queue_empty(struct lthread_queue *q)
 {
-	return q->tail == q->head;
+    return q->tail == q->head;
 }
 
 
@@ -106,15 +106,15 @@ _lthread_queue_empty(struct lthread_queue *q)
  */
 static inline int _lthread_queue_destroy(struct lthread_queue *q)
 {
-	if (q == NULL)
-		return -1;
+    if (q == NULL)
+        return -1;
 
-	if (!_lthread_queue_empty(q))
-		return -1;
+    if (!_lthread_queue_empty(q))
+        return -1;
 
-	_qnode_free(q->head);
-	rte_free(q);
-	return 0;
+    _qnode_free(q->head);
+    rte_free(q);
+    return 0;
 }
 
 RTE_DECLARE_PER_LCORE(struct lthread_sched *, this_sched);
@@ -125,32 +125,32 @@ RTE_DECLARE_PER_LCORE(struct lthread_sched *, this_sched);
  */
 static __rte_always_inline struct qnode *
 _lthread_queue_insert_mp(struct lthread_queue
-							  *q, void *data)
+                              *q, void *data)
 {
-	struct qnode *prev;
-	struct qnode *n = _qnode_alloc();
+    struct qnode *prev;
+    struct qnode *n = _qnode_alloc();
 
-	if (n == NULL)
-		return NULL;
+    if (n == NULL)
+        return NULL;
 
-	/* set object in node */
-	n->data = data;
-	n->next = NULL;
+    /* set object in node */
+    n->data = data;
+    n->next = NULL;
 
-	/* this is an MPSC method, perform a locked update */
-	prev = n;
-	prev =
-	    (struct qnode *)__sync_lock_test_and_set((uint64_t *) &(q)->head,
-					       (uint64_t) prev);
-	/* there is a window of inconsistency until prev next is set,
-	 * which is why remove must retry
-	 */
-	prev->next = n;
+    /* this is an MPSC method, perform a locked update */
+    prev = n;
+    prev =
+        (struct qnode *)__sync_lock_test_and_set((uint64_t *) &(q)->head,
+                           (uint64_t) prev);
+    /* there is a window of inconsistency until prev next is set,
+     * which is why remove must retry
+     */
+    prev->next = n;
 
-	DIAG_COUNT_INC(q, wr);
-	DIAG_COUNT_INC(q, size);
+    DIAG_COUNT_INC(q, wr);
+    DIAG_COUNT_INC(q, size);
 
-	return n;
+    return n;
 }
 
 /*
@@ -159,27 +159,27 @@ _lthread_queue_insert_mp(struct lthread_queue
  */
 static __rte_always_inline struct qnode *
 _lthread_queue_insert_sp(struct lthread_queue
-							  *q, void *data)
+                              *q, void *data)
 {
-	/* allocate a queue node */
-	struct qnode *prev;
-	struct qnode *n = _qnode_alloc();
+    /* allocate a queue node */
+    struct qnode *prev;
+    struct qnode *n = _qnode_alloc();
 
-	if (n == NULL)
-		return NULL;
+    if (n == NULL)
+        return NULL;
 
-	/* set data in node */
-	n->data = data;
-	n->next = NULL;
+    /* set data in node */
+    n->data = data;
+    n->next = NULL;
 
-	/* this is an SPSC method, no need for locked exchange operation */
-	prev = q->head;
-	prev->next = q->head = n;
+    /* this is an SPSC method, no need for locked exchange operation */
+    prev = q->head;
+    prev->next = q->head = n;
 
-	DIAG_COUNT_INC(q, wr);
-	DIAG_COUNT_INC(q, size);
+    DIAG_COUNT_INC(q, wr);
+    DIAG_COUNT_INC(q, size);
 
-	return n;
+    return n;
 }
 
 /*
@@ -188,29 +188,29 @@ _lthread_queue_insert_sp(struct lthread_queue
 static __rte_always_inline void *
 _lthread_queue_poll(struct lthread_queue *q)
 {
-	void *data = NULL;
-	struct qnode *tail = q->tail;
-	struct qnode *next = (struct qnode *)tail->next;
-	/*
-	 * There is a small window of inconsistency between producer and
-	 * consumer whereby the queue may appear empty if consumer and
-	 * producer access it at the same time.
-	 * The consumer must handle this by retrying
-	 */
+    void *data = NULL;
+    struct qnode *tail = q->tail;
+    struct qnode *next = (struct qnode *)tail->next;
+    /*
+     * There is a small window of inconsistency between producer and
+     * consumer whereby the queue may appear empty if consumer and
+     * producer access it at the same time.
+     * The consumer must handle this by retrying
+     */
 
-	if (likely(next != NULL)) {
-		q->tail = next;
-		tail->data = next->data;
-		data = tail->data;
+    if (likely(next != NULL)) {
+        q->tail = next;
+        tail->data = next->data;
+        data = tail->data;
 
-		/* free the node */
-		_qnode_free(tail);
+        /* free the node */
+        _qnode_free(tail);
 
-		DIAG_COUNT_INC(q, rd);
-		DIAG_COUNT_DEC(q, size);
-		return data;
-	}
-	return NULL;
+        DIAG_COUNT_INC(q, rd);
+        DIAG_COUNT_DEC(q, size);
+        return data;
+    }
+    return NULL;
 }
 
 /*
@@ -219,29 +219,29 @@ _lthread_queue_poll(struct lthread_queue *q)
 static __rte_always_inline void *
 _lthread_queue_remove(struct lthread_queue *q)
 {
-	void *data = NULL;
+    void *data = NULL;
 
-	/*
-	 * There is a small window of inconsistency between producer and
-	 * consumer whereby the queue may appear empty if consumer and
-	 * producer access it at the same time. We handle this by retrying
-	 */
-	do {
-		data = _lthread_queue_poll(q);
+    /*
+     * There is a small window of inconsistency between producer and
+     * consumer whereby the queue may appear empty if consumer and
+     * producer access it at the same time. We handle this by retrying
+     */
+    do {
+        data = _lthread_queue_poll(q);
 
-		if (likely(data != NULL)) {
+        if (likely(data != NULL)) {
 
-			DIAG_COUNT_INC(q, rd);
-			DIAG_COUNT_DEC(q, size);
-			return data;
-		}
-		rte_compiler_barrier();
-	} while (unlikely(!_lthread_queue_empty(q)));
-	return NULL;
+            DIAG_COUNT_INC(q, rd);
+            DIAG_COUNT_DEC(q, size);
+            return data;
+        }
+        rte_compiler_barrier();
+    } while (unlikely(!_lthread_queue_empty(q)));
+    return NULL;
 }
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* LTHREAD_QUEUE_H_ */
+#endif                /* LTHREAD_QUEUE_H_ */

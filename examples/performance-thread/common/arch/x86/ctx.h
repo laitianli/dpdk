@@ -14,14 +14,14 @@ extern "C" {
  * CPU context registers
  */
 struct ctx {
-	void	*rsp;		/* 0  */
-	void	*rbp;		/* 8  */
-	void	*rip;		/* 16 */
-	void	*rbx;		/* 24 */
-	void	*r12;		/* 32 */
-	void	*r13;		/* 40 */
-	void	*r14;		/* 48 */
-	void	*r15;		/* 56 */
+    void    *rsp;        /* 0  */
+    void    *rbp;        /* 8  */
+    void    *rip;        /* 16 */
+    void    *rbx;        /* 24 */
+    void    *r12;        /* 32 */
+    void    *r13;        /* 40 */
+    void    *r14;        /* 48 */
+    void    *r15;        /* 56 */
 };
 
 

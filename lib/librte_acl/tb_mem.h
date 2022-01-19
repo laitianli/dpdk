@@ -22,19 +22,19 @@ extern "C" {
 #include <setjmp.h>
 
 struct tb_mem_block {
-	struct tb_mem_block *next;
-	struct tb_mem_pool  *pool;
-	size_t               size;
-	uint8_t             *mem;
+    struct tb_mem_block *next;
+    struct tb_mem_pool  *pool;
+    size_t               size;
+    uint8_t             *mem;
 };
 
 struct tb_mem_pool {
-	struct tb_mem_block *block;
-	size_t               alignment;
-	size_t               min_alloc;
-	size_t               alloc;
-	/* jump target in case of memory allocation failure. */
-	sigjmp_buf           fail;
+    struct tb_mem_block *block;
+    size_t               alignment;
+    size_t               min_alloc;
+    size_t               alloc;
+    /* jump target in case of memory allocation failure. */
+    sigjmp_buf           fail;
 };
 
 void *tb_alloc(struct tb_mem_pool *pool, size_t size);

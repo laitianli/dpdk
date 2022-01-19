@@ -15,35 +15,35 @@ extern "C" {
 static inline void
 rte_rwlock_read_lock_tm(rte_rwlock_t *rwl)
 {
-	if (likely(rte_try_tm(&rwl->cnt)))
-		return;
-	rte_rwlock_read_lock(rwl);
+    if (likely(rte_try_tm(&rwl->cnt)))
+        return;
+    rte_rwlock_read_lock(rwl);
 }
 
 static inline void
 rte_rwlock_read_unlock_tm(rte_rwlock_t *rwl)
 {
-	if (unlikely(rwl->cnt))
-		rte_rwlock_read_unlock(rwl);
-	else
-		rte_xend();
+    if (unlikely(rwl->cnt))
+        rte_rwlock_read_unlock(rwl);
+    else
+        rte_xend();
 }
 
 static inline void
 rte_rwlock_write_lock_tm(rte_rwlock_t *rwl)
 {
-	if (likely(rte_try_tm(&rwl->cnt)))
-		return;
-	rte_rwlock_write_lock(rwl);
+    if (likely(rte_try_tm(&rwl->cnt)))
+        return;
+    rte_rwlock_write_lock(rwl);
 }
 
 static inline void
 rte_rwlock_write_unlock_tm(rte_rwlock_t *rwl)
 {
-	if (unlikely(rwl->cnt))
-		rte_rwlock_write_unlock(rwl);
-	else
-		rte_xend();
+    if (unlikely(rwl->cnt))
+        rte_rwlock_write_unlock(rwl);
+    else
+        rte_xend();
 }
 
 #ifdef __cplusplus

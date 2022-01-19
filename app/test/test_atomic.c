@@ -110,89 +110,89 @@ static rte_atomic32_t synchro;
 static int
 test_atomic_usual(__attribute__((unused)) void *arg)
 {
-	unsigned i;
+    unsigned i;
 
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	for (i = 0; i < N; i++)
-		rte_atomic16_inc(&a16);
-	for (i = 0; i < N; i++)
-		rte_atomic16_dec(&a16);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic16_add(&a16, 5);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic16_sub(&a16, 5);
+    for (i = 0; i < N; i++)
+        rte_atomic16_inc(&a16);
+    for (i = 0; i < N; i++)
+        rte_atomic16_dec(&a16);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic16_add(&a16, 5);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic16_sub(&a16, 5);
 
-	for (i = 0; i < N; i++)
-		rte_atomic32_inc(&a32);
-	for (i = 0; i < N; i++)
-		rte_atomic32_dec(&a32);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic32_add(&a32, 5);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic32_sub(&a32, 5);
+    for (i = 0; i < N; i++)
+        rte_atomic32_inc(&a32);
+    for (i = 0; i < N; i++)
+        rte_atomic32_dec(&a32);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic32_add(&a32, 5);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic32_sub(&a32, 5);
 
-	for (i = 0; i < N; i++)
-		rte_atomic64_inc(&a64);
-	for (i = 0; i < N; i++)
-		rte_atomic64_dec(&a64);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic64_add(&a64, 5);
-	for (i = 0; i < (N / 5); i++)
-		rte_atomic64_sub(&a64, 5);
+    for (i = 0; i < N; i++)
+        rte_atomic64_inc(&a64);
+    for (i = 0; i < N; i++)
+        rte_atomic64_dec(&a64);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic64_add(&a64, 5);
+    for (i = 0; i < (N / 5); i++)
+        rte_atomic64_sub(&a64, 5);
 
-	return 0;
+    return 0;
 }
 
 static int
 test_atomic_tas(__attribute__((unused)) void *arg)
 {
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	if (rte_atomic16_test_and_set(&a16))
-		rte_atomic64_inc(&count);
-	if (rte_atomic32_test_and_set(&a32))
-		rte_atomic64_inc(&count);
-	if (rte_atomic64_test_and_set(&a64))
-		rte_atomic64_inc(&count);
+    if (rte_atomic16_test_and_set(&a16))
+        rte_atomic64_inc(&count);
+    if (rte_atomic32_test_and_set(&a32))
+        rte_atomic64_inc(&count);
+    if (rte_atomic64_test_and_set(&a64))
+        rte_atomic64_inc(&count);
 
-	return 0;
+    return 0;
 }
 
 static int
 test_atomic_addsub_and_return(__attribute__((unused)) void *arg)
 {
-	uint32_t tmp16;
-	uint32_t tmp32;
-	uint64_t tmp64;
-	unsigned i;
+    uint32_t tmp16;
+    uint32_t tmp32;
+    uint64_t tmp64;
+    unsigned i;
 
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	for (i = 0; i < N; i++) {
-		tmp16 = rte_atomic16_add_return(&a16, 1);
-		rte_atomic64_add(&count, tmp16);
+    for (i = 0; i < N; i++) {
+        tmp16 = rte_atomic16_add_return(&a16, 1);
+        rte_atomic64_add(&count, tmp16);
 
-		tmp16 = rte_atomic16_sub_return(&a16, 1);
-		rte_atomic64_sub(&count, tmp16+1);
+        tmp16 = rte_atomic16_sub_return(&a16, 1);
+        rte_atomic64_sub(&count, tmp16+1);
 
-		tmp32 = rte_atomic32_add_return(&a32, 1);
-		rte_atomic64_add(&count, tmp32);
+        tmp32 = rte_atomic32_add_return(&a32, 1);
+        rte_atomic64_add(&count, tmp32);
 
-		tmp32 = rte_atomic32_sub_return(&a32, 1);
-		rte_atomic64_sub(&count, tmp32+1);
+        tmp32 = rte_atomic32_sub_return(&a32, 1);
+        rte_atomic64_sub(&count, tmp32+1);
 
-		tmp64 = rte_atomic64_add_return(&a64, 1);
-		rte_atomic64_add(&count, tmp64);
+        tmp64 = rte_atomic64_add_return(&a64, 1);
+        rte_atomic64_add(&count, tmp64);
 
-		tmp64 = rte_atomic64_sub_return(&a64, 1);
-		rte_atomic64_sub(&count, tmp64+1);
-	}
+        tmp64 = rte_atomic64_sub_return(&a64, 1);
+        rte_atomic64_sub(&count, tmp64+1);
+    }
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -208,20 +208,20 @@ test_atomic_addsub_and_return(__attribute__((unused)) void *arg)
 static int
 test_atomic_inc_and_test(__attribute__((unused)) void *arg)
 {
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	if (rte_atomic16_inc_and_test(&a16)) {
-		rte_atomic64_inc(&count);
-	}
-	if (rte_atomic32_inc_and_test(&a32)) {
-		rte_atomic64_inc(&count);
-	}
-	if (rte_atomic64_inc_and_test(&a64)) {
-		rte_atomic64_inc(&count);
-	}
+    if (rte_atomic16_inc_and_test(&a16)) {
+        rte_atomic64_inc(&count);
+    }
+    if (rte_atomic32_inc_and_test(&a32)) {
+        rte_atomic64_inc(&count);
+    }
+    if (rte_atomic64_inc_and_test(&a64)) {
+        rte_atomic64_inc(&count);
+    }
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -235,19 +235,19 @@ test_atomic_inc_and_test(__attribute__((unused)) void *arg)
 static int
 test_atomic_dec_and_test(__attribute__((unused)) void *arg)
 {
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	if (rte_atomic16_dec_and_test(&a16))
-		rte_atomic64_inc(&count);
+    if (rte_atomic16_dec_and_test(&a16))
+        rte_atomic64_inc(&count);
 
-	if (rte_atomic32_dec_and_test(&a32))
-		rte_atomic64_inc(&count);
+    if (rte_atomic32_dec_and_test(&a32))
+        rte_atomic64_inc(&count);
 
-	if (rte_atomic64_dec_and_test(&a64))
-		rte_atomic64_inc(&count);
+    if (rte_atomic64_dec_and_test(&a64))
+        rte_atomic64_inc(&count);
 
-	return 0;
+    return 0;
 }
 
 #if defined(RTE_ARCH_X86_64) || defined(RTE_ARCH_ARM64)
@@ -263,62 +263,62 @@ static rte_int128_t count128;
 static int
 test_atomic128_cmp_exchange(__attribute__((unused)) void *arg)
 {
-	rte_int128_t expected;
-	int success;
-	unsigned int i;
+    rte_int128_t expected;
+    int success;
+    unsigned int i;
 
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	expected = count128;
+    expected = count128;
 
-	for (i = 0; i < N; i++) {
-		do {
-			rte_int128_t desired;
+    for (i = 0; i < N; i++) {
+        do {
+            rte_int128_t desired;
 
-			desired.val[0] = expected.val[0] + 2;
-			desired.val[1] = expected.val[1] + 1;
+            desired.val[0] = expected.val[0] + 2;
+            desired.val[1] = expected.val[1] + 1;
 
-			success = rte_atomic128_cmp_exchange(&count128,
-				&expected, &desired, 1,
-				__ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
-		} while (success == 0);
+            success = rte_atomic128_cmp_exchange(&count128,
+                &expected, &desired, 1,
+                __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+        } while (success == 0);
 
-		do {
-			rte_int128_t desired;
+        do {
+            rte_int128_t desired;
 
-			desired.val[0] = expected.val[0] + 2;
-			desired.val[1] = expected.val[1] + 1;
+            desired.val[0] = expected.val[0] + 2;
+            desired.val[1] = expected.val[1] + 1;
 
-			success = rte_atomic128_cmp_exchange(&count128,
-					&expected, &desired, 1,
-					__ATOMIC_RELEASE, __ATOMIC_RELAXED);
-		} while (success == 0);
+            success = rte_atomic128_cmp_exchange(&count128,
+                    &expected, &desired, 1,
+                    __ATOMIC_RELEASE, __ATOMIC_RELAXED);
+        } while (success == 0);
 
-		do {
-			rte_int128_t desired;
+        do {
+            rte_int128_t desired;
 
-			desired.val[0] = expected.val[0] + 2;
-			desired.val[1] = expected.val[1] + 1;
+            desired.val[0] = expected.val[0] + 2;
+            desired.val[1] = expected.val[1] + 1;
 
-			success = rte_atomic128_cmp_exchange(&count128,
-					&expected, &desired, 1,
-					__ATOMIC_ACQ_REL, __ATOMIC_RELAXED);
-		} while (success == 0);
+            success = rte_atomic128_cmp_exchange(&count128,
+                    &expected, &desired, 1,
+                    __ATOMIC_ACQ_REL, __ATOMIC_RELAXED);
+        } while (success == 0);
 
-		do {
-			rte_int128_t desired;
+        do {
+            rte_int128_t desired;
 
-			desired.val[0] = expected.val[0] + 2;
-			desired.val[1] = expected.val[1] + 1;
+            desired.val[0] = expected.val[0] + 2;
+            desired.val[1] = expected.val[1] + 1;
 
-			success = rte_atomic128_cmp_exchange(&count128,
-					&expected, &desired, 1,
-					__ATOMIC_RELAXED, __ATOMIC_RELAXED);
-		} while (success == 0);
-	}
+            success = rte_atomic128_cmp_exchange(&count128,
+                    &expected, &desired, 1,
+                    __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+        } while (success == 0);
+    }
 
-	return 0;
+    return 0;
 }
 #endif
 
@@ -327,21 +327,21 @@ test_atomic128_cmp_exchange(__attribute__((unused)) void *arg)
  * atomic exchange tests
  */
 typedef union {
-	uint16_t u16;
-	uint8_t  u8[2];
+    uint16_t u16;
+    uint8_t  u8[2];
 } test16_t;
 
 typedef union {
-	uint32_t u32;
-	uint16_t u16[2];
-	uint8_t  u8[4];
+    uint32_t u32;
+    uint16_t u16[2];
+    uint8_t  u8[4];
 } test32_t;
 
 typedef union {
-	uint64_t u64;
-	uint32_t u32[2];
-	uint16_t u16[4];
-	uint8_t  u8[8];
+    uint64_t u64;
+    uint32_t u32[2];
+    uint16_t u16[4];
+    uint8_t  u8[8];
 } test64_t;
 
 const uint8_t CRC8_POLY = 0x91;
@@ -354,29 +354,29 @@ volatile uint64_t token64;
 static void
 build_crc8_table(void)
 {
-	uint8_t val;
-	int i, j;
+    uint8_t val;
+    int i, j;
 
-	for (i = 0; i < 256; i++) {
-		val = i;
-		for (j = 0; j < 8; j++) {
-			if (val & 1)
-				val ^= CRC8_POLY;
-			val >>= 1;
-		}
-		crc8_table[i] = val;
-	}
+    for (i = 0; i < 256; i++) {
+        val = i;
+        for (j = 0; j < 8; j++) {
+            if (val & 1)
+                val ^= CRC8_POLY;
+            val >>= 1;
+        }
+        crc8_table[i] = val;
+    }
 }
 
 static uint8_t
 get_crc8(uint8_t *message, int length)
 {
-	uint8_t crc = 0;
-	int i;
+    uint8_t crc = 0;
+    int i;
 
-	for (i = 0; i < length; i++)
-		crc = crc8_table[crc ^ message[i]];
-	return crc;
+    for (i = 0; i < length; i++)
+        crc = crc8_table[crc ^ message[i]];
+    return crc;
 }
 
 /*
@@ -399,236 +399,236 @@ get_crc8(uint8_t *message, int length)
 static int
 test_atomic_exchange(__attribute__((unused)) void *arg)
 {
-	int i;
-	test16_t nt16, ot16; /* new token, old token */
-	test32_t nt32, ot32;
-	test64_t nt64, ot64;
+    int i;
+    test16_t nt16, ot16; /* new token, old token */
+    test32_t nt32, ot32;
+    test64_t nt64, ot64;
 
-	/* Wait until all of the other threads have been dispatched */
-	while (rte_atomic32_read(&synchro) == 0)
-		;
+    /* Wait until all of the other threads have been dispatched */
+    while (rte_atomic32_read(&synchro) == 0)
+        ;
 
-	/*
-	 * Let the battle begin! Every thread attempts to steal the current
-	 * token with an atomic exchange operation and install its own newly
-	 * generated token. If the old token is valid (i.e. it has the
-	 * appropriate crc32 hash for the data) then the test iteration has
-	 * passed.  If the token is invalid, increment the counter.
-	 */
-	for (i = 0; i < N; i++) {
+    /*
+     * Let the battle begin! Every thread attempts to steal the current
+     * token with an atomic exchange operation and install its own newly
+     * generated token. If the old token is valid (i.e. it has the
+     * appropriate crc32 hash for the data) then the test iteration has
+     * passed.  If the token is invalid, increment the counter.
+     */
+    for (i = 0; i < N; i++) {
 
-		/* Test 64bit Atomic Exchange */
-		nt64.u64 = rte_rand();
-		nt64.u8[7] = get_crc8(&nt64.u8[0], sizeof(nt64) - 1);
-		ot64.u64 = rte_atomic64_exchange(&token64, nt64.u64);
-		if (ot64.u8[7] != get_crc8(&ot64.u8[0], sizeof(ot64) - 1))
-			rte_atomic64_inc(&count);
+        /* Test 64bit Atomic Exchange */
+        nt64.u64 = rte_rand();
+        nt64.u8[7] = get_crc8(&nt64.u8[0], sizeof(nt64) - 1);
+        ot64.u64 = rte_atomic64_exchange(&token64, nt64.u64);
+        if (ot64.u8[7] != get_crc8(&ot64.u8[0], sizeof(ot64) - 1))
+            rte_atomic64_inc(&count);
 
-		/* Test 32bit Atomic Exchange */
-		nt32.u32 = (uint32_t)rte_rand();
-		nt32.u8[3] = get_crc8(&nt32.u8[0], sizeof(nt32) - 1);
-		ot32.u32 = rte_atomic32_exchange(&token32, nt32.u32);
-		if (ot32.u8[3] != get_crc8(&ot32.u8[0], sizeof(ot32) - 1))
-			rte_atomic64_inc(&count);
+        /* Test 32bit Atomic Exchange */
+        nt32.u32 = (uint32_t)rte_rand();
+        nt32.u8[3] = get_crc8(&nt32.u8[0], sizeof(nt32) - 1);
+        ot32.u32 = rte_atomic32_exchange(&token32, nt32.u32);
+        if (ot32.u8[3] != get_crc8(&ot32.u8[0], sizeof(ot32) - 1))
+            rte_atomic64_inc(&count);
 
-		/* Test 16bit Atomic Exchange */
-		nt16.u16 = (uint16_t)rte_rand();
-		nt16.u8[1] = get_crc8(&nt16.u8[0], sizeof(nt16) - 1);
-		ot16.u16 = rte_atomic16_exchange(&token16, nt16.u16);
-		if (ot16.u8[1] != get_crc8(&ot16.u8[0], sizeof(ot16) - 1))
-			rte_atomic64_inc(&count);
-	}
+        /* Test 16bit Atomic Exchange */
+        nt16.u16 = (uint16_t)rte_rand();
+        nt16.u8[1] = get_crc8(&nt16.u8[0], sizeof(nt16) - 1);
+        ot16.u16 = rte_atomic16_exchange(&token16, nt16.u16);
+        if (ot16.u8[1] != get_crc8(&ot16.u8[0], sizeof(ot16) - 1))
+            rte_atomic64_inc(&count);
+    }
 
-	return 0;
+    return 0;
 }
 static int
 test_atomic(void)
 {
-	rte_atomic16_init(&a16);
-	rte_atomic32_init(&a32);
-	rte_atomic64_init(&a64);
-	rte_atomic64_init(&count);
-	rte_atomic32_init(&synchro);
+    rte_atomic16_init(&a16);
+    rte_atomic32_init(&a32);
+    rte_atomic64_init(&a64);
+    rte_atomic64_init(&count);
+    rte_atomic32_init(&synchro);
 
-	rte_atomic16_set(&a16, 1UL << 10);
-	rte_atomic32_set(&a32, 1UL << 10);
-	rte_atomic64_set(&a64, 1ULL << 33);
+    rte_atomic16_set(&a16, 1UL << 10);
+    rte_atomic32_set(&a32, 1UL << 10);
+    rte_atomic64_set(&a64, 1ULL << 33);
 
-	printf("usual inc/dec/add/sub functions\n");
+    printf("usual inc/dec/add/sub functions\n");
 
-	rte_eal_mp_remote_launch(test_atomic_usual, NULL, SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_set(&synchro, 0);
+    rte_eal_mp_remote_launch(test_atomic_usual, NULL, SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_set(&synchro, 0);
 
-	if (rte_atomic16_read(&a16) != 1UL << 10) {
-		printf("Atomic16 usual functions failed\n");
-		return -1;
-	}
+    if (rte_atomic16_read(&a16) != 1UL << 10) {
+        printf("Atomic16 usual functions failed\n");
+        return -1;
+    }
 
-	if (rte_atomic32_read(&a32) != 1UL << 10) {
-		printf("Atomic32 usual functions failed\n");
-		return -1;
-	}
+    if (rte_atomic32_read(&a32) != 1UL << 10) {
+        printf("Atomic32 usual functions failed\n");
+        return -1;
+    }
 
-	if (rte_atomic64_read(&a64) != 1ULL << 33) {
-		printf("Atomic64 usual functions failed\n");
-		return -1;
-	}
+    if (rte_atomic64_read(&a64) != 1ULL << 33) {
+        printf("Atomic64 usual functions failed\n");
+        return -1;
+    }
 
-	printf("test and set\n");
+    printf("test and set\n");
 
-	rte_atomic64_set(&a64, 0);
-	rte_atomic32_set(&a32, 0);
-	rte_atomic16_set(&a16, 0);
-	rte_atomic64_set(&count, 0);
-	rte_eal_mp_remote_launch(test_atomic_tas, NULL, SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_set(&synchro, 0);
+    rte_atomic64_set(&a64, 0);
+    rte_atomic32_set(&a32, 0);
+    rte_atomic16_set(&a16, 0);
+    rte_atomic64_set(&count, 0);
+    rte_eal_mp_remote_launch(test_atomic_tas, NULL, SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_set(&synchro, 0);
 
-	if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
-		printf("Atomic test and set failed\n");
-		return -1;
-	}
+    if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
+        printf("Atomic test and set failed\n");
+        return -1;
+    }
 
-	printf("add/sub and return\n");
+    printf("add/sub and return\n");
 
-	rte_atomic64_set(&a64, 0);
-	rte_atomic32_set(&a32, 0);
-	rte_atomic16_set(&a16, 0);
-	rte_atomic64_set(&count, 0);
-	rte_eal_mp_remote_launch(test_atomic_addsub_and_return, NULL,
-				 SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_set(&synchro, 0);
+    rte_atomic64_set(&a64, 0);
+    rte_atomic32_set(&a32, 0);
+    rte_atomic16_set(&a16, 0);
+    rte_atomic64_set(&count, 0);
+    rte_eal_mp_remote_launch(test_atomic_addsub_and_return, NULL,
+                 SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_set(&synchro, 0);
 
-	if (rte_atomic64_read(&count) != 0) {
-		printf("Atomic add/sub+return failed\n");
-		return -1;
-	}
+    if (rte_atomic64_read(&count) != 0) {
+        printf("Atomic add/sub+return failed\n");
+        return -1;
+    }
 
-	/*
-	 * Set a64, a32 and a16 with the same value of minus "number of slave
-	 * lcores", launch all slave lcores to atomically increase by one and
-	 * test them respectively.
-	 * Each lcore should have only one chance to increase a64 by one and
-	 * then check if it is equal to 0, but there should be only one lcore
-	 * that finds that it is 0. It is similar for a32 and a16.
-	 * Then a variable of "count", initialized to zero, is increased by
-	 * one if a64, a32 or a16 is 0 after being increased and tested
-	 * atomically.
-	 * We can check if "count" is finally equal to 3 to see if all slave
-	 * lcores performed "atomic inc and test" right.
-	 */
-	printf("inc and test\n");
+    /*
+     * Set a64, a32 and a16 with the same value of minus "number of slave
+     * lcores", launch all slave lcores to atomically increase by one and
+     * test them respectively.
+     * Each lcore should have only one chance to increase a64 by one and
+     * then check if it is equal to 0, but there should be only one lcore
+     * that finds that it is 0. It is similar for a32 and a16.
+     * Then a variable of "count", initialized to zero, is increased by
+     * one if a64, a32 or a16 is 0 after being increased and tested
+     * atomically.
+     * We can check if "count" is finally equal to 3 to see if all slave
+     * lcores performed "atomic inc and test" right.
+     */
+    printf("inc and test\n");
 
-	rte_atomic64_clear(&a64);
-	rte_atomic32_clear(&a32);
-	rte_atomic16_clear(&a16);
-	rte_atomic32_clear(&synchro);
-	rte_atomic64_clear(&count);
+    rte_atomic64_clear(&a64);
+    rte_atomic32_clear(&a32);
+    rte_atomic16_clear(&a16);
+    rte_atomic32_clear(&synchro);
+    rte_atomic64_clear(&count);
 
-	rte_atomic64_set(&a64, (int64_t)(1 - (int64_t)rte_lcore_count()));
-	rte_atomic32_set(&a32, (int32_t)(1 - (int32_t)rte_lcore_count()));
-	rte_atomic16_set(&a16, (int16_t)(1 - (int16_t)rte_lcore_count()));
-	rte_eal_mp_remote_launch(test_atomic_inc_and_test, NULL, SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_clear(&synchro);
+    rte_atomic64_set(&a64, (int64_t)(1 - (int64_t)rte_lcore_count()));
+    rte_atomic32_set(&a32, (int32_t)(1 - (int32_t)rte_lcore_count()));
+    rte_atomic16_set(&a16, (int16_t)(1 - (int16_t)rte_lcore_count()));
+    rte_eal_mp_remote_launch(test_atomic_inc_and_test, NULL, SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_clear(&synchro);
 
-	if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
-		printf("Atomic inc and test failed %d\n", (int)count.cnt);
-		return -1;
-	}
+    if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
+        printf("Atomic inc and test failed %d\n", (int)count.cnt);
+        return -1;
+    }
 
-	/*
-	 * Same as above, but this time we set the values to "number of slave
-	 * lcores", and decrement instead of increment.
-	 */
-	printf("dec and test\n");
+    /*
+     * Same as above, but this time we set the values to "number of slave
+     * lcores", and decrement instead of increment.
+     */
+    printf("dec and test\n");
 
-	rte_atomic32_clear(&synchro);
-	rte_atomic64_clear(&count);
+    rte_atomic32_clear(&synchro);
+    rte_atomic64_clear(&count);
 
-	rte_atomic64_set(&a64, (int64_t)(rte_lcore_count() - 1));
-	rte_atomic32_set(&a32, (int32_t)(rte_lcore_count() - 1));
-	rte_atomic16_set(&a16, (int16_t)(rte_lcore_count() - 1));
-	rte_eal_mp_remote_launch(test_atomic_dec_and_test, NULL, SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_clear(&synchro);
+    rte_atomic64_set(&a64, (int64_t)(rte_lcore_count() - 1));
+    rte_atomic32_set(&a32, (int32_t)(rte_lcore_count() - 1));
+    rte_atomic16_set(&a16, (int16_t)(rte_lcore_count() - 1));
+    rte_eal_mp_remote_launch(test_atomic_dec_and_test, NULL, SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_clear(&synchro);
 
-	if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
-		printf("Atomic dec and test failed\n");
-		return -1;
-	}
+    if (rte_atomic64_read(&count) != NUM_ATOMIC_TYPES) {
+        printf("Atomic dec and test failed\n");
+        return -1;
+    }
 
 #if defined(RTE_ARCH_X86_64) || defined(RTE_ARCH_ARM64)
-	/*
-	 * This case tests the functionality of rte_atomic128_cmp_exchange
-	 * API. It calls rte_atomic128_cmp_exchange with four kinds of memory
-	 * models successively on each slave core. Once each 128-bit atomic
-	 * compare and swap operation is successful, it updates the global
-	 * 128-bit counter by 2 for the first 64-bit and 1 for the second
-	 * 64-bit. Each slave core iterates this test N times.
-	 * At the end of test, verify whether the first 64-bits of the 128-bit
-	 * counter and the second 64bits is differ by the total iterations. If
-	 * it is, the test passes.
-	 */
-	printf("128-bit compare and swap test\n");
-	uint64_t iterations = 0;
+    /*
+     * This case tests the functionality of rte_atomic128_cmp_exchange
+     * API. It calls rte_atomic128_cmp_exchange with four kinds of memory
+     * models successively on each slave core. Once each 128-bit atomic
+     * compare and swap operation is successful, it updates the global
+     * 128-bit counter by 2 for the first 64-bit and 1 for the second
+     * 64-bit. Each slave core iterates this test N times.
+     * At the end of test, verify whether the first 64-bits of the 128-bit
+     * counter and the second 64bits is differ by the total iterations. If
+     * it is, the test passes.
+     */
+    printf("128-bit compare and swap test\n");
+    uint64_t iterations = 0;
 
-	rte_atomic32_clear(&synchro);
-	count128.val[0] = 0;
-	count128.val[1] = 0;
+    rte_atomic32_clear(&synchro);
+    count128.val[0] = 0;
+    count128.val[1] = 0;
 
-	rte_eal_mp_remote_launch(test_atomic128_cmp_exchange, NULL,
-				 SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_clear(&synchro);
+    rte_eal_mp_remote_launch(test_atomic128_cmp_exchange, NULL,
+                 SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_clear(&synchro);
 
-	iterations = count128.val[0] - count128.val[1];
-	if (iterations != 4*N*(rte_lcore_count()-1)) {
-		printf("128-bit compare and swap failed\n");
-		return -1;
-	}
+    iterations = count128.val[0] - count128.val[1];
+    if (iterations != 4*N*(rte_lcore_count()-1)) {
+        printf("128-bit compare and swap failed\n");
+        return -1;
+    }
 #endif
 
-	/*
-	 * Test 16/32/64bit atomic exchange.
-	 */
-	test64_t t;
+    /*
+     * Test 16/32/64bit atomic exchange.
+     */
+    test64_t t;
 
-	printf("exchange test\n");
+    printf("exchange test\n");
 
-	rte_atomic32_clear(&synchro);
-	rte_atomic64_clear(&count);
+    rte_atomic32_clear(&synchro);
+    rte_atomic64_clear(&count);
 
-	/* Generate the CRC8 lookup table */
-	build_crc8_table();
+    /* Generate the CRC8 lookup table */
+    build_crc8_table();
 
-	/* Create the initial tokens used by the test */
-	t.u64 = rte_rand();
-	token16 = (get_crc8(&t.u8[0], sizeof(token16) - 1) << 8)
-		| (t.u16[0] & 0x00ff);
-	token32 = ((uint32_t)get_crc8(&t.u8[0], sizeof(token32) - 1) << 24)
-		| (t.u32[0] & 0x00ffffff);
-	token64 = ((uint64_t)get_crc8(&t.u8[0], sizeof(token64) - 1) << 56)
-		| (t.u64 & 0x00ffffffffffffff);
+    /* Create the initial tokens used by the test */
+    t.u64 = rte_rand();
+    token16 = (get_crc8(&t.u8[0], sizeof(token16) - 1) << 8)
+        | (t.u16[0] & 0x00ff);
+    token32 = ((uint32_t)get_crc8(&t.u8[0], sizeof(token32) - 1) << 24)
+        | (t.u32[0] & 0x00ffffff);
+    token64 = ((uint64_t)get_crc8(&t.u8[0], sizeof(token64) - 1) << 56)
+        | (t.u64 & 0x00ffffffffffffff);
 
-	rte_eal_mp_remote_launch(test_atomic_exchange, NULL, SKIP_MASTER);
-	rte_atomic32_set(&synchro, 1);
-	rte_eal_mp_wait_lcore();
-	rte_atomic32_clear(&synchro);
+    rte_eal_mp_remote_launch(test_atomic_exchange, NULL, SKIP_MASTER);
+    rte_atomic32_set(&synchro, 1);
+    rte_eal_mp_wait_lcore();
+    rte_atomic32_clear(&synchro);
 
-	if (rte_atomic64_read(&count) > 0) {
-		printf("Atomic exchange test failed\n");
-		return -1;
-	}
+    if (rte_atomic64_read(&count) > 0) {
+        printf("Atomic exchange test failed\n");
+        return -1;
+    }
 
-	return 0;
+    return 0;
 }
 REGISTER_TEST_COMMAND(atomic_autotest, test_atomic);

@@ -26,15 +26,15 @@
 int
 eal_cpu_detected(unsigned lcore_id)
 {
-	char path[PATH_MAX];
-	int len = snprintf(path, sizeof(path), SYS_CPU_DIR
-		"/"CORE_ID_FILE, lcore_id);
-	if (len <= 0 || (unsigned)len >= sizeof(path))
-		return 0;
-	if (access(path, F_OK) != 0)
-		return 0;
+    char path[PATH_MAX];
+    int len = snprintf(path, sizeof(path), SYS_CPU_DIR
+        "/"CORE_ID_FILE, lcore_id);
+    if (len <= 0 || (unsigned)len >= sizeof(path))
+        return 0;
+    if (access(path, F_OK) != 0)
+        return 0;
 
-	return 1;
+    return 1;
 }
 
 /*
@@ -47,35 +47,35 @@ eal_cpu_detected(unsigned lcore_id)
 unsigned
 eal_cpu_socket_id(unsigned lcore_id)
 {
-	unsigned socket;
+    unsigned socket;
 
-	for (socket = 0; socket < RTE_MAX_NUMA_NODES; socket++) {
-		char path[PATH_MAX];
+    for (socket = 0; socket < RTE_MAX_NUMA_NODES; socket++) {
+        char path[PATH_MAX];
 
-		snprintf(path, sizeof(path), "%s/node%u/cpu%u", NUMA_NODE_PATH,
-				socket, lcore_id);
-		if (access(path, F_OK) == 0)
-			return socket;
-	}
-	return 0;
+        snprintf(path, sizeof(path), "%s/node%u/cpu%u", NUMA_NODE_PATH,
+                socket, lcore_id);
+        if (access(path, F_OK) == 0)
+            return socket;
+    }
+    return 0;
 }
 
 /* Get the cpu core id value from the /sys/.../cpuX core_id value */
 unsigned
 eal_cpu_core_id(unsigned lcore_id)
 {
-	char path[PATH_MAX];
-	unsigned long id;
+    char path[PATH_MAX];
+    unsigned long id;
 
-	int len = snprintf(path, sizeof(path), SYS_CPU_DIR "/%s", lcore_id, CORE_ID_FILE);
-	if (len <= 0 || (unsigned)len >= sizeof(path))
-		goto err;
-	if (eal_parse_sysfs_value(path, &id) != 0)
-		goto err;
-	return (unsigned)id;
+    int len = snprintf(path, sizeof(path), SYS_CPU_DIR "/%s", lcore_id, CORE_ID_FILE);
+    if (len <= 0 || (unsigned)len >= sizeof(path))
+        goto err;
+    if (eal_parse_sysfs_value(path, &id) != 0)
+        goto err;
+    return (unsigned)id;
 
 err:
-	RTE_LOG(ERR, EAL, "Error reading core id value from %s "
-			"for lcore %u - assuming core 0\n", SYS_CPU_DIR, lcore_id);
-	return 0;
+    RTE_LOG(ERR, EAL, "Error reading core id value from %s "
+            "for lcore %u - assuming core 0\n", SYS_CPU_DIR, lcore_id);
+    return 0;
 }

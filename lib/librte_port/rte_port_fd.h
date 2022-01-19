@@ -25,14 +25,14 @@ extern "C" {
 
 /** fd_reader port parameters */
 struct rte_port_fd_reader_params {
-	/** File descriptor */
-	int fd;
+    /** File descriptor */
+    int fd;
 
-	/** Maximum Transfer Unit (MTU) */
-	uint32_t mtu;
+    /** Maximum Transfer Unit (MTU) */
+    uint32_t mtu;
 
-	/** Pre-initialized buffer pool */
-	struct rte_mempool *mempool;
+    /** Pre-initialized buffer pool */
+    struct rte_mempool *mempool;
 };
 
 /** fd_reader port operations */
@@ -40,13 +40,13 @@ extern struct rte_port_in_ops rte_port_fd_reader_ops;
 
 /** fd_writer port parameters */
 struct rte_port_fd_writer_params {
-	/** File descriptor */
-	int fd;
+    /** File descriptor */
+    int fd;
 
-	/**< Recommended write burst size. The actual burst size can be
-	 * bigger or smaller than this value.
-	 */
-	uint32_t tx_burst_sz;
+    /**< Recommended write burst size. The actual burst size can be
+     * bigger or smaller than this value.
+     */
+    uint32_t tx_burst_sz;
 };
 
 /** fd_writer port operations */
@@ -54,16 +54,16 @@ extern struct rte_port_out_ops rte_port_fd_writer_ops;
 
 /** fd_writer_nodrop port parameters */
 struct rte_port_fd_writer_nodrop_params {
-	/** File descriptor */
-	int fd;
+    /** File descriptor */
+    int fd;
 
-	/**< Recommended write burst size. The actual burst size can be
-	 * bigger or smaller than this value.
-	 */
-	uint32_t tx_burst_sz;
+    /**< Recommended write burst size. The actual burst size can be
+     * bigger or smaller than this value.
+     */
+    uint32_t tx_burst_sz;
 
-	/** Maximum number of retries, 0 for no limit */
-	uint32_t n_retries;
+    /** Maximum number of retries, 0 for no limit */
+    uint32_t n_retries;
 };
 
 /** fd_writer_nodrop port operations */

@@ -16,21 +16,21 @@
 
 #define __iomem
 
-typedef uint8_t		u8;
-typedef int8_t		s8;
-typedef uint16_t	u16;
-typedef uint32_t	u32;
-typedef int32_t		s32;
-typedef uint64_t	u64;
-typedef uint64_t	dma_addr_t;
+typedef uint8_t        u8;
+typedef int8_t        s8;
+typedef uint16_t    u16;
+typedef uint32_t    u32;
+typedef int32_t        s32;
+typedef uint64_t    u64;
+typedef uint64_t    dma_addr_t;
 
 struct uuid {
-	u8 b[16];
+    u8 b[16];
 };
 
 #ifndef LINUX_MACROS
 #ifndef BITS_PER_LONG
-#define BITS_PER_LONG	(__SIZEOF_LONG__ * 8)
+#define BITS_PER_LONG    (__SIZEOF_LONG__ * 8)
 #endif
 #ifndef BITS_PER_LONG_LONG
 #define BITS_PER_LONG_LONG  (__SIZEOF_LONG_LONG__ * 8)
@@ -42,11 +42,11 @@ struct uuid {
 #define BIT_ULL(a) (1ULL << (a))
 #endif /* BIT_ULL */
 #ifndef GENMASK
-#define GENMASK(h, l)	(((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
+#define GENMASK(h, l)    (((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
 #endif /* GENMASK */
 #ifndef GENMASK_ULL
 #define GENMASK_ULL(h, l) \
-	(((~0ULL) << (l)) & (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
+    (((~0ULL) << (l)) & (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
 #endif /* GENMASK_ULL */
 #endif /* LINUX_MACROS */
 
@@ -64,9 +64,9 @@ struct uuid {
 
 #ifndef WARN_ON
 #define WARN_ON(x) do { \
-	int ret = !!(x); \
-	if (unlikely(ret)) \
-		pr_warn("WARN_ON: \"" #x "\" at %s:%d\n", __func__, __LINE__); \
+    int ret = !!(x); \
+    if (unlikely(ret)) \
+        pr_warn("WARN_ON: \"" #x "\" at %s:%d\n", __func__, __LINE__); \
 } while (0)
 #endif
 
@@ -75,19 +75,19 @@ struct uuid {
 #define msleep(x) opae_udelay(1000 * (x))
 #define usleep_range(min, max) msleep(DIV_ROUND_UP(min, 1000))
 
-#define time_after(a, b)	((long)((b) - (a)) < 0)
-#define time_before(a, b)	time_after(b, a)
+#define time_after(a, b)    ((long)((b) - (a)) < 0)
+#define time_before(a, b)    time_after(b, a)
 #define opae_memset(a, b, c)    memset((a), (b), (c))
 
 #define opae_readq_poll_timeout(addr, val, cond, invl, timeout)\
-({									     \
-	int wait = 0;							     \
-	for (; wait <= timeout; wait += invl) {			     \
-		(val) = opae_readq(addr);				     \
-		if (cond)                  \
-			break;						     \
-		udelay(invl);						     \
-	}								     \
-	(cond) ? 0 : -ETIMEDOUT;	  \
+({                                         \
+    int wait = 0;                                 \
+    for (; wait <= timeout; wait += invl) {                 \
+        (val) = opae_readq(addr);                     \
+        if (cond)                  \
+            break;                             \
+        udelay(invl);                             \
+    }                                     \
+    (cond) ? 0 : -ETIMEDOUT;      \
 })
 #endif

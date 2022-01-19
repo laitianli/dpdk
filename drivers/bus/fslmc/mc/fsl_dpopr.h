@@ -26,30 +26,30 @@
 /**
  * struct opr_cfg - Structure representing OPR configuration
  * @oprrws: Order point record (OPR) restoration window size (0 to 5)
- *			0 - Window size is 32 frames.
- *			1 - Window size is 64 frames.
- *			2 - Window size is 128 frames.
- *			3 - Window size is 256 frames.
- *			4 - Window size is 512 frames.
- *			5 - Window size is 1024 frames.
+ *            0 - Window size is 32 frames.
+ *            1 - Window size is 64 frames.
+ *            2 - Window size is 128 frames.
+ *            3 - Window size is 256 frames.
+ *            4 - Window size is 512 frames.
+ *            5 - Window size is 1024 frames.
  *@oa: OPR auto advance NESN window size (0 disabled, 1 enabled)
  *@olws: OPR acceptable late arrival window size (0 to 3)
- *			0 - Disabled. Late arrivals are always rejected.
- *			1 - Window size is 32 frames.
- *			2 - Window size is the same as the OPR restoration
- *			window size configured in the OPRRWS field.
- *			3 - Window size is 8192 frames.
- *			Late arrivals are always accepted.
+ *            0 - Disabled. Late arrivals are always rejected.
+ *            1 - Window size is 32 frames.
+ *            2 - Window size is the same as the OPR restoration
+ *            window size configured in the OPRRWS field.
+ *            3 - Window size is 8192 frames.
+ *            Late arrivals are always accepted.
  *@oeane: Order restoration list (ORL) resource exhaustion
- *			advance NESN enable (0 disabled, 1 enabled)
+ *            advance NESN enable (0 disabled, 1 enabled)
  *@oloe: OPR loose ordering enable (0 disabled, 1 enabled)
  */
 struct opr_cfg {
-	uint8_t oprrws;
-	uint8_t oa;
-	uint8_t olws;
-	uint8_t oeane;
-	uint8_t oloe;
+    uint8_t oprrws;
+    uint8_t oa;
+    uint8_t olws;
+    uint8_t oeane;
+    uint8_t oloe;
 };
 
 /**
@@ -68,18 +68,18 @@ struct opr_cfg {
  * @opr_vid: Order Point Record Virtual ID
  */
 struct opr_qry {
-	char enable;
-	char rip;
-	uint16_t ndsn;
-	uint16_t nesn;
-	uint16_t ea_hseq;
-	char hseq_nlis;
-	uint16_t ea_tseq;
-	char tseq_nlis;
-	uint16_t ea_tptr;
-	uint16_t ea_hptr;
-	uint16_t opr_id;
-	uint16_t opr_vid;
+    char enable;
+    char rip;
+    uint16_t ndsn;
+    uint16_t nesn;
+    uint16_t ea_hseq;
+    char hseq_nlis;
+    uint16_t ea_tseq;
+    char tseq_nlis;
+    uint16_t ea_tptr;
+    uint16_t ea_hptr;
+    uint16_t opr_id;
+    uint16_t opr_vid;
 };
 
 #endif /* __FSL_DPOPR_H_ */

@@ -58,43 +58,43 @@ __thread pthread_cond_t exit_cond;
 void *helloworld_pthread(void *arg);
 void *helloworld_pthread(void *arg)
 {
-	pthread_key_t key;
+    pthread_key_t key;
 
-	/* create a key for TLS */
-	pthread_key_create(&key, NULL);
+    /* create a key for TLS */
+    pthread_key_create(&key, NULL);
 
-	/* store the arg in TLS */
-	pthread_setspecific(key, arg);
+    /* store the arg in TLS */
+    pthread_setspecific(key, arg);
 
-	/* grab lock and increment shared counter */
-	pthread_mutex_lock(&print_lock);
-	print_count++;
+    /* grab lock and increment shared counter */
+    pthread_mutex_lock(&print_lock);
+    print_count++;
 
-	/* yield thread to give opportunity for lock contention */
-	pthread_yield();
+    /* yield thread to give opportunity for lock contention */
+    pthread_yield();
 
-	/* retrieve arg from TLS */
-	uint64_t thread_no = (uint64_t) pthread_getspecific(key);
+    /* retrieve arg from TLS */
+    uint64_t thread_no = (uint64_t) pthread_getspecific(key);
 
-	printf("Hello - lcore = %d count = %d thread_no = %d thread_id = %p\n",
-			sched_getcpu(),
-			print_count,
-			(int) thread_no,
-			(void *)pthread_self());
+    printf("Hello - lcore = %d count = %d thread_no = %d thread_id = %p\n",
+            sched_getcpu(),
+            print_count,
+            (int) thread_no,
+            (void *)pthread_self());
 
-	/* release the lock */
-	pthread_mutex_unlock(&print_lock);
+    /* release the lock */
+    pthread_mutex_unlock(&print_lock);
 
-	/*
-	 * wait on condition variable
-	 * before exiting
-	 */
-	pthread_mutex_lock(&exit_lock);
-	pthread_cond_wait(&exit_cond, &exit_lock);
-	pthread_mutex_unlock(&exit_lock);
+    /*
+     * wait on condition variable
+     * before exiting
+     */
+    pthread_mutex_lock(&exit_lock);
+    pthread_cond_wait(&exit_cond, &exit_lock);
+    pthread_mutex_unlock(&exit_lock);
 
-	/* exit */
-	pthread_exit((void *) thread_no);
+    /* exit */
+    pthread_exit((void *) thread_no);
 }
 
 
@@ -120,80 +120,80 @@ __thread pthread_t tid[HELLOW_WORLD_MAX_LTHREADS];
 
 static void *initial_lthread(void *args __attribute__((unused)))
 {
-	int lcore = (int) rte_lcore_id();
-	/*
-	 *
-	 * We can now enable pthread API override
-	 * and start to use the pthread APIs
-	 */
-	pthread_override_set(1);
+    int lcore = (int) rte_lcore_id();
+    /*
+     *
+     * We can now enable pthread API override
+     * and start to use the pthread APIs
+     */
+    pthread_override_set(1);
 
-	uint64_t i;
-	int ret;
+    uint64_t i;
+    int ret;
 
-	/* initialize mutex for shared counter */
-	print_count = 0;
-	pthread_mutex_init(&print_lock, NULL);
+    /* initialize mutex for shared counter */
+    print_count = 0;
+    pthread_mutex_init(&print_lock, NULL);
 
-	/* initialize mutex and condition variable controlling thread exit */
-	pthread_mutex_init(&exit_lock, NULL);
-	pthread_cond_init(&exit_cond, NULL);
+    /* initialize mutex and condition variable controlling thread exit */
+    pthread_mutex_init(&exit_lock, NULL);
+    pthread_cond_init(&exit_cond, NULL);
 
-	/* spawn a number of threads */
-	for (i = 0; i < HELLOW_WORLD_MAX_LTHREADS; i++) {
+    /* spawn a number of threads */
+    for (i = 0; i < HELLOW_WORLD_MAX_LTHREADS; i++) {
 
-		/*
-		 * Not strictly necessary but
-		 * for the sake of this example
-		 * use an attribute to pass the desired lcore
-		 */
-		pthread_attr_t attr;
-		rte_cpuset_t cpuset;
+        /*
+         * Not strictly necessary but
+         * for the sake of this example
+         * use an attribute to pass the desired lcore
+         */
+        pthread_attr_t attr;
+        rte_cpuset_t cpuset;
 
-		CPU_ZERO(&cpuset);
-		CPU_SET(lcore, &cpuset);
-		pthread_attr_init(&attr);
-		pthread_attr_setaffinity_np(&attr, sizeof(rte_cpuset_t), &cpuset);
+        CPU_ZERO(&cpuset);
+        CPU_SET(lcore, &cpuset);
+        pthread_attr_init(&attr);
+        pthread_attr_setaffinity_np(&attr, sizeof(rte_cpuset_t), &cpuset);
 
-		/* create the thread */
-		ret = pthread_create(&tid[i], &attr,
-				helloworld_pthread, (void *) i);
-		if (ret != 0)
-			rte_exit(EXIT_FAILURE, "Cannot create helloworld thread\n");
-	}
+        /* create the thread */
+        ret = pthread_create(&tid[i], &attr,
+                helloworld_pthread, (void *) i);
+        if (ret != 0)
+            rte_exit(EXIT_FAILURE, "Cannot create helloworld thread\n");
+    }
 
-	/* wait for 1s to allow threads
-	 * to block on the condition variable
-	 * N.B. nanosleep() is resolved to lthread_sleep()
-	 * by the shim.
-	 */
-	struct timespec time;
+    /* wait for 1s to allow threads
+     * to block on the condition variable
+     * N.B. nanosleep() is resolved to lthread_sleep()
+     * by the shim.
+     */
+    struct timespec time;
 
-	time.tv_sec = 1;
-	time.tv_nsec = 0;
-	nanosleep(&time, NULL);
+    time.tv_sec = 1;
+    time.tv_nsec = 0;
+    nanosleep(&time, NULL);
 
-	/* wake up all the threads */
-	pthread_cond_broadcast(&exit_cond);
+    /* wake up all the threads */
+    pthread_cond_broadcast(&exit_cond);
 
-	/* wait for them to finish */
-	for (i = 0; i < HELLOW_WORLD_MAX_LTHREADS; i++) {
+    /* wait for them to finish */
+    for (i = 0; i < HELLOW_WORLD_MAX_LTHREADS; i++) {
 
-		uint64_t thread_no;
+        uint64_t thread_no;
 
-		pthread_join(tid[i], (void *) &thread_no);
-		if (thread_no != i)
-			printf("error on thread exit\n");
-	}
+        pthread_join(tid[i], (void *) &thread_no);
+        if (thread_no != i)
+            printf("error on thread exit\n");
+    }
 
-	pthread_cond_destroy(&exit_cond);
-	pthread_mutex_destroy(&print_lock);
-	pthread_mutex_destroy(&exit_lock);
+    pthread_cond_destroy(&exit_cond);
+    pthread_mutex_destroy(&print_lock);
+    pthread_mutex_destroy(&exit_lock);
 
-	/* shutdown the lthread scheduler */
-	lthread_scheduler_shutdown(rte_lcore_id());
-	lthread_detach();
-	return NULL;
+    /* shutdown the lthread scheduler */
+    lthread_scheduler_shutdown(rte_lcore_id());
+    lthread_detach();
+    return NULL;
 }
 
 
@@ -206,57 +206,57 @@ static void *initial_lthread(void *args __attribute__((unused)))
 static int
 lthread_scheduler(void *args __attribute__((unused)))
 {
-	/* create initial thread  */
-	struct lthread *lt;
+    /* create initial thread  */
+    struct lthread *lt;
 
-	lthread_create(&lt, -1, initial_lthread, (void *) NULL);
+    lthread_create(&lt, -1, initial_lthread, (void *) NULL);
 
-	/* run the lthread scheduler */
-	lthread_run();
+    /* run the lthread scheduler */
+    lthread_run();
 
-	/* restore genuine pthread operation */
-	pthread_override_set(0);
-	return 0;
+    /* restore genuine pthread operation */
+    pthread_override_set(0);
+    return 0;
 }
 
 int main(int argc, char **argv)
 {
-	int num_sched = 0;
+    int num_sched = 0;
 
-	/* basic DPDK initialization is all that is necessary to run lthreads*/
-	int ret = rte_eal_init(argc, argv);
+    /* basic DPDK initialization is all that is necessary to run lthreads*/
+    int ret = rte_eal_init(argc, argv);
 
-	if (ret < 0)
-		rte_exit(EXIT_FAILURE, "Invalid EAL parameters\n");
+    if (ret < 0)
+        rte_exit(EXIT_FAILURE, "Invalid EAL parameters\n");
 
-	/* enable timer subsystem */
-	rte_timer_subsystem_init();
+    /* enable timer subsystem */
+    rte_timer_subsystem_init();
 
 #if DEBUG_APP
-	lthread_diagnostic_set_mask(LT_DIAG_ALL);
+    lthread_diagnostic_set_mask(LT_DIAG_ALL);
 #endif
 
-	/* create a scheduler on every core in the core mask
-	 * and launch an initial lthread that will spawn many more.
-	 */
-	unsigned lcore_id;
+    /* create a scheduler on every core in the core mask
+     * and launch an initial lthread that will spawn many more.
+     */
+    unsigned lcore_id;
 
-	for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
-		if (rte_lcore_is_enabled(lcore_id))
-			num_sched++;
-	}
+    for (lcore_id = 0; lcore_id < RTE_MAX_LCORE; lcore_id++) {
+        if (rte_lcore_is_enabled(lcore_id))
+            num_sched++;
+    }
 
-	/* set the number of schedulers, this forces all schedulers synchronize
-	 * before entering their main loop
-	 */
-	lthread_num_schedulers_set(num_sched);
+    /* set the number of schedulers, this forces all schedulers synchronize
+     * before entering their main loop
+     */
+    lthread_num_schedulers_set(num_sched);
 
-	/* launch all threads */
-	rte_eal_mp_remote_launch(lthread_scheduler, (void *)NULL, CALL_MASTER);
+    /* launch all threads */
+    rte_eal_mp_remote_launch(lthread_scheduler, (void *)NULL, CALL_MASTER);
 
-	/* wait for threads to stop */
-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
-		rte_eal_wait_lcore(lcore_id);
-	}
-	return 0;
+    /* wait for threads to stop */
+    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+        rte_eal_wait_lcore(lcore_id);
+    }
+    return 0;
 }

@@ -19,7 +19,7 @@
 #define RVU_AF_GEN_INT_ENA_W1S              (0x130ull)
 #define RVU_AF_GEN_INT_ENA_W1C              (0x138ull)
 #define RVU_AF_AFPFX_MBOXX(a, b)            \
-	(0x2000ull | (uint64_t)(a) << 4 | (uint64_t)(b) << 3)
+    (0x2000ull | (uint64_t)(a) << 4 | (uint64_t)(b) << 3)
 #define RVU_AF_PFME_STATUS                  (0x2800ull)
 #define RVU_AF_PFTRPEND                     (0x2810ull)
 #define RVU_AF_PFTRPEND_W1S                 (0x2820ull)
@@ -46,26 +46,26 @@
 #define RVU_PRIV_PFX_ID_CFG(a)              (0x8000120ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_INT_CFG(a)             (0x8000200ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_NIXX_CFG(a, b)         \
-	(0x8000300ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x8000300ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 #define RVU_PRIV_PFX_NPA_CFG(a)             (0x8000310ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_SSO_CFG(a)             (0x8000320ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_SSOW_CFG(a)            (0x8000330ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_TIM_CFG(a)             (0x8000340ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_PFX_CPTX_CFG(a, b)         \
-	(0x8000350ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x8000350ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 #define RVU_PRIV_BLOCK_TYPEX_REV(a)         (0x8000400ull | (uint64_t)(a) << 3)
 #define RVU_PRIV_HWVFX_INT_CFG(a)           (0x8001280ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_HWVFX_NIXX_CFG(a, b)       \
-	(0x8001300ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x8001300ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 #define RVU_PRIV_HWVFX_NPA_CFG(a)           (0x8001310ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_HWVFX_SSO_CFG(a)           (0x8001320ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_HWVFX_SSOW_CFG(a)          (0x8001330ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_HWVFX_TIM_CFG(a)           (0x8001340ull | (uint64_t)(a) << 16)
 #define RVU_PRIV_HWVFX_CPTX_CFG(a, b)       \
-	(0x8001350ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x8001350ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 
 #define RVU_PF_VFX_PFVF_MBOXX(a, b)         \
-	(0x0ull | (uint64_t)(a) << 12 | (uint64_t)(b) << 3)
+    (0x0ull | (uint64_t)(a) << 12 | (uint64_t)(b) << 3)
 #define RVU_PF_VF_BAR4_ADDR                 (0x10ull)
 #define RVU_PF_BLOCK_ADDRX_DISC(a)          (0x200ull | (uint64_t)(a) << 3)
 #define RVU_PF_VFME_STATUSX(a)              (0x800ull | (uint64_t)(a) << 3)
@@ -107,7 +107,7 @@
 #define RVU_BAR_RVU_PF_END_BAR0             (0x84f000000000ull)
 #define RVU_BAR_RVU_PF_START_BAR0           (0x840000000000ull)
 #define RVU_BAR_RVU_PFX_FUNCX_BAR2(a, b)    \
-	(0x840200000000ull | ((uint64_t)(a) << 36) | ((uint64_t)(b) << 25))
+    (0x840200000000ull | ((uint64_t)(a) << 36) | ((uint64_t)(b) << 25))
 
 #define RVU_AF_INT_VEC_POISON               (0x0ull)
 #define RVU_AF_INT_VEC_PFFLR                (0x1ull)
@@ -157,56 +157,56 @@
 #define RVU_PF_INT_VEC_VFPF_MBOX1           (0x5ull)
 
 
-#define AF_BAR2_ALIASX_SIZE		(0x100000ull)
+#define AF_BAR2_ALIASX_SIZE        (0x100000ull)
 
-#define TIM_AF_BAR2_SEL			(0x9000000ull)
-#define SSO_AF_BAR2_SEL			(0x9000000ull)
-#define NIX_AF_BAR2_SEL			(0x9000000ull)
-#define SSOW_AF_BAR2_SEL		(0x9000000ull)
-#define NPA_AF_BAR2_SEL			(0x9000000ull)
-#define CPT_AF_BAR2_SEL			(0x9000000ull)
-#define RVU_AF_BAR2_SEL			(0x9000000ull)
+#define TIM_AF_BAR2_SEL            (0x9000000ull)
+#define SSO_AF_BAR2_SEL            (0x9000000ull)
+#define NIX_AF_BAR2_SEL            (0x9000000ull)
+#define SSOW_AF_BAR2_SEL        (0x9000000ull)
+#define NPA_AF_BAR2_SEL            (0x9000000ull)
+#define CPT_AF_BAR2_SEL            (0x9000000ull)
+#define RVU_AF_BAR2_SEL            (0x9000000ull)
 
 #define AF_BAR2_ALIASX(a, b) \
-	(0x9100000ull | (uint64_t)(a) << 12 | (uint64_t)(b))
-#define TIM_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(a, b)
-#define SSO_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(a, b)
-#define NIX_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(0, b)
-#define SSOW_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(a, b)
-#define NPA_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(0, b)
-#define CPT_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(a, b)
-#define RVU_AF_BAR2_ALIASX(a, b)		AF_BAR2_ALIASX(a, b)
+    (0x9100000ull | (uint64_t)(a) << 12 | (uint64_t)(b))
+#define TIM_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(a, b)
+#define SSO_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(a, b)
+#define NIX_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(0, b)
+#define SSOW_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(a, b)
+#define NPA_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(0, b)
+#define CPT_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(a, b)
+#define RVU_AF_BAR2_ALIASX(a, b)        AF_BAR2_ALIASX(a, b)
 
 /* Structures definitions */
 
 /* RVU admin function register address structure */
 struct rvu_af_addr_s {
-	uint64_t addr       : 28;
-	uint64_t block      : 5;
-	uint64_t rsvd_63_33 : 31;
+    uint64_t addr       : 28;
+    uint64_t block      : 5;
+    uint64_t rsvd_63_33 : 31;
 };
 
 /* RVU function-unique address structure */
 struct rvu_func_addr_s {
-	uint32_t addr       : 12;
-	uint32_t lf_slot    : 8;
-	uint32_t block      : 5;
-	uint32_t rsvd_31_25 : 7;
+    uint32_t addr       : 12;
+    uint32_t lf_slot    : 8;
+    uint32_t block      : 5;
+    uint32_t rsvd_31_25 : 7;
 };
 
 /* RVU msi-x vector structure */
 struct rvu_msix_vec_s {
-	uint64_t addr        : 64;   /* W0 */
-	uint64_t data        : 32;
-	uint64_t mask        : 1;
-	uint64_t pend        : 1;
-	uint64_t rsvd_127_98 : 30;
+    uint64_t addr        : 64;   /* W0 */
+    uint64_t data        : 32;
+    uint64_t mask        : 1;
+    uint64_t pend        : 1;
+    uint64_t rsvd_127_98 : 30;
 };
 
 /* RVU pf function identification structure */
 struct rvu_pf_func_s {
-	uint16_t func : 10;
-	uint16_t pf   : 6;
+    uint16_t func : 10;
+    uint16_t pf   : 6;
 };
 
 #endif /* __OTX2_RVU_HW_H__ */

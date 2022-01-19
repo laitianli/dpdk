@@ -296,111 +296,111 @@ static const uint32_t crc32c_tables[8][256] = {{
 }};
 
 #define CRC32_UPD(crc, n) \
-	(crc32c_tables[(n)][(crc) & 0xFF] ^ \
-	 crc32c_tables[(n)-1][((crc) >> 8) & 0xFF])
+    (crc32c_tables[(n)][(crc) & 0xFF] ^ \
+     crc32c_tables[(n)-1][((crc) >> 8) & 0xFF])
 
 static inline uint32_t
 crc32c_1byte(uint8_t data, uint32_t init_val)
 {
-	uint32_t crc;
-	crc = init_val;
-	crc ^= data;
+    uint32_t crc;
+    crc = init_val;
+    crc ^= data;
 
-	return crc32c_tables[0][crc & 0xff] ^ (crc >> 8);
+    return crc32c_tables[0][crc & 0xff] ^ (crc >> 8);
 }
 
 static inline uint32_t
 crc32c_2bytes(uint16_t data, uint32_t init_val)
 {
-	uint32_t crc;
-	crc = init_val;
-	crc ^= data;
+    uint32_t crc;
+    crc = init_val;
+    crc ^= data;
 
-	crc = CRC32_UPD(crc, 1) ^ (crc >> 16);
+    crc = CRC32_UPD(crc, 1) ^ (crc >> 16);
 
-	return crc;
+    return crc;
 }
 
 static inline uint32_t
 crc32c_1word(uint32_t data, uint32_t init_val)
 {
-	uint32_t crc, term1, term2;
-	crc = init_val;
-	crc ^= data;
+    uint32_t crc, term1, term2;
+    crc = init_val;
+    crc ^= data;
 
-	term1 = CRC32_UPD(crc, 3);
-	term2 = crc >> 16;
-	crc = term1 ^ CRC32_UPD(term2, 1);
+    term1 = CRC32_UPD(crc, 3);
+    term2 = crc >> 16;
+    crc = term1 ^ CRC32_UPD(term2, 1);
 
-	return crc;
+    return crc;
 }
 
 static inline uint32_t
 crc32c_2words(uint64_t data, uint32_t init_val)
 {
-	uint32_t crc, term1, term2;
-	union {
-		uint64_t u64;
-		uint32_t u32[2];
-	} d;
-	d.u64 = data;
+    uint32_t crc, term1, term2;
+    union {
+        uint64_t u64;
+        uint32_t u32[2];
+    } d;
+    d.u64 = data;
 
-	crc = init_val;
-	crc ^= d.u32[0];
+    crc = init_val;
+    crc ^= d.u32[0];
 
-	term1 = CRC32_UPD(crc, 7);
-	term2 = crc >> 16;
-	crc = term1 ^ CRC32_UPD(term2, 5);
-	term1 = CRC32_UPD(d.u32[1], 3);
-	term2 = d.u32[1] >> 16;
-	crc ^= term1 ^ CRC32_UPD(term2, 1);
+    term1 = CRC32_UPD(crc, 7);
+    term2 = crc >> 16;
+    crc = term1 ^ CRC32_UPD(term2, 5);
+    term1 = CRC32_UPD(d.u32[1], 3);
+    term2 = d.u32[1] >> 16;
+    crc ^= term1 ^ CRC32_UPD(term2, 1);
 
-	return crc;
+    return crc;
 }
 
 #if defined(RTE_ARCH_X86)
 static inline uint32_t
 crc32c_sse42_u8(uint8_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32b %[data], %[init_val];"
-			: [init_val] "+r" (init_val)
-			: [data] "rm" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32b %[data], %[init_val];"
+            : [init_val] "+r" (init_val)
+            : [data] "rm" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_sse42_u16(uint16_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32w %[data], %[init_val];"
-			: [init_val] "+r" (init_val)
-			: [data] "rm" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32w %[data], %[init_val];"
+            : [init_val] "+r" (init_val)
+            : [data] "rm" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_sse42_u32(uint32_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32l %[data], %[init_val];"
-			: [init_val] "+r" (init_val)
-			: [data] "rm" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32l %[data], %[init_val];"
+            : [init_val] "+r" (init_val)
+            : [data] "rm" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_sse42_u64_mimic(uint64_t data, uint64_t init_val)
 {
-	union {
-		uint32_t u32[2];
-		uint64_t u64;
-	} d;
+    union {
+        uint32_t u32[2];
+        uint64_t u64;
+    } d;
 
-	d.u64 = data;
-	init_val = crc32c_sse42_u32(d.u32[0], (uint32_t)init_val);
-	init_val = crc32c_sse42_u32(d.u32[1], (uint32_t)init_val);
-	return (uint32_t)init_val;
+    d.u64 = data;
+    init_val = crc32c_sse42_u32(d.u32[0], (uint32_t)init_val);
+    init_val = crc32c_sse42_u32(d.u32[1], (uint32_t)init_val);
+    return (uint32_t)init_val;
 }
 #endif
 
@@ -408,11 +408,11 @@ crc32c_sse42_u64_mimic(uint64_t data, uint64_t init_val)
 static inline uint32_t
 crc32c_sse42_u64(uint64_t data, uint64_t init_val)
 {
-	__asm__ volatile(
-			"crc32q %[data], %[init_val];"
-			: [init_val] "+r" (init_val)
-			: [data] "rm" (data));
-	return (uint32_t)init_val;
+    __asm__ volatile(
+            "crc32q %[data], %[init_val];"
+            : [init_val] "+r" (init_val)
+            : [data] "rm" (data));
+    return (uint32_t)init_val;
 }
 #endif
 
@@ -443,17 +443,17 @@ static inline void
 rte_hash_crc_set_alg(uint8_t alg)
 {
 #if defined(RTE_ARCH_X86)
-	if (alg == CRC32_SSE42_x64 &&
-			!rte_cpu_get_flag_enabled(RTE_CPUFLAG_EM64T))
-		alg = CRC32_SSE42;
+    if (alg == CRC32_SSE42_x64 &&
+            !rte_cpu_get_flag_enabled(RTE_CPUFLAG_EM64T))
+        alg = CRC32_SSE42;
 #endif
-	crc32_alg = alg;
+    crc32_alg = alg;
 }
 
 /* Setting the best available algorithm */
 RTE_INIT(rte_hash_crc_init_alg)
 {
-	rte_hash_crc_set_alg(CRC32_SSE42_x64);
+    rte_hash_crc_set_alg(CRC32_SSE42_x64);
 }
 
 /**
@@ -472,11 +472,11 @@ static inline uint32_t
 rte_hash_crc_1byte(uint8_t data, uint32_t init_val)
 {
 #if defined RTE_ARCH_X86
-	if (likely(crc32_alg & CRC32_SSE42))
-		return crc32c_sse42_u8(data, init_val);
+    if (likely(crc32_alg & CRC32_SSE42))
+        return crc32c_sse42_u8(data, init_val);
 #endif
 
-	return crc32c_1byte(data, init_val);
+    return crc32c_1byte(data, init_val);
 }
 
 /**
@@ -495,11 +495,11 @@ static inline uint32_t
 rte_hash_crc_2byte(uint16_t data, uint32_t init_val)
 {
 #if defined RTE_ARCH_X86
-	if (likely(crc32_alg & CRC32_SSE42))
-		return crc32c_sse42_u16(data, init_val);
+    if (likely(crc32_alg & CRC32_SSE42))
+        return crc32c_sse42_u16(data, init_val);
 #endif
 
-	return crc32c_2bytes(data, init_val);
+    return crc32c_2bytes(data, init_val);
 }
 
 /**
@@ -518,11 +518,11 @@ static inline uint32_t
 rte_hash_crc_4byte(uint32_t data, uint32_t init_val)
 {
 #if defined RTE_ARCH_X86
-	if (likely(crc32_alg & CRC32_SSE42))
-		return crc32c_sse42_u32(data, init_val);
+    if (likely(crc32_alg & CRC32_SSE42))
+        return crc32c_sse42_u32(data, init_val);
 #endif
 
-	return crc32c_1word(data, init_val);
+    return crc32c_1word(data, init_val);
 }
 
 /**
@@ -541,16 +541,16 @@ static inline uint32_t
 rte_hash_crc_8byte(uint64_t data, uint32_t init_val)
 {
 #ifdef RTE_ARCH_X86_64
-	if (likely(crc32_alg == CRC32_SSE42_x64))
-		return crc32c_sse42_u64(data, init_val);
+    if (likely(crc32_alg == CRC32_SSE42_x64))
+        return crc32c_sse42_u64(data, init_val);
 #endif
 
 #if defined RTE_ARCH_X86
-	if (likely(crc32_alg & CRC32_SSE42))
-		return crc32c_sse42_u64_mimic(data, init_val);
+    if (likely(crc32_alg & CRC32_SSE42))
+        return crc32c_sse42_u64_mimic(data, init_val);
 #endif
 
-	return crc32c_2words(data, init_val);
+    return crc32c_2words(data, init_val);
 }
 
 #endif
@@ -570,28 +570,28 @@ rte_hash_crc_8byte(uint64_t data, uint32_t init_val)
 static inline uint32_t
 rte_hash_crc(const void *data, uint32_t data_len, uint32_t init_val)
 {
-	unsigned i;
-	uintptr_t pd = (uintptr_t) data;
+    unsigned i;
+    uintptr_t pd = (uintptr_t) data;
 
-	for (i = 0; i < data_len / 8; i++) {
-		init_val = rte_hash_crc_8byte(*(const uint64_t *)pd, init_val);
-		pd += 8;
-	}
+    for (i = 0; i < data_len / 8; i++) {
+        init_val = rte_hash_crc_8byte(*(const uint64_t *)pd, init_val);
+        pd += 8;
+    }
 
-	if (data_len & 0x4) {
-		init_val = rte_hash_crc_4byte(*(const uint32_t *)pd, init_val);
-		pd += 4;
-	}
+    if (data_len & 0x4) {
+        init_val = rte_hash_crc_4byte(*(const uint32_t *)pd, init_val);
+        pd += 4;
+    }
 
-	if (data_len & 0x2) {
-		init_val = rte_hash_crc_2byte(*(const uint16_t *)pd, init_val);
-		pd += 2;
-	}
+    if (data_len & 0x2) {
+        init_val = rte_hash_crc_2byte(*(const uint16_t *)pd, init_val);
+        pd += 2;
+    }
 
-	if (data_len & 0x1)
-		init_val = rte_hash_crc_1byte(*(const uint8_t *)pd, init_val);
+    if (data_len & 0x1)
+        init_val = rte_hash_crc_1byte(*(const uint8_t *)pd, init_val);
 
-	return init_val;
+    return init_val;
 }
 
 #ifdef __cplusplus

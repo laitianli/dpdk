@@ -14,16 +14,16 @@
 #include <rte_memcpy.h>
 #include <rte_compat.h>
 
-#define RTE_RIB6_IPV6_ADDR_SIZE	16
+#define RTE_RIB6_IPV6_ADDR_SIZE    16
 
 /**
  * rte_rib6_get_nxt() flags
  */
 enum {
-	/** flag to get all subroutes in a RIB tree */
-	RTE_RIB6_GET_NXT_ALL,
-	/** flag to get first matched subroutes in a RIB tree */
-	RTE_RIB6_GET_NXT_COVER
+    /** flag to get all subroutes in a RIB tree */
+    RTE_RIB6_GET_NXT_ALL,
+    /** flag to get first matched subroutes in a RIB tree */
+    RTE_RIB6_GET_NXT_COVER
 };
 
 struct rte_rib6;
@@ -31,14 +31,14 @@ struct rte_rib6_node;
 
 /** RIB configuration structure */
 struct rte_rib6_conf {
-	/**
-	 * Size of extension block inside rte_rib_node.
-	 * This space could be used to store additional user
-	 * defined data.
-	 */
-	size_t	ext_sz;
-	/* size of rte_rib_node's pool */
-	int	max_nodes;
+    /**
+     * Size of extension block inside rte_rib_node.
+     * This space could be used to store additional user
+     * defined data.
+     */
+    size_t    ext_sz;
+    /* size of rte_rib_node's pool */
+    int    max_nodes;
 };
 
 /**
@@ -52,9 +52,9 @@ struct rte_rib6_conf {
 static inline void
 rte_rib6_copy_addr(uint8_t *dst, const uint8_t *src)
 {
-	if ((dst == NULL) || (src == NULL))
-		return;
-	rte_memcpy(dst, src, RTE_RIB6_IPV6_ADDR_SIZE);
+    if ((dst == NULL) || (src == NULL))
+        return;
+    rte_memcpy(dst, src, RTE_RIB6_IPV6_ADDR_SIZE);
 }
 
 /**
@@ -71,15 +71,15 @@ rte_rib6_copy_addr(uint8_t *dst, const uint8_t *src)
  */
 static inline int
 rte_rib6_is_equal(uint8_t *ip1, uint8_t *ip2) {
-	int i;
+    int i;
 
-	if ((ip1 == NULL) || (ip2 == NULL))
-		return 0;
-	for (i = 0; i < RTE_RIB6_IPV6_ADDR_SIZE; i++) {
-		if (ip1[i] != ip2[i])
-			return 0;
-	}
-	return 1;
+    if ((ip1 == NULL) || (ip2 == NULL))
+        return 0;
+    for (i = 0; i < RTE_RIB6_IPV6_ADDR_SIZE; i++) {
+        if (ip1[i] != ip2[i])
+            return 0;
+    }
+    return 1;
 }
 
 /**
@@ -95,13 +95,13 @@ rte_rib6_is_equal(uint8_t *ip1, uint8_t *ip2) {
  */
 static inline uint8_t
 get_msk_part(uint8_t depth, int byte) {
-	uint8_t part;
+    uint8_t part;
 
-	byte &= 0xf;
-	depth = RTE_MIN(depth, 128);
-	part = RTE_MAX((int16_t)depth - (byte * 8), 0);
-	part = (part > 8) ? 8 : part;
-	return (uint16_t)(~UINT8_MAX) >> part;
+    byte &= 0xf;
+    depth = RTE_MIN(depth, 128);
+    part = RTE_MAX((int16_t)depth - (byte * 8), 0);
+    part = (part > 8) ? 8 : part;
+    return (uint16_t)(~UINT8_MAX) >> part;
 }
 
 /**
@@ -118,7 +118,7 @@ get_msk_part(uint8_t depth, int byte) {
 __rte_experimental
 struct rte_rib6_node *
 rte_rib6_lookup(struct rte_rib6 *rib,
-	const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE]);
+    const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE]);
 
 /**
  * Lookup less specific route into the RIB structure
@@ -150,7 +150,7 @@ rte_rib6_lookup_parent(struct rte_rib6_node *ent);
 __rte_experimental
 struct rte_rib6_node *
 rte_rib6_lookup_exact(struct rte_rib6 *rib,
-	const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
+    const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
 
 /**
  * Retrieve next more specific prefix from the RIB
@@ -178,8 +178,8 @@ rte_rib6_lookup_exact(struct rte_rib6 *rib,
 __rte_experimental
 struct rte_rib6_node *
 rte_rib6_get_nxt(struct rte_rib6 *rib,
-	const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE],
-	uint8_t depth, struct rte_rib6_node *last, int flag);
+    const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE],
+    uint8_t depth, struct rte_rib6_node *last, int flag);
 
 /**
  * Remove prefix from the RIB
@@ -194,7 +194,7 @@ rte_rib6_get_nxt(struct rte_rib6 *rib,
 __rte_experimental
 void
 rte_rib6_remove(struct rte_rib6 *rib,
-	const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
+    const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
 
 /**
  * Insert prefix into the RIB
@@ -212,7 +212,7 @@ rte_rib6_remove(struct rte_rib6 *rib,
 __rte_experimental
 struct rte_rib6_node *
 rte_rib6_insert(struct rte_rib6 *rib,
-	const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
+    const uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE], uint8_t depth);
 
 /**
  * Get an ip from rte_rib6_node
@@ -228,7 +228,7 @@ rte_rib6_insert(struct rte_rib6 *rib,
 __rte_experimental
 int
 rte_rib6_get_ip(struct rte_rib6_node *node,
-	uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE]);
+    uint8_t ip[RTE_RIB6_IPV6_ADDR_SIZE]);
 
 /**
  * Get a depth from rte_rib6_node

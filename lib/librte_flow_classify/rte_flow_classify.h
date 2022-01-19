@@ -56,14 +56,14 @@ extern "C" {
 extern int librte_flow_classify_logtype;
 
 #define RTE_FLOW_CLASSIFY_LOG(level, ...) \
-	rte_log(RTE_LOG_ ## level, \
-		librte_flow_classify_logtype, \
-		RTE_FMT("%s(): " RTE_FMT_HEAD(__VA_ARGS__,), \
-			__func__, \
-			RTE_FMT_TAIL(__VA_ARGS__,)))
+    rte_log(RTE_LOG_ ## level, \
+        librte_flow_classify_logtype, \
+        RTE_FMT("%s(): " RTE_FMT_HEAD(__VA_ARGS__,), \
+            __func__, \
+            RTE_FMT_TAIL(__VA_ARGS__,)))
 
 #ifndef RTE_FLOW_CLASSIFY_TABLE_MAX
-#define RTE_FLOW_CLASSIFY_TABLE_MAX		32
+#define RTE_FLOW_CLASSIFY_TABLE_MAX        32
 #endif
 
 /** Opaque data type for flow classifier */
@@ -74,59 +74,59 @@ struct rte_flow_classify_rule;
 
 /** Flow classify rule type */
 enum rte_flow_classify_rule_type {
-	/** no type */
-	RTE_FLOW_CLASSIFY_RULE_TYPE_NONE,
-	/** IPv4 5tuple type */
-	RTE_FLOW_CLASSIFY_RULE_TYPE_IPV4_5TUPLE,
+    /** no type */
+    RTE_FLOW_CLASSIFY_RULE_TYPE_NONE,
+    /** IPv4 5tuple type */
+    RTE_FLOW_CLASSIFY_RULE_TYPE_IPV4_5TUPLE,
 };
 
 /** Flow classify table type */
 enum rte_flow_classify_table_type {
-	/** No type */
-	RTE_FLOW_CLASSIFY_TABLE_TYPE_NONE = 1 << 0,
-	/** ACL IP4 5TUPLE */
-	RTE_FLOW_CLASSIFY_TABLE_ACL_IP4_5TUPLE = 1 << 1,
-	/** ACL VLAN IP4 5TUPLE */
-	RTE_FLOW_CLASSIFY_TABLE_ACL_VLAN_IP4_5TUPLE = 1 << 2,
-	/** ACL QinQ IP4 5TUPLE */
-	RTE_FLOW_CLASSIFY_TABLE_ACL_QINQ_IP4_5TUPLE = 1 << 3,
+    /** No type */
+    RTE_FLOW_CLASSIFY_TABLE_TYPE_NONE = 1 << 0,
+    /** ACL IP4 5TUPLE */
+    RTE_FLOW_CLASSIFY_TABLE_ACL_IP4_5TUPLE = 1 << 1,
+    /** ACL VLAN IP4 5TUPLE */
+    RTE_FLOW_CLASSIFY_TABLE_ACL_VLAN_IP4_5TUPLE = 1 << 2,
+    /** ACL QinQ IP4 5TUPLE */
+    RTE_FLOW_CLASSIFY_TABLE_ACL_QINQ_IP4_5TUPLE = 1 << 3,
 
 };
 
 /** Parameters for flow classifier creation */
 struct rte_flow_classifier_params {
-	/** flow classifier name */
-	const char *name;
+    /** flow classifier name */
+    const char *name;
 
-	/** CPU socket ID where memory for the flow classifier and its */
-	/** elements (tables) should be allocated */
-	int socket_id;
+    /** CPU socket ID where memory for the flow classifier and its */
+    /** elements (tables) should be allocated */
+    int socket_id;
 };
 
 /** Parameters for table creation */
 struct rte_flow_classify_table_params {
-	/** Table operations (specific to each table type) */
-	struct rte_table_ops *ops;
+    /** Table operations (specific to each table type) */
+    struct rte_table_ops *ops;
 
-	/** Opaque param to be passed to the table create operation */
-	void *arg_create;
+    /** Opaque param to be passed to the table create operation */
+    void *arg_create;
 
-	/** Classifier table type */
-	enum rte_flow_classify_table_type type;
+    /** Classifier table type */
+    enum rte_flow_classify_table_type type;
 };
 
 /** IPv4 5-tuple data */
 struct rte_flow_classify_ipv4_5tuple {
-	uint32_t dst_ip;         /**< Destination IP address in big endian. */
-	uint32_t dst_ip_mask;    /**< Mask of destination IP address. */
-	uint32_t src_ip;         /**< Source IP address in big endian. */
-	uint32_t src_ip_mask;    /**< Mask of destination IP address. */
-	uint16_t dst_port;       /**< Destination port in big endian. */
-	uint16_t dst_port_mask;  /**< Mask of destination port. */
-	uint16_t src_port;       /**< Source Port in big endian. */
-	uint16_t src_port_mask;  /**< Mask of source port. */
-	uint8_t proto;           /**< L4 protocol. */
-	uint8_t proto_mask;      /**< Mask of L4 protocol. */
+    uint32_t dst_ip;         /**< Destination IP address in big endian. */
+    uint32_t dst_ip_mask;    /**< Mask of destination IP address. */
+    uint32_t src_ip;         /**< Source IP address in big endian. */
+    uint32_t src_ip_mask;    /**< Mask of destination IP address. */
+    uint16_t dst_port;       /**< Destination port in big endian. */
+    uint16_t dst_port_mask;  /**< Mask of destination port. */
+    uint16_t src_port;       /**< Source Port in big endian. */
+    uint16_t src_port_mask;  /**< Mask of source port. */
+    uint8_t proto;           /**< L4 protocol. */
+    uint8_t proto_mask;      /**< Mask of L4 protocol. */
 };
 
 /**
@@ -137,14 +137,14 @@ struct rte_flow_classify_ipv4_5tuple {
  * Storage for stats is provided by application.
  */
 struct rte_flow_classify_stats {
-	void *stats;
+    void *stats;
 };
 
 struct rte_flow_classify_ipv4_5tuple_stats {
-	/** count of packets that match IPv4 5tuple pattern */
-	uint64_t counter1;
-	/** IPv4 5tuple data */
-	struct rte_flow_classify_ipv4_5tuple ipv4_5tuple;
+    /** count of packets that match IPv4 5tuple pattern */
+    uint64_t counter1;
+    /** IPv4 5tuple data */
+    struct rte_flow_classify_ipv4_5tuple ipv4_5tuple;
 };
 
 /**
@@ -184,7 +184,7 @@ rte_flow_classifier_free(struct rte_flow_classifier *cls);
 __rte_experimental
 int
 rte_flow_classify_table_create(struct rte_flow_classifier *cls,
-		struct rte_flow_classify_table_params *params);
+        struct rte_flow_classify_table_params *params);
 
 /**
  * Flow classify validate
@@ -206,10 +206,10 @@ rte_flow_classify_table_create(struct rte_flow_classifier *cls,
 __rte_experimental
 int
 rte_flow_classify_validate(struct rte_flow_classifier *cls,
-		const struct rte_flow_attr *attr,
-		const struct rte_flow_item pattern[],
-		const struct rte_flow_action actions[],
-		struct rte_flow_error *error);
+        const struct rte_flow_attr *attr,
+        const struct rte_flow_item pattern[],
+        const struct rte_flow_action actions[],
+        struct rte_flow_error *error);
 
 /**
  * Add a flow classify rule to the flow_classifier table.
@@ -233,11 +233,11 @@ rte_flow_classify_validate(struct rte_flow_classifier *cls,
 __rte_experimental
 struct rte_flow_classify_rule *
 rte_flow_classify_table_entry_add(struct rte_flow_classifier *cls,
-		const struct rte_flow_attr *attr,
-		const struct rte_flow_item pattern[],
-		const struct rte_flow_action actions[],
-		int *key_found,
-		struct rte_flow_error *error);
+        const struct rte_flow_attr *attr,
+        const struct rte_flow_item pattern[],
+        const struct rte_flow_action actions[],
+        int *key_found,
+        struct rte_flow_error *error);
 
 /**
  * Delete a flow classify rule from the flow_classifier table.
@@ -252,7 +252,7 @@ rte_flow_classify_table_entry_add(struct rte_flow_classifier *cls,
 __rte_experimental
 int
 rte_flow_classify_table_entry_delete(struct rte_flow_classifier *cls,
-		struct rte_flow_classify_rule *rule);
+        struct rte_flow_classify_rule *rule);
 
 /**
  * Query flow classifier for given rule.
@@ -274,10 +274,10 @@ rte_flow_classify_table_entry_delete(struct rte_flow_classifier *cls,
 __rte_experimental
 int
 rte_flow_classifier_query(struct rte_flow_classifier *cls,
-		struct rte_mbuf **pkts,
-		const uint16_t nb_pkts,
-		struct rte_flow_classify_rule *rule,
-		struct rte_flow_classify_stats *stats);
+        struct rte_mbuf **pkts,
+        const uint16_t nb_pkts,
+        struct rte_flow_classify_rule *rule,
+        struct rte_flow_classify_stats *stats);
 
 #ifdef __cplusplus
 }

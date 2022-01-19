@@ -31,37 +31,37 @@
  * These can chain together via "next".
  */
 struct vring_desc {
-	uint64_t addr;  /*  Address (guest-physical). */
-	uint32_t len;   /* Length. */
-	uint16_t flags; /* The flags as indicated above. */
-	uint16_t next;  /* We chain unused descriptors via this. */
+    uint64_t addr;  /*  Address (guest-physical). */
+    uint32_t len;   /* Length. */
+    uint16_t flags; /* The flags as indicated above. */
+    uint16_t next;  /* We chain unused descriptors via this. */
 };
 
 struct vring_avail {
-	uint16_t flags;
-	uint16_t idx;
-	uint16_t ring[0];
+    uint16_t flags;
+    uint16_t idx;
+    uint16_t ring[0];
 };
 
 /* id is a 16bit index. uint32_t is used here for ids for padding reasons. */
 struct vring_used_elem {
-	/* Index of start of used descriptor chain. */
-	uint32_t id;
-	/* Total length of the descriptor chain which was written to. */
-	uint32_t len;
+    /* Index of start of used descriptor chain. */
+    uint32_t id;
+    /* Total length of the descriptor chain which was written to. */
+    uint32_t len;
 };
 
 struct vring_used {
-	uint16_t flags;
-	volatile uint16_t idx;
-	struct vring_used_elem ring[0];
+    uint16_t flags;
+    volatile uint16_t idx;
+    struct vring_used_elem ring[0];
 };
 
 struct vring {
-	unsigned int num;
-	struct vring_desc  *desc;
-	struct vring_avail *avail;
-	struct vring_used  *used;
+    unsigned int num;
+    struct vring_desc  *desc;
+    struct vring_avail *avail;
+    struct vring_used  *used;
 };
 
 /* The standard layout for the ring is a continuous chunk of memory which
@@ -100,26 +100,26 @@ struct vring {
 static inline size_t
 vring_size(unsigned int num, unsigned long align)
 {
-	size_t size;
+    size_t size;
 
-	size = num * sizeof(struct vring_desc);
-	size += sizeof(struct vring_avail) + (num * sizeof(uint16_t));
-	size = RTE_ALIGN_CEIL(size, align);
-	size += sizeof(struct vring_used) +
-		(num * sizeof(struct vring_used_elem));
-	return size;
+    size = num * sizeof(struct vring_desc);
+    size += sizeof(struct vring_avail) + (num * sizeof(uint16_t));
+    size = RTE_ALIGN_CEIL(size, align);
+    size += sizeof(struct vring_used) +
+        (num * sizeof(struct vring_used_elem));
+    return size;
 }
 
 static inline void
 vring_init(struct vring *vr, unsigned int num, uint8_t *p,
-	unsigned long align)
+    unsigned long align)
 {
-	vr->num = num;
-	vr->desc = (struct vring_desc *) p;
-	vr->avail = (struct vring_avail *) (p +
-		num * sizeof(struct vring_desc));
-	vr->used = (void *)
-		RTE_ALIGN_CEIL((uintptr_t)(&vr->avail->ring[num]), align);
+    vr->num = num;
+    vr->desc = (struct vring_desc *) p;
+    vr->avail = (struct vring_avail *) (p +
+        num * sizeof(struct vring_desc));
+    vr->used = (void *)
+        RTE_ALIGN_CEIL((uintptr_t)(&vr->avail->ring[num]), align);
 }
 
 /*
@@ -131,7 +131,7 @@ vring_init(struct vring *vr, unsigned int num, uint8_t *p,
 static inline int
 vring_need_event(uint16_t event_idx, uint16_t new_idx, uint16_t old)
 {
-	return (uint16_t)(new_idx - event_idx - 1) < (uint16_t)(new_idx - old);
+    return (uint16_t)(new_idx - event_idx - 1) < (uint16_t)(new_idx - old);
 }
 
 #endif /* _VIRTIO_RING_H_ */

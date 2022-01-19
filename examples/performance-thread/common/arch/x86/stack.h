@@ -22,15 +22,15 @@ extern "C" {
 static inline void
 arch_set_stack(struct lthread *lt, void *func)
 {
-	char *stack_top = (char *)(lt->stack) + lt->stack_size;
-	void **s = (void **)stack_top;
+    char *stack_top = (char *)(lt->stack) + lt->stack_size;
+    void **s = (void **)stack_top;
 
-	/* set initial context */
-	s[-3] = NULL;
-	s[-2] = (void *)lt;
-	lt->ctx.rsp = (void *)(stack_top - (4 * sizeof(void *)));
-	lt->ctx.rbp = (void *)(stack_top - (3 * sizeof(void *)));
-	lt->ctx.rip = func;
+    /* set initial context */
+    s[-3] = NULL;
+    s[-2] = (void *)lt;
+    lt->ctx.rsp = (void *)(stack_top - (4 * sizeof(void *)));
+    lt->ctx.rbp = (void *)(stack_top - (3 * sizeof(void *)));
+    lt->ctx.rip = func;
 }
 
 #ifdef __cplusplus

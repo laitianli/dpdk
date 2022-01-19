@@ -37,9 +37,9 @@ TAILQ_HEAD(rte_bus_list, rte_bus);
  *
  */
 enum rte_iova_mode {
-	RTE_IOVA_DC = 0,	/* Don't care mode */
-	RTE_IOVA_PA = (1 << 0), /* DMA using physical address */
-	RTE_IOVA_VA = (1 << 1)  /* DMA using virtual address */
+    RTE_IOVA_DC = 0,    /* Don't care mode */
+    RTE_IOVA_PA = (1 << 0), /* DMA using physical address */
+    RTE_IOVA_VA = (1 << 1)  /* DMA using virtual address */
 };
 
 /**
@@ -50,8 +50,8 @@ enum rte_iova_mode {
  * A bus should mandatorily implement this method.
  *
  * @return
- *	0 for successful scan
- *	<0 for unsuccessful scan with error value
+ *    0 for successful scan
+ *    <0 for unsuccessful scan with error value
  */
 typedef int (*rte_bus_scan_t)(void);
 
@@ -62,8 +62,8 @@ typedef int (*rte_bus_scan_t)(void);
  * This is called while iterating over each registered bus.
  *
  * @return
- *	0 for successful probe
- *	!0 for any error while probing
+ *    0 for successful probe
+ *    !0 for any error while probing
  */
 typedef int (*rte_bus_probe_t)(void);
 
@@ -78,31 +78,31 @@ typedef int (*rte_bus_probe_t)(void);
  * can be passed via the start parameter.
  *
  * @param cmp
- *	Comparison function.
+ *    Comparison function.
  *
  * @param data
- *	Data to compare each device against.
+ *    Data to compare each device against.
  *
  * @param start
- *	starting point for the iteration
+ *    starting point for the iteration
  *
  * @return
- *	The first device matching the data, NULL if none exists.
+ *    The first device matching the data, NULL if none exists.
  */
 typedef struct rte_device *
 (*rte_bus_find_device_t)(const struct rte_device *start, rte_dev_cmp_t cmp,
-			 const void *data);
+             const void *data);
 
 /**
  * Implementation specific probe function which is responsible for linking
  * devices on that bus with applicable drivers.
  *
  * @param dev
- *	Device pointer that was returned by a previous call to find_device.
+ *    Device pointer that was returned by a previous call to find_device.
  *
  * @return
- *	0 on success.
- *	!0 on error.
+ *    0 on success.
+ *    !0 on error.
  */
 typedef int (*rte_bus_plug_t)(struct rte_device *dev);
 
@@ -111,11 +111,11 @@ typedef int (*rte_bus_plug_t)(struct rte_device *dev);
  * devices on that bus from assigned driver.
  *
  * @param dev
- *	Device pointer that was returned by a previous call to find_device.
+ *    Device pointer that was returned by a previous call to find_device.
  *
  * @return
- *	0 on success.
- *	!0 on error.
+ *    0 on success.
+ *    !0 on error.
  */
 typedef int (*rte_bus_unplug_t)(struct rte_device *dev);
 
@@ -126,16 +126,16 @@ typedef int (*rte_bus_unplug_t)(struct rte_device *dev);
  * device representation to ``addr``.
  *
  * @param[in] name
- *	device textual description
+ *    device textual description
  *
  * @param[out] addr
- *	device information location address, into which parsed info
- *	should be written. If NULL, nothing should be written, which
- *	is not an error.
+ *    device information location address, into which parsed info
+ *    should be written. If NULL, nothing should be written, which
+ *    is not an error.
  *
  * @return
- *	0 if parsing was successful.
- *	!0 for any error.
+ *    0 if parsing was successful.
+ *    !0 for any error.
  */
 typedef int (*rte_bus_parse_t)(const char *name, void *addr);
 
@@ -145,20 +145,20 @@ typedef int (*rte_bus_parse_t)(const char *name, void *addr);
  * given device.
  *
  * @param dev
- *	Device pointer.
+ *    Device pointer.
  * @param addr
- *	Virtual address to map.
+ *    Virtual address to map.
  * @param iova
- *	IOVA address to map.
+ *    IOVA address to map.
  * @param len
- *	Length of the memory segment being mapped.
+ *    Length of the memory segment being mapped.
  *
  * @return
- *	0 if mapping was successful.
- *	Negative value and rte_errno is set otherwise.
+ *    0 if mapping was successful.
+ *    Negative value and rte_errno is set otherwise.
  */
 typedef int (*rte_dev_dma_map_t)(struct rte_device *dev, void *addr,
-				  uint64_t iova, size_t len);
+                  uint64_t iova, size_t len);
 
 /**
  * Device level DMA unmap function.
@@ -166,20 +166,20 @@ typedef int (*rte_dev_dma_map_t)(struct rte_device *dev, void *addr,
  * accessible by the given device.
  *
  * @param dev
- *	Device pointer.
+ *    Device pointer.
  * @param addr
- *	Virtual address to unmap.
+ *    Virtual address to unmap.
  * @param iova
- *	IOVA address to unmap.
+ *    IOVA address to unmap.
  * @param len
- *	Length of the memory segment being mapped.
+ *    Length of the memory segment being mapped.
  *
  * @return
- *	0 if un-mapping was successful.
- *	Negative value and rte_errno is set otherwise.
+ *    0 if un-mapping was successful.
+ *    Negative value and rte_errno is set otherwise.
  */
 typedef int (*rte_dev_dma_unmap_t)(struct rte_device *dev, void *addr,
-				   uint64_t iova, size_t len);
+                   uint64_t iova, size_t len);
 
 /**
  * Implement a specific hot-unplug handler, which is responsible for
@@ -187,11 +187,11 @@ typedef int (*rte_dev_dma_unmap_t)(struct rte_device *dev, void *addr,
  * hot-unplug be detected, it could call this function to handle
  * the hot-unplug failure and avoid app crash.
  * @param dev
- *	Pointer of the device structure.
+ *    Pointer of the device structure.
  *
  * @return
- *	0 on success.
- *	!0 on error.
+ *    0 on success.
+ *    !0 on error.
  */
 typedef int (*rte_bus_hot_unplug_handler_t)(struct rte_device *dev);
 
@@ -201,12 +201,12 @@ typedef int (*rte_bus_hot_unplug_handler_t)(struct rte_device *dev);
  * error that caused of device be hot-unplugged. When sigbus error be captured,
  * it could call this function to handle sigbus error.
  * @param failure_addr
- *	Pointer of the fault address of the sigbus error.
+ *    Pointer of the fault address of the sigbus error.
  *
  * @return
- *	0 for success handle the sigbus for hot-unplug.
- *	1 for not process it, because it is a generic sigbus error.
- *	-1 for failed to handle the sigbus for hot-unplug.
+ *    0 for success handle the sigbus for hot-unplug.
+ *    1 for not process it, because it is a generic sigbus error.
+ *    -1 for failed to handle the sigbus for hot-unplug.
  */
 typedef int (*rte_bus_sigbus_handler_t)(const void *failure_addr);
 
@@ -214,16 +214,16 @@ typedef int (*rte_bus_sigbus_handler_t)(const void *failure_addr);
  * Bus scan policies
  */
 enum rte_bus_scan_mode {
-	RTE_BUS_SCAN_UNDEFINED,
-	RTE_BUS_SCAN_WHITELIST,
-	RTE_BUS_SCAN_BLACKLIST,
+    RTE_BUS_SCAN_UNDEFINED,
+    RTE_BUS_SCAN_WHITELIST,
+    RTE_BUS_SCAN_BLACKLIST,
 };
 
 /**
  * A structure used to configure bus operations.
  */
 struct rte_bus_conf {
-	enum rte_bus_scan_mode scan_mode; /**< Scan policy. */
+    enum rte_bus_scan_mode scan_mode; /**< Scan policy. */
 };
 
 
@@ -244,23 +244,23 @@ typedef enum rte_iova_mode (*rte_bus_get_iommu_class_t)(void);
  * A structure describing a generic bus.
  */
 struct rte_bus {
-	TAILQ_ENTRY(rte_bus) next;   /**< Next bus object in linked list */
-	const char *name;            /**< Name of the bus */
-	rte_bus_scan_t scan;         /**< Scan for devices attached to bus */
-	rte_bus_probe_t probe;       /**< Probe devices on bus */
-	rte_bus_find_device_t find_device; /**< Find a device on the bus */
-	rte_bus_plug_t plug;         /**< Probe single device for drivers */
-	rte_bus_unplug_t unplug;     /**< Remove single device from driver */
-	rte_bus_parse_t parse;       /**< Parse a device name */
-	rte_dev_dma_map_t dma_map;   /**< DMA map for device in the bus */
-	rte_dev_dma_unmap_t dma_unmap; /**< DMA unmap for device in the bus */
-	struct rte_bus_conf conf;    /**< Bus configuration */
-	rte_bus_get_iommu_class_t get_iommu_class; /**< Get iommu class */
-	rte_dev_iterate_t dev_iterate; /**< Device iterator. */
-	rte_bus_hot_unplug_handler_t hot_unplug_handler;
-				/**< handle hot-unplug failure on the bus */
-	rte_bus_sigbus_handler_t sigbus_handler;
-					/**< handle sigbus error on the bus */
+    TAILQ_ENTRY(rte_bus) next;   /**< Next bus object in linked list */
+    const char *name;            /**< Name of the bus */
+    rte_bus_scan_t scan;         /**< Scan for devices attached to bus */
+    rte_bus_probe_t probe;       /**< Probe devices on bus */
+    rte_bus_find_device_t find_device; /**< Find a device on the bus */
+    rte_bus_plug_t plug;         /**< Probe single device for drivers */
+    rte_bus_unplug_t unplug;     /**< Remove single device from driver */
+    rte_bus_parse_t parse;       /**< Parse a device name */
+    rte_dev_dma_map_t dma_map;   /**< DMA map for device in the bus */
+    rte_dev_dma_unmap_t dma_unmap; /**< DMA unmap for device in the bus */
+    struct rte_bus_conf conf;    /**< Bus configuration */
+    rte_bus_get_iommu_class_t get_iommu_class; /**< Get iommu class */
+    rte_dev_iterate_t dev_iterate; /**< Device iterator. */
+    rte_bus_hot_unplug_handler_t hot_unplug_handler;
+                /**< handle hot-unplug failure on the bus */
+    rte_bus_sigbus_handler_t sigbus_handler;
+                    /**< handle sigbus error on the bus */
 
 };
 
@@ -296,8 +296,8 @@ int rte_bus_scan(void);
  * driver-specific probe for device initialization.
  *
  * @return
- *	 0 for successful match/probe
- *	!0 otherwise
+ *     0 for successful match/probe
+ *    !0 otherwise
  */
 int rte_bus_probe(void);
 
@@ -305,7 +305,7 @@ int rte_bus_probe(void);
  * Dump information of all the buses registered with EAL.
  *
  * @param f
- *	 A valid and open output stream handle
+ *     A valid and open output stream handle
  */
 void rte_bus_dump(FILE *f);
 
@@ -313,16 +313,16 @@ void rte_bus_dump(FILE *f);
  * Bus comparison function.
  *
  * @param bus
- *	Bus under test.
+ *    Bus under test.
  *
  * @param data
- *	Data to compare against.
+ *    Data to compare against.
  *
  * @return
- *	0 if the bus matches the data.
- *	!0 if the bus does not match.
- *	<0 if ordering is possible and the bus is lower than the data.
- *	>0 if ordering is possible and the bus is greater than the data.
+ *    0 if the bus matches the data.
+ *    !0 if the bus does not match.
+ *    <0 if ordering is possible and the bus is lower than the data.
+ *    >0 if ordering is possible and the bus is greater than the data.
  */
 typedef int (*rte_bus_cmp_t)(const struct rte_bus *bus, const void *data);
 
@@ -337,19 +337,19 @@ typedef int (*rte_bus_cmp_t)(const struct rte_bus *bus, const void *data);
  * be passed via the start parameter.
  *
  * @param start
- *	Starting point for the iteration.
+ *    Starting point for the iteration.
  *
  * @param cmp
- *	Comparison function.
+ *    Comparison function.
  *
  * @param data
- *	 Data to pass to comparison function.
+ *     Data to pass to comparison function.
  *
  * @return
- *	 A pointer to a rte_bus structure or NULL in case no bus matches
+ *     A pointer to a rte_bus structure or NULL in case no bus matches
  */
 struct rte_bus *rte_bus_find(const struct rte_bus *start, rte_bus_cmp_t cmp,
-			     const void *data);
+                 const void *data);
 
 /**
  * Find the registered bus for a particular device.
@@ -378,8 +378,8 @@ enum rte_iova_mode rte_bus_get_iommu_class(void);
 #define RTE_REGISTER_BUS(nm, bus) \
 RTE_INIT_PRIO(businitfn_ ##nm, BUS) \
 {\
-	(bus).name = RTE_STR(nm);\
-	rte_bus_register(&bus); \
+    (bus).name = RTE_STR(nm);\
+    rte_bus_register(&bus); \
 }
 
 #ifdef __cplusplus

@@ -17,7 +17,7 @@
 
 #define CXGBE_MIN_RX_BUFSIZE RTE_ETHER_MIN_MTU /* min buf size */
 #define CXGBE_MAX_RX_PKTLEN (9000 + RTE_ETHER_HDR_LEN + \
-				RTE_ETHER_CRC_LEN) /* max pkt */
+                RTE_ETHER_CRC_LEN) /* max pkt */
 
 /* Max poll time is 100 * 100msec = 10 sec */
 #define CXGBE_LINK_STATUS_POLL_MS 100 /* 100ms */
@@ -25,30 +25,30 @@
 
 #define CXGBE_DEFAULT_RSS_KEY_LEN     40 /* 320-bits */
 #define CXGBE_RSS_HF_IPV4_MASK (ETH_RSS_IPV4 | ETH_RSS_FRAG_IPV4 | \
-				ETH_RSS_NONFRAG_IPV4_OTHER)
+                ETH_RSS_NONFRAG_IPV4_OTHER)
 #define CXGBE_RSS_HF_IPV6_MASK (ETH_RSS_IPV6 | ETH_RSS_FRAG_IPV6 | \
-				ETH_RSS_NONFRAG_IPV6_OTHER | \
-				ETH_RSS_IPV6_EX)
+                ETH_RSS_NONFRAG_IPV6_OTHER | \
+                ETH_RSS_IPV6_EX)
 #define CXGBE_RSS_HF_TCP_IPV6_MASK (ETH_RSS_NONFRAG_IPV6_TCP | \
-				    ETH_RSS_IPV6_TCP_EX)
+                    ETH_RSS_IPV6_TCP_EX)
 #define CXGBE_RSS_HF_UDP_IPV6_MASK (ETH_RSS_NONFRAG_IPV6_UDP | \
-				    ETH_RSS_IPV6_UDP_EX)
+                    ETH_RSS_IPV6_UDP_EX)
 #define CXGBE_RSS_HF_ALL (ETH_RSS_IP | ETH_RSS_TCP | ETH_RSS_UDP)
 
 /* Tx/Rx Offloads supported */
 #define CXGBE_TX_OFFLOADS (DEV_TX_OFFLOAD_VLAN_INSERT | \
-			   DEV_TX_OFFLOAD_IPV4_CKSUM | \
-			   DEV_TX_OFFLOAD_UDP_CKSUM | \
-			   DEV_TX_OFFLOAD_TCP_CKSUM | \
-			   DEV_TX_OFFLOAD_TCP_TSO)
+               DEV_TX_OFFLOAD_IPV4_CKSUM | \
+               DEV_TX_OFFLOAD_UDP_CKSUM | \
+               DEV_TX_OFFLOAD_TCP_CKSUM | \
+               DEV_TX_OFFLOAD_TCP_TSO)
 
 #define CXGBE_RX_OFFLOADS (DEV_RX_OFFLOAD_VLAN_STRIP | \
-			   DEV_RX_OFFLOAD_IPV4_CKSUM | \
-			   DEV_RX_OFFLOAD_UDP_CKSUM | \
-			   DEV_RX_OFFLOAD_TCP_CKSUM | \
-			   DEV_RX_OFFLOAD_JUMBO_FRAME | \
-			   DEV_RX_OFFLOAD_SCATTER | \
-			   DEV_RX_OFFLOAD_RSS_HASH)
+               DEV_RX_OFFLOAD_IPV4_CKSUM | \
+               DEV_RX_OFFLOAD_UDP_CKSUM | \
+               DEV_RX_OFFLOAD_TCP_CKSUM | \
+               DEV_RX_OFFLOAD_JUMBO_FRAME | \
+               DEV_RX_OFFLOAD_SCATTER | \
+               DEV_RX_OFFLOAD_RSS_HASH)
 
 
 /* Common PF and VF devargs */
@@ -70,7 +70,7 @@ void cxgbe_stats_get(struct port_info *pi, struct port_stats *stats);
 void cxgbevf_stats_get(struct port_info *pi, struct port_stats *stats);
 void cxgbe_stats_reset(struct port_info *pi);
 int cxgbe_poll_for_completion(struct sge_rspq *q, unsigned int us,
-			      unsigned int cnt, struct t4_completion *c);
+                  unsigned int cnt, struct t4_completion *c);
 int cxgbe_link_start(struct port_info *pi);
 int cxgbe_setup_sge_fwevtq(struct adapter *adapter);
 int cxgbe_setup_sge_ctrl_txq(struct adapter *adapter);

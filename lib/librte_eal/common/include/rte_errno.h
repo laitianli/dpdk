@@ -51,12 +51,12 @@ const char *rte_strerror(int errnum);
 
 /** Error types */
 enum {
-	RTE_MIN_ERRNO = __ELASTERROR, /**< Start numbering above std errno vals */
+    RTE_MIN_ERRNO = __ELASTERROR, /**< Start numbering above std errno vals */
 
-	E_RTE_SECONDARY, /**< Operation not allowed in secondary processes */
-	E_RTE_NO_CONFIG, /**< Missing rte_config */
+    E_RTE_SECONDARY, /**< Operation not allowed in secondary processes */
+    E_RTE_NO_CONFIG, /**< Missing rte_config */
 
-	RTE_MAX_ERRNO    /**< Max RTE error number */
+    RTE_MAX_ERRNO    /**< Max RTE error number */
 };
 
 #ifdef __cplusplus

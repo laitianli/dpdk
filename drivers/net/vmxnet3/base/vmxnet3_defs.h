@@ -110,21 +110,21 @@ typedef enum {
 #define VMXNET3_DISABLE_ADAPTIVE_RING 1
 
 /*
- *	Little Endian layout of bitfields -
- *	Byte 0 :	7.....len.....0
- *	Byte 1 :	rsvd gen 13.len.8
- *	Byte 2 :	5.msscof.0 ext1  dtype
- *	Byte 3 :	13...msscof...6
+ *    Little Endian layout of bitfields -
+ *    Byte 0 :    7.....len.....0
+ *    Byte 1 :    rsvd gen 13.len.8
+ *    Byte 2 :    5.msscof.0 ext1  dtype
+ *    Byte 3 :    13...msscof...6
  *
- *	Big Endian layout of bitfields -
- *	Byte 0:		13...msscof...6
- *	Byte 1 :	5.msscof.0 ext1  dtype
- *	Byte 2 :	rsvd gen 13.len.8
- *	Byte 3 :	7.....len.....0
+ *    Big Endian layout of bitfields -
+ *    Byte 0:        13...msscof...6
+ *    Byte 1 :    5.msscof.0 ext1  dtype
+ *    Byte 2 :    rsvd gen 13.len.8
+ *    Byte 3 :    7.....len.....0
  *
- *	Thus, le32_to_cpu on the dword will allow the big endian driver to read
- *	the bit fields correctly. And cpu_to_le32 will convert bitfields
- *	bit fields written by big endian driver to format required by device.
+ *    Thus, le32_to_cpu on the dword will allow the big endian driver to read
+ *    the bit fields correctly. And cpu_to_le32 will convert bitfields
+ *    bit fields written by big endian driver to format required by device.
  */
 
 typedef
@@ -198,11 +198,11 @@ struct Vmxnet3_TxDataDesc {
 #include "vmware_pack_end.h"
 Vmxnet3_TxDataDesc;
 
-#define VMXNET3_TCD_GEN_SHIFT	31
-#define VMXNET3_TCD_GEN_SIZE	1
-#define VMXNET3_TCD_TXIDX_SHIFT	0
-#define VMXNET3_TCD_TXIDX_SIZE	12
-#define VMXNET3_TCD_GEN_DWORD_SHIFT	3
+#define VMXNET3_TCD_GEN_SHIFT    31
+#define VMXNET3_TCD_GEN_SIZE    1
+#define VMXNET3_TCD_TXIDX_SHIFT    0
+#define VMXNET3_TCD_TXIDX_SIZE    12
+#define VMXNET3_TCD_GEN_DWORD_SHIFT    3
 
 typedef
 #include "vmware_pack_begin.h"
@@ -325,31 +325,31 @@ struct Vmxnet3_RxCompDescExt {
    uint8  segCnt;       /* Number of aggregated packets */
    uint8  dupAckCnt;    /* Number of duplicate Acks */
    __le16 tsDelta;      /* TCP timestamp difference */
-	__le32 dword2;
+    __le32 dword2;
 #ifdef __BIG_ENDIAN_BITFIELD
-	uint32 gen : 1;     /* generation bit */
-	uint32 type : 7;    /* completion type */
-	uint32 fcs : 1;     /* Frame CRC correct */
-	uint32 frg : 1;     /* IP Fragment */
-	uint32 v4 : 1;      /* IPv4 */
-	uint32 v6 : 1;      /* IPv6 */
-	uint32 ipc : 1;     /* IP Checksum Correct */
-	uint32 tcp : 1;     /* TCP packet */
-	uint32 udp : 1;     /* UDP packet */
-	uint32 tuc : 1;     /* TCP/UDP Checksum Correct */
-	uint32 mss : 16;
+    uint32 gen : 1;     /* generation bit */
+    uint32 type : 7;    /* completion type */
+    uint32 fcs : 1;     /* Frame CRC correct */
+    uint32 frg : 1;     /* IP Fragment */
+    uint32 v4 : 1;      /* IPv4 */
+    uint32 v6 : 1;      /* IPv6 */
+    uint32 ipc : 1;     /* IP Checksum Correct */
+    uint32 tcp : 1;     /* TCP packet */
+    uint32 udp : 1;     /* UDP packet */
+    uint32 tuc : 1;     /* TCP/UDP Checksum Correct */
+    uint32 mss : 16;
 #else
-	uint32 mss : 16;
-	uint32 tuc : 1;     /* TCP/UDP Checksum Correct */
-	uint32 udp : 1;     /* UDP packet */
-	uint32 tcp : 1;     /* TCP packet */
-	uint32 ipc : 1;     /* IP Checksum Correct */
-	uint32 v6 : 1;      /* IPv6 */
-	uint32 v4 : 1;      /* IPv4 */
-	uint32 frg : 1;     /* IP Fragment */
-	uint32 fcs : 1;     /* Frame CRC correct */
-	uint32 type : 7;    /* completion type */
-	uint32 gen : 1;     /* generation bit */
+    uint32 mss : 16;
+    uint32 tuc : 1;     /* TCP/UDP Checksum Correct */
+    uint32 udp : 1;     /* UDP packet */
+    uint32 tcp : 1;     /* TCP packet */
+    uint32 ipc : 1;     /* IP Checksum Correct */
+    uint32 v6 : 1;      /* IPv6 */
+    uint32 v4 : 1;      /* IPv4 */
+    uint32 frg : 1;     /* IP Fragment */
+    uint32 fcs : 1;     /* Frame CRC correct */
+    uint32 type : 7;    /* completion type */
+    uint32 gen : 1;     /* generation bit */
 #endif  /* __BIG_ENDIAN_BITFIELD */
 }
 #include "vmware_pack_end.h"
@@ -729,10 +729,10 @@ Vmxnet3_SetPolling;
 typedef
 #include "vmware_pack_begin.h"
 struct Vmxnet3_MemoryRegion {
-	__le64            startPA;
-	__le32            length;
-	__le16            txQueueBits; /* bit n corresponding to tx queue n */
-	__le16            rxQueueBits; /* bit n corresponding to rx queue n */
+    __le64            startPA;
+    __le32            length;
+    __le16            txQueueBits; /* bit n corresponding to tx queue n */
+    __le16            rxQueueBits; /* bit n corresponding to rx queue n */
 }
 #include "vmware_pack_end.h"
 Vmxnet3_MemoryRegion;
@@ -743,9 +743,9 @@ Vmxnet3_MemoryRegion;
 typedef
 #include "vmware_pack_begin.h"
 struct Vmxnet3_MemRegs {
-	__le16           numRegs;
-	__le16           pad[3];
-	Vmxnet3_MemoryRegion memRegs[1];
+    __le16           numRegs;
+    __le16           pad[3];
+    Vmxnet3_MemoryRegion memRegs[1];
 }
 #include "vmware_pack_end.h"
 Vmxnet3_MemRegs;
@@ -787,8 +787,8 @@ struct Vmxnet3_DriverShared {
    union {
       __le32            reserved1[4];
       Vmxnet3_CmdInfo   cmdInfo; /* only valid in the context of executing the
-				  * relevant command
-				  */
+                  * relevant command
+                  */
    } cu;
 }
 #include "vmware_pack_end.h"

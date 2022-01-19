@@ -36,11 +36,11 @@ eal_get_hugefile_prefix(void);
 static inline const char *
 eal_runtime_config_path(void)
 {
-	static char buffer[PATH_MAX]; /* static so auto-zeroed */
+    static char buffer[PATH_MAX]; /* static so auto-zeroed */
 
-	snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
-			RUNTIME_CONFIG_FNAME);
-	return buffer;/* /var/run/dpdk/rte/config */
+    snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
+            RUNTIME_CONFIG_FNAME);
+    return buffer;/* /var/run/dpdk/rte/config */
 }
 
 /** Path of primary/secondary communication unix socket file. */
@@ -48,19 +48,19 @@ eal_runtime_config_path(void)
 static inline const char *
 eal_mp_socket_path(void)
 {
-	static char buffer[PATH_MAX]; /* static so auto-zeroed */
+    static char buffer[PATH_MAX]; /* static so auto-zeroed */
 
-	snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
-			MP_SOCKET_FNAME);
-	return buffer;
+    snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
+            MP_SOCKET_FNAME);
+    return buffer;
 }
 
 #define FBARRAY_NAME_FMT "%s/fbarray_%s"
 static inline const char *
 eal_get_fbarray_path(char *buffer, size_t buflen, const char *name) {
-	snprintf(buffer, buflen, FBARRAY_NAME_FMT, rte_eal_get_runtime_dir(),
-			name);
-	return buffer;
+    snprintf(buffer, buflen, FBARRAY_NAME_FMT, rte_eal_get_runtime_dir(),
+            name);
+    return buffer;
 }
 
 /** Path of hugepage info file. */
@@ -68,11 +68,11 @@ eal_get_fbarray_path(char *buffer, size_t buflen, const char *name) {
 static inline const char *
 eal_hugepage_info_path(void)
 {
-	static char buffer[PATH_MAX]; /* static so auto-zeroed */
+    static char buffer[PATH_MAX]; /* static so auto-zeroed */
 
-	snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
-			HUGEPAGE_INFO_FNAME);
-	return buffer;
+    snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
+            HUGEPAGE_INFO_FNAME);
+    return buffer;
 }
 
 /** Path of hugepage data file. */
@@ -80,11 +80,11 @@ eal_hugepage_info_path(void)
 static inline const char *
 eal_hugepage_data_path(void)
 {
-	static char buffer[PATH_MAX]; /* static so auto-zeroed */
+    static char buffer[PATH_MAX]; /* static so auto-zeroed */
 
-	snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
-			HUGEPAGE_DATA_FNAME);
-	return buffer;
+    snprintf(buffer, sizeof(buffer), "%s/%s", rte_eal_get_runtime_dir(),
+            HUGEPAGE_DATA_FNAME);
+    return buffer;
 }
 
 /** String format for hugepage map files. */
@@ -92,9 +92,9 @@ eal_hugepage_data_path(void)
 static inline const char *
 eal_get_hugefile_path(char *buffer, size_t buflen, const char *hugedir, int f_id)
 {
-	snprintf(buffer, buflen, HUGEFILE_FMT, hugedir,
-			eal_get_hugefile_prefix(), f_id);
-	return buffer;
+    snprintf(buffer, buflen, HUGEFILE_FMT, hugedir,
+            eal_get_hugefile_prefix(), f_id);
+    return buffer;
 }
 
 /** define the default filename prefix for the %s values above */

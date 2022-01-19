@@ -22,14 +22,14 @@
 int
 main(int __attribute__((unused)) argc, char __attribute__((unused)) ** argv)
 {
-	struct cmdline *cl;
+    struct cmdline *cl;
 
-	cl = cmdline_stdin_new(main_ctx, "CMDLINE_TEST>>");
-	if (cl == NULL) {
-		return -1;
-	}
-	cmdline_interact(cl);
-	cmdline_stdin_exit(cl);
+    cl = cmdline_stdin_new(main_ctx, "CMDLINE_TEST>>");
+    if (cl == NULL) {
+        return -1;
+    }
+    cmdline_interact(cl);
+    cmdline_stdin_exit(cl);
 
-	return 0;
+    return 0;
 }

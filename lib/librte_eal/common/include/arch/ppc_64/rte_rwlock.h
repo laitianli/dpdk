@@ -12,25 +12,25 @@ extern "C" {
 static inline void
 rte_rwlock_read_lock_tm(rte_rwlock_t *rwl)
 {
-	rte_rwlock_read_lock(rwl);
+    rte_rwlock_read_lock(rwl);
 }
 
 static inline void
 rte_rwlock_read_unlock_tm(rte_rwlock_t *rwl)
 {
-	rte_rwlock_read_unlock(rwl);
+    rte_rwlock_read_unlock(rwl);
 }
 
 static inline void
 rte_rwlock_write_lock_tm(rte_rwlock_t *rwl)
 {
-	rte_rwlock_write_lock(rwl);
+    rte_rwlock_write_lock(rwl);
 }
 
 static inline void
 rte_rwlock_write_unlock_tm(rte_rwlock_t *rwl)
 {
-	rte_rwlock_write_unlock(rwl);
+    rte_rwlock_write_unlock(rwl);
 }
 
 #ifdef __cplusplus

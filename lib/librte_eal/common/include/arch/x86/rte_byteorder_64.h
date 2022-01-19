@@ -20,11 +20,11 @@
 /* 64-bit mode */
 static inline uint64_t rte_arch_bswap64(uint64_t _x)
 {
-	uint64_t x = _x;
-	asm volatile ("bswap %[x]"
-		      : [x] "+r" (x)
-		      );
-	return x;
+    uint64_t x = _x;
+    asm volatile ("bswap %[x]"
+              : [x] "+r" (x)
+              );
+    return x;
 }
 
 #endif /* _RTE_BYTEORDER_X86_64_H_ */

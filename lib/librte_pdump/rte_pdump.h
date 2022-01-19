@@ -23,10 +23,10 @@ extern "C" {
 #define RTE_PDUMP_ALL_QUEUES UINT16_MAX
 
 enum {
-	RTE_PDUMP_FLAG_RX = 1,  /* receive direction */
-	RTE_PDUMP_FLAG_TX = 2,  /* transmit direction */
-	/* both receive and transmit directions */
-	RTE_PDUMP_FLAG_RXTX = (RTE_PDUMP_FLAG_RX|RTE_PDUMP_FLAG_TX)
+    RTE_PDUMP_FLAG_RX = 1,  /* receive direction */
+    RTE_PDUMP_FLAG_TX = 2,  /* transmit direction */
+    /* both receive and transmit directions */
+    RTE_PDUMP_FLAG_RXTX = (RTE_PDUMP_FLAG_RX|RTE_PDUMP_FLAG_TX)
 };
 
 /**
@@ -76,9 +76,9 @@ rte_pdump_uninit(void);
 
 int
 rte_pdump_enable(uint16_t port, uint16_t queue, uint32_t flags,
-		struct rte_ring *ring,
-		struct rte_mempool *mp,
-		void *filter);
+        struct rte_ring *ring,
+        struct rte_mempool *mp,
+        void *filter);
 
 /**
  * Disables packet capturing on given port and queue.
@@ -126,10 +126,10 @@ rte_pdump_disable(uint16_t port, uint16_t queue, uint32_t flags);
 
 int
 rte_pdump_enable_by_deviceid(char *device_id, uint16_t queue,
-				uint32_t flags,
-				struct rte_ring *ring,
-				struct rte_mempool *mp,
-				void *filter);
+                uint32_t flags,
+                struct rte_ring *ring,
+                struct rte_mempool *mp,
+                void *filter);
 
 /**
  * Disables packet capturing on given device_id and queue.
@@ -151,7 +151,7 @@ rte_pdump_enable_by_deviceid(char *device_id, uint16_t queue,
  */
 int
 rte_pdump_disable_by_deviceid(char *device_id, uint16_t queue,
-				uint32_t flags);
+                uint32_t flags);
 
 #ifdef __cplusplus
 }

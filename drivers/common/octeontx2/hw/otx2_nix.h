@@ -142,164 +142,164 @@
 #define NIX_AF_TL2X_MD_DEBUG2(a)                (0xed0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL2X_MD_DEBUG3(a)                (0xed8ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_SCHEDULE(a)                 \
-	(0x1000ull | (uint64_t)(a) << 16)
+    (0x1000ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_SHAPE(a)                    \
-	(0x1010ull | (uint64_t)(a) << 16)
+    (0x1010ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_CIR(a)                      \
-	(0x1020ull | (uint64_t)(a) << 16)
+    (0x1020ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_PIR(a)                      \
-	(0x1030ull | (uint64_t)(a) << 16)
+    (0x1030ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_SCHED_STATE(a)              \
-	(0x1040ull | (uint64_t)(a) << 16)
+    (0x1040ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_SHAPE_STATE(a)              \
-	(0x1050ull | (uint64_t)(a) << 16)
+    (0x1050ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_SW_XOFF(a)                  \
-	(0x1070ull | (uint64_t)(a) << 16)
+    (0x1070ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_TOPOLOGY(a)                 \
-	(0x1080ull | (uint64_t)(a) << 16)
+    (0x1080ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_PARENT(a)                   \
-	(0x1088ull | (uint64_t)(a) << 16)
+    (0x1088ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_MD_DEBUG0(a)                \
-	(0x10c0ull | (uint64_t)(a) << 16)
+    (0x10c0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_MD_DEBUG1(a)                \
-	(0x10c8ull | (uint64_t)(a) << 16)
+    (0x10c8ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_MD_DEBUG2(a)                \
-	(0x10d0ull | (uint64_t)(a) << 16)
+    (0x10d0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3X_MD_DEBUG3(a)                \
-	(0x10d8ull | (uint64_t)(a) << 16)
+    (0x10d8ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_SCHEDULE(a)                 \
-	(0x1200ull | (uint64_t)(a) << 16)
+    (0x1200ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_SHAPE(a)                    \
-	(0x1210ull | (uint64_t)(a) << 16)
+    (0x1210ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_CIR(a)                      \
-	(0x1220ull | (uint64_t)(a) << 16)
+    (0x1220ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_PIR(a)                      \
-	(0x1230ull | (uint64_t)(a) << 16)
+    (0x1230ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_SCHED_STATE(a)              \
-	(0x1240ull | (uint64_t)(a) << 16)
+    (0x1240ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_SHAPE_STATE(a)              \
-	(0x1250ull | (uint64_t)(a) << 16)
+    (0x1250ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_SW_XOFF(a)                  \
-	(0x1270ull | (uint64_t)(a) << 16)
+    (0x1270ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_TOPOLOGY(a)                 \
-	(0x1280ull | (uint64_t)(a) << 16)
+    (0x1280ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_PARENT(a)                   \
-	(0x1288ull | (uint64_t)(a) << 16)
+    (0x1288ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_MD_DEBUG0(a)                \
-	(0x12c0ull | (uint64_t)(a) << 16)
+    (0x12c0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_MD_DEBUG1(a)                \
-	(0x12c8ull | (uint64_t)(a) << 16)
+    (0x12c8ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_MD_DEBUG2(a)                \
-	(0x12d0ull | (uint64_t)(a) << 16)
+    (0x12d0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL4X_MD_DEBUG3(a)                \
-	(0x12d8ull | (uint64_t)(a) << 16)
+    (0x12d8ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_SCHEDULE(a)                 \
-	(0x1400ull | (uint64_t)(a) << 16)
+    (0x1400ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_SHAPE(a)                    \
-	(0x1410ull | (uint64_t)(a) << 16)
+    (0x1410ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_CIR(a)                      \
-	(0x1420ull | (uint64_t)(a) << 16)
+    (0x1420ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_PIR(a)                      \
-	(0x1430ull | (uint64_t)(a) << 16)
+    (0x1430ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_SCHED_STATE(a)              \
-	(0x1440ull | (uint64_t)(a) << 16)
+    (0x1440ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_SHAPE_STATE(a)              \
-	(0x1450ull | (uint64_t)(a) << 16)
+    (0x1450ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_SW_XOFF(a)                  \
-	(0x1470ull | (uint64_t)(a) << 16)
+    (0x1470ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_PARENT(a)                   \
-	(0x1480ull | (uint64_t)(a) << 16)
+    (0x1480ull | (uint64_t)(a) << 16)
 #define NIX_AF_MDQX_MD_DEBUG(a)                 \
-	(0x14c0ull | (uint64_t)(a) << 16)
+    (0x14c0ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3_TL2X_CFG(a)                  \
-	(0x1600ull | (uint64_t)(a) << 16)
+    (0x1600ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3_TL2X_BP_STATUS(a)            \
-	(0x1610ull | (uint64_t)(a) << 16)
+    (0x1610ull | (uint64_t)(a) << 16)
 #define NIX_AF_TL3_TL2X_LINKX_CFG(a, b)         \
-	(0x1700ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x1700ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 #define NIX_AF_RX_FLOW_KEY_ALGX_FIELDX(a, b)    \
-	(0x1800ull | (uint64_t)(a) << 18 | (uint64_t)(b) << 3)
+    (0x1800ull | (uint64_t)(a) << 18 | (uint64_t)(b) << 3)
 #define NIX_AF_TX_MCASTX(a)                     \
-	(0x1900ull | (uint64_t)(a) << 15)
+    (0x1900ull | (uint64_t)(a) << 15)
 #define NIX_AF_TX_VTAG_DEFX_CTL(a)              \
-	(0x1a00ull | (uint64_t)(a) << 16)
+    (0x1a00ull | (uint64_t)(a) << 16)
 #define NIX_AF_TX_VTAG_DEFX_DATA(a)             \
-	(0x1a10ull | (uint64_t)(a) << 16)
+    (0x1a10ull | (uint64_t)(a) << 16)
 #define NIX_AF_RX_BPIDX_STATUS(a)               \
-	(0x1a20ull | (uint64_t)(a) << 17)
+    (0x1a20ull | (uint64_t)(a) << 17)
 #define NIX_AF_RX_CHANX_CFG(a)                  \
-	(0x1a30ull | (uint64_t)(a) << 15)
+    (0x1a30ull | (uint64_t)(a) << 15)
 #define NIX_AF_CINT_TIMERX(a)                   \
-	(0x1a40ull | (uint64_t)(a) << 18)
+    (0x1a40ull | (uint64_t)(a) << 18)
 #define NIX_AF_LSO_FORMATX_FIELDX(a, b)         \
-	(0x1b00ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
+    (0x1b00ull | (uint64_t)(a) << 16 | (uint64_t)(b) << 3)
 #define NIX_AF_LFX_CFG(a)                       \
-	(0x4000ull | (uint64_t)(a) << 17)
+    (0x4000ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_SQS_CFG(a)                   \
-	(0x4020ull | (uint64_t)(a) << 17)
+    (0x4020ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_TX_CFG2(a)                   \
-	(0x4028ull | (uint64_t)(a) << 17)
+    (0x4028ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_SQS_BASE(a)                  \
-	(0x4030ull | (uint64_t)(a) << 17)
+    (0x4030ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RQS_CFG(a)                   \
-	(0x4040ull | (uint64_t)(a) << 17)
+    (0x4040ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RQS_BASE(a)                  \
-	(0x4050ull | (uint64_t)(a) << 17)
+    (0x4050ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_CQS_CFG(a)                   \
-	(0x4060ull | (uint64_t)(a) << 17)
+    (0x4060ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_CQS_BASE(a)                  \
-	(0x4070ull | (uint64_t)(a) << 17)
+    (0x4070ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_TX_CFG(a)                    \
-	(0x4080ull | (uint64_t)(a) << 17)
+    (0x4080ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_TX_PARSE_CFG(a)              \
-	(0x4090ull | (uint64_t)(a) << 17)
+    (0x4090ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_CFG(a)                    \
-	(0x40a0ull | (uint64_t)(a) << 17)
+    (0x40a0ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RSS_CFG(a)                   \
-	(0x40c0ull | (uint64_t)(a) << 17)
+    (0x40c0ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RSS_BASE(a)                  \
-	(0x40d0ull | (uint64_t)(a) << 17)
+    (0x40d0ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_QINTS_CFG(a)                 \
-	(0x4100ull | (uint64_t)(a) << 17)
+    (0x4100ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_QINTS_BASE(a)                \
-	(0x4110ull | (uint64_t)(a) << 17)
+    (0x4110ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_CINTS_CFG(a)                 \
-	(0x4120ull | (uint64_t)(a) << 17)
+    (0x4120ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_CINTS_BASE(a)                \
-	(0x4130ull | (uint64_t)(a) << 17)
+    (0x4130ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_IPSEC_CFG0(a)             \
-	(0x4140ull | (uint64_t)(a) << 17)
+    (0x4140ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_IPSEC_CFG1(a)             \
-	(0x4148ull | (uint64_t)(a) << 17)
+    (0x4148ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_IPSEC_DYNO_CFG(a)         \
-	(0x4150ull | (uint64_t)(a) << 17)
+    (0x4150ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_IPSEC_DYNO_BASE(a)        \
-	(0x4158ull | (uint64_t)(a) << 17)
+    (0x4158ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_IPSEC_SA_BASE(a)          \
-	(0x4170ull | (uint64_t)(a) << 17)
+    (0x4170ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_TX_STATUS(a)                 \
-	(0x4180ull | (uint64_t)(a) << 17)
+    (0x4180ull | (uint64_t)(a) << 17)
 #define NIX_AF_LFX_RX_VTAG_TYPEX(a, b)          \
-	(0x4200ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
+    (0x4200ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
 #define NIX_AF_LFX_LOCKX(a, b)                  \
-	(0x4300ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
+    (0x4300ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
 #define NIX_AF_LFX_TX_STATX(a, b)               \
-	(0x4400ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
+    (0x4400ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
 #define NIX_AF_LFX_RX_STATX(a, b)               \
-	(0x4500ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
+    (0x4500ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
 #define NIX_AF_LFX_RSS_GRPX(a, b)               \
-	(0x4600ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
+    (0x4600ull | (uint64_t)(a) << 17 | (uint64_t)(b) << 3)
 #define NIX_AF_RX_NPC_MC_RCV                    (0x4700ull)
 #define NIX_AF_RX_NPC_MC_DROP                   (0x4710ull)
 #define NIX_AF_RX_NPC_MIRROR_RCV                (0x4720ull)
 #define NIX_AF_RX_NPC_MIRROR_DROP               (0x4730ull)
 #define NIX_AF_RX_ACTIVE_CYCLES_PCX(a)          \
-	(0x4800ull | (uint64_t)(a) << 16)
+    (0x4800ull | (uint64_t)(a) << 16)
 #define NIX_PRIV_AF_INT_CFG                     (0x8000000ull)
 #define NIX_PRIV_LFX_CFG(a)                     \
-	(0x8000010ull | (uint64_t)(a) << 8)
+    (0x8000010ull | (uint64_t)(a) << 8)
 #define NIX_PRIV_LFX_INT_CFG(a)                 \
-	(0x8000020ull | (uint64_t)(a) << 8)
+    (0x8000020ull | (uint64_t)(a) << 8)
 #define NIX_AF_RVU_LF_CFG_DEBUG                 (0x8000030ull)
 
 #define NIX_LF_RX_SECRETX(a)                    (0x0ull | (uint64_t)(a) << 3)
@@ -430,9 +430,9 @@
 #define NIX_RX_VTAGACTION_VTAG1_RELPTR        (0x4ull)
 #define NIX_RX_VTAGACTION_VTAG_VALID          (0x1ull)
 #define NIX_TX_VTAGACTION_VTAG0_RELPTR        \
-	(sizeof(struct nix_inst_hdr_s) + 2 * 6)
+    (sizeof(struct nix_inst_hdr_s) + 2 * 6)
 #define NIX_TX_VTAGACTION_VTAG1_RELPTR        \
-	(sizeof(struct nix_inst_hdr_s) + 2 * 6 + 4)
+    (sizeof(struct nix_inst_hdr_s) + 2 * 6 + 4)
 #define NIX_RQINT_DROP                        (0x0ull)
 #define NIX_RQINT_RED                         (0x1ull)
 #define NIX_RQINT_R2                          (0x2ull)
@@ -628,15 +628,15 @@
 #define NIX_COLORRESULT_RED_DROP              (0x3ull)
 
 #define NIX_CHAN_LBKX_CHX(a, b)               \
-	(0x000ull | ((uint64_t)(a) << 8) | (uint64_t)(b))
+    (0x000ull | ((uint64_t)(a) << 8) | (uint64_t)(b))
 #define NIX_CHAN_R4                           (0x400ull)
 #define NIX_CHAN_R5                           (0x500ull)
 #define NIX_CHAN_R6                           (0x600ull)
 #define NIX_CHAN_SDP_CH_END                   (0x7ffull)
 #define NIX_CHAN_SDP_CH_START                 (0x700ull)
 #define NIX_CHAN_CGXX_LMACX_CHX(a, b, c)      \
-	(0x800ull | ((uint64_t)(a) << 8) | ((uint64_t)(b) << 4) | \
-	(uint64_t)(c))
+    (0x800ull | ((uint64_t)(a) << 8) | ((uint64_t)(b) << 4) | \
+    (uint64_t)(c))
 
 #define NIX_INTF_SDP                          (0x4ull)
 #define NIX_INTF_CGX0                         (0x0ull)
@@ -662,730 +662,730 @@
 
 /* NIX admin queue instruction structure */
 struct nix_aq_inst_s {
-	uint64_t op         : 4;
-	uint64_t ctype      : 4;
-	uint64_t lf         : 7;
-	uint64_t rsvd_23_15 : 9;
-	uint64_t cindex     : 20;
-	uint64_t rsvd_62_44 : 19;
-	uint64_t doneint    : 1;
-	uint64_t res_addr   : 64;    /* W1 */
+    uint64_t op         : 4;
+    uint64_t ctype      : 4;
+    uint64_t lf         : 7;
+    uint64_t rsvd_23_15 : 9;
+    uint64_t cindex     : 20;
+    uint64_t rsvd_62_44 : 19;
+    uint64_t doneint    : 1;
+    uint64_t res_addr   : 64;    /* W1 */
 };
 
 /* NIX admin queue result structure */
 struct nix_aq_res_s {
-	uint64_t op          : 4;
-	uint64_t ctype       : 4;
-	uint64_t compcode    : 8;
-	uint64_t doneint     : 1;
-	uint64_t rsvd_63_17  : 47;
-	uint64_t rsvd_127_64 : 64;   /* W1 */
+    uint64_t op          : 4;
+    uint64_t ctype       : 4;
+    uint64_t compcode    : 8;
+    uint64_t doneint     : 1;
+    uint64_t rsvd_63_17  : 47;
+    uint64_t rsvd_127_64 : 64;   /* W1 */
 };
 
 /* NIX completion interrupt context hardware structure */
 struct nix_cint_hw_s {
-	uint64_t ecount       : 32;
-	uint64_t qcount       : 16;
-	uint64_t intr         : 1;
-	uint64_t ena          : 1;
-	uint64_t timer_idx    : 8;
-	uint64_t rsvd_63_58   : 6;
-	uint64_t ecount_wait  : 32;
-	uint64_t qcount_wait  : 16;
-	uint64_t time_wait    : 8;
-	uint64_t rsvd_127_120 : 8;
+    uint64_t ecount       : 32;
+    uint64_t qcount       : 16;
+    uint64_t intr         : 1;
+    uint64_t ena          : 1;
+    uint64_t timer_idx    : 8;
+    uint64_t rsvd_63_58   : 6;
+    uint64_t ecount_wait  : 32;
+    uint64_t qcount_wait  : 16;
+    uint64_t time_wait    : 8;
+    uint64_t rsvd_127_120 : 8;
 };
 
 /* NIX completion queue entry header structure */
 struct nix_cqe_hdr_s {
-	uint64_t tag        : 32;
-	uint64_t q          : 20;
-	uint64_t rsvd_57_52 : 6;
-	uint64_t node       : 2;
-	uint64_t cqe_type   : 4;
+    uint64_t tag        : 32;
+    uint64_t q          : 20;
+    uint64_t rsvd_57_52 : 6;
+    uint64_t node       : 2;
+    uint64_t cqe_type   : 4;
 };
 
 /* NIX completion queue context structure */
 struct nix_cq_ctx_s {
-	uint64_t base           : 64;/* W0 */
-	uint64_t rsvd_67_64     : 4;
-	uint64_t bp_ena         : 1;
-	uint64_t rsvd_71_69     : 3;
-	uint64_t bpid           : 9;
-	uint64_t rsvd_83_81     : 3;
-	uint64_t qint_idx       : 7;
-	uint64_t cq_err         : 1;
-	uint64_t cint_idx       : 7;
-	uint64_t avg_con        : 9;
-	uint64_t wrptr          : 20;
-	uint64_t tail           : 20;
-	uint64_t head           : 20;
-	uint64_t avg_level      : 8;
-	uint64_t update_time    : 16;
-	uint64_t bp             : 8;
-	uint64_t drop           : 8;
-	uint64_t drop_ena       : 1;
-	uint64_t ena            : 1;
-	uint64_t rsvd_211_210   : 2;
-	uint64_t substream      : 20;
-	uint64_t caching        : 1;
-	uint64_t rsvd_235_233   : 3;
-	uint64_t qsize          : 4;
-	uint64_t cq_err_int     : 8;
-	uint64_t cq_err_int_ena : 8;
+    uint64_t base           : 64;/* W0 */
+    uint64_t rsvd_67_64     : 4;
+    uint64_t bp_ena         : 1;
+    uint64_t rsvd_71_69     : 3;
+    uint64_t bpid           : 9;
+    uint64_t rsvd_83_81     : 3;
+    uint64_t qint_idx       : 7;
+    uint64_t cq_err         : 1;
+    uint64_t cint_idx       : 7;
+    uint64_t avg_con        : 9;
+    uint64_t wrptr          : 20;
+    uint64_t tail           : 20;
+    uint64_t head           : 20;
+    uint64_t avg_level      : 8;
+    uint64_t update_time    : 16;
+    uint64_t bp             : 8;
+    uint64_t drop           : 8;
+    uint64_t drop_ena       : 1;
+    uint64_t ena            : 1;
+    uint64_t rsvd_211_210   : 2;
+    uint64_t substream      : 20;
+    uint64_t caching        : 1;
+    uint64_t rsvd_235_233   : 3;
+    uint64_t qsize          : 4;
+    uint64_t cq_err_int     : 8;
+    uint64_t cq_err_int_ena : 8;
 };
 
 /* NIX instruction header structure */
 struct nix_inst_hdr_s {
-	uint64_t pf_func    : 16;
-	uint64_t sq         : 20;
-	uint64_t rsvd_63_36 : 28;
+    uint64_t pf_func    : 16;
+    uint64_t sq         : 20;
+    uint64_t rsvd_63_36 : 28;
 };
 
 /* NIX i/o virtual address structure */
 struct nix_iova_s {
-	uint64_t addr : 64;          /* W0 */
+    uint64_t addr : 64;          /* W0 */
 };
 
 /* NIX IPsec dynamic ordering counter structure */
 struct nix_ipsec_dyno_s {
-	uint32_t count : 32;         /* W0 */
+    uint32_t count : 32;         /* W0 */
 };
 
 /* NIX memory value structure */
 struct nix_mem_result_s {
-	uint64_t v         : 1;
-	uint64_t color     : 2;
-	uint64_t rsvd_63_3 : 61;
+    uint64_t v         : 1;
+    uint64_t color     : 2;
+    uint64_t rsvd_63_3 : 61;
 };
 
 /* NIX statistics operation write data structure */
 struct nix_op_q_wdata_s {
-	uint64_t rsvd_31_0  : 32;
-	uint64_t q          : 20;
-	uint64_t rsvd_63_52 : 12;
+    uint64_t rsvd_31_0  : 32;
+    uint64_t q          : 20;
+    uint64_t rsvd_63_52 : 12;
 };
 
 /* NIX queue interrupt context hardware structure */
 struct nix_qint_hw_s {
-	uint32_t count      : 22;
-	uint32_t rsvd_30_22 : 9;
-	uint32_t ena        : 1;
+    uint32_t count      : 22;
+    uint32_t rsvd_30_22 : 9;
+    uint32_t ena        : 1;
 };
 
 /* NIX receive queue context structure */
 struct nix_rq_ctx_hw_s {
-	uint64_t ena           : 1;
-	uint64_t sso_ena       : 1;
-	uint64_t ipsech_ena    : 1;
-	uint64_t ena_wqwd      : 1;
-	uint64_t cq            : 20;
-	uint64_t substream     : 20;
-	uint64_t wqe_aura      : 20;
-	uint64_t spb_aura      : 20;
-	uint64_t lpb_aura      : 20;
-	uint64_t sso_grp       : 10;
-	uint64_t sso_tt        : 2;
-	uint64_t pb_caching    : 2;
-	uint64_t wqe_caching   : 1;
-	uint64_t xqe_drop_ena  : 1;
-	uint64_t spb_drop_ena  : 1;
-	uint64_t lpb_drop_ena  : 1;
-	uint64_t wqe_skip      : 2;
-	uint64_t rsvd_127_124  : 4;
-	uint64_t rsvd_139_128  : 12;
-	uint64_t spb_sizem1    : 6;
-	uint64_t rsvd_150_146  : 5;
-	uint64_t spb_ena       : 1;
-	uint64_t lpb_sizem1    : 12;
-	uint64_t first_skip    : 7;
-	uint64_t rsvd_171      : 1;
-	uint64_t later_skip    : 6;
-	uint64_t xqe_imm_size  : 6;
-	uint64_t rsvd_189_184  : 6;
-	uint64_t xqe_imm_copy  : 1;
-	uint64_t xqe_hdr_split : 1;
-	uint64_t xqe_drop      : 8;
-	uint64_t xqe_pass      : 8;
-	uint64_t wqe_pool_drop : 8;
-	uint64_t wqe_pool_pass : 8;
-	uint64_t spb_aura_drop : 8;
-	uint64_t spb_aura_pass : 8;
-	uint64_t spb_pool_drop : 8;
-	uint64_t spb_pool_pass : 8;
-	uint64_t lpb_aura_drop : 8;
-	uint64_t lpb_aura_pass : 8;
-	uint64_t lpb_pool_drop : 8;
-	uint64_t lpb_pool_pass : 8;
-	uint64_t rsvd_319_288  : 32;
-	uint64_t ltag          : 24;
-	uint64_t good_utag     : 8;
-	uint64_t bad_utag      : 8;
-	uint64_t flow_tagw     : 6;
-	uint64_t rsvd_383_366  : 18;
-	uint64_t octs          : 48;
-	uint64_t rsvd_447_432  : 16;
-	uint64_t pkts          : 48;
-	uint64_t rsvd_511_496  : 16;
-	uint64_t drop_octs     : 48;
-	uint64_t rsvd_575_560  : 16;
-	uint64_t drop_pkts     : 48;
-	uint64_t rsvd_639_624  : 16;
-	uint64_t re_pkts       : 48;
-	uint64_t rsvd_702_688  : 15;
-	uint64_t ena_copy      : 1;
-	uint64_t rsvd_739_704  : 36;
-	uint64_t rq_int        : 8;
-	uint64_t rq_int_ena    : 8;
-	uint64_t qint_idx      : 7;
-	uint64_t rsvd_767_763  : 5;
-	uint64_t rsvd_831_768  : 64;/* W12 */
-	uint64_t rsvd_895_832  : 64;/* W13 */
-	uint64_t rsvd_959_896  : 64;/* W14 */
-	uint64_t rsvd_1023_960 : 64;/* W15 */
+    uint64_t ena           : 1;
+    uint64_t sso_ena       : 1;
+    uint64_t ipsech_ena    : 1;
+    uint64_t ena_wqwd      : 1;
+    uint64_t cq            : 20;
+    uint64_t substream     : 20;
+    uint64_t wqe_aura      : 20;
+    uint64_t spb_aura      : 20;
+    uint64_t lpb_aura      : 20;
+    uint64_t sso_grp       : 10;
+    uint64_t sso_tt        : 2;
+    uint64_t pb_caching    : 2;
+    uint64_t wqe_caching   : 1;
+    uint64_t xqe_drop_ena  : 1;
+    uint64_t spb_drop_ena  : 1;
+    uint64_t lpb_drop_ena  : 1;
+    uint64_t wqe_skip      : 2;
+    uint64_t rsvd_127_124  : 4;
+    uint64_t rsvd_139_128  : 12;
+    uint64_t spb_sizem1    : 6;
+    uint64_t rsvd_150_146  : 5;
+    uint64_t spb_ena       : 1;
+    uint64_t lpb_sizem1    : 12;
+    uint64_t first_skip    : 7;
+    uint64_t rsvd_171      : 1;
+    uint64_t later_skip    : 6;
+    uint64_t xqe_imm_size  : 6;
+    uint64_t rsvd_189_184  : 6;
+    uint64_t xqe_imm_copy  : 1;
+    uint64_t xqe_hdr_split : 1;
+    uint64_t xqe_drop      : 8;
+    uint64_t xqe_pass      : 8;
+    uint64_t wqe_pool_drop : 8;
+    uint64_t wqe_pool_pass : 8;
+    uint64_t spb_aura_drop : 8;
+    uint64_t spb_aura_pass : 8;
+    uint64_t spb_pool_drop : 8;
+    uint64_t spb_pool_pass : 8;
+    uint64_t lpb_aura_drop : 8;
+    uint64_t lpb_aura_pass : 8;
+    uint64_t lpb_pool_drop : 8;
+    uint64_t lpb_pool_pass : 8;
+    uint64_t rsvd_319_288  : 32;
+    uint64_t ltag          : 24;
+    uint64_t good_utag     : 8;
+    uint64_t bad_utag      : 8;
+    uint64_t flow_tagw     : 6;
+    uint64_t rsvd_383_366  : 18;
+    uint64_t octs          : 48;
+    uint64_t rsvd_447_432  : 16;
+    uint64_t pkts          : 48;
+    uint64_t rsvd_511_496  : 16;
+    uint64_t drop_octs     : 48;
+    uint64_t rsvd_575_560  : 16;
+    uint64_t drop_pkts     : 48;
+    uint64_t rsvd_639_624  : 16;
+    uint64_t re_pkts       : 48;
+    uint64_t rsvd_702_688  : 15;
+    uint64_t ena_copy      : 1;
+    uint64_t rsvd_739_704  : 36;
+    uint64_t rq_int        : 8;
+    uint64_t rq_int_ena    : 8;
+    uint64_t qint_idx      : 7;
+    uint64_t rsvd_767_763  : 5;
+    uint64_t rsvd_831_768  : 64;/* W12 */
+    uint64_t rsvd_895_832  : 64;/* W13 */
+    uint64_t rsvd_959_896  : 64;/* W14 */
+    uint64_t rsvd_1023_960 : 64;/* W15 */
 };
 
 /* NIX receive queue context structure */
 struct nix_rq_ctx_s {
-	uint64_t ena           : 1;
-	uint64_t sso_ena       : 1;
-	uint64_t ipsech_ena    : 1;
-	uint64_t ena_wqwd      : 1;
-	uint64_t cq            : 20;
-	uint64_t substream     : 20;
-	uint64_t wqe_aura      : 20;
-	uint64_t spb_aura      : 20;
-	uint64_t lpb_aura      : 20;
-	uint64_t sso_grp       : 10;
-	uint64_t sso_tt        : 2;
-	uint64_t pb_caching    : 2;
-	uint64_t wqe_caching   : 1;
-	uint64_t xqe_drop_ena  : 1;
-	uint64_t spb_drop_ena  : 1;
-	uint64_t lpb_drop_ena  : 1;
-	uint64_t rsvd_127_122  : 6;
-	uint64_t rsvd_139_128  : 12;
-	uint64_t spb_sizem1    : 6;
-	uint64_t wqe_skip      : 2;
-	uint64_t rsvd_150_148  : 3;
-	uint64_t spb_ena       : 1;
-	uint64_t lpb_sizem1    : 12;
-	uint64_t first_skip    : 7;
-	uint64_t rsvd_171      : 1;
-	uint64_t later_skip    : 6;
-	uint64_t xqe_imm_size  : 6;
-	uint64_t rsvd_189_184  : 6;
-	uint64_t xqe_imm_copy  : 1;
-	uint64_t xqe_hdr_split : 1;
-	uint64_t xqe_drop      : 8;
-	uint64_t xqe_pass      : 8;
-	uint64_t wqe_pool_drop : 8;
-	uint64_t wqe_pool_pass : 8;
-	uint64_t spb_aura_drop : 8;
-	uint64_t spb_aura_pass : 8;
-	uint64_t spb_pool_drop : 8;
-	uint64_t spb_pool_pass : 8;
-	uint64_t lpb_aura_drop : 8;
-	uint64_t lpb_aura_pass : 8;
-	uint64_t lpb_pool_drop : 8;
-	uint64_t lpb_pool_pass : 8;
-	uint64_t rsvd_291_288  : 4;
-	uint64_t rq_int        : 8;
-	uint64_t rq_int_ena    : 8;
-	uint64_t qint_idx      : 7;
-	uint64_t rsvd_319_315  : 5;
-	uint64_t ltag          : 24;
-	uint64_t good_utag     : 8;
-	uint64_t bad_utag      : 8;
-	uint64_t flow_tagw     : 6;
-	uint64_t rsvd_383_366  : 18;
-	uint64_t octs          : 48;
-	uint64_t rsvd_447_432  : 16;
-	uint64_t pkts          : 48;
-	uint64_t rsvd_511_496  : 16;
-	uint64_t drop_octs     : 48;
-	uint64_t rsvd_575_560  : 16;
-	uint64_t drop_pkts     : 48;
-	uint64_t rsvd_639_624  : 16;
-	uint64_t re_pkts       : 48;
-	uint64_t rsvd_703_688  : 16;
-	uint64_t rsvd_767_704  : 64;/* W11 */
-	uint64_t rsvd_831_768  : 64;/* W12 */
-	uint64_t rsvd_895_832  : 64;/* W13 */
-	uint64_t rsvd_959_896  : 64;/* W14 */
-	uint64_t rsvd_1023_960 : 64;/* W15 */
+    uint64_t ena           : 1;
+    uint64_t sso_ena       : 1;
+    uint64_t ipsech_ena    : 1;
+    uint64_t ena_wqwd      : 1;
+    uint64_t cq            : 20;
+    uint64_t substream     : 20;
+    uint64_t wqe_aura      : 20;
+    uint64_t spb_aura      : 20;
+    uint64_t lpb_aura      : 20;
+    uint64_t sso_grp       : 10;
+    uint64_t sso_tt        : 2;
+    uint64_t pb_caching    : 2;
+    uint64_t wqe_caching   : 1;
+    uint64_t xqe_drop_ena  : 1;
+    uint64_t spb_drop_ena  : 1;
+    uint64_t lpb_drop_ena  : 1;
+    uint64_t rsvd_127_122  : 6;
+    uint64_t rsvd_139_128  : 12;
+    uint64_t spb_sizem1    : 6;
+    uint64_t wqe_skip      : 2;
+    uint64_t rsvd_150_148  : 3;
+    uint64_t spb_ena       : 1;
+    uint64_t lpb_sizem1    : 12;
+    uint64_t first_skip    : 7;
+    uint64_t rsvd_171      : 1;
+    uint64_t later_skip    : 6;
+    uint64_t xqe_imm_size  : 6;
+    uint64_t rsvd_189_184  : 6;
+    uint64_t xqe_imm_copy  : 1;
+    uint64_t xqe_hdr_split : 1;
+    uint64_t xqe_drop      : 8;
+    uint64_t xqe_pass      : 8;
+    uint64_t wqe_pool_drop : 8;
+    uint64_t wqe_pool_pass : 8;
+    uint64_t spb_aura_drop : 8;
+    uint64_t spb_aura_pass : 8;
+    uint64_t spb_pool_drop : 8;
+    uint64_t spb_pool_pass : 8;
+    uint64_t lpb_aura_drop : 8;
+    uint64_t lpb_aura_pass : 8;
+    uint64_t lpb_pool_drop : 8;
+    uint64_t lpb_pool_pass : 8;
+    uint64_t rsvd_291_288  : 4;
+    uint64_t rq_int        : 8;
+    uint64_t rq_int_ena    : 8;
+    uint64_t qint_idx      : 7;
+    uint64_t rsvd_319_315  : 5;
+    uint64_t ltag          : 24;
+    uint64_t good_utag     : 8;
+    uint64_t bad_utag      : 8;
+    uint64_t flow_tagw     : 6;
+    uint64_t rsvd_383_366  : 18;
+    uint64_t octs          : 48;
+    uint64_t rsvd_447_432  : 16;
+    uint64_t pkts          : 48;
+    uint64_t rsvd_511_496  : 16;
+    uint64_t drop_octs     : 48;
+    uint64_t rsvd_575_560  : 16;
+    uint64_t drop_pkts     : 48;
+    uint64_t rsvd_639_624  : 16;
+    uint64_t re_pkts       : 48;
+    uint64_t rsvd_703_688  : 16;
+    uint64_t rsvd_767_704  : 64;/* W11 */
+    uint64_t rsvd_831_768  : 64;/* W12 */
+    uint64_t rsvd_895_832  : 64;/* W13 */
+    uint64_t rsvd_959_896  : 64;/* W14 */
+    uint64_t rsvd_1023_960 : 64;/* W15 */
 };
 
 /* NIX receive side scaling entry structure */
 struct nix_rsse_s {
-	uint32_t rq         : 20;
-	uint32_t rsvd_31_20 : 12;
+    uint32_t rq         : 20;
+    uint32_t rsvd_31_20 : 12;
 };
 
 /* NIX receive action structure */
 struct nix_rx_action_s {
-	uint64_t op           : 4;
-	uint64_t pf_func      : 16;
-	uint64_t index        : 20;
-	uint64_t match_id     : 16;
-	uint64_t flow_key_alg : 5;
-	uint64_t rsvd_63_61   : 3;
+    uint64_t op           : 4;
+    uint64_t pf_func      : 16;
+    uint64_t index        : 20;
+    uint64_t match_id     : 16;
+    uint64_t flow_key_alg : 5;
+    uint64_t rsvd_63_61   : 3;
 };
 
 /* NIX receive immediate sub descriptor structure */
 struct nix_rx_imm_s {
-	uint64_t size       : 16;
-	uint64_t apad       : 3;
-	uint64_t rsvd_59_19 : 41;
-	uint64_t subdc      : 4;
+    uint64_t size       : 16;
+    uint64_t apad       : 3;
+    uint64_t rsvd_59_19 : 41;
+    uint64_t subdc      : 4;
 };
 
 /* NIX receive multicast/mirror entry structure */
 struct nix_rx_mce_s {
-	uint64_t op         : 2;
-	uint64_t rsvd_2     : 1;
-	uint64_t eol        : 1;
-	uint64_t index      : 20;
-	uint64_t rsvd_31_24 : 8;
-	uint64_t pf_func    : 16;
-	uint64_t next       : 16;
+    uint64_t op         : 2;
+    uint64_t rsvd_2     : 1;
+    uint64_t eol        : 1;
+    uint64_t index      : 20;
+    uint64_t rsvd_31_24 : 8;
+    uint64_t pf_func    : 16;
+    uint64_t next       : 16;
 };
 
 /* NIX receive parse structure */
 struct nix_rx_parse_s {
-	uint64_t chan         : 12;
-	uint64_t desc_sizem1  : 5;
-	uint64_t imm_copy     : 1;
-	uint64_t express      : 1;
-	uint64_t wqwd         : 1;
-	uint64_t errlev       : 4;
-	uint64_t errcode      : 8;
-	uint64_t latype       : 4;
-	uint64_t lbtype       : 4;
-	uint64_t lctype       : 4;
-	uint64_t ldtype       : 4;
-	uint64_t letype       : 4;
-	uint64_t lftype       : 4;
-	uint64_t lgtype       : 4;
-	uint64_t lhtype       : 4;
-	uint64_t pkt_lenm1    : 16;
-	uint64_t l2m          : 1;
-	uint64_t l2b          : 1;
-	uint64_t l3m          : 1;
-	uint64_t l3b          : 1;
-	uint64_t vtag0_valid  : 1;
-	uint64_t vtag0_gone   : 1;
-	uint64_t vtag1_valid  : 1;
-	uint64_t vtag1_gone   : 1;
-	uint64_t pkind        : 6;
-	uint64_t rsvd_95_94   : 2;
-	uint64_t vtag0_tci    : 16;
-	uint64_t vtag1_tci    : 16;
-	uint64_t laflags      : 8;
-	uint64_t lbflags      : 8;
-	uint64_t lcflags      : 8;
-	uint64_t ldflags      : 8;
-	uint64_t leflags      : 8;
-	uint64_t lfflags      : 8;
-	uint64_t lgflags      : 8;
-	uint64_t lhflags      : 8;
-	uint64_t eoh_ptr      : 8;
-	uint64_t wqe_aura     : 20;
-	uint64_t pb_aura      : 20;
-	uint64_t match_id     : 16;
-	uint64_t laptr        : 8;
-	uint64_t lbptr        : 8;
-	uint64_t lcptr        : 8;
-	uint64_t ldptr        : 8;
-	uint64_t leptr        : 8;
-	uint64_t lfptr        : 8;
-	uint64_t lgptr        : 8;
-	uint64_t lhptr        : 8;
-	uint64_t vtag0_ptr    : 8;
-	uint64_t vtag1_ptr    : 8;
-	uint64_t flow_key_alg : 5;
-	uint64_t rsvd_383_341 : 43;
-	uint64_t rsvd_447_384 : 64;  /* W6 */
+    uint64_t chan         : 12;
+    uint64_t desc_sizem1  : 5;
+    uint64_t imm_copy     : 1;
+    uint64_t express      : 1;
+    uint64_t wqwd         : 1;
+    uint64_t errlev       : 4;
+    uint64_t errcode      : 8;
+    uint64_t latype       : 4;
+    uint64_t lbtype       : 4;
+    uint64_t lctype       : 4;
+    uint64_t ldtype       : 4;
+    uint64_t letype       : 4;
+    uint64_t lftype       : 4;
+    uint64_t lgtype       : 4;
+    uint64_t lhtype       : 4;
+    uint64_t pkt_lenm1    : 16;
+    uint64_t l2m          : 1;
+    uint64_t l2b          : 1;
+    uint64_t l3m          : 1;
+    uint64_t l3b          : 1;
+    uint64_t vtag0_valid  : 1;
+    uint64_t vtag0_gone   : 1;
+    uint64_t vtag1_valid  : 1;
+    uint64_t vtag1_gone   : 1;
+    uint64_t pkind        : 6;
+    uint64_t rsvd_95_94   : 2;
+    uint64_t vtag0_tci    : 16;
+    uint64_t vtag1_tci    : 16;
+    uint64_t laflags      : 8;
+    uint64_t lbflags      : 8;
+    uint64_t lcflags      : 8;
+    uint64_t ldflags      : 8;
+    uint64_t leflags      : 8;
+    uint64_t lfflags      : 8;
+    uint64_t lgflags      : 8;
+    uint64_t lhflags      : 8;
+    uint64_t eoh_ptr      : 8;
+    uint64_t wqe_aura     : 20;
+    uint64_t pb_aura      : 20;
+    uint64_t match_id     : 16;
+    uint64_t laptr        : 8;
+    uint64_t lbptr        : 8;
+    uint64_t lcptr        : 8;
+    uint64_t ldptr        : 8;
+    uint64_t leptr        : 8;
+    uint64_t lfptr        : 8;
+    uint64_t lgptr        : 8;
+    uint64_t lhptr        : 8;
+    uint64_t vtag0_ptr    : 8;
+    uint64_t vtag1_ptr    : 8;
+    uint64_t flow_key_alg : 5;
+    uint64_t rsvd_383_341 : 43;
+    uint64_t rsvd_447_384 : 64;  /* W6 */
 };
 
 /* NIX receive scatter/gather sub descriptor structure */
 struct nix_rx_sg_s {
-	uint64_t seg1_size  : 16;
-	uint64_t seg2_size  : 16;
-	uint64_t seg3_size  : 16;
-	uint64_t segs       : 2;
-	uint64_t rsvd_59_50 : 10;
-	uint64_t subdc      : 4;
+    uint64_t seg1_size  : 16;
+    uint64_t seg2_size  : 16;
+    uint64_t seg3_size  : 16;
+    uint64_t segs       : 2;
+    uint64_t rsvd_59_50 : 10;
+    uint64_t subdc      : 4;
 };
 
 /* NIX receive vtag action structure */
 struct nix_rx_vtag_action_s {
-	uint64_t vtag0_relptr : 8;
-	uint64_t vtag0_lid    : 3;
-	uint64_t rsvd_11      : 1;
-	uint64_t vtag0_type   : 3;
-	uint64_t vtag0_valid  : 1;
-	uint64_t rsvd_31_16   : 16;
-	uint64_t vtag1_relptr : 8;
-	uint64_t vtag1_lid    : 3;
-	uint64_t rsvd_43      : 1;
-	uint64_t vtag1_type   : 3;
-	uint64_t vtag1_valid  : 1;
-	uint64_t rsvd_63_48   : 16;
+    uint64_t vtag0_relptr : 8;
+    uint64_t vtag0_lid    : 3;
+    uint64_t rsvd_11      : 1;
+    uint64_t vtag0_type   : 3;
+    uint64_t vtag0_valid  : 1;
+    uint64_t rsvd_31_16   : 16;
+    uint64_t vtag1_relptr : 8;
+    uint64_t vtag1_lid    : 3;
+    uint64_t rsvd_43      : 1;
+    uint64_t vtag1_type   : 3;
+    uint64_t vtag1_valid  : 1;
+    uint64_t rsvd_63_48   : 16;
 };
 
 /* NIX send completion structure */
 struct nix_send_comp_s {
-	uint64_t status     : 8;
-	uint64_t sqe_id     : 16;
-	uint64_t rsvd_63_24 : 40;
+    uint64_t status     : 8;
+    uint64_t sqe_id     : 16;
+    uint64_t rsvd_63_24 : 40;
 };
 
 /* NIX send CRC sub descriptor structure */
 struct nix_send_crc_s {
-	uint64_t size        : 16;
-	uint64_t start       : 16;
-	uint64_t insert      : 16;
-	uint64_t rsvd_57_48  : 10;
-	uint64_t alg         : 2;
-	uint64_t subdc       : 4;
-	uint64_t iv          : 32;
-	uint64_t rsvd_127_96 : 32;
+    uint64_t size        : 16;
+    uint64_t start       : 16;
+    uint64_t insert      : 16;
+    uint64_t rsvd_57_48  : 10;
+    uint64_t alg         : 2;
+    uint64_t subdc       : 4;
+    uint64_t iv          : 32;
+    uint64_t rsvd_127_96 : 32;
 };
 
 /* NIX send extended header sub descriptor structure */
 RTE_STD_C11
 union nix_send_ext_w0_u {
-	uint64_t u;
-	struct {
-		uint64_t lso_mps       : 14;
-		uint64_t lso           : 1;
-		uint64_t tstmp         : 1;
-		uint64_t lso_sb        : 8;
-		uint64_t lso_format    : 5;
-		uint64_t rsvd_31_29    : 3;
-		uint64_t shp_chg       : 9;
-		uint64_t shp_dis       : 1;
-		uint64_t shp_ra        : 2;
-		uint64_t markptr       : 8;
-		uint64_t markform      : 7;
-		uint64_t mark_en       : 1;
-		uint64_t subdc         : 4;
-	};
+    uint64_t u;
+    struct {
+        uint64_t lso_mps       : 14;
+        uint64_t lso           : 1;
+        uint64_t tstmp         : 1;
+        uint64_t lso_sb        : 8;
+        uint64_t lso_format    : 5;
+        uint64_t rsvd_31_29    : 3;
+        uint64_t shp_chg       : 9;
+        uint64_t shp_dis       : 1;
+        uint64_t shp_ra        : 2;
+        uint64_t markptr       : 8;
+        uint64_t markform      : 7;
+        uint64_t mark_en       : 1;
+        uint64_t subdc         : 4;
+    };
 };
 
 RTE_STD_C11
 union nix_send_ext_w1_u {
-	uint64_t u;
-	struct {
-		uint64_t vlan0_ins_ptr : 8;
-		uint64_t vlan0_ins_tci : 16;
-		uint64_t vlan1_ins_ptr : 8;
-		uint64_t vlan1_ins_tci : 16;
-		uint64_t vlan0_ins_ena : 1;
-		uint64_t vlan1_ins_ena : 1;
-		uint64_t rsvd_127_114  : 14;
-	};
+    uint64_t u;
+    struct {
+        uint64_t vlan0_ins_ptr : 8;
+        uint64_t vlan0_ins_tci : 16;
+        uint64_t vlan1_ins_ptr : 8;
+        uint64_t vlan1_ins_tci : 16;
+        uint64_t vlan0_ins_ena : 1;
+        uint64_t vlan1_ins_ena : 1;
+        uint64_t rsvd_127_114  : 14;
+    };
 };
 
 struct nix_send_ext_s {
-	union nix_send_ext_w0_u w0;
-	union nix_send_ext_w1_u w1;
+    union nix_send_ext_w0_u w0;
+    union nix_send_ext_w1_u w1;
 };
 
 /* NIX send header sub descriptor structure */
 RTE_STD_C11
 union nix_send_hdr_w0_u {
-	uint64_t u;
-	struct {
-		uint64_t total   : 18;
-		uint64_t rsvd_18 : 1;
-		uint64_t df      : 1;
-		uint64_t aura    : 20;
-		uint64_t sizem1  : 3;
-		uint64_t pnc     : 1;
-		uint64_t sq      : 20;
-	};
+    uint64_t u;
+    struct {
+        uint64_t total   : 18;
+        uint64_t rsvd_18 : 1;
+        uint64_t df      : 1;
+        uint64_t aura    : 20;
+        uint64_t sizem1  : 3;
+        uint64_t pnc     : 1;
+        uint64_t sq      : 20;
+    };
 };
 
 RTE_STD_C11
 union nix_send_hdr_w1_u {
-	uint64_t u;
-	struct {
-		uint64_t ol3ptr  : 8;
-		uint64_t ol4ptr  : 8;
-		uint64_t il3ptr  : 8;
-		uint64_t il4ptr  : 8;
-		uint64_t ol3type : 4;
-		uint64_t ol4type : 4;
-		uint64_t il3type : 4;
-		uint64_t il4type : 4;
-		uint64_t sqe_id  : 16;
-	};
+    uint64_t u;
+    struct {
+        uint64_t ol3ptr  : 8;
+        uint64_t ol4ptr  : 8;
+        uint64_t il3ptr  : 8;
+        uint64_t il4ptr  : 8;
+        uint64_t ol3type : 4;
+        uint64_t ol4type : 4;
+        uint64_t il3type : 4;
+        uint64_t il4type : 4;
+        uint64_t sqe_id  : 16;
+    };
 };
 
 struct nix_send_hdr_s {
-	union nix_send_hdr_w0_u w0;
-	union nix_send_hdr_w1_u w1;
+    union nix_send_hdr_w0_u w0;
+    union nix_send_hdr_w1_u w1;
 };
 
 /* NIX send immediate sub descriptor structure */
 struct nix_send_imm_s {
-	uint64_t size       : 16;
-	uint64_t apad       : 3;
-	uint64_t rsvd_59_19 : 41;
-	uint64_t subdc      : 4;
+    uint64_t size       : 16;
+    uint64_t apad       : 3;
+    uint64_t rsvd_59_19 : 41;
+    uint64_t subdc      : 4;
 };
 
 /* NIX send jump sub descriptor structure */
 struct nix_send_jump_s {
-	uint64_t sizem1     : 7;
-	uint64_t rsvd_13_7  : 7;
-	uint64_t ld_type    : 2;
-	uint64_t aura       : 20;
-	uint64_t rsvd_58_36 : 23;
-	uint64_t f          : 1;
-	uint64_t subdc      : 4;
-	uint64_t addr       : 64;    /* W1 */
+    uint64_t sizem1     : 7;
+    uint64_t rsvd_13_7  : 7;
+    uint64_t ld_type    : 2;
+    uint64_t aura       : 20;
+    uint64_t rsvd_58_36 : 23;
+    uint64_t f          : 1;
+    uint64_t subdc      : 4;
+    uint64_t addr       : 64;    /* W1 */
 };
 
 /* NIX send memory sub descriptor structure */
 struct nix_send_mem_s {
-	uint64_t offset     : 16;
-	uint64_t rsvd_52_16 : 37;
-	uint64_t wmem       : 1;
-	uint64_t dsz        : 2;
-	uint64_t alg        : 4;
-	uint64_t subdc      : 4;
-	uint64_t addr       : 64;    /* W1 */
+    uint64_t offset     : 16;
+    uint64_t rsvd_52_16 : 37;
+    uint64_t wmem       : 1;
+    uint64_t dsz        : 2;
+    uint64_t alg        : 4;
+    uint64_t subdc      : 4;
+    uint64_t addr       : 64;    /* W1 */
 };
 
 /* NIX send scatter/gather sub descriptor structure */
 RTE_STD_C11
 union nix_send_sg_s {
-	uint64_t u;
-	struct {
-		uint64_t seg1_size  : 16;
-		uint64_t seg2_size  : 16;
-		uint64_t seg3_size  : 16;
-		uint64_t segs       : 2;
-		uint64_t rsvd_54_50 : 5;
-		uint64_t i1         : 1;
-		uint64_t i2         : 1;
-		uint64_t i3         : 1;
-		uint64_t ld_type    : 2;
-		uint64_t subdc      : 4;
-	};
+    uint64_t u;
+    struct {
+        uint64_t seg1_size  : 16;
+        uint64_t seg2_size  : 16;
+        uint64_t seg3_size  : 16;
+        uint64_t segs       : 2;
+        uint64_t rsvd_54_50 : 5;
+        uint64_t i1         : 1;
+        uint64_t i2         : 1;
+        uint64_t i3         : 1;
+        uint64_t ld_type    : 2;
+        uint64_t subdc      : 4;
+    };
 };
 
 /* NIX send work sub descriptor structure */
 struct nix_send_work_s {
-	uint64_t tag        : 32;
-	uint64_t tt         : 2;
-	uint64_t grp        : 10;
-	uint64_t rsvd_59_44 : 16;
-	uint64_t subdc      : 4;
-	uint64_t addr       : 64;    /* W1 */
+    uint64_t tag        : 32;
+    uint64_t tt         : 2;
+    uint64_t grp        : 10;
+    uint64_t rsvd_59_44 : 16;
+    uint64_t subdc      : 4;
+    uint64_t addr       : 64;    /* W1 */
 };
 
 /* NIX sq context hardware structure */
 struct nix_sq_ctx_hw_s {
-	uint64_t ena                   : 1;
-	uint64_t substream             : 20;
-	uint64_t max_sqe_size          : 2;
-	uint64_t sqe_way_mask          : 16;
-	uint64_t sqb_aura              : 20;
-	uint64_t gbl_rsvd1             : 5;
-	uint64_t cq_id                 : 20;
-	uint64_t cq_ena                : 1;
-	uint64_t qint_idx              : 6;
-	uint64_t gbl_rsvd2             : 1;
-	uint64_t sq_int                : 8;
-	uint64_t sq_int_ena            : 8;
-	uint64_t xoff                  : 1;
-	uint64_t sqe_stype             : 2;
-	uint64_t gbl_rsvd              : 17;
-	uint64_t head_sqb              : 64;/* W2 */
-	uint64_t head_offset           : 6;
-	uint64_t sqb_dequeue_count     : 16;
-	uint64_t default_chan          : 12;
-	uint64_t sdp_mcast             : 1;
-	uint64_t sso_ena               : 1;
-	uint64_t dse_rsvd1             : 28;
-	uint64_t sqb_enqueue_count     : 16;
-	uint64_t tail_offset           : 6;
-	uint64_t lmt_dis               : 1;
-	uint64_t smq_rr_quantum        : 24;
-	uint64_t dnq_rsvd1             : 17;
-	uint64_t tail_sqb              : 64;/* W5 */
-	uint64_t next_sqb              : 64;/* W6 */
-	uint64_t mnq_dis               : 1;
-	uint64_t smq                   : 9;
-	uint64_t smq_pend              : 1;
-	uint64_t smq_next_sq           : 20;
-	uint64_t smq_next_sq_vld       : 1;
-	uint64_t scm1_rsvd2            : 32;
-	uint64_t smenq_sqb             : 64;/* W8 */
-	uint64_t smenq_offset          : 6;
-	uint64_t cq_limit              : 8;
-	uint64_t smq_rr_count          : 25;
-	uint64_t scm_lso_rem           : 18;
-	uint64_t scm_dq_rsvd0          : 7;
-	uint64_t smq_lso_segnum        : 8;
-	uint64_t vfi_lso_total         : 18;
-	uint64_t vfi_lso_sizem1        : 3;
-	uint64_t vfi_lso_sb            : 8;
-	uint64_t vfi_lso_mps           : 14;
-	uint64_t vfi_lso_vlan0_ins_ena : 1;
-	uint64_t vfi_lso_vlan1_ins_ena : 1;
-	uint64_t vfi_lso_vld           : 1;
-	uint64_t smenq_next_sqb_vld    : 1;
-	uint64_t scm_dq_rsvd1          : 9;
-	uint64_t smenq_next_sqb        : 64;/* W11 */
-	uint64_t seb_rsvd1             : 64;/* W12 */
-	uint64_t drop_pkts             : 48;
-	uint64_t drop_octs_lsw         : 16;
-	uint64_t drop_octs_msw         : 32;
-	uint64_t pkts_lsw              : 32;
-	uint64_t pkts_msw              : 16;
-	uint64_t octs                  : 48;
+    uint64_t ena                   : 1;
+    uint64_t substream             : 20;
+    uint64_t max_sqe_size          : 2;
+    uint64_t sqe_way_mask          : 16;
+    uint64_t sqb_aura              : 20;
+    uint64_t gbl_rsvd1             : 5;
+    uint64_t cq_id                 : 20;
+    uint64_t cq_ena                : 1;
+    uint64_t qint_idx              : 6;
+    uint64_t gbl_rsvd2             : 1;
+    uint64_t sq_int                : 8;
+    uint64_t sq_int_ena            : 8;
+    uint64_t xoff                  : 1;
+    uint64_t sqe_stype             : 2;
+    uint64_t gbl_rsvd              : 17;
+    uint64_t head_sqb              : 64;/* W2 */
+    uint64_t head_offset           : 6;
+    uint64_t sqb_dequeue_count     : 16;
+    uint64_t default_chan          : 12;
+    uint64_t sdp_mcast             : 1;
+    uint64_t sso_ena               : 1;
+    uint64_t dse_rsvd1             : 28;
+    uint64_t sqb_enqueue_count     : 16;
+    uint64_t tail_offset           : 6;
+    uint64_t lmt_dis               : 1;
+    uint64_t smq_rr_quantum        : 24;
+    uint64_t dnq_rsvd1             : 17;
+    uint64_t tail_sqb              : 64;/* W5 */
+    uint64_t next_sqb              : 64;/* W6 */
+    uint64_t mnq_dis               : 1;
+    uint64_t smq                   : 9;
+    uint64_t smq_pend              : 1;
+    uint64_t smq_next_sq           : 20;
+    uint64_t smq_next_sq_vld       : 1;
+    uint64_t scm1_rsvd2            : 32;
+    uint64_t smenq_sqb             : 64;/* W8 */
+    uint64_t smenq_offset          : 6;
+    uint64_t cq_limit              : 8;
+    uint64_t smq_rr_count          : 25;
+    uint64_t scm_lso_rem           : 18;
+    uint64_t scm_dq_rsvd0          : 7;
+    uint64_t smq_lso_segnum        : 8;
+    uint64_t vfi_lso_total         : 18;
+    uint64_t vfi_lso_sizem1        : 3;
+    uint64_t vfi_lso_sb            : 8;
+    uint64_t vfi_lso_mps           : 14;
+    uint64_t vfi_lso_vlan0_ins_ena : 1;
+    uint64_t vfi_lso_vlan1_ins_ena : 1;
+    uint64_t vfi_lso_vld           : 1;
+    uint64_t smenq_next_sqb_vld    : 1;
+    uint64_t scm_dq_rsvd1          : 9;
+    uint64_t smenq_next_sqb        : 64;/* W11 */
+    uint64_t seb_rsvd1             : 64;/* W12 */
+    uint64_t drop_pkts             : 48;
+    uint64_t drop_octs_lsw         : 16;
+    uint64_t drop_octs_msw         : 32;
+    uint64_t pkts_lsw              : 32;
+    uint64_t pkts_msw              : 16;
+    uint64_t octs                  : 48;
 };
 
 /* NIX send queue context structure */
 struct nix_sq_ctx_s {
-	uint64_t ena                   : 1;
-	uint64_t qint_idx              : 6;
-	uint64_t substream             : 20;
-	uint64_t sdp_mcast             : 1;
-	uint64_t cq                    : 20;
-	uint64_t sqe_way_mask          : 16;
-	uint64_t smq                   : 9;
-	uint64_t cq_ena                : 1;
-	uint64_t xoff                  : 1;
-	uint64_t sso_ena               : 1;
-	uint64_t smq_rr_quantum        : 24;
-	uint64_t default_chan          : 12;
-	uint64_t sqb_count             : 16;
-	uint64_t smq_rr_count          : 25;
-	uint64_t sqb_aura              : 20;
-	uint64_t sq_int                : 8;
-	uint64_t sq_int_ena            : 8;
-	uint64_t sqe_stype             : 2;
-	uint64_t rsvd_191              : 1;
-	uint64_t max_sqe_size          : 2;
-	uint64_t cq_limit              : 8;
-	uint64_t lmt_dis               : 1;
-	uint64_t mnq_dis               : 1;
-	uint64_t smq_next_sq           : 20;
-	uint64_t smq_lso_segnum        : 8;
-	uint64_t tail_offset           : 6;
-	uint64_t smenq_offset          : 6;
-	uint64_t head_offset           : 6;
-	uint64_t smenq_next_sqb_vld    : 1;
-	uint64_t smq_pend              : 1;
-	uint64_t smq_next_sq_vld       : 1;
-	uint64_t rsvd_255_253          : 3;
-	uint64_t next_sqb              : 64;/* W4 */
-	uint64_t tail_sqb              : 64;/* W5 */
-	uint64_t smenq_sqb             : 64;/* W6 */
-	uint64_t smenq_next_sqb        : 64;/* W7 */
-	uint64_t head_sqb              : 64;/* W8 */
-	uint64_t rsvd_583_576          : 8;
-	uint64_t vfi_lso_total         : 18;
-	uint64_t vfi_lso_sizem1        : 3;
-	uint64_t vfi_lso_sb            : 8;
-	uint64_t vfi_lso_mps           : 14;
-	uint64_t vfi_lso_vlan0_ins_ena : 1;
-	uint64_t vfi_lso_vlan1_ins_ena : 1;
-	uint64_t vfi_lso_vld           : 1;
-	uint64_t rsvd_639_630          : 10;
-	uint64_t scm_lso_rem           : 18;
-	uint64_t rsvd_703_658          : 46;
-	uint64_t octs                  : 48;
-	uint64_t rsvd_767_752          : 16;
-	uint64_t pkts                  : 48;
-	uint64_t rsvd_831_816          : 16;
-	uint64_t rsvd_895_832          : 64;/* W13 */
-	uint64_t drop_octs             : 48;
-	uint64_t rsvd_959_944          : 16;
-	uint64_t drop_pkts             : 48;
-	uint64_t rsvd_1023_1008        : 16;
+    uint64_t ena                   : 1;
+    uint64_t qint_idx              : 6;
+    uint64_t substream             : 20;
+    uint64_t sdp_mcast             : 1;
+    uint64_t cq                    : 20;
+    uint64_t sqe_way_mask          : 16;
+    uint64_t smq                   : 9;
+    uint64_t cq_ena                : 1;
+    uint64_t xoff                  : 1;
+    uint64_t sso_ena               : 1;
+    uint64_t smq_rr_quantum        : 24;
+    uint64_t default_chan          : 12;
+    uint64_t sqb_count             : 16;
+    uint64_t smq_rr_count          : 25;
+    uint64_t sqb_aura              : 20;
+    uint64_t sq_int                : 8;
+    uint64_t sq_int_ena            : 8;
+    uint64_t sqe_stype             : 2;
+    uint64_t rsvd_191              : 1;
+    uint64_t max_sqe_size          : 2;
+    uint64_t cq_limit              : 8;
+    uint64_t lmt_dis               : 1;
+    uint64_t mnq_dis               : 1;
+    uint64_t smq_next_sq           : 20;
+    uint64_t smq_lso_segnum        : 8;
+    uint64_t tail_offset           : 6;
+    uint64_t smenq_offset          : 6;
+    uint64_t head_offset           : 6;
+    uint64_t smenq_next_sqb_vld    : 1;
+    uint64_t smq_pend              : 1;
+    uint64_t smq_next_sq_vld       : 1;
+    uint64_t rsvd_255_253          : 3;
+    uint64_t next_sqb              : 64;/* W4 */
+    uint64_t tail_sqb              : 64;/* W5 */
+    uint64_t smenq_sqb             : 64;/* W6 */
+    uint64_t smenq_next_sqb        : 64;/* W7 */
+    uint64_t head_sqb              : 64;/* W8 */
+    uint64_t rsvd_583_576          : 8;
+    uint64_t vfi_lso_total         : 18;
+    uint64_t vfi_lso_sizem1        : 3;
+    uint64_t vfi_lso_sb            : 8;
+    uint64_t vfi_lso_mps           : 14;
+    uint64_t vfi_lso_vlan0_ins_ena : 1;
+    uint64_t vfi_lso_vlan1_ins_ena : 1;
+    uint64_t vfi_lso_vld           : 1;
+    uint64_t rsvd_639_630          : 10;
+    uint64_t scm_lso_rem           : 18;
+    uint64_t rsvd_703_658          : 46;
+    uint64_t octs                  : 48;
+    uint64_t rsvd_767_752          : 16;
+    uint64_t pkts                  : 48;
+    uint64_t rsvd_831_816          : 16;
+    uint64_t rsvd_895_832          : 64;/* W13 */
+    uint64_t drop_octs             : 48;
+    uint64_t rsvd_959_944          : 16;
+    uint64_t drop_pkts             : 48;
+    uint64_t rsvd_1023_1008        : 16;
 };
 
 /* NIX transmit action structure */
 struct nix_tx_action_s {
-	uint64_t op         : 4;
-	uint64_t rsvd_11_4  : 8;
-	uint64_t index      : 20;
-	uint64_t match_id   : 16;
-	uint64_t rsvd_63_48 : 16;
+    uint64_t op         : 4;
+    uint64_t rsvd_11_4  : 8;
+    uint64_t index      : 20;
+    uint64_t match_id   : 16;
+    uint64_t rsvd_63_48 : 16;
 };
 
 /* NIX transmit vtag action structure */
 struct nix_tx_vtag_action_s {
-	uint64_t vtag0_relptr : 8;
-	uint64_t vtag0_lid    : 3;
-	uint64_t rsvd_11      : 1;
-	uint64_t vtag0_op     : 2;
-	uint64_t rsvd_15_14   : 2;
-	uint64_t vtag0_def    : 10;
-	uint64_t rsvd_31_26   : 6;
-	uint64_t vtag1_relptr : 8;
-	uint64_t vtag1_lid    : 3;
-	uint64_t rsvd_43      : 1;
-	uint64_t vtag1_op     : 2;
-	uint64_t rsvd_47_46   : 2;
-	uint64_t vtag1_def    : 10;
-	uint64_t rsvd_63_58   : 6;
+    uint64_t vtag0_relptr : 8;
+    uint64_t vtag0_lid    : 3;
+    uint64_t rsvd_11      : 1;
+    uint64_t vtag0_op     : 2;
+    uint64_t rsvd_15_14   : 2;
+    uint64_t vtag0_def    : 10;
+    uint64_t rsvd_31_26   : 6;
+    uint64_t vtag1_relptr : 8;
+    uint64_t vtag1_lid    : 3;
+    uint64_t rsvd_43      : 1;
+    uint64_t vtag1_op     : 2;
+    uint64_t rsvd_47_46   : 2;
+    uint64_t vtag1_def    : 10;
+    uint64_t rsvd_63_58   : 6;
 };
 
 /* NIX work queue entry header structure */
 struct nix_wqe_hdr_s {
-	uint64_t tag      : 32;
-	uint64_t tt       : 2;
-	uint64_t grp      : 10;
-	uint64_t node     : 2;
-	uint64_t q        : 14;
-	uint64_t wqe_type : 4;
+    uint64_t tag      : 32;
+    uint64_t tt       : 2;
+    uint64_t grp      : 10;
+    uint64_t node     : 2;
+    uint64_t q        : 14;
+    uint64_t wqe_type : 4;
 };
 
 /* NIX Rx flow key algorithm field structure */
 struct nix_rx_flowkey_alg {
-	uint64_t key_offset      :6;
-	uint64_t ln_mask     :1;
-	uint64_t fn_mask     :1;
-	uint64_t hdr_offset      :8;
-	uint64_t bytesm1     :5;
-	uint64_t lid         :3;
-	uint64_t reserved_24_24  :1;
-	uint64_t ena         :1;
-	uint64_t sel_chan        :1;
-	uint64_t ltype_mask      :4;
-	uint64_t ltype_match     :4;
-	uint64_t reserved_35_63  :29;
+    uint64_t key_offset      :6;
+    uint64_t ln_mask     :1;
+    uint64_t fn_mask     :1;
+    uint64_t hdr_offset      :8;
+    uint64_t bytesm1     :5;
+    uint64_t lid         :3;
+    uint64_t reserved_24_24  :1;
+    uint64_t ena         :1;
+    uint64_t sel_chan        :1;
+    uint64_t ltype_mask      :4;
+    uint64_t ltype_match     :4;
+    uint64_t reserved_35_63  :29;
 };
 
 /* NIX LSO format field structure */
 struct nix_lso_format {
-	uint64_t offset      : 8;
-	uint64_t layer       : 2;
-	uint64_t rsvd_10_11  : 2;
-	uint64_t sizem1      : 2;
-	uint64_t rsvd_14_15  : 2;
-	uint64_t alg         : 3;
-	uint64_t rsvd_19_63  : 45;
+    uint64_t offset      : 8;
+    uint64_t layer       : 2;
+    uint64_t rsvd_10_11  : 2;
+    uint64_t sizem1      : 2;
+    uint64_t rsvd_14_15  : 2;
+    uint64_t alg         : 3;
+    uint64_t rsvd_19_63  : 45;
 };
 
-#define NIX_LSO_FIELD_MAX	(8)
-#define NIX_LSO_FIELD_ALG_MASK	GENMASK(18, 16)
-#define NIX_LSO_FIELD_SZ_MASK	GENMASK(13, 12)
-#define NIX_LSO_FIELD_LY_MASK	GENMASK(9, 8)
-#define NIX_LSO_FIELD_OFF_MASK	GENMASK(7, 0)
+#define NIX_LSO_FIELD_MAX    (8)
+#define NIX_LSO_FIELD_ALG_MASK    GENMASK(18, 16)
+#define NIX_LSO_FIELD_SZ_MASK    GENMASK(13, 12)
+#define NIX_LSO_FIELD_LY_MASK    GENMASK(9, 8)
+#define NIX_LSO_FIELD_OFF_MASK    GENMASK(7, 0)
 
-#define NIX_LSO_FIELD_MASK			\
-		(NIX_LSO_FIELD_OFF_MASK |	\
-		 NIX_LSO_FIELD_LY_MASK |	\
-		 NIX_LSO_FIELD_SZ_MASK |	\
-		 NIX_LSO_FIELD_ALG_MASK)
+#define NIX_LSO_FIELD_MASK            \
+        (NIX_LSO_FIELD_OFF_MASK |    \
+         NIX_LSO_FIELD_LY_MASK |    \
+         NIX_LSO_FIELD_SZ_MASK |    \
+         NIX_LSO_FIELD_ALG_MASK)
 
 #endif /* __OTX2_NIX_HW_H__ */

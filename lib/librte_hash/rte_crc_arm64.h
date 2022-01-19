@@ -23,41 +23,41 @@ extern "C" {
 static inline uint32_t
 crc32c_arm64_u8(uint8_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32cb %w[crc], %w[crc], %w[value]"
-			: [crc] "+r" (init_val)
-			: [value] "r" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32cb %w[crc], %w[crc], %w[value]"
+            : [crc] "+r" (init_val)
+            : [value] "r" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_arm64_u16(uint16_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32ch %w[crc], %w[crc], %w[value]"
-			: [crc] "+r" (init_val)
-			: [value] "r" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32ch %w[crc], %w[crc], %w[value]"
+            : [crc] "+r" (init_val)
+            : [value] "r" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_arm64_u32(uint32_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32cw %w[crc], %w[crc], %w[value]"
-			: [crc] "+r" (init_val)
-			: [value] "r" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32cw %w[crc], %w[crc], %w[value]"
+            : [crc] "+r" (init_val)
+            : [value] "r" (data));
+    return init_val;
 }
 
 static inline uint32_t
 crc32c_arm64_u64(uint64_t data, uint32_t init_val)
 {
-	__asm__ volatile(
-			"crc32cx %w[crc], %w[crc], %x[value]"
-			: [crc] "+r" (init_val)
-			: [value] "r" (data));
-	return init_val;
+    __asm__ volatile(
+            "crc32cx %w[crc], %w[crc], %x[value]"
+            : [crc] "+r" (init_val)
+            : [value] "r" (data));
+    return init_val;
 }
 
 /**
@@ -73,23 +73,23 @@ crc32c_arm64_u64(uint64_t data, uint32_t init_val)
 static inline void
 rte_hash_crc_set_alg(uint8_t alg)
 {
-	switch (alg) {
-	case CRC32_ARM64:
-		if (!rte_cpu_get_flag_enabled(RTE_CPUFLAG_CRC32))
-			alg = CRC32_SW;
-		/* fall-through */
-	case CRC32_SW:
-		crc32_alg = alg;
-		/* fall-through */
-	default:
-		break;
-	}
+    switch (alg) {
+    case CRC32_ARM64:
+        if (!rte_cpu_get_flag_enabled(RTE_CPUFLAG_CRC32))
+            alg = CRC32_SW;
+        /* fall-through */
+    case CRC32_SW:
+        crc32_alg = alg;
+        /* fall-through */
+    default:
+        break;
+    }
 }
 
 /* Setting the best available algorithm */
 RTE_INIT(rte_hash_crc_init_alg)
 {
-	rte_hash_crc_set_alg(CRC32_ARM64);
+    rte_hash_crc_set_alg(CRC32_ARM64);
 }
 
 /**
@@ -107,10 +107,10 @@ RTE_INIT(rte_hash_crc_init_alg)
 static inline uint32_t
 rte_hash_crc_1byte(uint8_t data, uint32_t init_val)
 {
-	if (likely(crc32_alg & CRC32_ARM64))
-		return crc32c_arm64_u8(data, init_val);
+    if (likely(crc32_alg & CRC32_ARM64))
+        return crc32c_arm64_u8(data, init_val);
 
-	return crc32c_1byte(data, init_val);
+    return crc32c_1byte(data, init_val);
 }
 
 /**
@@ -128,10 +128,10 @@ rte_hash_crc_1byte(uint8_t data, uint32_t init_val)
 static inline uint32_t
 rte_hash_crc_2byte(uint16_t data, uint32_t init_val)
 {
-	if (likely(crc32_alg & CRC32_ARM64))
-		return crc32c_arm64_u16(data, init_val);
+    if (likely(crc32_alg & CRC32_ARM64))
+        return crc32c_arm64_u16(data, init_val);
 
-	return crc32c_2bytes(data, init_val);
+    return crc32c_2bytes(data, init_val);
 }
 
 /**
@@ -149,10 +149,10 @@ rte_hash_crc_2byte(uint16_t data, uint32_t init_val)
 static inline uint32_t
 rte_hash_crc_4byte(uint32_t data, uint32_t init_val)
 {
-	if (likely(crc32_alg & CRC32_ARM64))
-		return crc32c_arm64_u32(data, init_val);
+    if (likely(crc32_alg & CRC32_ARM64))
+        return crc32c_arm64_u32(data, init_val);
 
-	return crc32c_1word(data, init_val);
+    return crc32c_1word(data, init_val);
 }
 
 /**
@@ -170,10 +170,10 @@ rte_hash_crc_4byte(uint32_t data, uint32_t init_val)
 static inline uint32_t
 rte_hash_crc_8byte(uint64_t data, uint32_t init_val)
 {
-	if (likely(crc32_alg == CRC32_ARM64))
-		return crc32c_arm64_u64(data, init_val);
+    if (likely(crc32_alg == CRC32_ARM64))
+        return crc32c_arm64_u64(data, init_val);
 
-	return crc32c_2words(data, init_val);
+    return crc32c_2words(data, init_val);
 }
 
 #ifdef __cplusplus

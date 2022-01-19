@@ -22,29 +22,29 @@ extern "C" {
 
 /** Hash table parameters */
 struct rte_table_hash_cuckoo_params {
-	/** Name */
-	const char *name;
+    /** Name */
+    const char *name;
 
-	/** Key size (number of bytes) */
-	uint32_t key_size;
+    /** Key size (number of bytes) */
+    uint32_t key_size;
 
-	/** Byte offset within packet meta-data where the key is located */
-	uint32_t key_offset;
+    /** Byte offset within packet meta-data where the key is located */
+    uint32_t key_offset;
 
-	/** Key mask */
-	uint8_t *key_mask;
+    /** Key mask */
+    uint8_t *key_mask;
 
-	/** Number of keys */
-	uint32_t n_keys;
+    /** Number of keys */
+    uint32_t n_keys;
 
-	/** Number of buckets */
-	uint32_t n_buckets;
+    /** Number of buckets */
+    uint32_t n_buckets;
 
-	/** Hash function */
-	rte_hash_function f_hash;
+    /** Hash function */
+    rte_hash_function f_hash;
 
-	/** Seed value for the hash function */
-	uint32_t seed;
+    /** Seed value for the hash function */
+    uint32_t seed;
 };
 
 /** Cuckoo hash table operations */

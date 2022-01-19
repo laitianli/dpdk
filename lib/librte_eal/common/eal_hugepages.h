@@ -16,13 +16,13 @@
  * through the files in hugetlbfs.
  */
 struct hugepage_file {
-	void *orig_va;      /**< virtual addr of first mmap() */
-	void *final_va;     /**< virtual addr of 2nd mmap() */
-	uint64_t physaddr;  /**< physical addr */
-	size_t size;        /**< the page size */
-	int socket_id;      /**< NUMA socket ID */
-	int file_id;        /**< the '%d' in HUGEFILE_FMT */
-	char filepath[MAX_HUGEPAGE_PATH]; /**< path to backing file on filesystem */
+    void *orig_va;      /**< virtual addr of first mmap() */
+    void *final_va;     /**< virtual addr of 2nd mmap() */
+    uint64_t physaddr;  /**< physical addr */
+    size_t size;        /**< the page size */
+    int socket_id;      /**< NUMA socket ID */
+    int file_id;        /**< the '%d' in HUGEFILE_FMT */
+    char filepath[MAX_HUGEPAGE_PATH]; /**< path to backing file on filesystem */
 };
 
 /**

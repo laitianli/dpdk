@@ -14,14 +14,14 @@
 #include <linux/slab.h>
 
 struct fsl_mc_io {
-	void *regs;
+    void *regs;
 };
 
 #ifndef ENOTSUP
-#define ENOTSUP		95
+#define ENOTSUP        95
 #endif
 
-#define ioread64(_p)	    readq(_p)
+#define ioread64(_p)        readq(_p)
 #define iowrite64(_v, _p)   writeq(_v, _p)
 
 #else /* __linux_driver__ */
@@ -35,27 +35,27 @@ struct fsl_mc_io {
 #ifndef dmb
 #define dmb() {__asm__ __volatile__("" : : : "memory"); }
 #endif
-#define __iormb()	dmb()
-#define __iowmb()	dmb()
-#define __arch_getq(a)		(*(volatile uint64_t *)(a))
-#define __arch_putq(v, a)	(*(volatile uint64_t *)(a) = (v))
-#define __arch_putq32(v, a)	(*(volatile uint32_t *)(a) = (v))
+#define __iormb()    dmb()
+#define __iowmb()    dmb()
+#define __arch_getq(a)        (*(volatile uint64_t *)(a))
+#define __arch_putq(v, a)    (*(volatile uint64_t *)(a) = (v))
+#define __arch_putq32(v, a)    (*(volatile uint32_t *)(a) = (v))
 #define readq(c) \
-	({ uint64_t __v = __arch_getq(c); __iormb(); __v; })
+    ({ uint64_t __v = __arch_getq(c); __iormb(); __v; })
 #define writeq(v, c) \
-	({ uint64_t __v = v; __iowmb(); __arch_putq(__v, c); __v; })
+    ({ uint64_t __v = v; __iowmb(); __arch_putq(__v, c); __v; })
 #define writeq32(v, c) \
-	({ uint32_t __v = v; __iowmb(); __arch_putq32(__v, c); __v; })
-#define ioread64(_p)		readq(_p)
-#define iowrite64(_v, _p)	writeq(_v, _p)
-#define iowrite32(_v, _p)	writeq32(_v, _p)
+    ({ uint32_t __v = v; __iowmb(); __arch_putq32(__v, c); __v; })
+#define ioread64(_p)        readq(_p)
+#define iowrite64(_v, _p)    writeq(_v, _p)
+#define iowrite32(_v, _p)    writeq32(_v, _p)
 #define __iomem
 
 /*GPP is supposed to use MC commands with low priority*/
 #define CMD_PRI_LOW          0 /*!< Low Priority command indication */
 
 struct fsl_mc_io {
-	void *regs;
+    void *regs;
 };
 
 #endif /* __linux_driver__ */

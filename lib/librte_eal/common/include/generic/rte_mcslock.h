@@ -27,8 +27,8 @@
  * The rte_mcslock_t type.
  */
 typedef struct rte_mcslock {
-	struct rte_mcslock *next;
-	int locked; /* 1 if the queue locked, 0 otherwise */
+    struct rte_mcslock *next;
+    int locked; /* 1 if the queue locked, 0 otherwise */
 } rte_mcslock_t;
 
 /**
@@ -49,39 +49,39 @@ __rte_experimental
 static inline void
 rte_mcslock_lock(rte_mcslock_t **msl, rte_mcslock_t *me)
 {
-	rte_mcslock_t *prev;
+    rte_mcslock_t *prev;
 
-	/* Init me node */
-	__atomic_store_n(&me->locked, 1, __ATOMIC_RELAXED);
-	__atomic_store_n(&me->next, NULL, __ATOMIC_RELAXED);
+    /* Init me node */
+    __atomic_store_n(&me->locked, 1, __ATOMIC_RELAXED);
+    __atomic_store_n(&me->next, NULL, __ATOMIC_RELAXED);
 
-	/* If the queue is empty, the exchange operation is enough to acquire
-	 * the lock. Hence, the exchange operation requires acquire semantics.
-	 * The store to me->next above should complete before the node is
-	 * visible to other CPUs/threads. Hence, the exchange operation requires
-	 * release semantics as well.
-	 */
-	prev = __atomic_exchange_n(msl, me, __ATOMIC_ACQ_REL);
-	if (likely(prev == NULL)) {
-		/* Queue was empty, no further action required,
-		 * proceed with lock taken.
-		 */
-		return;
-	}
-	__atomic_store_n(&prev->next, me, __ATOMIC_RELAXED);
+    /* If the queue is empty, the exchange operation is enough to acquire
+     * the lock. Hence, the exchange operation requires acquire semantics.
+     * The store to me->next above should complete before the node is
+     * visible to other CPUs/threads. Hence, the exchange operation requires
+     * release semantics as well.
+     */
+    prev = __atomic_exchange_n(msl, me, __ATOMIC_ACQ_REL);
+    if (likely(prev == NULL)) {
+        /* Queue was empty, no further action required,
+         * proceed with lock taken.
+         */
+        return;
+    }
+    __atomic_store_n(&prev->next, me, __ATOMIC_RELAXED);
 
-	/* The while-load of me->locked should not move above the previous
-	 * store to prev->next. Otherwise it will cause a deadlock. Need a
-	 * store-load barrier.
-	 */
-	__atomic_thread_fence(__ATOMIC_ACQ_REL);
-	/* If the lock has already been acquired, it first atomically
-	 * places the node at the end of the queue and then proceeds
-	 * to spin on me->locked until the previous lock holder resets
-	 * the me->locked using mcslock_unlock().
-	 */
-	while (__atomic_load_n(&me->locked, __ATOMIC_ACQUIRE))
-		rte_pause();
+    /* The while-load of me->locked should not move above the previous
+     * store to prev->next. Otherwise it will cause a deadlock. Need a
+     * store-load barrier.
+     */
+    __atomic_thread_fence(__ATOMIC_ACQ_REL);
+    /* If the lock has already been acquired, it first atomically
+     * places the node at the end of the queue and then proceeds
+     * to spin on me->locked until the previous lock holder resets
+     * the me->locked using mcslock_unlock().
+     */
+    while (__atomic_load_n(&me->locked, __ATOMIC_ACQUIRE))
+        rte_pause();
 }
 
 /**
@@ -99,30 +99,30 @@ __rte_experimental
 static inline void
 rte_mcslock_unlock(rte_mcslock_t **msl, rte_mcslock_t *me)
 {
-	/* Check if there are more nodes in the queue. */
-	if (likely(__atomic_load_n(&me->next, __ATOMIC_RELAXED) == NULL)) {
-		/* No, last member in the queue. */
-		rte_mcslock_t *save_me = __atomic_load_n(&me, __ATOMIC_RELAXED);
+    /* Check if there are more nodes in the queue. */
+    if (likely(__atomic_load_n(&me->next, __ATOMIC_RELAXED) == NULL)) {
+        /* No, last member in the queue. */
+        rte_mcslock_t *save_me = __atomic_load_n(&me, __ATOMIC_RELAXED);
 
-		/* Release the lock by setting it to NULL */
-		if (likely(__atomic_compare_exchange_n(msl, &save_me, NULL, 0,
-				__ATOMIC_RELEASE, __ATOMIC_RELAXED)))
-			return;
+        /* Release the lock by setting it to NULL */
+        if (likely(__atomic_compare_exchange_n(msl, &save_me, NULL, 0,
+                __ATOMIC_RELEASE, __ATOMIC_RELAXED)))
+            return;
 
-		/* Speculative execution would be allowed to read in the
-		 * while-loop first. This has the potential to cause a
-		 * deadlock. Need a load barrier.
-		 */
-		__atomic_thread_fence(__ATOMIC_ACQUIRE);
-		/* More nodes added to the queue by other CPUs.
-		 * Wait until the next pointer is set.
-		 */
-		while (__atomic_load_n(&me->next, __ATOMIC_RELAXED) == NULL)
-			rte_pause();
-	}
+        /* Speculative execution would be allowed to read in the
+         * while-loop first. This has the potential to cause a
+         * deadlock. Need a load barrier.
+         */
+        __atomic_thread_fence(__ATOMIC_ACQUIRE);
+        /* More nodes added to the queue by other CPUs.
+         * Wait until the next pointer is set.
+         */
+        while (__atomic_load_n(&me->next, __ATOMIC_RELAXED) == NULL)
+            rte_pause();
+    }
 
-	/* Pass lock to next waiter. */
-	__atomic_store_n(&me->next->locked, 0, __ATOMIC_RELEASE);
+    /* Pass lock to next waiter. */
+    __atomic_store_n(&me->next->locked, 0, __ATOMIC_RELEASE);
 }
 
 /**
@@ -142,20 +142,20 @@ __rte_experimental
 static inline int
 rte_mcslock_trylock(rte_mcslock_t **msl, rte_mcslock_t *me)
 {
-	/* Init me node */
-	__atomic_store_n(&me->next, NULL, __ATOMIC_RELAXED);
+    /* Init me node */
+    __atomic_store_n(&me->next, NULL, __ATOMIC_RELAXED);
 
-	/* Try to lock */
-	rte_mcslock_t *expected = NULL;
+    /* Try to lock */
+    rte_mcslock_t *expected = NULL;
 
-	/* The lock can be taken only when the queue is empty. Hence,
-	 * the compare-exchange operation requires acquire semantics.
-	 * The store to me->next above should complete before the node
-	 * is visible to other CPUs/threads. Hence, the compare-exchange
-	 * operation requires release semantics as well.
-	 */
-	return __atomic_compare_exchange_n(msl, &expected, me, 0,
-			__ATOMIC_ACQ_REL, __ATOMIC_RELAXED);
+    /* The lock can be taken only when the queue is empty. Hence,
+     * the compare-exchange operation requires acquire semantics.
+     * The store to me->next above should complete before the node
+     * is visible to other CPUs/threads. Hence, the compare-exchange
+     * operation requires release semantics as well.
+     */
+    return __atomic_compare_exchange_n(msl, &expected, me, 0,
+            __ATOMIC_ACQ_REL, __ATOMIC_RELAXED);
 }
 
 /**
@@ -173,7 +173,7 @@ __rte_experimental
 static inline int
 rte_mcslock_is_locked(rte_mcslock_t *msl)
 {
-	return (__atomic_load_n(&msl, __ATOMIC_RELAXED) != NULL);
+    return (__atomic_load_n(&msl, __ATOMIC_RELAXED) != NULL);
 }
 
 #endif /* _RTE_MCSLOCK_H_ */

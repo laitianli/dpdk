@@ -13,9 +13,9 @@
 #include "common.h"
 
 struct swq {
-	TAILQ_ENTRY(swq) node;
-	char name[NAME_SIZE];
-	struct rte_ring *r;
+    TAILQ_ENTRY(swq) node;
+    char name[NAME_SIZE];
+    struct rte_ring *r;
 };
 
 TAILQ_HEAD(swq_list, swq);
@@ -27,8 +27,8 @@ struct swq *
 swq_find(const char *name);
 
 struct swq_params {
-	uint32_t size;
-	uint32_t cpu_id;
+    uint32_t size;
+    uint32_t cpu_id;
 };
 
 struct swq *

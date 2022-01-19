@@ -8,23 +8,23 @@
 #define IXGBE_EMPTY_PARAM
 
 static const u32 ixgbe_mvals_base[IXGBE_MVALS_IDX_LIMIT] = {
-	IXGBE_MVALS_INIT(IXGBE_EMPTY_PARAM)
+    IXGBE_MVALS_INIT(IXGBE_EMPTY_PARAM)
 };
 
 static const u32 ixgbe_mvals_X540[IXGBE_MVALS_IDX_LIMIT] = {
-	IXGBE_MVALS_INIT(_X540)
+    IXGBE_MVALS_INIT(_X540)
 };
 
 static const u32 ixgbe_mvals_X550[IXGBE_MVALS_IDX_LIMIT] = {
-	IXGBE_MVALS_INIT(_X550)
+    IXGBE_MVALS_INIT(_X550)
 };
 
 static const u32 ixgbe_mvals_X550EM_x[IXGBE_MVALS_IDX_LIMIT] = {
-	IXGBE_MVALS_INIT(_X550EM_x)
+    IXGBE_MVALS_INIT(_X550EM_x)
 };
 
 static const u32 ixgbe_mvals_X550EM_a[IXGBE_MVALS_IDX_LIMIT] = {
-	IXGBE_MVALS_INIT(_X550EM_a)
+    IXGBE_MVALS_INIT(_X550EM_a)
 };
 
 /**
@@ -36,8 +36,8 @@ static const u32 ixgbe_mvals_X550EM_a[IXGBE_MVALS_IDX_LIMIT] = {
  **/
 void ixgbe_dcb_get_rtrup2tc(struct ixgbe_hw *hw, u8 *map)
 {
-	if (hw->mac.ops.get_rtrup2tc)
-		hw->mac.ops.get_rtrup2tc(hw, map);
+    if (hw->mac.ops.get_rtrup2tc)
+        hw->mac.ops.get_rtrup2tc(hw, map);
 }
 
 /**
@@ -54,48 +54,48 @@ void ixgbe_dcb_get_rtrup2tc(struct ixgbe_hw *hw, u8 *map)
  **/
 s32 ixgbe_init_shared_code(struct ixgbe_hw *hw)
 {
-	s32 status;
+    s32 status;
 
-	DEBUGFUNC("ixgbe_init_shared_code");
+    DEBUGFUNC("ixgbe_init_shared_code");
 
-	/*
-	 * Set the mac type
-	 */
-	ixgbe_set_mac_type(hw);
+    /*
+     * Set the mac type
+     */
+    ixgbe_set_mac_type(hw);
 
-	switch (hw->mac.type) {
-	case ixgbe_mac_82598EB:
-		status = ixgbe_init_ops_82598(hw);
-		break;
-	case ixgbe_mac_82599EB:
-		status = ixgbe_init_ops_82599(hw);
-		break;
-	case ixgbe_mac_X540:
-		status = ixgbe_init_ops_X540(hw);
-		break;
-	case ixgbe_mac_X550:
-		status = ixgbe_init_ops_X550(hw);
-		break;
-	case ixgbe_mac_X550EM_x:
-		status = ixgbe_init_ops_X550EM_x(hw);
-		break;
-	case ixgbe_mac_X550EM_a:
-		status = ixgbe_init_ops_X550EM_a(hw);
-		break;
-	case ixgbe_mac_82599_vf:
-	case ixgbe_mac_X540_vf:
-	case ixgbe_mac_X550_vf:
-	case ixgbe_mac_X550EM_x_vf:
-	case ixgbe_mac_X550EM_a_vf:
-		status = ixgbe_init_ops_vf(hw);
-		break;
-	default:
-		status = IXGBE_ERR_DEVICE_NOT_SUPPORTED;
-		break;
-	}
-	hw->mac.max_link_up_time = IXGBE_LINK_UP_TIME;
+    switch (hw->mac.type) {
+    case ixgbe_mac_82598EB:
+        status = ixgbe_init_ops_82598(hw);
+        break;
+    case ixgbe_mac_82599EB:
+        status = ixgbe_init_ops_82599(hw);
+        break;
+    case ixgbe_mac_X540:
+        status = ixgbe_init_ops_X540(hw);
+        break;
+    case ixgbe_mac_X550:
+        status = ixgbe_init_ops_X550(hw);
+        break;
+    case ixgbe_mac_X550EM_x:
+        status = ixgbe_init_ops_X550EM_x(hw);
+        break;
+    case ixgbe_mac_X550EM_a:
+        status = ixgbe_init_ops_X550EM_a(hw);
+        break;
+    case ixgbe_mac_82599_vf:
+    case ixgbe_mac_X540_vf:
+    case ixgbe_mac_X550_vf:
+    case ixgbe_mac_X550EM_x_vf:
+    case ixgbe_mac_X550EM_a_vf:
+        status = ixgbe_init_ops_vf(hw);
+        break;
+    default:
+        status = IXGBE_ERR_DEVICE_NOT_SUPPORTED;
+        break;
+    }
+    hw->mac.max_link_up_time = IXGBE_LINK_UP_TIME;
 
-	return status;
+    return status;
 }
 
 /**
@@ -107,118 +107,118 @@ s32 ixgbe_init_shared_code(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_set_mac_type(struct ixgbe_hw *hw)
 {
-	s32 ret_val = IXGBE_SUCCESS;
+    s32 ret_val = IXGBE_SUCCESS;
 
-	DEBUGFUNC("ixgbe_set_mac_type\n");
+    DEBUGFUNC("ixgbe_set_mac_type\n");
 
-	if (hw->vendor_id != IXGBE_INTEL_VENDOR_ID) {
-		ERROR_REPORT2(IXGBE_ERROR_UNSUPPORTED,
-			     "Unsupported vendor id: %x", hw->vendor_id);
-		return IXGBE_ERR_DEVICE_NOT_SUPPORTED;
-	}
+    if (hw->vendor_id != IXGBE_INTEL_VENDOR_ID) {
+        ERROR_REPORT2(IXGBE_ERROR_UNSUPPORTED,
+                 "Unsupported vendor id: %x", hw->vendor_id);
+        return IXGBE_ERR_DEVICE_NOT_SUPPORTED;
+    }
 
-	hw->mvals = ixgbe_mvals_base;
+    hw->mvals = ixgbe_mvals_base;
 
-	switch (hw->device_id) {
-	case IXGBE_DEV_ID_82598:
-	case IXGBE_DEV_ID_82598_BX:
-	case IXGBE_DEV_ID_82598AF_SINGLE_PORT:
-	case IXGBE_DEV_ID_82598AF_DUAL_PORT:
-	case IXGBE_DEV_ID_82598AT:
-	case IXGBE_DEV_ID_82598AT2:
-	case IXGBE_DEV_ID_82598EB_CX4:
-	case IXGBE_DEV_ID_82598_CX4_DUAL_PORT:
-	case IXGBE_DEV_ID_82598_DA_DUAL_PORT:
-	case IXGBE_DEV_ID_82598_SR_DUAL_PORT_EM:
-	case IXGBE_DEV_ID_82598EB_XF_LR:
-	case IXGBE_DEV_ID_82598EB_SFP_LOM:
-		hw->mac.type = ixgbe_mac_82598EB;
-		break;
-	case IXGBE_DEV_ID_82599_KX4:
-	case IXGBE_DEV_ID_82599_KX4_MEZZ:
-	case IXGBE_DEV_ID_82599_XAUI_LOM:
-	case IXGBE_DEV_ID_82599_COMBO_BACKPLANE:
-	case IXGBE_DEV_ID_82599_KR:
-	case IXGBE_DEV_ID_82599_SFP:
-	case IXGBE_DEV_ID_82599_BACKPLANE_FCOE:
-	case IXGBE_DEV_ID_82599_SFP_FCOE:
-	case IXGBE_DEV_ID_82599_SFP_EM:
-	case IXGBE_DEV_ID_82599_SFP_SF2:
-	case IXGBE_DEV_ID_82599_SFP_SF_QP:
-	case IXGBE_DEV_ID_82599_QSFP_SF_QP:
-	case IXGBE_DEV_ID_82599EN_SFP:
-	case IXGBE_DEV_ID_82599_CX4:
-	case IXGBE_DEV_ID_82599_T3_LOM:
-		hw->mac.type = ixgbe_mac_82599EB;
-		break;
-	case IXGBE_DEV_ID_82599_VF:
-	case IXGBE_DEV_ID_82599_VF_HV:
-		hw->mac.type = ixgbe_mac_82599_vf;
-		break;
-	case IXGBE_DEV_ID_X540_VF:
-	case IXGBE_DEV_ID_X540_VF_HV:
-		hw->mac.type = ixgbe_mac_X540_vf;
-		hw->mvals = ixgbe_mvals_X540;
-		break;
-	case IXGBE_DEV_ID_X540T:
-	case IXGBE_DEV_ID_X540T1:
-		hw->mac.type = ixgbe_mac_X540;
-		hw->mvals = ixgbe_mvals_X540;
-		break;
-	case IXGBE_DEV_ID_X550T:
-	case IXGBE_DEV_ID_X550T1:
-		hw->mac.type = ixgbe_mac_X550;
-		hw->mvals = ixgbe_mvals_X550;
-		break;
-	case IXGBE_DEV_ID_X550EM_X_KX4:
-	case IXGBE_DEV_ID_X550EM_X_KR:
-	case IXGBE_DEV_ID_X550EM_X_10G_T:
-	case IXGBE_DEV_ID_X550EM_X_1G_T:
-	case IXGBE_DEV_ID_X550EM_X_SFP:
-	case IXGBE_DEV_ID_X550EM_X_XFI:
-		hw->mac.type = ixgbe_mac_X550EM_x;
-		hw->mvals = ixgbe_mvals_X550EM_x;
-		break;
-	case IXGBE_DEV_ID_X550EM_A_KR:
-	case IXGBE_DEV_ID_X550EM_A_KR_L:
-	case IXGBE_DEV_ID_X550EM_A_SFP_N:
-	case IXGBE_DEV_ID_X550EM_A_SGMII:
-	case IXGBE_DEV_ID_X550EM_A_SGMII_L:
-	case IXGBE_DEV_ID_X550EM_A_1G_T:
-	case IXGBE_DEV_ID_X550EM_A_1G_T_L:
-	case IXGBE_DEV_ID_X550EM_A_10G_T:
-	case IXGBE_DEV_ID_X550EM_A_QSFP:
-	case IXGBE_DEV_ID_X550EM_A_QSFP_N:
-	case IXGBE_DEV_ID_X550EM_A_SFP:
-		hw->mac.type = ixgbe_mac_X550EM_a;
-		hw->mvals = ixgbe_mvals_X550EM_a;
-		break;
-	case IXGBE_DEV_ID_X550_VF:
-	case IXGBE_DEV_ID_X550_VF_HV:
-		hw->mac.type = ixgbe_mac_X550_vf;
-		hw->mvals = ixgbe_mvals_X550;
-		break;
-	case IXGBE_DEV_ID_X550EM_X_VF:
-	case IXGBE_DEV_ID_X550EM_X_VF_HV:
-		hw->mac.type = ixgbe_mac_X550EM_x_vf;
-		hw->mvals = ixgbe_mvals_X550EM_x;
-		break;
-	case IXGBE_DEV_ID_X550EM_A_VF:
-	case IXGBE_DEV_ID_X550EM_A_VF_HV:
-		hw->mac.type = ixgbe_mac_X550EM_a_vf;
-		hw->mvals = ixgbe_mvals_X550EM_a;
-		break;
-	default:
-		ret_val = IXGBE_ERR_DEVICE_NOT_SUPPORTED;
-		ERROR_REPORT2(IXGBE_ERROR_UNSUPPORTED,
-			     "Unsupported device id: %x",
-			     hw->device_id);
-		break;
-	}
+    switch (hw->device_id) {
+    case IXGBE_DEV_ID_82598:
+    case IXGBE_DEV_ID_82598_BX:
+    case IXGBE_DEV_ID_82598AF_SINGLE_PORT:
+    case IXGBE_DEV_ID_82598AF_DUAL_PORT:
+    case IXGBE_DEV_ID_82598AT:
+    case IXGBE_DEV_ID_82598AT2:
+    case IXGBE_DEV_ID_82598EB_CX4:
+    case IXGBE_DEV_ID_82598_CX4_DUAL_PORT:
+    case IXGBE_DEV_ID_82598_DA_DUAL_PORT:
+    case IXGBE_DEV_ID_82598_SR_DUAL_PORT_EM:
+    case IXGBE_DEV_ID_82598EB_XF_LR:
+    case IXGBE_DEV_ID_82598EB_SFP_LOM:
+        hw->mac.type = ixgbe_mac_82598EB;
+        break;
+    case IXGBE_DEV_ID_82599_KX4:
+    case IXGBE_DEV_ID_82599_KX4_MEZZ:
+    case IXGBE_DEV_ID_82599_XAUI_LOM:
+    case IXGBE_DEV_ID_82599_COMBO_BACKPLANE:
+    case IXGBE_DEV_ID_82599_KR:
+    case IXGBE_DEV_ID_82599_SFP:
+    case IXGBE_DEV_ID_82599_BACKPLANE_FCOE:
+    case IXGBE_DEV_ID_82599_SFP_FCOE:
+    case IXGBE_DEV_ID_82599_SFP_EM:
+    case IXGBE_DEV_ID_82599_SFP_SF2:
+    case IXGBE_DEV_ID_82599_SFP_SF_QP:
+    case IXGBE_DEV_ID_82599_QSFP_SF_QP:
+    case IXGBE_DEV_ID_82599EN_SFP:
+    case IXGBE_DEV_ID_82599_CX4:
+    case IXGBE_DEV_ID_82599_T3_LOM:
+        hw->mac.type = ixgbe_mac_82599EB;
+        break;
+    case IXGBE_DEV_ID_82599_VF:
+    case IXGBE_DEV_ID_82599_VF_HV:
+        hw->mac.type = ixgbe_mac_82599_vf;
+        break;
+    case IXGBE_DEV_ID_X540_VF:
+    case IXGBE_DEV_ID_X540_VF_HV:
+        hw->mac.type = ixgbe_mac_X540_vf;
+        hw->mvals = ixgbe_mvals_X540;
+        break;
+    case IXGBE_DEV_ID_X540T:
+    case IXGBE_DEV_ID_X540T1:
+        hw->mac.type = ixgbe_mac_X540;
+        hw->mvals = ixgbe_mvals_X540;
+        break;
+    case IXGBE_DEV_ID_X550T:
+    case IXGBE_DEV_ID_X550T1:
+        hw->mac.type = ixgbe_mac_X550;
+        hw->mvals = ixgbe_mvals_X550;
+        break;
+    case IXGBE_DEV_ID_X550EM_X_KX4:
+    case IXGBE_DEV_ID_X550EM_X_KR:
+    case IXGBE_DEV_ID_X550EM_X_10G_T:
+    case IXGBE_DEV_ID_X550EM_X_1G_T:
+    case IXGBE_DEV_ID_X550EM_X_SFP:
+    case IXGBE_DEV_ID_X550EM_X_XFI:
+        hw->mac.type = ixgbe_mac_X550EM_x;
+        hw->mvals = ixgbe_mvals_X550EM_x;
+        break;
+    case IXGBE_DEV_ID_X550EM_A_KR:
+    case IXGBE_DEV_ID_X550EM_A_KR_L:
+    case IXGBE_DEV_ID_X550EM_A_SFP_N:
+    case IXGBE_DEV_ID_X550EM_A_SGMII:
+    case IXGBE_DEV_ID_X550EM_A_SGMII_L:
+    case IXGBE_DEV_ID_X550EM_A_1G_T:
+    case IXGBE_DEV_ID_X550EM_A_1G_T_L:
+    case IXGBE_DEV_ID_X550EM_A_10G_T:
+    case IXGBE_DEV_ID_X550EM_A_QSFP:
+    case IXGBE_DEV_ID_X550EM_A_QSFP_N:
+    case IXGBE_DEV_ID_X550EM_A_SFP:
+        hw->mac.type = ixgbe_mac_X550EM_a;
+        hw->mvals = ixgbe_mvals_X550EM_a;
+        break;
+    case IXGBE_DEV_ID_X550_VF:
+    case IXGBE_DEV_ID_X550_VF_HV:
+        hw->mac.type = ixgbe_mac_X550_vf;
+        hw->mvals = ixgbe_mvals_X550;
+        break;
+    case IXGBE_DEV_ID_X550EM_X_VF:
+    case IXGBE_DEV_ID_X550EM_X_VF_HV:
+        hw->mac.type = ixgbe_mac_X550EM_x_vf;
+        hw->mvals = ixgbe_mvals_X550EM_x;
+        break;
+    case IXGBE_DEV_ID_X550EM_A_VF:
+    case IXGBE_DEV_ID_X550EM_A_VF_HV:
+        hw->mac.type = ixgbe_mac_X550EM_a_vf;
+        hw->mvals = ixgbe_mvals_X550EM_a;
+        break;
+    default:
+        ret_val = IXGBE_ERR_DEVICE_NOT_SUPPORTED;
+        ERROR_REPORT2(IXGBE_ERROR_UNSUPPORTED,
+                 "Unsupported device id: %x",
+                 hw->device_id);
+        break;
+    }
 
-	DEBUGOUT2("ixgbe_set_mac_type found mac: %d, returns: %d\n",
-		  hw->mac.type, ret_val);
-	return ret_val;
+    DEBUGOUT2("ixgbe_set_mac_type found mac: %d, returns: %d\n",
+          hw->mac.type, ret_val);
+    return ret_val;
 }
 
 /**
@@ -229,8 +229,8 @@ s32 ixgbe_set_mac_type(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_init_hw(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.init_hw, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.init_hw, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -242,8 +242,8 @@ s32 ixgbe_init_hw(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_reset_hw(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.reset_hw, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.reset_hw, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -258,8 +258,8 @@ s32 ixgbe_reset_hw(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_start_hw(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.start_hw, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.start_hw, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -272,8 +272,8 @@ s32 ixgbe_start_hw(struct ixgbe_hw *hw)
  **/
 void ixgbe_enable_relaxed_ordering(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.enable_relaxed_ordering)
-		hw->mac.ops.enable_relaxed_ordering(hw);
+    if (hw->mac.ops.enable_relaxed_ordering)
+        hw->mac.ops.enable_relaxed_ordering(hw);
 }
 
 /**
@@ -285,8 +285,8 @@ void ixgbe_enable_relaxed_ordering(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_clear_hw_cntrs(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.clear_hw_cntrs, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.clear_hw_cntrs, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -297,8 +297,8 @@ s32 ixgbe_clear_hw_cntrs(struct ixgbe_hw *hw)
  **/
 enum ixgbe_media_type ixgbe_get_media_type(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_media_type, (hw),
-			       ixgbe_media_type_unknown);
+    return ixgbe_call_func(hw, hw->mac.ops.get_media_type, (hw),
+                   ixgbe_media_type_unknown);
 }
 
 /**
@@ -313,8 +313,8 @@ enum ixgbe_media_type ixgbe_get_media_type(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_get_mac_addr(struct ixgbe_hw *hw, u8 *mac_addr)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_mac_addr,
-			       (hw, mac_addr), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_mac_addr,
+                   (hw, mac_addr), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -327,8 +327,8 @@ s32 ixgbe_get_mac_addr(struct ixgbe_hw *hw, u8 *mac_addr)
  **/
 s32 ixgbe_get_san_mac_addr(struct ixgbe_hw *hw, u8 *san_mac_addr)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_san_mac_addr,
-			       (hw, san_mac_addr), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_san_mac_addr,
+                   (hw, san_mac_addr), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -340,8 +340,8 @@ s32 ixgbe_get_san_mac_addr(struct ixgbe_hw *hw, u8 *san_mac_addr)
  **/
 s32 ixgbe_set_san_mac_addr(struct ixgbe_hw *hw, u8 *san_mac_addr)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_san_mac_addr,
-			       (hw, san_mac_addr), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_san_mac_addr,
+                   (hw, san_mac_addr), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -353,8 +353,8 @@ s32 ixgbe_set_san_mac_addr(struct ixgbe_hw *hw, u8 *san_mac_addr)
  **/
 s32 ixgbe_get_device_caps(struct ixgbe_hw *hw, u16 *device_caps)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_device_caps,
-			       (hw, device_caps), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_device_caps,
+                   (hw, device_caps), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -367,11 +367,11 @@ s32 ixgbe_get_device_caps(struct ixgbe_hw *hw, u16 *device_caps)
  *  block to check the support for the alternative WWNN/WWPN prefix support.
  **/
 s32 ixgbe_get_wwn_prefix(struct ixgbe_hw *hw, u16 *wwnn_prefix,
-			 u16 *wwpn_prefix)
+             u16 *wwpn_prefix)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_wwn_prefix,
-			       (hw, wwnn_prefix, wwpn_prefix),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_wwn_prefix,
+                   (hw, wwnn_prefix, wwpn_prefix),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -383,9 +383,9 @@ s32 ixgbe_get_wwn_prefix(struct ixgbe_hw *hw, u16 *wwnn_prefix,
  **/
 s32 ixgbe_get_fcoe_boot_status(struct ixgbe_hw *hw, u16 *bs)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_fcoe_boot_status,
-			       (hw, bs),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_fcoe_boot_status,
+                   (hw, bs),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -396,8 +396,8 @@ s32 ixgbe_get_fcoe_boot_status(struct ixgbe_hw *hw, u16 *bs)
  **/
 s32 ixgbe_get_bus_info(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_bus_info, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_bus_info, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -408,7 +408,7 @@ s32 ixgbe_get_bus_info(struct ixgbe_hw *hw)
  **/
 u32 ixgbe_get_num_of_tx_queues(struct ixgbe_hw *hw)
 {
-	return hw->mac.max_tx_queues;
+    return hw->mac.max_tx_queues;
 }
 
 /**
@@ -419,7 +419,7 @@ u32 ixgbe_get_num_of_tx_queues(struct ixgbe_hw *hw)
  **/
 u32 ixgbe_get_num_of_rx_queues(struct ixgbe_hw *hw)
 {
-	return hw->mac.max_rx_queues;
+    return hw->mac.max_rx_queues;
 }
 
 /**
@@ -433,8 +433,8 @@ u32 ixgbe_get_num_of_rx_queues(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_stop_adapter(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.stop_adapter, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.stop_adapter, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -447,7 +447,7 @@ s32 ixgbe_stop_adapter(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_read_pba_string(struct ixgbe_hw *hw, u8 *pba_num, u32 pba_num_size)
 {
-	return ixgbe_read_pba_string_generic(hw, pba_num, pba_num_size);
+    return ixgbe_read_pba_string_generic(hw, pba_num, pba_num_size);
 }
 
 /**
@@ -459,7 +459,7 @@ s32 ixgbe_read_pba_string(struct ixgbe_hw *hw, u8 *pba_num, u32 pba_num_size)
  **/
 s32 ixgbe_read_pba_num(struct ixgbe_hw *hw, u32 *pba_num)
 {
-	return ixgbe_read_pba_num_generic(hw, pba_num);
+    return ixgbe_read_pba_num_generic(hw, pba_num);
 }
 
 /**
@@ -470,14 +470,14 @@ s32 ixgbe_read_pba_num(struct ixgbe_hw *hw, u32 *pba_num)
  **/
 s32 ixgbe_identify_phy(struct ixgbe_hw *hw)
 {
-	s32 status = IXGBE_SUCCESS;
+    s32 status = IXGBE_SUCCESS;
 
-	if (hw->phy.type == ixgbe_phy_unknown) {
-		status = ixgbe_call_func(hw, hw->phy.ops.identify, (hw),
-					 IXGBE_NOT_IMPLEMENTED);
-	}
+    if (hw->phy.type == ixgbe_phy_unknown) {
+        status = ixgbe_call_func(hw, hw->phy.ops.identify, (hw),
+                     IXGBE_NOT_IMPLEMENTED);
+    }
 
-	return status;
+    return status;
 }
 
 /**
@@ -486,18 +486,18 @@ s32 ixgbe_identify_phy(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_reset_phy(struct ixgbe_hw *hw)
 {
-	s32 status = IXGBE_SUCCESS;
+    s32 status = IXGBE_SUCCESS;
 
-	if (hw->phy.type == ixgbe_phy_unknown) {
-		if (ixgbe_identify_phy(hw) != IXGBE_SUCCESS)
-			status = IXGBE_ERR_PHY;
-	}
+    if (hw->phy.type == ixgbe_phy_unknown) {
+        if (ixgbe_identify_phy(hw) != IXGBE_SUCCESS)
+            status = IXGBE_ERR_PHY;
+    }
 
-	if (status == IXGBE_SUCCESS) {
-		status = ixgbe_call_func(hw, hw->phy.ops.reset, (hw),
-					 IXGBE_NOT_IMPLEMENTED);
-	}
-	return status;
+    if (status == IXGBE_SUCCESS) {
+        status = ixgbe_call_func(hw, hw->phy.ops.reset, (hw),
+                     IXGBE_NOT_IMPLEMENTED);
+    }
+    return status;
 }
 
 /**
@@ -507,12 +507,12 @@ s32 ixgbe_reset_phy(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_get_phy_firmware_version(struct ixgbe_hw *hw, u16 *firmware_version)
 {
-	s32 status = IXGBE_SUCCESS;
+    s32 status = IXGBE_SUCCESS;
 
-	status = ixgbe_call_func(hw, hw->phy.ops.get_firmware_version,
-				 (hw, firmware_version),
-				 IXGBE_NOT_IMPLEMENTED);
-	return status;
+    status = ixgbe_call_func(hw, hw->phy.ops.get_firmware_version,
+                 (hw, firmware_version),
+                 IXGBE_NOT_IMPLEMENTED);
+    return status;
 }
 
 /**
@@ -525,13 +525,13 @@ s32 ixgbe_get_phy_firmware_version(struct ixgbe_hw *hw, u16 *firmware_version)
  *  Reads a value from a specified PHY register
  **/
 s32 ixgbe_read_phy_reg(struct ixgbe_hw *hw, u32 reg_addr, u32 device_type,
-		       u16 *phy_data)
+               u16 *phy_data)
 {
-	if (hw->phy.id == 0)
-		ixgbe_identify_phy(hw);
+    if (hw->phy.id == 0)
+        ixgbe_identify_phy(hw);
 
-	return ixgbe_call_func(hw, hw->phy.ops.read_reg, (hw, reg_addr,
-			       device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.read_reg, (hw, reg_addr,
+                   device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -544,13 +544,13 @@ s32 ixgbe_read_phy_reg(struct ixgbe_hw *hw, u32 reg_addr, u32 device_type,
  *  Writes a value to specified PHY register
  **/
 s32 ixgbe_write_phy_reg(struct ixgbe_hw *hw, u32 reg_addr, u32 device_type,
-			u16 phy_data)
+            u16 phy_data)
 {
-	if (hw->phy.id == 0)
-		ixgbe_identify_phy(hw);
+    if (hw->phy.id == 0)
+        ixgbe_identify_phy(hw);
 
-	return ixgbe_call_func(hw, hw->phy.ops.write_reg, (hw, reg_addr,
-			       device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.write_reg, (hw, reg_addr,
+                   device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -561,8 +561,8 @@ s32 ixgbe_write_phy_reg(struct ixgbe_hw *hw, u32 reg_addr, u32 device_type,
  **/
 s32 ixgbe_setup_phy_link(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.setup_link, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.setup_link, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -575,8 +575,8 @@ s32 ixgbe_setup_phy_link(struct ixgbe_hw *hw)
  */
 s32 ixgbe_setup_internal_phy(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.setup_internal_link, (hw),
-			       IXGBE_SUCCESS);
+    return ixgbe_call_func(hw, hw->phy.ops.setup_internal_link, (hw),
+                   IXGBE_SUCCESS);
 }
 
 /**
@@ -589,10 +589,10 @@ s32 ixgbe_setup_internal_phy(struct ixgbe_hw *hw)
  *  the PHY.
  **/
 s32 ixgbe_check_phy_link(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
-			 bool *link_up)
+             bool *link_up)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.check_link, (hw, speed,
-			       link_up), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.check_link, (hw, speed,
+                   link_up), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -604,11 +604,11 @@ s32 ixgbe_check_phy_link(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
  *  Sets the auto advertised capabilities
  **/
 s32 ixgbe_setup_phy_link_speed(struct ixgbe_hw *hw, ixgbe_link_speed speed,
-			       bool autoneg_wait_to_complete)
+                   bool autoneg_wait_to_complete)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.setup_link_speed, (hw, speed,
-			       autoneg_wait_to_complete),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.setup_link_speed, (hw, speed,
+                   autoneg_wait_to_complete),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -618,8 +618,8 @@ s32 ixgbe_setup_phy_link_speed(struct ixgbe_hw *hw, ixgbe_link_speed speed,
  */
 s32 ixgbe_set_phy_power(struct ixgbe_hw *hw, bool on)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.set_phy_power, (hw, on),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.set_phy_power, (hw, on),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -632,11 +632,11 @@ s32 ixgbe_set_phy_power(struct ixgbe_hw *hw, bool on)
  *  Reads the links register to determine if link is up and the current speed
  **/
 s32 ixgbe_check_link(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
-		     bool *link_up, bool link_up_wait_to_complete)
+             bool *link_up, bool link_up_wait_to_complete)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.check_link, (hw, speed,
-			       link_up, link_up_wait_to_complete),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.check_link, (hw, speed,
+                   link_up, link_up_wait_to_complete),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -647,8 +647,8 @@ s32 ixgbe_check_link(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
  **/
 void ixgbe_disable_tx_laser(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.disable_tx_laser)
-		hw->mac.ops.disable_tx_laser(hw);
+    if (hw->mac.ops.disable_tx_laser)
+        hw->mac.ops.disable_tx_laser(hw);
 }
 
 /**
@@ -659,8 +659,8 @@ void ixgbe_disable_tx_laser(struct ixgbe_hw *hw)
  **/
 void ixgbe_enable_tx_laser(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.enable_tx_laser)
-		hw->mac.ops.enable_tx_laser(hw);
+    if (hw->mac.ops.enable_tx_laser)
+        hw->mac.ops.enable_tx_laser(hw);
 }
 
 /**
@@ -673,8 +673,8 @@ void ixgbe_enable_tx_laser(struct ixgbe_hw *hw)
  **/
 void ixgbe_flap_tx_laser(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.flap_tx_laser)
-		hw->mac.ops.flap_tx_laser(hw);
+    if (hw->mac.ops.flap_tx_laser)
+        hw->mac.ops.flap_tx_laser(hw);
 }
 
 /**
@@ -687,11 +687,11 @@ void ixgbe_flap_tx_laser(struct ixgbe_hw *hw)
  *  Performs autonegotiation if needed.
  **/
 s32 ixgbe_setup_link(struct ixgbe_hw *hw, ixgbe_link_speed speed,
-		     bool autoneg_wait_to_complete)
+             bool autoneg_wait_to_complete)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.setup_link, (hw, speed,
-			       autoneg_wait_to_complete),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.setup_link, (hw, speed,
+                   autoneg_wait_to_complete),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -704,11 +704,11 @@ s32 ixgbe_setup_link(struct ixgbe_hw *hw, ixgbe_link_speed speed,
  *  Performs autonegotiation if needed.
  **/
 s32 ixgbe_setup_mac_link(struct ixgbe_hw *hw, ixgbe_link_speed speed,
-			 bool autoneg_wait_to_complete)
+             bool autoneg_wait_to_complete)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.setup_mac_link, (hw, speed,
-			       autoneg_wait_to_complete),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.setup_mac_link, (hw, speed,
+                   autoneg_wait_to_complete),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -720,10 +720,10 @@ s32 ixgbe_setup_mac_link(struct ixgbe_hw *hw, ixgbe_link_speed speed,
  *  Determines the link capabilities of the current configuration.
  **/
 s32 ixgbe_get_link_capabilities(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
-				bool *autoneg)
+                bool *autoneg)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_link_capabilities, (hw,
-			       speed, autoneg), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_link_capabilities, (hw,
+                   speed, autoneg), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -735,8 +735,8 @@ s32 ixgbe_get_link_capabilities(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
  **/
 s32 ixgbe_led_on(struct ixgbe_hw *hw, u32 index)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.led_on, (hw, index),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.led_on, (hw, index),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -748,8 +748,8 @@ s32 ixgbe_led_on(struct ixgbe_hw *hw, u32 index)
  **/
 s32 ixgbe_led_off(struct ixgbe_hw *hw, u32 index)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.led_off, (hw, index),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.led_off, (hw, index),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -761,8 +761,8 @@ s32 ixgbe_led_off(struct ixgbe_hw *hw, u32 index)
  **/
 s32 ixgbe_blink_led_start(struct ixgbe_hw *hw, u32 index)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.blink_led_start, (hw, index),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.blink_led_start, (hw, index),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -774,8 +774,8 @@ s32 ixgbe_blink_led_start(struct ixgbe_hw *hw, u32 index)
  **/
 s32 ixgbe_blink_led_stop(struct ixgbe_hw *hw, u32 index)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.blink_led_stop, (hw, index),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.blink_led_stop, (hw, index),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -787,8 +787,8 @@ s32 ixgbe_blink_led_stop(struct ixgbe_hw *hw, u32 index)
  **/
 s32 ixgbe_init_eeprom_params(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.init_params, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.init_params, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 
@@ -804,8 +804,8 @@ s32 ixgbe_init_eeprom_params(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_write_eeprom(struct ixgbe_hw *hw, u16 offset, u16 data)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.write, (hw, offset, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.write, (hw, offset, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -820,11 +820,11 @@ s32 ixgbe_write_eeprom(struct ixgbe_hw *hw, u16 offset, u16 data)
  *  invalid checksum.
  **/
 s32 ixgbe_write_eeprom_buffer(struct ixgbe_hw *hw, u16 offset, u16 words,
-			      u16 *data)
+                  u16 *data)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.write_buffer,
-			       (hw, offset, words, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.write_buffer,
+                   (hw, offset, words, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -837,8 +837,8 @@ s32 ixgbe_write_eeprom_buffer(struct ixgbe_hw *hw, u16 offset, u16 words,
  **/
 s32 ixgbe_read_eeprom(struct ixgbe_hw *hw, u16 offset, u16 *data)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.read, (hw, offset, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.read, (hw, offset, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -851,11 +851,11 @@ s32 ixgbe_read_eeprom(struct ixgbe_hw *hw, u16 offset, u16 *data)
  *  Reads 16 bit word(s) from EEPROM
  **/
 s32 ixgbe_read_eeprom_buffer(struct ixgbe_hw *hw, u16 offset,
-			     u16 words, u16 *data)
+                 u16 words, u16 *data)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.read_buffer,
-			       (hw, offset, words, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.read_buffer,
+                   (hw, offset, words, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -867,8 +867,8 @@ s32 ixgbe_read_eeprom_buffer(struct ixgbe_hw *hw, u16 offset,
  **/
 s32 ixgbe_validate_eeprom_checksum(struct ixgbe_hw *hw, u16 *checksum_val)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.validate_checksum,
-			       (hw, checksum_val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.validate_checksum,
+                   (hw, checksum_val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -877,8 +877,8 @@ s32 ixgbe_validate_eeprom_checksum(struct ixgbe_hw *hw, u16 *checksum_val)
  **/
 s32 ixgbe_update_eeprom_checksum(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->eeprom.ops.update_checksum, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->eeprom.ops.update_checksum, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -892,9 +892,9 @@ s32 ixgbe_update_eeprom_checksum(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_insert_mac_addr(struct ixgbe_hw *hw, u8 *addr, u32 vmdq)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.insert_mac_addr,
-			       (hw, addr, vmdq),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.insert_mac_addr,
+                   (hw, addr, vmdq),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -908,10 +908,10 @@ s32 ixgbe_insert_mac_addr(struct ixgbe_hw *hw, u8 *addr, u32 vmdq)
  *  Puts an ethernet address into a receive address register.
  **/
 s32 ixgbe_set_rar(struct ixgbe_hw *hw, u32 index, u8 *addr, u32 vmdq,
-		  u32 enable_addr)
+          u32 enable_addr)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_rar, (hw, index, addr, vmdq,
-			       enable_addr), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_rar, (hw, index, addr, vmdq,
+                   enable_addr), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -923,8 +923,8 @@ s32 ixgbe_set_rar(struct ixgbe_hw *hw, u32 index, u8 *addr, u32 vmdq,
  **/
 s32 ixgbe_clear_rar(struct ixgbe_hw *hw, u32 index)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.clear_rar, (hw, index),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.clear_rar, (hw, index),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -935,8 +935,8 @@ s32 ixgbe_clear_rar(struct ixgbe_hw *hw, u32 index)
  **/
 s32 ixgbe_set_vmdq(struct ixgbe_hw *hw, u32 rar, u32 vmdq)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_vmdq, (hw, rar, vmdq),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_vmdq, (hw, rar, vmdq),
+                   IXGBE_NOT_IMPLEMENTED);
 
 }
 
@@ -947,8 +947,8 @@ s32 ixgbe_set_vmdq(struct ixgbe_hw *hw, u32 rar, u32 vmdq)
  **/
 s32 ixgbe_set_vmdq_san_mac(struct ixgbe_hw *hw, u32 vmdq)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_vmdq_san_mac,
-			       (hw, vmdq), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_vmdq_san_mac,
+                   (hw, vmdq), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -959,8 +959,8 @@ s32 ixgbe_set_vmdq_san_mac(struct ixgbe_hw *hw, u32 vmdq)
  **/
 s32 ixgbe_clear_vmdq(struct ixgbe_hw *hw, u32 rar, u32 vmdq)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.clear_vmdq, (hw, rar, vmdq),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.clear_vmdq, (hw, rar, vmdq),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -973,8 +973,8 @@ s32 ixgbe_clear_vmdq(struct ixgbe_hw *hw, u32 rar, u32 vmdq)
  **/
 s32 ixgbe_init_rx_addrs(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.init_rx_addrs, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.init_rx_addrs, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -983,7 +983,7 @@ s32 ixgbe_init_rx_addrs(struct ixgbe_hw *hw)
  **/
 u32 ixgbe_get_num_rx_addrs(struct ixgbe_hw *hw)
 {
-	return hw->mac.num_rar_entries;
+    return hw->mac.num_rar_entries;
 }
 
 /**
@@ -998,11 +998,11 @@ u32 ixgbe_get_num_rx_addrs(struct ixgbe_hw *hw)
  *  first secondary addresses, and falls back to promiscuous mode as needed.
  **/
 s32 ixgbe_update_uc_addr_list(struct ixgbe_hw *hw, u8 *addr_list,
-			      u32 addr_count, ixgbe_mc_addr_itr func)
+                  u32 addr_count, ixgbe_mc_addr_itr func)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.update_uc_addr_list, (hw,
-			       addr_list, addr_count, func),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.update_uc_addr_list, (hw,
+                   addr_list, addr_count, func),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1019,12 +1019,12 @@ s32 ixgbe_update_uc_addr_list(struct ixgbe_hw *hw, u8 *addr_list,
  *  multicast table.
  **/
 s32 ixgbe_update_mc_addr_list(struct ixgbe_hw *hw, u8 *mc_addr_list,
-			      u32 mc_addr_count, ixgbe_mc_addr_itr func,
-			      bool clear)
+                  u32 mc_addr_count, ixgbe_mc_addr_itr func,
+                  bool clear)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.update_mc_addr_list, (hw,
-			       mc_addr_list, mc_addr_count, func, clear),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.update_mc_addr_list, (hw,
+                   mc_addr_list, mc_addr_count, func, clear),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1035,8 +1035,8 @@ s32 ixgbe_update_mc_addr_list(struct ixgbe_hw *hw, u8 *mc_addr_list,
  **/
 s32 ixgbe_enable_mc(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.enable_mc, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.enable_mc, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1047,8 +1047,8 @@ s32 ixgbe_enable_mc(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_disable_mc(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.disable_mc, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.disable_mc, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1059,8 +1059,8 @@ s32 ixgbe_disable_mc(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_clear_vfta(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.clear_vfta, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.clear_vfta, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1074,10 +1074,10 @@ s32 ixgbe_clear_vfta(struct ixgbe_hw *hw)
  *  Turn on/off specified VLAN in the VLAN filter table.
  **/
 s32 ixgbe_set_vfta(struct ixgbe_hw *hw, u32 vlan, u32 vind, bool vlan_on,
-		   bool vlvf_bypass)
+           bool vlvf_bypass)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_vfta, (hw, vlan, vind,
-			       vlan_on, vlvf_bypass), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_vfta, (hw, vlan, vind,
+                   vlan_on, vlvf_bypass), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1087,18 +1087,18 @@ s32 ixgbe_set_vfta(struct ixgbe_hw *hw, u32 vlan, u32 vind, bool vlan_on,
  *  @vind: VMDq output index that maps queue to VLAN id in VLVFB
  *  @vlan_on: boolean flag to turn on/off VLAN in VLVF
  *  @vfta_delta: pointer to the difference between the current value of VFTA
- *		 and the desired value
+ *         and the desired value
  *  @vfta: the desired value of the VFTA
  *  @vlvf_bypass: boolean flag indicating updating the default pool is okay
  *
  *  Turn on/off specified bit in VLVF table.
  **/
 s32 ixgbe_set_vlvf(struct ixgbe_hw *hw, u32 vlan, u32 vind, bool vlan_on,
-		   u32 *vfta_delta, u32 vfta, bool vlvf_bypass)
+           u32 *vfta_delta, u32 vfta, bool vlvf_bypass)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_vlvf, (hw, vlan, vind,
-			       vlan_on, vfta_delta, vfta, vlvf_bypass),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_vlvf, (hw, vlan, vind,
+                   vlan_on, vfta_delta, vfta, vlvf_bypass),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1109,8 +1109,8 @@ s32 ixgbe_set_vlvf(struct ixgbe_hw *hw, u32 vlan, u32 vind, bool vlan_on,
  **/
 s32 ixgbe_fc_enable(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.fc_enable, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.fc_enable, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1121,8 +1121,8 @@ s32 ixgbe_fc_enable(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_setup_fc(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.setup_fc, (hw),
-		IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.setup_fc, (hw),
+        IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1136,11 +1136,11 @@ s32 ixgbe_setup_fc(struct ixgbe_hw *hw)
  * @driver_ver: driver string
  **/
 s32 ixgbe_set_fw_drv_ver(struct ixgbe_hw *hw, u8 maj, u8 min, u8 build,
-			 u8 ver, u16 len, char *driver_ver)
+             u8 ver, u16 len, char *driver_ver)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.set_fw_drv_ver, (hw, maj, min,
-			       build, ver, len, driver_ver),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.set_fw_drv_ver, (hw, maj, min,
+                   build, ver, len, driver_ver),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 
@@ -1152,8 +1152,8 @@ s32 ixgbe_set_fw_drv_ver(struct ixgbe_hw *hw, u8 maj, u8 min, u8 build,
  **/
 s32 ixgbe_get_thermal_sensor_data(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_thermal_sensor_data, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.get_thermal_sensor_data, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1164,8 +1164,8 @@ s32 ixgbe_get_thermal_sensor_data(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_init_thermal_sensor_thresh(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.init_thermal_sensor_thresh, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.init_thermal_sensor_thresh, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1177,8 +1177,8 @@ s32 ixgbe_init_thermal_sensor_thresh(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_dmac_config(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.dmac_config, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.dmac_config, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1189,8 +1189,8 @@ s32 ixgbe_dmac_config(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_dmac_update_tcs(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.dmac_update_tcs, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.dmac_update_tcs, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1202,8 +1202,8 @@ s32 ixgbe_dmac_update_tcs(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_dmac_config_tcs(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.dmac_config_tcs, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.dmac_config_tcs, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1218,8 +1218,8 @@ s32 ixgbe_dmac_config_tcs(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_setup_eee(struct ixgbe_hw *hw, bool enable_eee)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.setup_eee, (hw, enable_eee),
-			IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.setup_eee, (hw, enable_eee),
+            IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1229,10 +1229,10 @@ s32 ixgbe_setup_eee(struct ixgbe_hw *hw, bool enable_eee)
  * @pool: Rx pool - Rx pool to toggle source address pruning
  **/
 void ixgbe_set_source_address_pruning(struct ixgbe_hw *hw, bool enable,
-				      unsigned int pool)
+                      unsigned int pool)
 {
-	if (hw->mac.ops.set_source_address_pruning)
-		hw->mac.ops.set_source_address_pruning(hw, enable, pool);
+    if (hw->mac.ops.set_source_address_pruning)
+        hw->mac.ops.set_source_address_pruning(hw, enable, pool);
 }
 
 /**
@@ -1244,8 +1244,8 @@ void ixgbe_set_source_address_pruning(struct ixgbe_hw *hw, bool enable,
  **/
 void ixgbe_set_ethertype_anti_spoofing(struct ixgbe_hw *hw, bool enable, int vf)
 {
-	if (hw->mac.ops.set_ethertype_anti_spoofing)
-		hw->mac.ops.set_ethertype_anti_spoofing(hw, enable, vf);
+    if (hw->mac.ops.set_ethertype_anti_spoofing)
+        hw->mac.ops.set_ethertype_anti_spoofing(hw, enable, vf);
 }
 
 /**
@@ -1258,10 +1258,10 @@ void ixgbe_set_ethertype_anti_spoofing(struct ixgbe_hw *hw, bool enable, int vf)
  *  Reads a value from a specified PHY register
  **/
 s32 ixgbe_read_iosf_sb_reg(struct ixgbe_hw *hw, u32 reg_addr,
-			   u32 device_type, u32 *phy_data)
+               u32 device_type, u32 *phy_data)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.read_iosf_sb_reg, (hw, reg_addr,
-			       device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.read_iosf_sb_reg, (hw, reg_addr,
+                   device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1274,10 +1274,10 @@ s32 ixgbe_read_iosf_sb_reg(struct ixgbe_hw *hw, u32 reg_addr,
  *  Writes a value to specified PHY register
  **/
 s32 ixgbe_write_iosf_sb_reg(struct ixgbe_hw *hw, u32 reg_addr,
-			    u32 device_type, u32 phy_data)
+                u32 device_type, u32 phy_data)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.write_iosf_sb_reg, (hw, reg_addr,
-			       device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.write_iosf_sb_reg, (hw, reg_addr,
+                   device_type, phy_data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1287,8 +1287,8 @@ s32 ixgbe_write_iosf_sb_reg(struct ixgbe_hw *hw, u32 reg_addr,
  **/
 void ixgbe_disable_mdd(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.disable_mdd)
-		hw->mac.ops.disable_mdd(hw);
+    if (hw->mac.ops.disable_mdd)
+        hw->mac.ops.disable_mdd(hw);
 }
 
 /**
@@ -1298,8 +1298,8 @@ void ixgbe_disable_mdd(struct ixgbe_hw *hw)
  **/
 void ixgbe_enable_mdd(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.enable_mdd)
-		hw->mac.ops.enable_mdd(hw);
+    if (hw->mac.ops.enable_mdd)
+        hw->mac.ops.enable_mdd(hw);
 }
 
 /**
@@ -1310,8 +1310,8 @@ void ixgbe_enable_mdd(struct ixgbe_hw *hw)
  **/
 void ixgbe_mdd_event(struct ixgbe_hw *hw, u32 *vf_bitmap)
 {
-	if (hw->mac.ops.mdd_event)
-		hw->mac.ops.mdd_event(hw, vf_bitmap);
+    if (hw->mac.ops.mdd_event)
+        hw->mac.ops.mdd_event(hw, vf_bitmap);
 }
 
 /**
@@ -1323,8 +1323,8 @@ void ixgbe_mdd_event(struct ixgbe_hw *hw, u32 *vf_bitmap)
  **/
 void ixgbe_restore_mdd_vf(struct ixgbe_hw *hw, u32 vf)
 {
-	if (hw->mac.ops.restore_mdd_vf)
-		hw->mac.ops.restore_mdd_vf(hw, vf);
+    if (hw->mac.ops.restore_mdd_vf)
+        hw->mac.ops.restore_mdd_vf(hw, vf);
 }
 
 /**
@@ -1334,9 +1334,9 @@ void ixgbe_restore_mdd_vf(struct ixgbe_hw *hw, u32 vf)
  **/
 bool ixgbe_fw_recovery_mode(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.fw_recovery_mode)
-		return hw->mac.ops.fw_recovery_mode(hw);
-	return false;
+    if (hw->mac.ops.fw_recovery_mode)
+        return hw->mac.ops.fw_recovery_mode(hw);
+    return false;
 }
 
 /**
@@ -1348,8 +1348,8 @@ bool ixgbe_fw_recovery_mode(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_enter_lplu(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.enter_lplu, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.enter_lplu, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1365,8 +1365,8 @@ s32 ixgbe_enter_lplu(struct ixgbe_hw *hw)
  */
 s32 ixgbe_handle_lasi(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.handle_lasi, (hw),
-				IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.handle_lasi, (hw),
+                IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1379,8 +1379,8 @@ s32 ixgbe_handle_lasi(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_read_analog_reg8(struct ixgbe_hw *hw, u32 reg, u8 *val)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.read_analog_reg8, (hw, reg,
-			       val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.read_analog_reg8, (hw, reg,
+                   val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1393,8 +1393,8 @@ s32 ixgbe_read_analog_reg8(struct ixgbe_hw *hw, u32 reg, u8 *val)
  **/
 s32 ixgbe_write_analog_reg8(struct ixgbe_hw *hw, u32 reg, u8 val)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.write_analog_reg8, (hw, reg,
-			       val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.write_analog_reg8, (hw, reg,
+                   val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1406,8 +1406,8 @@ s32 ixgbe_write_analog_reg8(struct ixgbe_hw *hw, u32 reg, u8 val)
  **/
 s32 ixgbe_init_uta_tables(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.init_uta_tables, (hw),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.init_uta_tables, (hw),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1420,10 +1420,10 @@ s32 ixgbe_init_uta_tables(struct ixgbe_hw *hw)
  *  Performs byte read operation to SFP module's EEPROM over I2C interface.
  **/
 s32 ixgbe_read_i2c_byte(struct ixgbe_hw *hw, u8 byte_offset, u8 dev_addr,
-			u8 *data)
+            u8 *data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.read_i2c_byte, (hw, byte_offset,
-			       dev_addr, data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.read_i2c_byte, (hw, byte_offset,
+                   dev_addr, data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1436,11 +1436,11 @@ s32 ixgbe_read_i2c_byte(struct ixgbe_hw *hw, u8 byte_offset, u8 dev_addr,
  *  Performs byte read operation to SFP module's EEPROM over I2C interface.
  **/
 s32 ixgbe_read_i2c_byte_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
-				 u8 dev_addr, u8 *data)
+                 u8 dev_addr, u8 *data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.read_i2c_byte_unlocked,
-			       (hw, byte_offset, dev_addr, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.read_i2c_byte_unlocked,
+                   (hw, byte_offset, dev_addr, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1454,8 +1454,8 @@ s32 ixgbe_read_i2c_byte_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
  */
 s32 ixgbe_read_link(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 *val)
 {
-	return ixgbe_call_func(hw, hw->link.ops.read_link, (hw, addr,
-			       reg, val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->link.ops.read_link, (hw, addr,
+                   reg, val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1469,8 +1469,8 @@ s32 ixgbe_read_link(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 *val)
  **/
 s32 ixgbe_read_link_unlocked(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 *val)
 {
-	return ixgbe_call_func(hw, hw->link.ops.read_link_unlocked,
-			       (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->link.ops.read_link_unlocked,
+                   (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1484,10 +1484,10 @@ s32 ixgbe_read_link_unlocked(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 *val)
  *  at a specified device address.
  **/
 s32 ixgbe_write_i2c_byte(struct ixgbe_hw *hw, u8 byte_offset, u8 dev_addr,
-			 u8 data)
+             u8 data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.write_i2c_byte, (hw, byte_offset,
-			       dev_addr, data), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.write_i2c_byte, (hw, byte_offset,
+                   dev_addr, data), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1501,11 +1501,11 @@ s32 ixgbe_write_i2c_byte(struct ixgbe_hw *hw, u8 byte_offset, u8 dev_addr,
  *  at a specified device address.
  **/
 s32 ixgbe_write_i2c_byte_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
-				  u8 dev_addr, u8 data)
+                  u8 dev_addr, u8 data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.write_i2c_byte_unlocked,
-			       (hw, byte_offset, dev_addr, data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.write_i2c_byte_unlocked,
+                   (hw, byte_offset, dev_addr, data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1519,8 +1519,8 @@ s32 ixgbe_write_i2c_byte_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
  */
 s32 ixgbe_write_link(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 val)
 {
-	return ixgbe_call_func(hw, hw->link.ops.write_link,
-			       (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->link.ops.write_link,
+                   (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1534,8 +1534,8 @@ s32 ixgbe_write_link(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 val)
  **/
 s32 ixgbe_write_link_unlocked(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 val)
 {
-	return ixgbe_call_func(hw, hw->link.ops.write_link_unlocked,
-			       (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->link.ops.write_link_unlocked,
+                   (hw, addr, reg, val), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1547,11 +1547,11 @@ s32 ixgbe_write_link_unlocked(struct ixgbe_hw *hw, u8 addr, u16 reg, u16 val)
  *  Performs byte write operation to SFP module's EEPROM over I2C interface.
  **/
 s32 ixgbe_write_i2c_eeprom(struct ixgbe_hw *hw,
-			   u8 byte_offset, u8 eeprom_data)
+               u8 byte_offset, u8 eeprom_data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.write_i2c_eeprom,
-			       (hw, byte_offset, eeprom_data),
-			       IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.write_i2c_eeprom,
+                   (hw, byte_offset, eeprom_data),
+                   IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1564,9 +1564,9 @@ s32 ixgbe_write_i2c_eeprom(struct ixgbe_hw *hw,
  **/
 s32 ixgbe_read_i2c_eeprom(struct ixgbe_hw *hw, u8 byte_offset, u8 *eeprom_data)
 {
-	return ixgbe_call_func(hw, hw->phy.ops.read_i2c_eeprom,
-			      (hw, byte_offset, eeprom_data),
-			      IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->phy.ops.read_i2c_eeprom,
+                  (hw, byte_offset, eeprom_data),
+                  IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1577,8 +1577,8 @@ s32 ixgbe_read_i2c_eeprom(struct ixgbe_hw *hw, u8 byte_offset, u8 *eeprom_data)
  **/
 u64 ixgbe_get_supported_physical_layer(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.get_supported_physical_layer,
-			       (hw), IXGBE_PHYSICAL_LAYER_UNKNOWN);
+    return ixgbe_call_func(hw, hw->mac.ops.get_supported_physical_layer,
+                   (hw), IXGBE_PHYSICAL_LAYER_UNKNOWN);
 }
 
 /**
@@ -1590,8 +1590,8 @@ u64 ixgbe_get_supported_physical_layer(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_enable_rx_dma(struct ixgbe_hw *hw, u32 regval)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.enable_rx_dma,
-			       (hw, regval), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.enable_rx_dma,
+                   (hw, regval), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1602,8 +1602,8 @@ s32 ixgbe_enable_rx_dma(struct ixgbe_hw *hw, u32 regval)
  **/
 s32 ixgbe_disable_sec_rx_path(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.disable_sec_rx_path,
-				(hw), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.disable_sec_rx_path,
+                (hw), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1614,8 +1614,8 @@ s32 ixgbe_disable_sec_rx_path(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_enable_sec_rx_path(struct ixgbe_hw *hw)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.enable_sec_rx_path,
-				(hw), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.enable_sec_rx_path,
+                (hw), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1628,8 +1628,8 @@ s32 ixgbe_enable_sec_rx_path(struct ixgbe_hw *hw)
  **/
 s32 ixgbe_acquire_swfw_semaphore(struct ixgbe_hw *hw, u32 mask)
 {
-	return ixgbe_call_func(hw, hw->mac.ops.acquire_swfw_sync,
-			       (hw, mask), IXGBE_NOT_IMPLEMENTED);
+    return ixgbe_call_func(hw, hw->mac.ops.acquire_swfw_sync,
+                   (hw, mask), IXGBE_NOT_IMPLEMENTED);
 }
 
 /**
@@ -1642,8 +1642,8 @@ s32 ixgbe_acquire_swfw_semaphore(struct ixgbe_hw *hw, u32 mask)
  **/
 void ixgbe_release_swfw_semaphore(struct ixgbe_hw *hw, u32 mask)
 {
-	if (hw->mac.ops.release_swfw_sync)
-		hw->mac.ops.release_swfw_sync(hw, mask);
+    if (hw->mac.ops.release_swfw_sync)
+        hw->mac.ops.release_swfw_sync(hw, mask);
 }
 
 /**
@@ -1657,21 +1657,21 @@ void ixgbe_release_swfw_semaphore(struct ixgbe_hw *hw, u32 mask)
  **/
 void ixgbe_init_swfw_semaphore(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.init_swfw_sync)
-		hw->mac.ops.init_swfw_sync(hw);
+    if (hw->mac.ops.init_swfw_sync)
+        hw->mac.ops.init_swfw_sync(hw);
 }
 
 
 void ixgbe_disable_rx(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.disable_rx)
-		hw->mac.ops.disable_rx(hw);
+    if (hw->mac.ops.disable_rx)
+        hw->mac.ops.disable_rx(hw);
 }
 
 void ixgbe_enable_rx(struct ixgbe_hw *hw)
 {
-	if (hw->mac.ops.enable_rx)
-		hw->mac.ops.enable_rx(hw);
+    if (hw->mac.ops.enable_rx)
+        hw->mac.ops.enable_rx(hw);
 }
 
 /**
@@ -1683,6 +1683,6 @@ void ixgbe_enable_rx(struct ixgbe_hw *hw)
  */
 void ixgbe_set_rate_select_speed(struct ixgbe_hw *hw, ixgbe_link_speed speed)
 {
-	if (hw->mac.ops.set_rate_select_speed)
-		hw->mac.ops.set_rate_select_speed(hw, speed);
+    if (hw->mac.ops.set_rate_select_speed)
+        hw->mac.ops.set_rate_select_speed(hw, speed);
 }

@@ -35,20 +35,20 @@ extern "C" {
  * The lcore role (used in RTE or not).
  */
 enum rte_lcore_role_t {
-	ROLE_RTE,
-	ROLE_OFF,
-	ROLE_SERVICE,
+    ROLE_RTE,
+    ROLE_OFF,
+    ROLE_SERVICE,
 };
 
 /**
  * The type of process in a linux, multi-process setup
  */
 enum rte_proc_type_t {
-	RTE_PROC_AUTO = -1,   /* allow auto-detection of primary/secondary */
-	RTE_PROC_PRIMARY = 0, /* set to zero, so primary is the default */
-	RTE_PROC_SECONDARY,
+    RTE_PROC_AUTO = -1,   /* allow auto-detection of primary/secondary */
+    RTE_PROC_PRIMARY = 0, /* set to zero, so primary is the default */
+    RTE_PROC_SECONDARY,
 
-	RTE_PROC_INVALID
+    RTE_PROC_INVALID
 };
 
 /**
@@ -160,21 +160,21 @@ int rte_eal_cleanup(void);
  */
 int rte_eal_primary_proc_alive(const char *config_file_path);
 
-#define RTE_MP_MAX_FD_NUM	8    /* The max amount of fds */
-#define RTE_MP_MAX_NAME_LEN	64   /* The max length of action name */
-#define RTE_MP_MAX_PARAM_LEN	256  /* The max length of param */
+#define RTE_MP_MAX_FD_NUM    8    /* The max amount of fds */
+#define RTE_MP_MAX_NAME_LEN    64   /* The max length of action name */
+#define RTE_MP_MAX_PARAM_LEN    256  /* The max length of param */
 struct rte_mp_msg {
-	char name[RTE_MP_MAX_NAME_LEN];
-	int len_param;
-	int num_fds;
-	uint8_t param[RTE_MP_MAX_PARAM_LEN];
-	int fds[RTE_MP_MAX_FD_NUM];
+    char name[RTE_MP_MAX_NAME_LEN];
+    int len_param;
+    int num_fds;
+    uint8_t param[RTE_MP_MAX_PARAM_LEN];
+    int fds[RTE_MP_MAX_FD_NUM];
 };
 
 struct rte_mp_reply {
-	int nb_sent;
-	int nb_received;
-	struct rte_mp_msg *msgs; /* caller to free */
+    int nb_sent;
+    int nb_received;
+    struct rte_mp_msg *msgs; /* caller to free */
 };
 
 /**
@@ -207,7 +207,7 @@ typedef int (*rte_mp_t)(const struct rte_mp_msg *msg, const void *peer);
  * @note No memory allocations should take place inside the callback.
  */
 typedef int (*rte_mp_async_reply_t)(const struct rte_mp_msg *request,
-		const struct rte_mp_reply *reply);
+        const struct rte_mp_reply *reply);
 
 /**
  * @warning
@@ -311,7 +311,7 @@ rte_mp_sendmsg(struct rte_mp_msg *msg);
 __rte_experimental
 int
 rte_mp_request_sync(struct rte_mp_msg *req, struct rte_mp_reply *reply,
-	       const struct timespec *ts);
+           const struct timespec *ts);
 
 /**
  * @warning
@@ -341,7 +341,7 @@ rte_mp_request_sync(struct rte_mp_msg *req, struct rte_mp_reply *reply,
 __rte_experimental
 int
 rte_mp_request_async(struct rte_mp_msg *req, const struct timespec *ts,
-		rte_mp_async_reply_t clb);
+        rte_mp_async_reply_t clb);
 
 /**
  * @warning
@@ -377,7 +377,7 @@ rte_mp_reply(struct rte_mp_msg *msg, const char *peer);
  * Use this function typedef to define and call rte_set_application_usage_hook()
  * routine.
  */
-typedef void	(*rte_usage_hook_t)(const char * prgname);
+typedef void    (*rte_usage_hook_t)(const char * prgname);
 
 /**
  * Add application usage routine callout from the eal_usage() routine.
@@ -456,10 +456,10 @@ int rte_sys_gettid(void);
  */
 static inline int rte_gettid(void)
 {
-	static RTE_DEFINE_PER_LCORE(int, _thread_id) = -1;
-	if (RTE_PER_LCORE(_thread_id) == -1)
-		RTE_PER_LCORE(_thread_id) = rte_sys_gettid();
-	return RTE_PER_LCORE(_thread_id);
+    static RTE_DEFINE_PER_LCORE(int, _thread_id) = -1;
+    if (RTE_PER_LCORE(_thread_id) == -1)
+        RTE_PER_LCORE(_thread_id) = rte_sys_gettid();
+    return RTE_PER_LCORE(_thread_id);
 }
 
 /**

@@ -26,59 +26,59 @@ extern "C" {
 
 /** Maximum number of bonded devices per device */
 #ifndef RTE_CRYPTODEV_SCHEDULER_MAX_NB_SLAVES
-#define RTE_CRYPTODEV_SCHEDULER_MAX_NB_SLAVES	(8)
+#define RTE_CRYPTODEV_SCHEDULER_MAX_NB_SLAVES    (8)
 #endif
 
 /** Maximum number of multi-core worker cores */
-#define RTE_CRYPTODEV_SCHEDULER_MAX_NB_WORKER_CORES	(RTE_MAX_LCORE - 1)
+#define RTE_CRYPTODEV_SCHEDULER_MAX_NB_WORKER_CORES    (RTE_MAX_LCORE - 1)
 
 /** Round-robin scheduling mode string */
-#define SCHEDULER_MODE_NAME_ROUND_ROBIN		round-robin
+#define SCHEDULER_MODE_NAME_ROUND_ROBIN        round-robin
 /** Packet-size based distribution scheduling mode string */
-#define SCHEDULER_MODE_NAME_PKT_SIZE_DISTR	packet-size-distr
+#define SCHEDULER_MODE_NAME_PKT_SIZE_DISTR    packet-size-distr
 /** Fail-over scheduling mode string */
-#define SCHEDULER_MODE_NAME_FAIL_OVER		fail-over
+#define SCHEDULER_MODE_NAME_FAIL_OVER        fail-over
 /** multi-core scheduling mode string */
-#define SCHEDULER_MODE_NAME_MULTI_CORE		multi-core
+#define SCHEDULER_MODE_NAME_MULTI_CORE        multi-core
 
 /**
  * Crypto scheduler PMD operation modes
  */
 enum rte_cryptodev_scheduler_mode {
-	CDEV_SCHED_MODE_NOT_SET = 0,
-	/** User defined mode */
-	CDEV_SCHED_MODE_USERDEFINED,
-	/** Round-robin mode */
-	CDEV_SCHED_MODE_ROUNDROBIN,
-	/** Packet-size based distribution mode */
-	CDEV_SCHED_MODE_PKT_SIZE_DISTR,
-	/** Fail-over mode */
-	CDEV_SCHED_MODE_FAILOVER,
-	/** multi-core mode */
-	CDEV_SCHED_MODE_MULTICORE,
+    CDEV_SCHED_MODE_NOT_SET = 0,
+    /** User defined mode */
+    CDEV_SCHED_MODE_USERDEFINED,
+    /** Round-robin mode */
+    CDEV_SCHED_MODE_ROUNDROBIN,
+    /** Packet-size based distribution mode */
+    CDEV_SCHED_MODE_PKT_SIZE_DISTR,
+    /** Fail-over mode */
+    CDEV_SCHED_MODE_FAILOVER,
+    /** multi-core mode */
+    CDEV_SCHED_MODE_MULTICORE,
 
-	CDEV_SCHED_MODE_COUNT /**< number of modes */
+    CDEV_SCHED_MODE_COUNT /**< number of modes */
 };
 
-#define RTE_CRYPTODEV_SCHEDULER_NAME_MAX_LEN	(64)
-#define RTE_CRYPTODEV_SCHEDULER_DESC_MAX_LEN	(256)
+#define RTE_CRYPTODEV_SCHEDULER_NAME_MAX_LEN    (64)
+#define RTE_CRYPTODEV_SCHEDULER_DESC_MAX_LEN    (256)
 
 /**
  * Crypto scheduler option types
  */
 enum rte_cryptodev_schedule_option_type {
-	CDEV_SCHED_OPTION_NOT_SET = 0,
-	CDEV_SCHED_OPTION_THRESHOLD,
+    CDEV_SCHED_OPTION_NOT_SET = 0,
+    CDEV_SCHED_OPTION_THRESHOLD,
 
-	CDEV_SCHED_OPTION_COUNT
+    CDEV_SCHED_OPTION_COUNT
 };
 
 /**
  * Threshold option structure
  */
-#define RTE_CRYPTODEV_SCHEDULER_PARAM_THRES	"threshold"
+#define RTE_CRYPTODEV_SCHEDULER_PARAM_THRES    "threshold"
 struct rte_cryptodev_scheduler_threshold_option {
-	uint32_t threshold;	/**< Threshold for packet-size mode */
+    uint32_t threshold;    /**< Threshold for packet-size mode */
 };
 
 struct rte_cryptodev_scheduler;
@@ -99,7 +99,7 @@ struct rte_cryptodev_scheduler;
  */
 int
 rte_cryptodev_scheduler_load_user_scheduler(uint8_t scheduler_id,
-		struct rte_cryptodev_scheduler *scheduler);
+        struct rte_cryptodev_scheduler *scheduler);
 
 /**
  * Attach a crypto device to the scheduler
@@ -150,7 +150,7 @@ rte_cryptodev_scheduler_slave_detach(uint8_t scheduler_id, uint8_t slave_id);
  */
 int
 rte_cryptodev_scheduler_mode_set(uint8_t scheduler_id,
-		enum rte_cryptodev_scheduler_mode mode);
+        enum rte_cryptodev_scheduler_mode mode);
 
 /**
  * Get the current scheduling mode
@@ -182,7 +182,7 @@ rte_cryptodev_scheduler_mode_get(uint8_t scheduler_id);
  */
 int
 rte_cryptodev_scheduler_ordering_set(uint8_t scheduler_id,
-		uint32_t enable_reorder);
+        uint32_t enable_reorder);
 
 /**
  * Get the current crypto ops reordering feature
@@ -231,8 +231,8 @@ rte_cryptodev_scheduler_slaves_get(uint8_t scheduler_id, uint8_t *slaves);
  */
 int
 rte_cryptodev_scheduler_option_set(uint8_t scheduler_id,
-		enum rte_cryptodev_schedule_option_type option_type,
-		void *option);
+        enum rte_cryptodev_schedule_option_type option_type,
+        void *option);
 
 /**
  * Set the mode specific option
@@ -250,23 +250,23 @@ rte_cryptodev_scheduler_option_set(uint8_t scheduler_id,
  */
 int
 rte_cryptodev_scheduler_option_get(uint8_t scheduler_id,
-		enum rte_cryptodev_schedule_option_type option_type,
-		void *option);
+        enum rte_cryptodev_schedule_option_type option_type,
+        void *option);
 
 typedef uint16_t (*rte_cryptodev_scheduler_burst_enqueue_t)(void *qp_ctx,
-		struct rte_crypto_op **ops, uint16_t nb_ops);
+        struct rte_crypto_op **ops, uint16_t nb_ops);
 
 typedef uint16_t (*rte_cryptodev_scheduler_burst_dequeue_t)(void *qp_ctx,
-		struct rte_crypto_op **ops, uint16_t nb_ops);
+        struct rte_crypto_op **ops, uint16_t nb_ops);
 
 /** The data structure associated with each mode of scheduler. */
 struct rte_cryptodev_scheduler {
-	const char *name;                        /**< Scheduler name */
-	const char *description;                 /**< Scheduler description */
-	enum rte_cryptodev_scheduler_mode mode;  /**< Scheduling mode */
+    const char *name;                        /**< Scheduler name */
+    const char *description;                 /**< Scheduler description */
+    enum rte_cryptodev_scheduler_mode mode;  /**< Scheduling mode */
 
-	/** Pointer to scheduler operation structure */
-	struct rte_cryptodev_scheduler_ops *ops;
+    /** Pointer to scheduler operation structure */
+    struct rte_cryptodev_scheduler_ops *ops;
 };
 
 /** Round-robin mode scheduler */

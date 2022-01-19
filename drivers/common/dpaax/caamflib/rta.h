@@ -65,7 +65,7 @@
  *          (unsigned int)
  */
 #define PROGRAM_CNTXT_INIT(program, buffer, offset) \
-	rta_program_cntxt_init(program, buffer, offset)
+    rta_program_cntxt_init(program, buffer, offset)
 
 /**
  * PROGRAM_FINALIZE - must be called to mark completion of RTA call.
@@ -166,15 +166,15 @@ extern enum rta_sec_era rta_sec_era;
 static inline int
 rta_set_sec_era(enum rta_sec_era era)
 {
-	if (era > MAX_SEC_ERA) {
-		rta_sec_era = DEFAULT_SEC_ERA;
-		pr_err("Unsupported SEC ERA. Defaulting to ERA %d\n",
-		       DEFAULT_SEC_ERA + 1);
-		return -1;
-	}
+    if (era > MAX_SEC_ERA) {
+        rta_sec_era = DEFAULT_SEC_ERA;
+        pr_err("Unsupported SEC ERA. Defaulting to ERA %d\n",
+               DEFAULT_SEC_ERA + 1);
+        return -1;
+    }
 
-	rta_sec_era = era;
-	return 0;
+    rta_sec_era = era;
+    return 0;
 }
 
 /**
@@ -186,7 +186,7 @@ rta_set_sec_era(enum rta_sec_era era)
 static inline unsigned int
 rta_get_sec_era(void)
 {
-	return rta_sec_era;
+    return rta_sec_era;
 }
 
 /**
@@ -209,7 +209,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SHR_HDR(program, share, start_idx, flags) \
-	rta_shr_header(program, share, start_idx, flags)
+    rta_shr_header(program, share, start_idx, flags)
 
 /**
  * JOB_HDR - Configures JOB Descriptor HEADER command
@@ -227,7 +227,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define JOB_HDR(program, share, start_idx, share_desc, flags) \
-	rta_job_header(program, share, start_idx, share_desc, flags, 0)
+    rta_job_header(program, share, start_idx, share_desc, flags, 0)
 
 /**
  * JOB_HDR_EXT - Configures JOB Descriptor HEADER command
@@ -247,8 +247,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define JOB_HDR_EXT(program, share, start_idx, share_desc, flags, ext_flags) \
-	rta_job_header(program, share, start_idx, share_desc, flags | EXT, \
-		       ext_flags)
+    rta_job_header(program, share, start_idx, share_desc, flags | EXT, \
+               ext_flags)
 
 /**
  * MOVE - Configures MOVE and MOVE_LEN commands
@@ -272,7 +272,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MOVE(program, src, src_offset, dst, dst_offset, length, opt) \
-	rta_move(program, __MOVE, src, src_offset, dst, dst_offset, length, opt)
+    rta_move(program, __MOVE, src, src_offset, dst, dst_offset, length, opt)
 
 /**
  * MOVEB - Configures MOVEB command
@@ -300,8 +300,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MOVEB(program, src, src_offset, dst, dst_offset, length, opt) \
-	rta_move(program, __MOVEB, src, src_offset, dst, dst_offset, length, \
-		 opt)
+    rta_move(program, __MOVEB, src, src_offset, dst, dst_offset, length, \
+         opt)
 
 /**
  * MOVEDW - Configures MOVEDW command
@@ -329,8 +329,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MOVEDW(program, src, src_offset, dst, dst_offset, length, opt) \
-	rta_move(program, __MOVEDW, src, src_offset, dst, dst_offset, length, \
-		 opt)
+    rta_move(program, __MOVEDW, src, src_offset, dst, dst_offset, length, \
+         opt)
 
 /**
  * FIFOLOAD - Configures FIFOLOAD command to load message data, PKHA data, IV,
@@ -351,7 +351,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define FIFOLOAD(program, data, src, length, flags) \
-	rta_fifo_load(program, data, src, length, flags)
+    rta_fifo_load(program, data, src, length, flags)
 
 /**
  * SEQFIFOLOAD - Configures SEQ FIFOLOAD command to load message data, PKHA
@@ -371,7 +371,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQFIFOLOAD(program, data, length, flags) \
-	rta_fifo_load(program, data, NONE, length, flags|SEQ)
+    rta_fifo_load(program, data, NONE, length, flags|SEQ)
 
 /**
  * FIFOSTORE - Configures FIFOSTORE command, to move data from Output Data FIFO
@@ -390,7 +390,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define FIFOSTORE(program, data, encrypt_flags, dst, length, flags) \
-	rta_fifo_store(program, data, encrypt_flags, dst, length, flags)
+    rta_fifo_store(program, data, encrypt_flags, dst, length, flags)
 
 /**
  * SEQFIFOSTORE - Configures SEQ FIFOSTORE command, to move data from Output
@@ -409,7 +409,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQFIFOSTORE(program, data, encrypt_flags, length, flags) \
-	rta_fifo_store(program, data, encrypt_flags, 0, length, flags|SEQ)
+    rta_fifo_store(program, data, encrypt_flags, 0, length, flags|SEQ)
 
 /**
  * KEY - Configures KEY and SEQ KEY commands
@@ -430,7 +430,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define KEY(program, key_dst, encrypt_flags, src, length, flags) \
-	rta_key(program, key_dst, encrypt_flags, src, length, flags)
+    rta_key(program, key_dst, encrypt_flags, src, length, flags)
 
 /**
  * SEQINPTR - Configures SEQ IN PTR command
@@ -446,7 +446,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQINPTR(program, src, length, flags) \
-	rta_seq_in_ptr(program, src, length, flags)
+    rta_seq_in_ptr(program, src, length, flags)
 
 /**
  * SEQOUTPTR - Configures SEQ OUT PTR command
@@ -462,7 +462,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQOUTPTR(program, dst, length, flags) \
-	rta_seq_out_ptr(program, dst, length, flags)
+    rta_seq_out_ptr(program, dst, length, flags)
 
 /**
  * ALG_OPERATION - Configures ALGORITHM OPERATION command
@@ -483,7 +483,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define ALG_OPERATION(program, cipher_alg, aai, algo_state, icv_check, enc) \
-	rta_operation(program, cipher_alg, aai, algo_state, icv_check, enc)
+    rta_operation(program, cipher_alg, aai, algo_state, icv_check, enc)
 
 /**
  * PROTOCOL - Configures PROTOCOL OPERATION command
@@ -499,7 +499,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define PROTOCOL(program, optype, protid, protoinfo) \
-	rta_proto_operation(program, optype, protid, protoinfo)
+    rta_proto_operation(program, optype, protid, protoinfo)
 
 /**
  * DKP_PROTOCOL - Configures DKP (Derived Key Protocol) PROTOCOL command
@@ -523,7 +523,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define DKP_PROTOCOL(program, protid, key_src, key_dst, keylen, key, key_type) \
-	rta_dkp_proto(program, protid, key_src, key_dst, keylen, key, key_type)
+    rta_dkp_proto(program, protid, key_src, key_dst, keylen, key, key_type)
 
 /**
  * PKHA_OPERATION - Configures PKHA OPERATION command
@@ -556,7 +556,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define JUMP(program, addr, jump_type, test_type, cond) \
-	rta_jump(program, addr, jump_type, test_type, cond, NONE)
+    rta_jump(program, addr, jump_type, test_type, cond, NONE)
 
 /**
  * JUMP_INC - Configures JUMP_INC command
@@ -573,7 +573,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define JUMP_INC(program, addr, test_type, cond, src_dst) \
-	rta_jump(program, addr, LOCAL_JUMP_INC, test_type, cond, src_dst)
+    rta_jump(program, addr, LOCAL_JUMP_INC, test_type, cond, src_dst)
 
 /**
  * JUMP_DEC - Configures JUMP_DEC command
@@ -590,7 +590,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define JUMP_DEC(program, addr, test_type, cond, src_dst) \
-	rta_jump(program, addr, LOCAL_JUMP_DEC, test_type, cond, src_dst)
+    rta_jump(program, addr, LOCAL_JUMP_DEC, test_type, cond, src_dst)
 
 /**
  * LOAD - Configures LOAD command to load data registers from descriptor or from
@@ -610,7 +610,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define LOAD(program, addr, dst, offset, length, flags) \
-	rta_load(program, addr, dst, offset, length, flags)
+    rta_load(program, addr, dst, offset, length, flags)
 
 /**
  * SEQLOAD - Configures SEQ LOAD command to load data registers from descriptor
@@ -627,7 +627,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQLOAD(program, dst, offset, length, flags) \
-	rta_load(program, NONE, dst, offset, length, flags|SEQ)
+    rta_load(program, NONE, dst, offset, length, flags|SEQ)
 
 /**
  * STORE - Configures STORE command to read data from registers and write them
@@ -650,7 +650,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define STORE(program, src, offset, dst, length, flags) \
-	rta_store(program, src, offset, dst, length, flags)
+    rta_store(program, src, offset, dst, length, flags)
 
 /**
  * SEQSTORE - Configures SEQ STORE command to read data from registers and write
@@ -672,7 +672,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define SEQSTORE(program, src, offset, length, flags) \
-	rta_store(program, src, offset, NONE, length, flags|SEQ)
+    rta_store(program, src, offset, NONE, length, flags|SEQ)
 
 /**
  * MATHB - Configures MATHB command to perform binary operations
@@ -697,8 +697,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MATHB(program, operand1, operator, operand2, result, length, opt) \
-	rta_math(program, operand1, MATH_FUN_##operator, operand2, result, \
-		 length, opt)
+    rta_math(program, operand1, MATH_FUN_##operator, operand2, result, \
+         length, opt)
 
 /**
  * MATHI - Configures MATHI command to perform binary operations
@@ -726,8 +726,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MATHI(program, operand, operator, imm, result, length, opt) \
-	rta_mathi(program, operand, MATH_FUN_##operator, imm, result, length, \
-		  opt)
+    rta_mathi(program, operand, MATH_FUN_##operator, imm, result, length, \
+          opt)
 
 /**
  * MATHU - Configures MATHU command to perform unary operations
@@ -748,8 +748,8 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define MATHU(program, operand1, operator, result, length, opt) \
-	rta_math(program, operand1, MATH_FUN_##operator, NONE, result, length, \
-		 opt)
+    rta_math(program, operand1, MATH_FUN_##operator, NONE, result, length, \
+         opt)
 
 /**
  * SIGNATURE - Configures SIGNATURE command
@@ -790,7 +790,7 @@ rta_get_sec_era(void)
  *         have been written.
  */
 #define NFIFOADD(program, src, data, length, flags) \
-	rta_nfifo_load(program, src, data, length, flags)
+    rta_nfifo_load(program, src, data, length, flags)
 
 /**
  * DOC: Self Referential Code Management Routines
@@ -851,7 +851,7 @@ rta_get_sec_era(void)
  * Return: 0 in case of success, a negative error code if it fails
  */
 #define PATCH_MOVE(program, line, new_ref) \
-	rta_patch_move(program, line, new_ref)
+    rta_patch_move(program, line, new_ref)
 
 /**
  * PATCH_LOAD - Auxiliary command to resolve self referential code
@@ -867,7 +867,7 @@ rta_get_sec_era(void)
  * Return: 0 in case of success, a negative error code if it fails
  */
 #define PATCH_LOAD(program, line, new_ref) \
-	rta_patch_load(program, line, new_ref)
+    rta_patch_load(program, line, new_ref)
 
 /**
  * PATCH_STORE - Auxiliary command to resolve self referential code
@@ -883,7 +883,7 @@ rta_get_sec_era(void)
  * Return: 0 in case of success, a negative error code if it fails
  */
 #define PATCH_STORE(program, line, new_ref) \
-	rta_patch_store(program, line, new_ref)
+    rta_patch_store(program, line, new_ref)
 
 /**
  * PATCH_HDR - Auxiliary command to resolve self referential code
@@ -899,7 +899,7 @@ rta_get_sec_era(void)
  * Return: 0 in case of success, a negative error code if it fails
  */
 #define PATCH_HDR(program, line, new_ref) \
-	rta_patch_header(program, line, new_ref)
+    rta_patch_header(program, line, new_ref)
 
 /**
  * PATCH_RAW - Auxiliary command to resolve self referential code
@@ -916,6 +916,6 @@ rta_get_sec_era(void)
  * Return: 0 in case of success, a negative error code if it fails
  */
 #define PATCH_RAW(program, line, mask, new_val) \
-	rta_patch_raw(program, line, mask, new_val)
+    rta_patch_raw(program, line, mask, new_val)
 
 #endif /* __RTA_RTA_H__ */

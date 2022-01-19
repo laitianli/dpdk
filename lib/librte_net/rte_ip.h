@@ -31,51 +31,51 @@ extern "C" {
  * IPv4 Header
  */
 struct rte_ipv4_hdr {
-	uint8_t  version_ihl;		/**< version and header length */
-	uint8_t  type_of_service;	/**< type of service */
-	rte_be16_t total_length;	/**< length of packet */
-	rte_be16_t packet_id;		/**< packet ID */
-	rte_be16_t fragment_offset;	/**< fragmentation offset */
-	uint8_t  time_to_live;		/**< time to live */
-	uint8_t  next_proto_id;		/**< protocol ID */
-	rte_be16_t hdr_checksum;	/**< header checksum */
-	rte_be32_t src_addr;		/**< source address */
-	rte_be32_t dst_addr;		/**< destination address */
+    uint8_t  version_ihl;        /**< version and header length */
+    uint8_t  type_of_service;    /**< type of service */
+    rte_be16_t total_length;    /**< length of packet */
+    rte_be16_t packet_id;        /**< packet ID */
+    rte_be16_t fragment_offset;    /**< fragmentation offset */
+    uint8_t  time_to_live;        /**< time to live */
+    uint8_t  next_proto_id;        /**< protocol ID */
+    rte_be16_t hdr_checksum;    /**< header checksum */
+    rte_be32_t src_addr;        /**< source address */
+    rte_be32_t dst_addr;        /**< destination address */
 } __attribute__((__packed__));
 
 /** Create IPv4 address */
 #define RTE_IPV4(a, b, c, d) ((uint32_t)(((a) & 0xff) << 24) | \
-					   (((b) & 0xff) << 16) | \
-					   (((c) & 0xff) << 8)  | \
-					   ((d) & 0xff))
+                       (((b) & 0xff) << 16) | \
+                       (((c) & 0xff) << 8)  | \
+                       ((d) & 0xff))
 
 /** Maximal IPv4 packet length (including a header) */
 #define RTE_IPV4_MAX_PKT_LEN        65535
 
 /** Internet header length mask for version_ihl field */
-#define RTE_IPV4_HDR_IHL_MASK	(0x0f)
+#define RTE_IPV4_HDR_IHL_MASK    (0x0f)
 /**
  * Internet header length field multiplier (IHL field specifies overall header
  * length in number of 4-byte words)
  */
-#define RTE_IPV4_IHL_MULTIPLIER	(4)
+#define RTE_IPV4_IHL_MULTIPLIER    (4)
 
 /* Type of Service fields */
-#define RTE_IPV4_HDR_DSCP_MASK	(0xfc)
-#define RTE_IPV4_HDR_ECN_MASK	(0x03)
-#define RTE_IPV4_HDR_ECN_CE	RTE_IPV4_HDR_ECN_MASK
+#define RTE_IPV4_HDR_DSCP_MASK    (0xfc)
+#define RTE_IPV4_HDR_ECN_MASK    (0x03)
+#define RTE_IPV4_HDR_ECN_CE    RTE_IPV4_HDR_ECN_MASK
 
 /* Fragment Offset * Flags. */
-#define	RTE_IPV4_HDR_DF_SHIFT	14
-#define	RTE_IPV4_HDR_MF_SHIFT	13
-#define	RTE_IPV4_HDR_FO_SHIFT	3
+#define    RTE_IPV4_HDR_DF_SHIFT    14
+#define    RTE_IPV4_HDR_MF_SHIFT    13
+#define    RTE_IPV4_HDR_FO_SHIFT    3
 
-#define	RTE_IPV4_HDR_DF_FLAG	(1 << RTE_IPV4_HDR_DF_SHIFT)
-#define	RTE_IPV4_HDR_MF_FLAG	(1 << RTE_IPV4_HDR_MF_SHIFT)
+#define    RTE_IPV4_HDR_DF_FLAG    (1 << RTE_IPV4_HDR_DF_SHIFT)
+#define    RTE_IPV4_HDR_MF_FLAG    (1 << RTE_IPV4_HDR_MF_SHIFT)
 
-#define	RTE_IPV4_HDR_OFFSET_MASK	((1 << RTE_IPV4_HDR_MF_SHIFT) - 1)
+#define    RTE_IPV4_HDR_OFFSET_MASK    ((1 << RTE_IPV4_HDR_MF_SHIFT) - 1)
 
-#define	RTE_IPV4_HDR_OFFSET_UNITS	8
+#define    RTE_IPV4_HDR_OFFSET_UNITS    8
 
 /*
  * IPv4 address types
@@ -91,13 +91,13 @@ struct rte_ipv4_hdr {
  * IPv4 Multicast-related macros
  */
 #define RTE_IPV4_MIN_MCAST \
-	RTE_IPV4(224, 0, 0, 0)          /**< Minimal IPv4-multicast address */
+    RTE_IPV4(224, 0, 0, 0)          /**< Minimal IPv4-multicast address */
 #define RTE_IPV4_MAX_MCAST \
-	RTE_IPV4(239, 255, 255, 255)    /**< Maximum IPv4 multicast address */
+    RTE_IPV4(239, 255, 255, 255)    /**< Maximum IPv4 multicast address */
 
 #define RTE_IS_IPV4_MCAST(x) \
-	((x) >= RTE_IPV4_MIN_MCAST && (x) <= RTE_IPV4_MAX_MCAST)
-	/**< check if IPv4 address is multicast */
+    ((x) >= RTE_IPV4_MIN_MCAST && (x) <= RTE_IPV4_MAX_MCAST)
+    /**< check if IPv4 address is multicast */
 
 /* IPv4 default fields values */
 #define RTE_IPV4_MIN_IHL    (0x5)
@@ -119,30 +119,30 @@ struct rte_ipv4_hdr {
 static inline uint32_t
 __rte_raw_cksum(const void *buf, size_t len, uint32_t sum)
 {
-	/* workaround gcc strict-aliasing warning */
-	uintptr_t ptr = (uintptr_t)buf;
-	typedef uint16_t __attribute__((__may_alias__)) u16_p;
-	const u16_p *u16_buf = (const u16_p *)ptr;
+    /* workaround gcc strict-aliasing warning */
+    uintptr_t ptr = (uintptr_t)buf;
+    typedef uint16_t __attribute__((__may_alias__)) u16_p;
+    const u16_p *u16_buf = (const u16_p *)ptr;
 
-	while (len >= (sizeof(*u16_buf) * 4)) {
-		sum += u16_buf[0];
-		sum += u16_buf[1];
-		sum += u16_buf[2];
-		sum += u16_buf[3];
-		len -= sizeof(*u16_buf) * 4;
-		u16_buf += 4;
-	}
-	while (len >= sizeof(*u16_buf)) {
-		sum += *u16_buf;
-		len -= sizeof(*u16_buf);
-		u16_buf += 1;
-	}
+    while (len >= (sizeof(*u16_buf) * 4)) {
+        sum += u16_buf[0];
+        sum += u16_buf[1];
+        sum += u16_buf[2];
+        sum += u16_buf[3];
+        len -= sizeof(*u16_buf) * 4;
+        u16_buf += 4;
+    }
+    while (len >= sizeof(*u16_buf)) {
+        sum += *u16_buf;
+        len -= sizeof(*u16_buf);
+        u16_buf += 1;
+    }
 
-	/* if length is in odd bytes */
-	if (len == 1)
-		sum += *((const uint8_t *)u16_buf);
+    /* if length is in odd bytes */
+    if (len == 1)
+        sum += *((const uint8_t *)u16_buf);
 
-	return sum;
+    return sum;
 }
 
 /**
@@ -157,9 +157,9 @@ __rte_raw_cksum(const void *buf, size_t len, uint32_t sum)
 static inline uint16_t
 __rte_raw_cksum_reduce(uint32_t sum)
 {
-	sum = ((sum & 0xffff0000) >> 16) + (sum & 0xffff);
-	sum = ((sum & 0xffff0000) >> 16) + (sum & 0xffff);
-	return (uint16_t)sum;
+    sum = ((sum & 0xffff0000) >> 16) + (sum & 0xffff);
+    sum = ((sum & 0xffff0000) >> 16) + (sum & 0xffff);
+    return (uint16_t)sum;
 }
 
 /**
@@ -175,10 +175,10 @@ __rte_raw_cksum_reduce(uint32_t sum)
 static inline uint16_t
 rte_raw_cksum(const void *buf, size_t len)
 {
-	uint32_t sum;
+    uint32_t sum;
 
-	sum = __rte_raw_cksum(buf, len, 0);
-	return __rte_raw_cksum_reduce(sum);
+    sum = __rte_raw_cksum(buf, len, 0);
+    return __rte_raw_cksum_reduce(sum);
 }
 
 /**
@@ -197,59 +197,59 @@ rte_raw_cksum(const void *buf, size_t len)
  */
 static inline int
 rte_raw_cksum_mbuf(const struct rte_mbuf *m, uint32_t off, uint32_t len,
-	uint16_t *cksum)
+    uint16_t *cksum)
 {
-	const struct rte_mbuf *seg;
-	const char *buf;
-	uint32_t sum, tmp;
-	uint32_t seglen, done;
+    const struct rte_mbuf *seg;
+    const char *buf;
+    uint32_t sum, tmp;
+    uint32_t seglen, done;
 
-	/* easy case: all data in the first segment */
-	if (off + len <= rte_pktmbuf_data_len(m)) {
-		*cksum = rte_raw_cksum(rte_pktmbuf_mtod_offset(m,
-				const char *, off), len);
-		return 0;
-	}
+    /* easy case: all data in the first segment */
+    if (off + len <= rte_pktmbuf_data_len(m)) {
+        *cksum = rte_raw_cksum(rte_pktmbuf_mtod_offset(m,
+                const char *, off), len);
+        return 0;
+    }
 
-	if (unlikely(off + len > rte_pktmbuf_pkt_len(m)))
-		return -1; /* invalid params, return a dummy value */
+    if (unlikely(off + len > rte_pktmbuf_pkt_len(m)))
+        return -1; /* invalid params, return a dummy value */
 
-	/* else browse the segment to find offset */
-	seglen = 0;
-	for (seg = m; seg != NULL; seg = seg->next) {
-		seglen = rte_pktmbuf_data_len(seg);
-		if (off < seglen)
-			break;
-		off -= seglen;
-	}
-	seglen -= off;
-	buf = rte_pktmbuf_mtod_offset(seg, const char *, off);
-	if (seglen >= len) {
-		/* all in one segment */
-		*cksum = rte_raw_cksum(buf, len);
-		return 0;
-	}
+    /* else browse the segment to find offset */
+    seglen = 0;
+    for (seg = m; seg != NULL; seg = seg->next) {
+        seglen = rte_pktmbuf_data_len(seg);
+        if (off < seglen)
+            break;
+        off -= seglen;
+    }
+    seglen -= off;
+    buf = rte_pktmbuf_mtod_offset(seg, const char *, off);
+    if (seglen >= len) {
+        /* all in one segment */
+        *cksum = rte_raw_cksum(buf, len);
+        return 0;
+    }
 
-	/* hard case: process checksum of several segments */
-	sum = 0;
-	done = 0;
-	for (;;) {
-		tmp = __rte_raw_cksum(buf, seglen, 0);
-		if (done & 1)
-			tmp = rte_bswap16((uint16_t)tmp);
-		sum += tmp;
-		done += seglen;
-		if (done == len)
-			break;
-		seg = seg->next;
-		buf = rte_pktmbuf_mtod(seg, const char *);
-		seglen = rte_pktmbuf_data_len(seg);
-		if (seglen > len - done)
-			seglen = len - done;
-	}
+    /* hard case: process checksum of several segments */
+    sum = 0;
+    done = 0;
+    for (;;) {
+        tmp = __rte_raw_cksum(buf, seglen, 0);
+        if (done & 1)
+            tmp = rte_bswap16((uint16_t)tmp);
+        sum += tmp;
+        done += seglen;
+        if (done == len)
+            break;
+        seg = seg->next;
+        buf = rte_pktmbuf_mtod(seg, const char *);
+        seglen = rte_pktmbuf_data_len(seg);
+        if (seglen > len - done)
+            seglen = len - done;
+    }
 
-	*cksum = __rte_raw_cksum_reduce(sum);
-	return 0;
+    *cksum = __rte_raw_cksum_reduce(sum);
+    return 0;
 }
 
 /**
@@ -265,9 +265,9 @@ rte_raw_cksum_mbuf(const struct rte_mbuf *m, uint32_t off, uint32_t len,
 static inline uint16_t
 rte_ipv4_cksum(const struct rte_ipv4_hdr *ipv4_hdr)
 {
-	uint16_t cksum;
-	cksum = rte_raw_cksum(ipv4_hdr, sizeof(struct rte_ipv4_hdr));
-	return (cksum == 0xffff) ? cksum : (uint16_t)~cksum;
+    uint16_t cksum;
+    cksum = rte_raw_cksum(ipv4_hdr, sizeof(struct rte_ipv4_hdr));
+    return (cksum == 0xffff) ? cksum : (uint16_t)~cksum;
 }
 
 /**
@@ -291,26 +291,26 @@ rte_ipv4_cksum(const struct rte_ipv4_hdr *ipv4_hdr)
 static inline uint16_t
 rte_ipv4_phdr_cksum(const struct rte_ipv4_hdr *ipv4_hdr, uint64_t ol_flags)
 {
-	struct ipv4_psd_header {
-		uint32_t src_addr; /* IP address of source host. */
-		uint32_t dst_addr; /* IP address of destination host. */
-		uint8_t  zero;     /* zero. */
-		uint8_t  proto;    /* L4 protocol type. */
-		uint16_t len;      /* L4 length. */
-	} psd_hdr;
+    struct ipv4_psd_header {
+        uint32_t src_addr; /* IP address of source host. */
+        uint32_t dst_addr; /* IP address of destination host. */
+        uint8_t  zero;     /* zero. */
+        uint8_t  proto;    /* L4 protocol type. */
+        uint16_t len;      /* L4 length. */
+    } psd_hdr;
 
-	psd_hdr.src_addr = ipv4_hdr->src_addr;
-	psd_hdr.dst_addr = ipv4_hdr->dst_addr;
-	psd_hdr.zero = 0;
-	psd_hdr.proto = ipv4_hdr->next_proto_id;
-	if (ol_flags & PKT_TX_TCP_SEG) {
-		psd_hdr.len = 0;
-	} else {
-		psd_hdr.len = rte_cpu_to_be_16(
-			(uint16_t)(rte_be_to_cpu_16(ipv4_hdr->total_length)
-				- sizeof(struct rte_ipv4_hdr)));
-	}
-	return rte_raw_cksum(&psd_hdr, sizeof(psd_hdr));
+    psd_hdr.src_addr = ipv4_hdr->src_addr;
+    psd_hdr.dst_addr = ipv4_hdr->dst_addr;
+    psd_hdr.zero = 0;
+    psd_hdr.proto = ipv4_hdr->next_proto_id;
+    if (ol_flags & PKT_TX_TCP_SEG) {
+        psd_hdr.len = 0;
+    } else {
+        psd_hdr.len = rte_cpu_to_be_16(
+            (uint16_t)(rte_be_to_cpu_16(ipv4_hdr->total_length)
+                - sizeof(struct rte_ipv4_hdr)));
+    }
+    return rte_raw_cksum(&psd_hdr, sizeof(psd_hdr));
 }
 
 /**
@@ -330,46 +330,46 @@ rte_ipv4_phdr_cksum(const struct rte_ipv4_hdr *ipv4_hdr, uint64_t ol_flags)
 static inline uint16_t
 rte_ipv4_udptcp_cksum(const struct rte_ipv4_hdr *ipv4_hdr, const void *l4_hdr)
 {
-	uint32_t cksum;
-	uint32_t l3_len, l4_len;
+    uint32_t cksum;
+    uint32_t l3_len, l4_len;
 
-	l3_len = rte_be_to_cpu_16(ipv4_hdr->total_length);
-	if (l3_len < sizeof(struct rte_ipv4_hdr))
-		return 0;
+    l3_len = rte_be_to_cpu_16(ipv4_hdr->total_length);
+    if (l3_len < sizeof(struct rte_ipv4_hdr))
+        return 0;
 
-	l4_len = l3_len - sizeof(struct rte_ipv4_hdr);
+    l4_len = l3_len - sizeof(struct rte_ipv4_hdr);
 
-	cksum = rte_raw_cksum(l4_hdr, l4_len);
-	cksum += rte_ipv4_phdr_cksum(ipv4_hdr, 0);
+    cksum = rte_raw_cksum(l4_hdr, l4_len);
+    cksum += rte_ipv4_phdr_cksum(ipv4_hdr, 0);
 
-	cksum = ((cksum & 0xffff0000) >> 16) + (cksum & 0xffff);
-	cksum = (~cksum) & 0xffff;
-	if (cksum == 0)
-		cksum = 0xffff;
+    cksum = ((cksum & 0xffff0000) >> 16) + (cksum & 0xffff);
+    cksum = (~cksum) & 0xffff;
+    if (cksum == 0)
+        cksum = 0xffff;
 
-	return (uint16_t)cksum;
+    return (uint16_t)cksum;
 }
 
 /**
  * IPv6 Header
  */
 struct rte_ipv6_hdr {
-	rte_be32_t vtc_flow;	/**< IP version, traffic class & flow label. */
-	rte_be16_t payload_len;	/**< IP packet length - includes header size */
-	uint8_t  proto;		/**< Protocol, next header. */
-	uint8_t  hop_limits;	/**< Hop limits. */
-	uint8_t  src_addr[16];	/**< IP address of source host. */
-	uint8_t  dst_addr[16];	/**< IP address of destination host(s). */
+    rte_be32_t vtc_flow;    /**< IP version, traffic class & flow label. */
+    rte_be16_t payload_len;    /**< IP packet length - includes header size */
+    uint8_t  proto;        /**< Protocol, next header. */
+    uint8_t  hop_limits;    /**< Hop limits. */
+    uint8_t  src_addr[16];    /**< IP address of source host. */
+    uint8_t  dst_addr[16];    /**< IP address of destination host(s). */
 } __attribute__((__packed__));
 
 /* IPv6 vtc_flow: IPv / TC / flow_label */
 #define RTE_IPV6_HDR_FL_SHIFT 0
 #define RTE_IPV6_HDR_TC_SHIFT 20
-#define RTE_IPV6_HDR_FL_MASK	((1u << RTE_IPV6_HDR_TC_SHIFT) - 1)
-#define RTE_IPV6_HDR_TC_MASK	(0xff << RTE_IPV6_HDR_TC_SHIFT)
-#define RTE_IPV6_HDR_DSCP_MASK	(0xfc << RTE_IPV6_HDR_TC_SHIFT)
-#define RTE_IPV6_HDR_ECN_MASK	(0x03 << RTE_IPV6_HDR_TC_SHIFT)
-#define RTE_IPV6_HDR_ECN_CE	RTE_IPV6_HDR_ECN_MASK
+#define RTE_IPV6_HDR_FL_MASK    ((1u << RTE_IPV6_HDR_TC_SHIFT) - 1)
+#define RTE_IPV6_HDR_TC_MASK    (0xff << RTE_IPV6_HDR_TC_SHIFT)
+#define RTE_IPV6_HDR_DSCP_MASK    (0xfc << RTE_IPV6_HDR_TC_SHIFT)
+#define RTE_IPV6_HDR_ECN_MASK    (0x03 << RTE_IPV6_HDR_TC_SHIFT)
+#define RTE_IPV6_HDR_ECN_CE    RTE_IPV6_HDR_ECN_MASK
 
 /**
  * Process the pseudo-header checksum of an IPv6 header.
@@ -390,24 +390,24 @@ struct rte_ipv6_hdr {
 static inline uint16_t
 rte_ipv6_phdr_cksum(const struct rte_ipv6_hdr *ipv6_hdr, uint64_t ol_flags)
 {
-	uint32_t sum;
-	struct {
-		rte_be32_t len;   /* L4 length. */
-		rte_be32_t proto; /* L4 protocol - top 3 bytes must be zero */
-	} psd_hdr;
+    uint32_t sum;
+    struct {
+        rte_be32_t len;   /* L4 length. */
+        rte_be32_t proto; /* L4 protocol - top 3 bytes must be zero */
+    } psd_hdr;
 
-	psd_hdr.proto = (uint32_t)(ipv6_hdr->proto << 24);
-	if (ol_flags & PKT_TX_TCP_SEG) {
-		psd_hdr.len = 0;
-	} else {
-		psd_hdr.len = ipv6_hdr->payload_len;
-	}
+    psd_hdr.proto = (uint32_t)(ipv6_hdr->proto << 24);
+    if (ol_flags & PKT_TX_TCP_SEG) {
+        psd_hdr.len = 0;
+    } else {
+        psd_hdr.len = ipv6_hdr->payload_len;
+    }
 
-	sum = __rte_raw_cksum(ipv6_hdr->src_addr,
-		sizeof(ipv6_hdr->src_addr) + sizeof(ipv6_hdr->dst_addr),
-		0);
-	sum = __rte_raw_cksum(&psd_hdr, sizeof(psd_hdr), sum);
-	return __rte_raw_cksum_reduce(sum);
+    sum = __rte_raw_cksum(ipv6_hdr->src_addr,
+        sizeof(ipv6_hdr->src_addr) + sizeof(ipv6_hdr->dst_addr),
+        0);
+    sum = __rte_raw_cksum(&psd_hdr, sizeof(psd_hdr), sum);
+    return __rte_raw_cksum_reduce(sum);
 }
 
 /**
@@ -426,20 +426,20 @@ rte_ipv6_phdr_cksum(const struct rte_ipv6_hdr *ipv6_hdr, uint64_t ol_flags)
 static inline uint16_t
 rte_ipv6_udptcp_cksum(const struct rte_ipv6_hdr *ipv6_hdr, const void *l4_hdr)
 {
-	uint32_t cksum;
-	uint32_t l4_len;
+    uint32_t cksum;
+    uint32_t l4_len;
 
-	l4_len = rte_be_to_cpu_16(ipv6_hdr->payload_len);
+    l4_len = rte_be_to_cpu_16(ipv6_hdr->payload_len);
 
-	cksum = rte_raw_cksum(l4_hdr, l4_len);
-	cksum += rte_ipv6_phdr_cksum(ipv6_hdr, 0);
+    cksum = rte_raw_cksum(l4_hdr, l4_len);
+    cksum += rte_ipv6_phdr_cksum(ipv6_hdr, 0);
 
-	cksum = ((cksum & 0xffff0000) >> 16) + (cksum & 0xffff);
-	cksum = (~cksum) & 0xffff;
-	if (cksum == 0)
-		cksum = 0xffff;
+    cksum = ((cksum & 0xffff0000) >> 16) + (cksum & 0xffff);
+    cksum = (~cksum) & 0xffff;
+    if (cksum == 0)
+        cksum = 0xffff;
 
-	return (uint16_t)cksum;
+    return (uint16_t)cksum;
 }
 
 /* IPv6 fragmentation header size */
@@ -465,31 +465,31 @@ __rte_experimental
 static inline int
 rte_ipv6_get_next_ext(const uint8_t *p, int proto, size_t *ext_len)
 {
-	int next_proto;
+    int next_proto;
 
-	switch (proto) {
-	case IPPROTO_AH:
-		next_proto = *p++;
-		*ext_len = (*p + 2) * sizeof(uint32_t);
-		break;
+    switch (proto) {
+    case IPPROTO_AH:
+        next_proto = *p++;
+        *ext_len = (*p + 2) * sizeof(uint32_t);
+        break;
 
-	case IPPROTO_HOPOPTS:
-	case IPPROTO_ROUTING:
-	case IPPROTO_DSTOPTS:
-		next_proto = *p++;
-		*ext_len = (*p + 1) * sizeof(uint64_t);
-		break;
+    case IPPROTO_HOPOPTS:
+    case IPPROTO_ROUTING:
+    case IPPROTO_DSTOPTS:
+        next_proto = *p++;
+        *ext_len = (*p + 1) * sizeof(uint64_t);
+        break;
 
-	case IPPROTO_FRAGMENT:
-		next_proto = *p;
-		*ext_len = RTE_IPV6_FRAG_HDR_SIZE;
-		break;
+    case IPPROTO_FRAGMENT:
+        next_proto = *p;
+        *ext_len = RTE_IPV6_FRAG_HDR_SIZE;
+        break;
 
-	default:
-		return -EINVAL;
-	}
+    default:
+        return -EINVAL;
+    }
 
-	return next_proto;
+    return next_proto;
 }
 
 #ifdef __cplusplus

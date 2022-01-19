@@ -31,12 +31,12 @@
  * of "sram" symbols for backward compatibility, which are viewed as global.
  */
 struct nfp_rtsym {
-	const char *name;
-	uint64_t addr;
-	uint64_t size;
-	int type;
-	int target;
-	int domain;
+    const char *name;
+    uint64_t addr;
+    uint64_t size;
+    int type;
+    int target;
+    int domain;
 };
 
 struct nfp_rtsym_table;
@@ -54,8 +54,8 @@ const struct nfp_rtsym *
 nfp_rtsym_lookup(struct nfp_rtsym_table *rtbl, const char *name);
 
 uint64_t nfp_rtsym_read_le(struct nfp_rtsym_table *rtbl, const char *name,
-			   int *error);
+               int *error);
 uint8_t *
 nfp_rtsym_map(struct nfp_rtsym_table *rtbl, const char *name,
-	      unsigned int min_size, struct nfp_cpp_area **area);
+          unsigned int min_size, struct nfp_cpp_area **area);
 #endif

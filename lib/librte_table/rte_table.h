@@ -32,8 +32,8 @@ struct rte_mbuf;
 
 /** Lookup table statistics */
 struct rte_table_stats {
-	uint64_t n_pkts_in;
-	uint64_t n_pkts_lookup_miss;
+    uint64_t n_pkts_in;
+    uint64_t n_pkts_lookup_miss;
 };
 
 /**
@@ -50,7 +50,7 @@ struct rte_table_stats {
  *   Handle to lookup table instance
  */
 typedef void* (*rte_table_op_create)(void *params, int socket_id,
-	uint32_t entry_size);
+    uint32_t entry_size);
 
 /**
  * Lookup table free
@@ -90,11 +90,11 @@ typedef int (*rte_table_op_free)(void *table);
  *   0 on success, error code otherwise
  */
 typedef int (*rte_table_op_entry_add)(
-	void *table,
-	void *key,
-	void *entry,
-	int *key_found,
-	void **entry_ptr);
+    void *table,
+    void *key,
+    void *entry,
+    int *key_found,
+    void **entry_ptr);
 
 /**
  * Lookup table entry delete
@@ -119,10 +119,10 @@ typedef int (*rte_table_op_entry_add)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_table_op_entry_delete)(
-	void *table,
-	void *key,
-	int *key_found,
-	void *entry);
+    void *table,
+    void *key,
+    int *key_found,
+    void *entry);
 
 /**
  * Lookup table entry add bulk
@@ -154,12 +154,12 @@ typedef int (*rte_table_op_entry_delete)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_table_op_entry_add_bulk)(
-	void *table,
-	void **keys,
-	void **entries,
-	uint32_t n_keys,
-	int *key_found,
-	void **entries_ptr);
+    void *table,
+    void **keys,
+    void **entries,
+    uint32_t n_keys,
+    int *key_found,
+    void **entries_ptr);
 
 /**
  * Lookup table entry delete bulk
@@ -189,11 +189,11 @@ typedef int (*rte_table_op_entry_add_bulk)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_table_op_entry_delete_bulk)(
-	void *table,
-	void **keys,
-	uint32_t n_keys,
-	int *key_found,
-	void **entries);
+    void *table,
+    void **keys,
+    uint32_t n_keys,
+    int *key_found,
+    void **entries);
 
 /**
  * Lookup table lookup
@@ -229,11 +229,11 @@ typedef int (*rte_table_op_entry_delete_bulk)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_table_op_lookup)(
-	void *table,
-	struct rte_mbuf **pkts,
-	uint64_t pkts_mask,
-	uint64_t *lookup_hit_mask,
-	void **entries);
+    void *table,
+    struct rte_mbuf **pkts,
+    uint64_t pkts_mask,
+    uint64_t *lookup_hit_mask,
+    void **entries);
 
 /**
  * Lookup table stats read
@@ -249,20 +249,20 @@ typedef int (*rte_table_op_lookup)(
  *   Error code or 0 on success.
  */
 typedef int (*rte_table_op_stats_read)(
-	void *table,
-	struct rte_table_stats *stats,
-	int clear);
+    void *table,
+    struct rte_table_stats *stats,
+    int clear);
 
 /** Lookup table interface defining the lookup table operation */
 struct rte_table_ops {
-	rte_table_op_create f_create;                 /**< Create */
-	rte_table_op_free f_free;                     /**< Free */
-	rte_table_op_entry_add f_add;                 /**< Entry add */
-	rte_table_op_entry_delete f_delete;           /**< Entry delete */
-	rte_table_op_entry_add_bulk f_add_bulk;       /**< Add entry bulk */
-	rte_table_op_entry_delete_bulk f_delete_bulk; /**< Delete entry bulk */
-	rte_table_op_lookup f_lookup;                 /**< Lookup */
-	rte_table_op_stats_read f_stats;              /**< Stats */
+    rte_table_op_create f_create;                 /**< Create */
+    rte_table_op_free f_free;                     /**< Free */
+    rte_table_op_entry_add f_add;                 /**< Entry add */
+    rte_table_op_entry_delete f_delete;           /**< Entry delete */
+    rte_table_op_entry_add_bulk f_add_bulk;       /**< Add entry bulk */
+    rte_table_op_entry_delete_bulk f_delete_bulk; /**< Delete entry bulk */
+    rte_table_op_lookup f_lookup;                 /**< Lookup */
+    rte_table_op_stats_read f_stats;              /**< Stats */
 };
 
 #ifdef __cplusplus

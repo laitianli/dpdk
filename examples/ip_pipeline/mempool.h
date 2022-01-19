@@ -13,10 +13,10 @@
 #include "common.h"
 
 struct mempool {
-	TAILQ_ENTRY(mempool) node;
-	char name[NAME_SIZE];
-	struct rte_mempool *m;
-	uint32_t buffer_size;
+    TAILQ_ENTRY(mempool) node;
+    char name[NAME_SIZE];
+    struct rte_mempool *m;
+    uint32_t buffer_size;
 };
 
 TAILQ_HEAD(mempool_list, mempool);
@@ -28,10 +28,10 @@ struct mempool *
 mempool_find(const char *name);
 
 struct mempool_params {
-	uint32_t buffer_size;
-	uint32_t pool_size;
-	uint32_t cache_size;
-	uint32_t cpu_id;
+    uint32_t buffer_size;
+    uint32_t pool_size;
+    uint32_t cache_size;
+    uint32_t cpu_id;
 };
 
 struct mempool *

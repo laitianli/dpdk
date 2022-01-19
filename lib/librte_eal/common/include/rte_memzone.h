@@ -49,25 +49,25 @@ extern "C" {
 struct rte_memzone {
 
 #define RTE_MEMZONE_NAMESIZE 32       /**< Maximum length of memory zone name.*/
-	char name[RTE_MEMZONE_NAMESIZE];  /**< Name of the memory zone. */
+    char name[RTE_MEMZONE_NAMESIZE];  /**< Name of the memory zone. */
 
-	RTE_STD_C11
-	union {
-		phys_addr_t phys_addr;        /**< deprecated - Start physical address. */
-		rte_iova_t iova;              /**< Start IO address. */
-	};
-	RTE_STD_C11
-	union {
-		void *addr;                   /**< Start virtual address. */
-		uint64_t addr_64;             /**< Makes sure addr is always 64-bits */
-	};
-	size_t len;                       /**< Length of the memzone. */
+    RTE_STD_C11
+    union {
+        phys_addr_t phys_addr;        /**< deprecated - Start physical address. */
+        rte_iova_t iova;              /**< Start IO address. */
+    };
+    RTE_STD_C11
+    union {
+        void *addr;                   /**< Start virtual address. */
+        uint64_t addr_64;             /**< Makes sure addr is always 64-bits */
+    };
+    size_t len;                       /**< Length of the memzone. */
 
-	uint64_t hugepage_sz;             /**< The page size of underlying memory */
+    uint64_t hugepage_sz;             /**< The page size of underlying memory */
 
-	int32_t socket_id;                /**< NUMA socket ID. */
+    int32_t socket_id;                /**< NUMA socket ID. */
 
-	uint32_t flags;                   /**< Characteristics of this memzone. */
+    uint32_t flags;                   /**< Characteristics of this memzone. */
 } __attribute__((__packed__));
 
 /**
@@ -129,8 +129,8 @@ struct rte_memzone {
  *    - EINVAL - invalid parameters
  */
 const struct rte_memzone *rte_memzone_reserve(const char *name,
-					      size_t len, int socket_id,
-					      unsigned flags);
+                          size_t len, int socket_id,
+                          unsigned flags);
 
 /**
  * Reserve a portion of physical memory with alignment on a specified
@@ -195,8 +195,8 @@ const struct rte_memzone *rte_memzone_reserve(const char *name,
  *    - EINVAL - invalid parameters
  */
 const struct rte_memzone *rte_memzone_reserve_aligned(const char *name,
-			size_t len, int socket_id,
-			unsigned flags, unsigned align);
+            size_t len, int socket_id,
+            unsigned flags, unsigned align);
 
 /**
  * Reserve a portion of physical memory with specified alignment and
@@ -267,8 +267,8 @@ const struct rte_memzone *rte_memzone_reserve_aligned(const char *name,
  *    - EINVAL - invalid parameters
  */
 const struct rte_memzone *rte_memzone_reserve_bounded(const char *name,
-			size_t len, int socket_id,
-			unsigned flags, unsigned align, unsigned bound);
+            size_t len, int socket_id,
+            unsigned flags, unsigned align, unsigned bound);
 
 /**
  * Free a memzone.
@@ -311,7 +311,7 @@ void rte_memzone_dump(FILE *f);
  *   Argument passed to iterator
  */
 void rte_memzone_walk(void (*func)(const struct rte_memzone *, void *arg),
-		      void *arg);
+              void *arg);
 
 #ifdef __cplusplus
 }

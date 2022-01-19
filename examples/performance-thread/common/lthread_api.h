@@ -166,7 +166,7 @@ int lthread_active_schedulers(void);
   *  resources are not freed.
   *
   * @param lcore
-  *	The lcore of the scheduler to shutdown
+  *    The lcore of the scheduler to shutdown
   *
   * @return
   *  none
@@ -195,7 +195,7 @@ void lthread_scheduler_shutdown_all(void);
   *  This function must be the main loop of an EAL thread.
   *
   * @return
-  *	 none
+  *     none
   */
 
 void lthread_run(void);
@@ -220,13 +220,13 @@ void lthread_run(void);
   *  Pointer to args that will be passed to the thread
   *
   * @return
-  *	 0    success
-  *	 EAGAIN  no resources available
-  *	 EINVAL  NULL thread or function pointer, or lcore_id out of range
+  *     0    success
+  *     EAGAIN  no resources available
+  *     EINVAL  NULL thread or function pointer, or lcore_id out of range
   */
 int
 lthread_create(struct lthread **new_lt,
-		int lcore, lthread_func_t func, void *arg);
+        int lcore, lthread_func_t func, void *arg);
 
 /**
   * Cancel an lthread
@@ -239,8 +239,8 @@ lthread_create(struct lthread **new_lt,
   *  Pointer to an lthread that will be cancelled
   *
   * @return
-  *	 0    success
-  *	 EINVAL  thread was NULL
+  *     0    success
+  *     EINVAL  thread was NULL
   */
 int lthread_cancel(struct lthread *lt);
 
@@ -313,7 +313,7 @@ void lthread_sleep(uint64_t nsecs);
   *  The current thread will be suspended until the specified time has elapsed
   *  or has been exceeded.
   *
-  *	 Execution will switch to the next lthread that is ready to run
+  *     Execution will switch to the next lthread that is ready to run
   *
   * @param clks
   *  Number of clock ticks to sleep
@@ -342,7 +342,7 @@ void lthread_yield(void);
   *  current scheduler. The current thread will be resumed on the new scheduler.
   *
   * @param lcore
-  *	The lcore to migrate to
+  *    The lcore to migrate to
   *
   * @return
   *  0   success we are now running on the specified core
@@ -402,14 +402,14 @@ typedef void (*tls_destructor_func) (void *);
   *  current scheduler.
   *
   *  Key values may be used to locate thread-specific data.
-  *  The same key value	may be used by different threads, the values bound
-  *  to the key by	lthread_setspecific() are maintained on	a per-thread
+  *  The same key value    may be used by different threads, the values bound
+  *  to the key by    lthread_setspecific() are maintained on    a per-thread
   *  basis and persist for the life of the calling thread.
   *
-  *  An	optional destructor function may be associated with each key value.
-  *  At	thread exit, if	a key value has	a non-NULL destructor pointer, and the
-  *  thread has	a non-NULL value associated with the key, the function pointed
-  *  to	is called with the current associated value as its sole	argument.
+  *  An    optional destructor function may be associated with each key value.
+  *  At    thread exit, if    a key value has    a non-NULL destructor pointer, and the
+  *  thread has    a non-NULL value associated with the key, the function pointed
+  *  to    is called with the current associated value as its sole    argument.
   *
   * @param key
   *   Pointer to the key to be created
@@ -579,7 +579,7 @@ extern __typeof__(type)__attribute((section("per_lt"))) per_lt_##name
   *  lthread_mutex_unlock() unlocks the specified mutex. The mutex is assumed
   *  to be locked and owned by the calling thread.
   *
-  *  lthread_mutex_destroy() destroys a	mutex object, freeing its resources.
+  *  lthread_mutex_destroy() destroys a    mutex object, freeing its resources.
   *  The mutex must be unlocked with nothing blocked on it before calling
   *  lthread_mutex_destroy.
   *
@@ -598,7 +598,7 @@ extern __typeof__(type)__attribute((section("per_lt"))) per_lt_##name
 
 int
 lthread_mutex_init(char *name, struct lthread_mutex **mutex,
-		   const struct lthread_mutexattr *attr);
+           const struct lthread_mutexattr *attr);
 
 /**
   * Destroy a mutex
@@ -707,7 +707,7 @@ int lthread_mutex_unlock(struct lthread_mutex *mutex);
   */
 int
 lthread_cond_init(char *name, struct lthread_cond **c,
-		  const struct lthread_condattr *attr);
+          const struct lthread_condattr *attr);
 
 /**
   * Destroy a condition variable
@@ -781,4 +781,4 @@ int lthread_cond_broadcast(struct lthread_cond *c);
 }
 #endif
 
-#endif				/* LTHREAD_H */
+#endif                /* LTHREAD_H */

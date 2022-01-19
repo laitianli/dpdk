@@ -9,25 +9,25 @@
 typedef u32 ice_bitmap_t;
 
 /* Number of bits per bitmap chunk */
-#define BITS_PER_CHUNK		(BITS_PER_BYTE * sizeof(ice_bitmap_t))
+#define BITS_PER_CHUNK        (BITS_PER_BYTE * sizeof(ice_bitmap_t))
 /* Determine which chunk a bit belongs in */
-#define BIT_CHUNK(nr)		((nr) / BITS_PER_CHUNK)
+#define BIT_CHUNK(nr)        ((nr) / BITS_PER_CHUNK)
 /* How many chunks are required to store this many bits */
-#define BITS_TO_CHUNKS(sz)	DIVIDE_AND_ROUND_UP((sz), BITS_PER_CHUNK)
+#define BITS_TO_CHUNKS(sz)    DIVIDE_AND_ROUND_UP((sz), BITS_PER_CHUNK)
 /* Which bit inside a chunk this bit corresponds to */
-#define BIT_IN_CHUNK(nr)	((nr) % BITS_PER_CHUNK)
+#define BIT_IN_CHUNK(nr)    ((nr) % BITS_PER_CHUNK)
 /* How many bits are valid in the last chunk, assumes nr > 0 */
-#define LAST_CHUNK_BITS(nr)	((((nr) - 1) % BITS_PER_CHUNK) + 1)
+#define LAST_CHUNK_BITS(nr)    ((((nr) - 1) % BITS_PER_CHUNK) + 1)
 /* Generate a bitmask of valid bits in the last chunk, assumes nr > 0 */
-#define LAST_CHUNK_MASK(nr)	(((ice_bitmap_t)~0) >> \
-				 (BITS_PER_CHUNK - LAST_CHUNK_BITS(nr)))
+#define LAST_CHUNK_MASK(nr)    (((ice_bitmap_t)~0) >> \
+                 (BITS_PER_CHUNK - LAST_CHUNK_BITS(nr)))
 
 #define ice_declare_bitmap(A, sz) \
-	ice_bitmap_t A[BITS_TO_CHUNKS(sz)]
+    ice_bitmap_t A[BITS_TO_CHUNKS(sz)]
 
 static inline bool ice_is_bit_set_internal(u16 nr, const ice_bitmap_t *bitmap)
 {
-	return !!(*bitmap & BIT(nr));
+    return !!(*bitmap & BIT(nr));
 }
 
 /*
@@ -45,31 +45,31 @@ static inline bool ice_is_bit_set_internal(u16 nr, const ice_bitmap_t *bitmap)
  */
 static inline void ice_clear_bit_internal(u16 nr, ice_bitmap_t *bitmap)
 {
-	*bitmap &= ~BIT(nr);
+    *bitmap &= ~BIT(nr);
 }
 
 static inline void ice_set_bit_internal(u16 nr, ice_bitmap_t *bitmap)
 {
-	*bitmap |= BIT(nr);
+    *bitmap |= BIT(nr);
 }
 
 static inline bool ice_test_and_clear_bit_internal(u16 nr,
-						   ice_bitmap_t *bitmap)
+                           ice_bitmap_t *bitmap)
 {
-	if (ice_is_bit_set_internal(nr, bitmap)) {
-		ice_clear_bit_internal(nr, bitmap);
-		return true;
-	}
-	return false;
+    if (ice_is_bit_set_internal(nr, bitmap)) {
+        ice_clear_bit_internal(nr, bitmap);
+        return true;
+    }
+    return false;
 }
 
 static inline bool ice_test_and_set_bit_internal(u16 nr, ice_bitmap_t *bitmap)
 {
-	if (ice_is_bit_set_internal(nr, bitmap))
-		return true;
+    if (ice_is_bit_set_internal(nr, bitmap))
+        return true;
 
-	ice_set_bit_internal(nr, bitmap);
-	return false;
+    ice_set_bit_internal(nr, bitmap);
+    return false;
 }
 
 /**
@@ -82,8 +82,8 @@ static inline bool ice_test_and_set_bit_internal(u16 nr, ice_bitmap_t *bitmap)
  */
 static inline bool ice_is_bit_set(const ice_bitmap_t *bitmap, u16 nr)
 {
-	return ice_is_bit_set_internal(BIT_IN_CHUNK(nr),
-				       &bitmap[BIT_CHUNK(nr)]);
+    return ice_is_bit_set_internal(BIT_IN_CHUNK(nr),
+                       &bitmap[BIT_CHUNK(nr)]);
 }
 
 /**
@@ -96,7 +96,7 @@ static inline bool ice_is_bit_set(const ice_bitmap_t *bitmap, u16 nr)
  */
 static inline void ice_clear_bit(u16 nr, ice_bitmap_t *bitmap)
 {
-	ice_clear_bit_internal(BIT_IN_CHUNK(nr), &bitmap[BIT_CHUNK(nr)]);
+    ice_clear_bit_internal(BIT_IN_CHUNK(nr), &bitmap[BIT_CHUNK(nr)]);
 }
 
 /**
@@ -109,7 +109,7 @@ static inline void ice_clear_bit(u16 nr, ice_bitmap_t *bitmap)
  */
 static inline void ice_set_bit(u16 nr, ice_bitmap_t *bitmap)
 {
-	ice_set_bit_internal(BIT_IN_CHUNK(nr), &bitmap[BIT_CHUNK(nr)]);
+    ice_set_bit_internal(BIT_IN_CHUNK(nr), &bitmap[BIT_CHUNK(nr)]);
 }
 
 /**
@@ -123,8 +123,8 @@ static inline void ice_set_bit(u16 nr, ice_bitmap_t *bitmap)
 static inline bool
 ice_test_and_clear_bit(u16 nr, ice_bitmap_t *bitmap)
 {
-	return ice_test_and_clear_bit_internal(BIT_IN_CHUNK(nr),
-					       &bitmap[BIT_CHUNK(nr)]);
+    return ice_test_and_clear_bit_internal(BIT_IN_CHUNK(nr),
+                           &bitmap[BIT_CHUNK(nr)]);
 }
 
 /**
@@ -138,8 +138,8 @@ ice_test_and_clear_bit(u16 nr, ice_bitmap_t *bitmap)
 static inline bool
 ice_test_and_set_bit(u16 nr, ice_bitmap_t *bitmap)
 {
-	return ice_test_and_set_bit_internal(BIT_IN_CHUNK(nr),
-					     &bitmap[BIT_CHUNK(nr)]);
+    return ice_test_and_set_bit_internal(BIT_IN_CHUNK(nr),
+                         &bitmap[BIT_CHUNK(nr)]);
 }
 
 /* ice_zero_bitmap - set bits of bitmap to zero.
@@ -153,8 +153,8 @@ ice_test_and_set_bit(u16 nr, ice_bitmap_t *bitmap)
  */
 static inline void ice_zero_bitmap(ice_bitmap_t *bmp, u16 size)
 {
-	ice_memset(bmp, 0, BITS_TO_CHUNKS(size) * sizeof(ice_bitmap_t),
-		   ICE_NONDMA_MEM);
+    ice_memset(bmp, 0, BITS_TO_CHUNKS(size) * sizeof(ice_bitmap_t),
+           ICE_NONDMA_MEM);
 }
 
 /**
@@ -172,28 +172,28 @@ static inline void ice_zero_bitmap(ice_bitmap_t *bmp, u16 size)
  */
 static inline int
 ice_and_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
-	       const ice_bitmap_t *bmp2, u16 size)
+           const ice_bitmap_t *bmp2, u16 size)
 {
-	ice_bitmap_t res = 0, mask;
-	u16 i;
+    ice_bitmap_t res = 0, mask;
+    u16 i;
 
-	/* Handle all but the last chunk */
-	for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++) {
-		dst[i] = bmp1[i] & bmp2[i];
-		res |= dst[i];
-	}
+    /* Handle all but the last chunk */
+    for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++) {
+        dst[i] = bmp1[i] & bmp2[i];
+        res |= dst[i];
+    }
 
-	/* We want to take care not to modify any bits outside of the bitmap
-	 * size, even in the destination bitmap. Thus, we won't directly
-	 * assign the last bitmap, but instead use a bitmask to ensure we only
-	 * modify bits which are within the size, and leave any bits above the
-	 * size value alone.
-	 */
-	mask = LAST_CHUNK_MASK(size);
-	dst[i] = (dst[i] & ~mask) | ((bmp1[i] & bmp2[i]) & mask);
-	res |= dst[i] & mask;
+    /* We want to take care not to modify any bits outside of the bitmap
+     * size, even in the destination bitmap. Thus, we won't directly
+     * assign the last bitmap, but instead use a bitmask to ensure we only
+     * modify bits which are within the size, and leave any bits above the
+     * size value alone.
+     */
+    mask = LAST_CHUNK_MASK(size);
+    dst[i] = (dst[i] & ~mask) | ((bmp1[i] & bmp2[i]) & mask);
+    res |= dst[i] & mask;
 
-	return res != 0;
+    return res != 0;
 }
 
 /**
@@ -209,22 +209,22 @@ ice_and_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
  */
 static inline void
 ice_or_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
-	      const ice_bitmap_t *bmp2, u16 size)
+          const ice_bitmap_t *bmp2, u16 size)
 {
-	ice_bitmap_t mask;
-	u16 i;
+    ice_bitmap_t mask;
+    u16 i;
 
-	/* Handle all but last chunk*/
-	for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
-		dst[i] = bmp1[i] | bmp2[i];
+    /* Handle all but last chunk*/
+    for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
+        dst[i] = bmp1[i] | bmp2[i];
 
-	/* We want to only OR bits within the size. Furthermore, we also do
-	 * not want to modify destination bits which are beyond the specified
-	 * size. Use a bitmask to ensure that we only modify the bits that are
-	 * within the specified size.
-	 */
-	mask = LAST_CHUNK_MASK(size);
-	dst[i] = (dst[i] & ~mask) | ((bmp1[i] | bmp2[i]) & mask);
+    /* We want to only OR bits within the size. Furthermore, we also do
+     * not want to modify destination bits which are beyond the specified
+     * size. Use a bitmask to ensure that we only modify the bits that are
+     * within the specified size.
+     */
+    mask = LAST_CHUNK_MASK(size);
+    dst[i] = (dst[i] & ~mask) | ((bmp1[i] | bmp2[i]) & mask);
 }
 
 /**
@@ -240,22 +240,22 @@ ice_or_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
  */
 static inline void
 ice_xor_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
-	       const ice_bitmap_t *bmp2, u16 size)
+           const ice_bitmap_t *bmp2, u16 size)
 {
-	ice_bitmap_t mask;
-	u16 i;
+    ice_bitmap_t mask;
+    u16 i;
 
-	/* Handle all but last chunk*/
-	for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
-		dst[i] = bmp1[i] ^ bmp2[i];
+    /* Handle all but last chunk*/
+    for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
+        dst[i] = bmp1[i] ^ bmp2[i];
 
-	/* We want to only XOR bits within the size. Furthermore, we also do
-	 * not want to modify destination bits which are beyond the specified
-	 * size. Use a bitmask to ensure that we only modify the bits that are
-	 * within the specified size.
-	 */
-	mask = LAST_CHUNK_MASK(size);
-	dst[i] = (dst[i] & ~mask) | ((bmp1[i] ^ bmp2[i]) & mask);
+    /* We want to only XOR bits within the size. Furthermore, we also do
+     * not want to modify destination bits which are beyond the specified
+     * size. Use a bitmask to ensure that we only modify the bits that are
+     * within the specified size.
+     */
+    mask = LAST_CHUNK_MASK(size);
+    dst[i] = (dst[i] & ~mask) | ((bmp1[i] ^ bmp2[i]) & mask);
 }
 
 /**
@@ -270,36 +270,36 @@ ice_xor_bitmap(ice_bitmap_t *dst, const ice_bitmap_t *bmp1,
 static inline u16
 ice_find_next_bit(const ice_bitmap_t *bitmap, u16 size, u16 offset)
 {
-	u16 i, j;
+    u16 i, j;
 
-	if (offset >= size)
-		return size;
+    if (offset >= size)
+        return size;
 
-	/* Since the starting position may not be directly on a chunk
-	 * boundary, we need to be careful to handle the first chunk specially
-	 */
-	i = BIT_CHUNK(offset);
-	if (bitmap[i] != 0) {
-		u16 off = i * BITS_PER_CHUNK;
+    /* Since the starting position may not be directly on a chunk
+     * boundary, we need to be careful to handle the first chunk specially
+     */
+    i = BIT_CHUNK(offset);
+    if (bitmap[i] != 0) {
+        u16 off = i * BITS_PER_CHUNK;
 
-		for (j = offset % BITS_PER_CHUNK; j < BITS_PER_CHUNK; j++) {
-			if (ice_is_bit_set(bitmap, off + j))
-				return min(size, (u16)(off + j));
-		}
-	}
+        for (j = offset % BITS_PER_CHUNK; j < BITS_PER_CHUNK; j++) {
+            if (ice_is_bit_set(bitmap, off + j))
+                return min(size, (u16)(off + j));
+        }
+    }
 
-	/* Now we handle the remaining chunks, if any */
-	for (i++; i < BITS_TO_CHUNKS(size); i++) {
-		if (bitmap[i] != 0) {
-			u16 off = i * BITS_PER_CHUNK;
+    /* Now we handle the remaining chunks, if any */
+    for (i++; i < BITS_TO_CHUNKS(size); i++) {
+        if (bitmap[i] != 0) {
+            u16 off = i * BITS_PER_CHUNK;
 
-			for (j = 0; j < BITS_PER_CHUNK; j++) {
-				if (ice_is_bit_set(bitmap, off + j))
-					return min(size, (u16)(off + j));
-			}
-		}
-	}
-	return size;
+            for (j = 0; j < BITS_PER_CHUNK; j++) {
+                if (ice_is_bit_set(bitmap, off + j))
+                    return min(size, (u16)(off + j));
+            }
+        }
+    }
+    return size;
 }
 
 /**
@@ -312,7 +312,7 @@ ice_find_next_bit(const ice_bitmap_t *bitmap, u16 size, u16 offset)
  */
 static inline u16 ice_find_first_bit(const ice_bitmap_t *bitmap, u16 size)
 {
-	return ice_find_next_bit(bitmap, size, 0);
+    return ice_find_next_bit(bitmap, size, 0);
 }
 
 /**
@@ -325,7 +325,7 @@ static inline u16 ice_find_first_bit(const ice_bitmap_t *bitmap, u16 size)
  */
 static inline bool ice_is_any_bit_set(ice_bitmap_t *bitmap, u16 size)
 {
-	return ice_find_first_bit(bitmap, size) < size;
+    return ice_find_first_bit(bitmap, size) < size;
 }
 
 /**
@@ -340,8 +340,8 @@ static inline bool ice_is_any_bit_set(ice_bitmap_t *bitmap, u16 size)
  */
 static inline void ice_cp_bitmap(ice_bitmap_t *dst, ice_bitmap_t *src, u16 size)
 {
-	ice_memcpy(dst, src, BITS_TO_CHUNKS(size) * sizeof(ice_bitmap_t),
-		   ICE_NONDMA_TO_NONDMA);
+    ice_memcpy(dst, src, BITS_TO_CHUNKS(size) * sizeof(ice_bitmap_t),
+           ICE_NONDMA_TO_NONDMA);
 }
 
 /**
@@ -355,20 +355,20 @@ static inline void ice_cp_bitmap(ice_bitmap_t *dst, ice_bitmap_t *src, u16 size)
 static inline bool
 ice_cmp_bitmap(ice_bitmap_t *bmp1, ice_bitmap_t *bmp2, u16 size)
 {
-	ice_bitmap_t mask;
-	u16 i;
+    ice_bitmap_t mask;
+    u16 i;
 
-	/* Handle all but last chunk*/
-	for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
-		if (bmp1[i] != bmp2[i])
-			return false;
+    /* Handle all but last chunk*/
+    for (i = 0; i < BITS_TO_CHUNKS(size) - 1; i++)
+        if (bmp1[i] != bmp2[i])
+            return false;
 
-	/* We want to only compare bits within the size.*/
-	mask = LAST_CHUNK_MASK(size);
-	if ((bmp1[i] & mask) != (bmp2[i] & mask))
-		return false;
+    /* We want to only compare bits within the size.*/
+    mask = LAST_CHUNK_MASK(size);
+    if ((bmp1[i] & mask) != (bmp2[i] & mask))
+        return false;
 
-	return true;
+    return true;
 }
 
 #endif /* _ICE_BITOPS_H_ */

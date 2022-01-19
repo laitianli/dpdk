@@ -8,10 +8,10 @@ uint64_t
 get_tsc_freq_arch(void)
 {
 #if defined RTE_ARCH_ARM64 && !defined RTE_ARM_EAL_RDTSC_USE_PMU
-	uint64_t freq;
-	asm volatile("mrs %0, cntfrq_el0" : "=r" (freq));
-	return freq;
+    uint64_t freq;
+    asm volatile("mrs %0, cntfrq_el0" : "=r" (freq));
+    return freq;
 #else
-	return 0;
+    return 0;
 #endif
 }

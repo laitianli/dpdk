@@ -66,45 +66,45 @@
 
 /* Debugging assists */
 static inline void __hexdump(unsigned long start, unsigned long end,
-			     unsigned long p, size_t sz, const unsigned char *c)
+                 unsigned long p, size_t sz, const unsigned char *c)
 {
-	while (start < end) {
-		unsigned int pos = 0;
-		char buf[64];
-		int nl = 0;
+    while (start < end) {
+        unsigned int pos = 0;
+        char buf[64];
+        int nl = 0;
 
-		pos += sprintf(buf + pos, "%08lx: ", start);
-		do {
-			if ((start < p) || (start >= (p + sz)))
-				pos += sprintf(buf + pos, "..");
-			else
-				pos += sprintf(buf + pos, "%02x", *(c++));
-			if (!(++start & 15)) {
-				buf[pos++] = '\n';
-				nl = 1;
-			} else {
-				nl = 0;
-				if (!(start & 1))
-					buf[pos++] = ' ';
-				if (!(start & 3))
-					buf[pos++] = ' ';
-			}
-		} while (start & 15);
-		if (!nl)
-			buf[pos++] = '\n';
-		buf[pos] = '\0';
-		pr_info("%s", buf);
-	}
+        pos += sprintf(buf + pos, "%08lx: ", start);
+        do {
+            if ((start < p) || (start >= (p + sz)))
+                pos += sprintf(buf + pos, "..");
+            else
+                pos += sprintf(buf + pos, "%02x", *(c++));
+            if (!(++start & 15)) {
+                buf[pos++] = '\n';
+                nl = 1;
+            } else {
+                nl = 0;
+                if (!(start & 1))
+                    buf[pos++] = ' ';
+                if (!(start & 3))
+                    buf[pos++] = ' ';
+            }
+        } while (start & 15);
+        if (!nl)
+            buf[pos++] = '\n';
+        buf[pos] = '\0';
+        pr_info("%s", buf);
+    }
 }
 
 static inline void hexdump(const void *ptr, size_t sz)
 {
-	unsigned long p = (unsigned long)ptr;
-	unsigned long start = p & ~15;
-	unsigned long end = (p + sz + 15) & ~15;
-	const unsigned char *c = ptr;
+    unsigned long p = (unsigned long)ptr;
+    unsigned long start = p & ~15;
+    unsigned long end = (p + sz + 15) & ~15;
+    const unsigned char *c = ptr;
 
-	__hexdump(start, end, p, sz, c);
+    __hexdump(start, end, p, sz, c);
 }
 
 /* Currently, the CENA support code expects each 32-bit word to be written in
@@ -114,62 +114,62 @@ static inline void hexdump(const void *ptr, size_t sz)
  * host endianness.
  */
 static inline void u64_to_le32_copy(void *d, const uint64_t *s,
-				    unsigned int cnt)
+                    unsigned int cnt)
 {
-	uint32_t *dd = d;
-	const uint32_t *ss = (const uint32_t *)s;
+    uint32_t *dd = d;
+    const uint32_t *ss = (const uint32_t *)s;
 
-	while (cnt--) {
-		/* TBD: the toolchain was choking on the use of 64-bit types up
-		 * until recently so this works entirely with 32-bit variables.
-		 * When 64-bit types become usable again, investigate better
-		 * ways of doing this.
-		 */
+    while (cnt--) {
+        /* TBD: the toolchain was choking on the use of 64-bit types up
+         * until recently so this works entirely with 32-bit variables.
+         * When 64-bit types become usable again, investigate better
+         * ways of doing this.
+         */
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-		*(dd++) = ss[1];
-		*(dd++) = ss[0];
-		ss += 2;
+        *(dd++) = ss[1];
+        *(dd++) = ss[0];
+        ss += 2;
 #else
-		*(dd++) = *(ss++);
-		*(dd++) = *(ss++);
+        *(dd++) = *(ss++);
+        *(dd++) = *(ss++);
 #endif
-	}
+    }
 }
 
 static inline void u64_from_le32_copy(uint64_t *d, const void *s,
-				      unsigned int cnt)
+                      unsigned int cnt)
 {
-	const uint32_t *ss = s;
-	uint32_t *dd = (uint32_t *)d;
+    const uint32_t *ss = s;
+    uint32_t *dd = (uint32_t *)d;
 
-	while (cnt--) {
+    while (cnt--) {
 #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-		dd[1] = *(ss++);
-		dd[0] = *(ss++);
-		dd += 2;
+        dd[1] = *(ss++);
+        dd[0] = *(ss++);
+        dd += 2;
 #else
-		*(dd++) = *(ss++);
-		*(dd++) = *(ss++);
+        *(dd++) = *(ss++);
+        *(dd++) = *(ss++);
 #endif
-	}
+    }
 }
 
-	/******************/
-	/* Portal access  */
-	/******************/
+    /******************/
+    /* Portal access  */
+    /******************/
 struct qbman_swp_sys {
-	/* On GPP, the sys support for qbman_swp is here. The CENA region isi
-	 * not an mmap() of the real portal registers, but an allocated
-	 * place-holder, because the actual writes/reads to/from the portal are
-	 * marshalled from these allocated areas using QBMan's "MC access
-	 * registers". CINH accesses are atomic so there's no need for a
-	 * place-holder.
-	 */
-	uint8_t *cena;
-	uint8_t *addr_cena;
-	uint8_t *addr_cinh;
-	uint32_t idx;
-	enum qbman_eqcr_mode eqcr_mode;
+    /* On GPP, the sys support for qbman_swp is here. The CENA region isi
+     * not an mmap() of the real portal registers, but an allocated
+     * place-holder, because the actual writes/reads to/from the portal are
+     * marshalled from these allocated areas using QBMan's "MC access
+     * registers". CINH accesses are atomic so there's no need for a
+     * place-holder.
+     */
+    uint8_t *cena;
+    uint8_t *addr_cena;
+    uint8_t *addr_cinh;
+    uint32_t idx;
+    enum qbman_eqcr_mode eqcr_mode;
 };
 
 /* P_OFFSET is (ACCESS_CMD,0,12) - offset within the portal
@@ -181,152 +181,152 @@ struct qbman_swp_sys {
  */
 
 static inline void qbman_cinh_write(struct qbman_swp_sys *s, uint32_t offset,
-				    uint32_t val)
+                    uint32_t val)
 {
-	__raw_writel(val, s->addr_cinh + offset);
+    __raw_writel(val, s->addr_cinh + offset);
 #ifdef QBMAN_CINH_TRACE
-	pr_info("qbman_cinh_write(%p:%d:0x%03x) 0x%08x\n",
-		s->addr_cinh, s->idx, offset, val);
+    pr_info("qbman_cinh_write(%p:%d:0x%03x) 0x%08x\n",
+        s->addr_cinh, s->idx, offset, val);
 #endif
 }
 
 static inline uint32_t qbman_cinh_read(struct qbman_swp_sys *s, uint32_t offset)
 {
-	uint32_t reg = __raw_readl(s->addr_cinh + offset);
+    uint32_t reg = __raw_readl(s->addr_cinh + offset);
 #ifdef QBMAN_CINH_TRACE
-	pr_info("qbman_cinh_read(%p:%d:0x%03x) 0x%08x\n",
-		s->addr_cinh, s->idx, offset, reg);
+    pr_info("qbman_cinh_read(%p:%d:0x%03x) 0x%08x\n",
+        s->addr_cinh, s->idx, offset, reg);
 #endif
-	return reg;
+    return reg;
 }
 
 static inline void *qbman_cena_write_start(struct qbman_swp_sys *s,
-					   uint32_t offset)
+                       uint32_t offset)
 {
-	void *shadow = s->cena + offset;
+    void *shadow = s->cena + offset;
 
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_write_start(%p:%d:0x%03x) %p\n",
-		s->addr_cena, s->idx, offset, shadow);
+    pr_info("qbman_cena_write_start(%p:%d:0x%03x) %p\n",
+        s->addr_cena, s->idx, offset, shadow);
 #endif
-	QBMAN_BUG_ON(offset & 63);
-	dcbz(shadow);
-	return shadow;
+    QBMAN_BUG_ON(offset & 63);
+    dcbz(shadow);
+    return shadow;
 }
 
 static inline void *qbman_cena_write_start_wo_shadow(struct qbman_swp_sys *s,
-						     uint32_t offset)
+                             uint32_t offset)
 {
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_write_start(%p:%d:0x%03x)\n",
-		s->addr_cena, s->idx, offset);
+    pr_info("qbman_cena_write_start(%p:%d:0x%03x)\n",
+        s->addr_cena, s->idx, offset);
 #endif
-	QBMAN_BUG_ON(offset & 63);
+    QBMAN_BUG_ON(offset & 63);
 #ifdef RTE_ARCH_64
-	return (s->addr_cena + offset);
+    return (s->addr_cena + offset);
 #else
-	return (s->addr_cinh + offset);
+    return (s->addr_cinh + offset);
 #endif
 }
 
 static inline void qbman_cena_write_complete(struct qbman_swp_sys *s,
-					     uint32_t offset, void *cmd)
+                         uint32_t offset, void *cmd)
 {
-	const uint32_t *shadow = cmd;
-	int loop;
+    const uint32_t *shadow = cmd;
+    int loop;
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_write_complete(%p:%d:0x%03x) %p\n",
-		s->addr_cena, s->idx, offset, shadow);
-	hexdump(cmd, 64);
+    pr_info("qbman_cena_write_complete(%p:%d:0x%03x) %p\n",
+        s->addr_cena, s->idx, offset, shadow);
+    hexdump(cmd, 64);
 #endif
 #ifdef RTE_ARCH_64
-	for (loop = 15; loop >= 1; loop--)
-		__raw_writel(shadow[loop], s->addr_cena +
-					 offset + loop * 4);
-	lwsync();
-		__raw_writel(shadow[0], s->addr_cena + offset);
+    for (loop = 15; loop >= 1; loop--)
+        __raw_writel(shadow[loop], s->addr_cena +
+                     offset + loop * 4);
+    lwsync();
+        __raw_writel(shadow[0], s->addr_cena + offset);
 #else
-	for (loop = 15; loop >= 1; loop--)
-		__raw_writel(shadow[loop], s->addr_cinh +
-					 offset + loop * 4);
-	lwsync();
-	__raw_writel(shadow[0], s->addr_cinh + offset);
+    for (loop = 15; loop >= 1; loop--)
+        __raw_writel(shadow[loop], s->addr_cinh +
+                     offset + loop * 4);
+    lwsync();
+    __raw_writel(shadow[0], s->addr_cinh + offset);
 #endif
-	dcbf(s->addr_cena + offset);
+    dcbf(s->addr_cena + offset);
 }
 
 static inline void qbman_cena_write_complete_wo_shadow(struct qbman_swp_sys *s,
-						       uint32_t offset)
+                               uint32_t offset)
 {
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_write_complete(%p:%d:0x%03x)\n",
-		s->addr_cena, s->idx, offset);
+    pr_info("qbman_cena_write_complete(%p:%d:0x%03x)\n",
+        s->addr_cena, s->idx, offset);
 #endif
-	dcbf(s->addr_cena + offset);
+    dcbf(s->addr_cena + offset);
 }
 
 static inline uint32_t qbman_cena_read_reg(struct qbman_swp_sys *s,
-					   uint32_t offset)
+                       uint32_t offset)
 {
-	return __raw_readl(s->addr_cena + offset);
+    return __raw_readl(s->addr_cena + offset);
 }
 
 static inline void *qbman_cena_read(struct qbman_swp_sys *s, uint32_t offset)
 {
-	uint32_t *shadow = (uint32_t *)(s->cena + offset);
-	unsigned int loop;
+    uint32_t *shadow = (uint32_t *)(s->cena + offset);
+    unsigned int loop;
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_read(%p:%d:0x%03x) %p\n",
-		s->addr_cena, s->idx, offset, shadow);
+    pr_info("qbman_cena_read(%p:%d:0x%03x) %p\n",
+        s->addr_cena, s->idx, offset, shadow);
 #endif
 
 #ifdef RTE_ARCH_64
-	for (loop = 0; loop < 16; loop++)
-		shadow[loop] = __raw_readl(s->addr_cena + offset
-					+ loop * 4);
+    for (loop = 0; loop < 16; loop++)
+        shadow[loop] = __raw_readl(s->addr_cena + offset
+                    + loop * 4);
 #else
-	for (loop = 0; loop < 16; loop++)
-		shadow[loop] = __raw_readl(s->addr_cinh + offset
-					+ loop * 4);
+    for (loop = 0; loop < 16; loop++)
+        shadow[loop] = __raw_readl(s->addr_cinh + offset
+                    + loop * 4);
 #endif
 #ifdef QBMAN_CENA_TRACE
-	hexdump(shadow, 64);
+    hexdump(shadow, 64);
 #endif
-	return shadow;
+    return shadow;
 }
 
 static inline void *qbman_cena_read_wo_shadow(struct qbman_swp_sys *s,
-					      uint32_t offset)
+                          uint32_t offset)
 {
 #ifdef QBMAN_CENA_TRACE
-	pr_info("qbman_cena_read(%p:%d:0x%03x)\n",
-		s->addr_cena, s->idx, offset);
+    pr_info("qbman_cena_read(%p:%d:0x%03x)\n",
+        s->addr_cena, s->idx, offset);
 #endif
-	return s->addr_cena + offset;
+    return s->addr_cena + offset;
 }
 
 static inline void qbman_cena_invalidate(struct qbman_swp_sys *s,
-					 uint32_t offset)
+                     uint32_t offset)
 {
-	dccivac(s->addr_cena + offset);
+    dccivac(s->addr_cena + offset);
 }
 
 static inline void qbman_cena_invalidate_prefetch(struct qbman_swp_sys *s,
-						  uint32_t offset)
+                          uint32_t offset)
 {
-	dccivac(s->addr_cena + offset);
-	prefetch_for_load(s->addr_cena + offset);
+    dccivac(s->addr_cena + offset);
+    prefetch_for_load(s->addr_cena + offset);
 }
 
 static inline void qbman_cena_prefetch(struct qbman_swp_sys *s,
-				       uint32_t offset)
+                       uint32_t offset)
 {
-	prefetch_for_load(s->addr_cena + offset);
+    prefetch_for_load(s->addr_cena + offset);
 }
 
-	/******************/
-	/* Portal support */
-	/******************/
+    /******************/
+    /* Portal support */
+    /******************/
 
 /* The SWP_CFG portal register is special, in that it is used by the
  * platform-specific code rather than the platform-independent code in
@@ -351,134 +351,134 @@ static inline void qbman_cena_prefetch(struct qbman_swp_sys *s,
 #define SWP_CFG_EP_SHIFT      0
 
 static inline uint32_t qbman_set_swp_cfg(uint8_t max_fill, uint8_t wn,
-					 uint8_t est, uint8_t rpm, uint8_t dcm,
-					uint8_t epm, int sd, int sp, int se,
-					int dp, int de, int ep)
+                     uint8_t est, uint8_t rpm, uint8_t dcm,
+                    uint8_t epm, int sd, int sp, int se,
+                    int dp, int de, int ep)
 {
-	uint32_t reg;
+    uint32_t reg;
 
-	reg = (max_fill << SWP_CFG_DQRR_MF_SHIFT |
-		est << SWP_CFG_EST_SHIFT |
-		wn << SWP_CFG_WN_SHIFT |
-		rpm << SWP_CFG_RPM_SHIFT |
-		dcm << SWP_CFG_DCM_SHIFT |
-		epm << SWP_CFG_EPM_SHIFT |
-		sd << SWP_CFG_SD_SHIFT |
-		sp << SWP_CFG_SP_SHIFT |
-		se << SWP_CFG_SE_SHIFT |
-		dp << SWP_CFG_DP_SHIFT |
-		de << SWP_CFG_DE_SHIFT |
-		ep << SWP_CFG_EP_SHIFT);
+    reg = (max_fill << SWP_CFG_DQRR_MF_SHIFT |
+        est << SWP_CFG_EST_SHIFT |
+        wn << SWP_CFG_WN_SHIFT |
+        rpm << SWP_CFG_RPM_SHIFT |
+        dcm << SWP_CFG_DCM_SHIFT |
+        epm << SWP_CFG_EPM_SHIFT |
+        sd << SWP_CFG_SD_SHIFT |
+        sp << SWP_CFG_SP_SHIFT |
+        se << SWP_CFG_SE_SHIFT |
+        dp << SWP_CFG_DP_SHIFT |
+        de << SWP_CFG_DE_SHIFT |
+        ep << SWP_CFG_EP_SHIFT);
 
-	return reg;
+    return reg;
 }
 
-#define QMAN_RT_MODE	0x00000100
+#define QMAN_RT_MODE    0x00000100
 
-#define QMAN_REV_4000	0x04000000
-#define QMAN_REV_4100	0x04010000
-#define QMAN_REV_4101	0x04010001
-#define QMAN_REV_5000	0x05000000
-#define QMAN_REV_MASK	0xffff0000
+#define QMAN_REV_4000    0x04000000
+#define QMAN_REV_4100    0x04010000
+#define QMAN_REV_4101    0x04010001
+#define QMAN_REV_5000    0x05000000
+#define QMAN_REV_MASK    0xffff0000
 
-#define SVR_LS1080A	0x87030000
-#define SVR_LS2080A	0x87010000
-#define SVR_LS2088A	0x87090000
-#define SVR_LX2160A	0x87360000
+#define SVR_LS1080A    0x87030000
+#define SVR_LS2080A    0x87010000
+#define SVR_LS2088A    0x87090000
+#define SVR_LX2160A    0x87360000
 
 /* Variable to store DPAA2 platform type */
 extern uint32_t dpaa2_svr_family;
 
 static inline int qbman_swp_sys_init(struct qbman_swp_sys *s,
-				     const struct qbman_swp_desc *d,
-				     uint8_t dqrr_size)
+                     const struct qbman_swp_desc *d,
+                     uint8_t dqrr_size)
 {
-	uint32_t reg;
-	int i;
-	int cena_region_size = 4*1024;
-	uint8_t est = 1;
+    uint32_t reg;
+    int i;
+    int cena_region_size = 4*1024;
+    uint8_t est = 1;
 #ifdef RTE_ARCH_64
-	uint8_t wn = CENA_WRITE_ENABLE;
+    uint8_t wn = CENA_WRITE_ENABLE;
 #else
-	uint8_t wn = CINH_WRITE_ENABLE;
+    uint8_t wn = CINH_WRITE_ENABLE;
 #endif
 
 
-	if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
-			&& (d->cena_access_mode == qman_cena_fastest_access))
-		cena_region_size = 64*1024;
-	s->addr_cena = d->cena_bar;
-	s->addr_cinh = d->cinh_bar;
-	s->idx = (uint32_t)d->idx;
-	s->cena = malloc(cena_region_size);
+    if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
+            && (d->cena_access_mode == qman_cena_fastest_access))
+        cena_region_size = 64*1024;
+    s->addr_cena = d->cena_bar;
+    s->addr_cinh = d->cinh_bar;
+    s->idx = (uint32_t)d->idx;
+    s->cena = malloc(cena_region_size);
 
-	if (!s->cena) {
-		pr_err("Could not allocate page for cena shadow\n");
-		return -1;
-	}
-	s->eqcr_mode = d->eqcr_mode;
-	QBMAN_BUG_ON(d->idx < 0);
+    if (!s->cena) {
+        pr_err("Could not allocate page for cena shadow\n");
+        return -1;
+    }
+    s->eqcr_mode = d->eqcr_mode;
+    QBMAN_BUG_ON(d->idx < 0);
 #ifdef QBMAN_CHECKING
-	/* We should never be asked to initialise for a portal that isn't in
-	 * the power-on state. (Ie. don't forget to reset portals when they are
-	 * decommissioned!)
-	 */
-	reg = qbman_cinh_read(s, QBMAN_CINH_SWP_CFG);
-	QBMAN_BUG_ON(reg);
+    /* We should never be asked to initialise for a portal that isn't in
+     * the power-on state. (Ie. don't forget to reset portals when they are
+     * decommissioned!)
+     */
+    reg = qbman_cinh_read(s, QBMAN_CINH_SWP_CFG);
+    QBMAN_BUG_ON(reg);
 #endif
-	if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
-			&& (d->cena_access_mode == qman_cena_fastest_access))
-		memset(s->addr_cena, 0, cena_region_size);
-	else {
-		/* Invalidate the portal memory.
-		 * This ensures no stale cache lines
-		 */
-		for (i = 0; i < cena_region_size; i += 64)
-			dccivac(s->addr_cena + i);
-	}
+    if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
+            && (d->cena_access_mode == qman_cena_fastest_access))
+        memset(s->addr_cena, 0, cena_region_size);
+    else {
+        /* Invalidate the portal memory.
+         * This ensures no stale cache lines
+         */
+        for (i = 0; i < cena_region_size; i += 64)
+            dccivac(s->addr_cena + i);
+    }
 
-	if (dpaa2_svr_family == SVR_LS1080A)
-		est = 0;
+    if (dpaa2_svr_family == SVR_LS1080A)
+        est = 0;
 
-	if (s->eqcr_mode == qman_eqcr_vb_array) {
-		reg = qbman_set_swp_cfg(dqrr_size, wn,
-					0, 3, 2, 3, 1, 1, 1, 1, 1, 1);
-	} else {
-		if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000 &&
-			    (d->cena_access_mode == qman_cena_fastest_access))
-			reg = qbman_set_swp_cfg(dqrr_size, wn,
-						1, 3, 2, 0, 1, 1, 1, 1, 1, 1);
-		else
-			reg = qbman_set_swp_cfg(dqrr_size, wn,
-						est, 3, 2, 2, 1, 1, 1, 1, 1, 1);
-	}
+    if (s->eqcr_mode == qman_eqcr_vb_array) {
+        reg = qbman_set_swp_cfg(dqrr_size, wn,
+                    0, 3, 2, 3, 1, 1, 1, 1, 1, 1);
+    } else {
+        if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000 &&
+                (d->cena_access_mode == qman_cena_fastest_access))
+            reg = qbman_set_swp_cfg(dqrr_size, wn,
+                        1, 3, 2, 0, 1, 1, 1, 1, 1, 1);
+        else
+            reg = qbman_set_swp_cfg(dqrr_size, wn,
+                        est, 3, 2, 2, 1, 1, 1, 1, 1, 1);
+    }
 
-	if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
-			&& (d->cena_access_mode == qman_cena_fastest_access))
-		reg |= 1 << SWP_CFG_CPBS_SHIFT | /* memory-backed mode */
-		       1 << SWP_CFG_VPM_SHIFT |  /* VDQCR read triggered mode */
-		       1 << SWP_CFG_CPM_SHIFT;   /* CR read triggered mode */
+    if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
+            && (d->cena_access_mode == qman_cena_fastest_access))
+        reg |= 1 << SWP_CFG_CPBS_SHIFT | /* memory-backed mode */
+               1 << SWP_CFG_VPM_SHIFT |  /* VDQCR read triggered mode */
+               1 << SWP_CFG_CPM_SHIFT;   /* CR read triggered mode */
 
-	qbman_cinh_write(s, QBMAN_CINH_SWP_CFG, reg);
-	reg = qbman_cinh_read(s, QBMAN_CINH_SWP_CFG);
-	if (!reg) {
-		pr_err("The portal %d is not enabled!\n", s->idx);
-		free(s->cena);
-		return -1;
-	}
+    qbman_cinh_write(s, QBMAN_CINH_SWP_CFG, reg);
+    reg = qbman_cinh_read(s, QBMAN_CINH_SWP_CFG);
+    if (!reg) {
+        pr_err("The portal %d is not enabled!\n", s->idx);
+        free(s->cena);
+        return -1;
+    }
 
-	if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
-			&& (d->cena_access_mode == qman_cena_fastest_access)) {
-		qbman_cinh_write(s, QBMAN_CINH_SWP_EQCR_PI, QMAN_RT_MODE);
-		qbman_cinh_write(s, QBMAN_CINH_SWP_RCR_PI, QMAN_RT_MODE);
-	}
+    if ((d->qman_version & QMAN_REV_MASK) >= QMAN_REV_5000
+            && (d->cena_access_mode == qman_cena_fastest_access)) {
+        qbman_cinh_write(s, QBMAN_CINH_SWP_EQCR_PI, QMAN_RT_MODE);
+        qbman_cinh_write(s, QBMAN_CINH_SWP_RCR_PI, QMAN_RT_MODE);
+    }
 
-	return 0;
+    return 0;
 }
 
 static inline void qbman_swp_sys_finish(struct qbman_swp_sys *s)
 {
-	free(s->cena);
+    free(s->cena);
 }
 
 #endif /* _QBMAN_SYS_H_ */

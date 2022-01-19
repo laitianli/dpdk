@@ -113,7 +113,7 @@ int rte_pmd_atl_macsec_config_rxsc(uint16_t port, uint8_t *mac, uint16_t pi);
  */
 __rte_experimental
 int rte_pmd_atl_macsec_select_txsa(uint16_t port, uint8_t idx, uint8_t an,
-				   uint32_t pn, uint8_t *key);
+                   uint32_t pn, uint8_t *key);
 
 /**
  * @warning
@@ -139,6 +139,6 @@ int rte_pmd_atl_macsec_select_txsa(uint16_t port, uint8_t idx, uint8_t an,
  */
 __rte_experimental
 int rte_pmd_atl_macsec_select_rxsa(uint16_t port, uint8_t idx, uint8_t an,
-				   uint32_t pn, uint8_t *key);
+                   uint32_t pn, uint8_t *key);
 
 #endif /* _PMD_ATLANTIC_H_ */

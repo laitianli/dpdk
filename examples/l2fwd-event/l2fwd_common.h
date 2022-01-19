@@ -53,78 +53,78 @@
 #define BURST_TX_DRAIN_US 100 /* TX drain every ~100us */
 #define MEMPOOL_CACHE_SIZE 256
 
-#define DEFAULT_TIMER_PERIOD	10 /* default period is 10 seconds */
-#define MAX_TIMER_PERIOD	86400 /* 1 day max */
+#define DEFAULT_TIMER_PERIOD    10 /* default period is 10 seconds */
+#define MAX_TIMER_PERIOD    86400 /* 1 day max */
 
 /* Per-port statistics struct */
 struct l2fwd_port_statistics {
-	uint64_t dropped;
-	uint64_t tx;
-	uint64_t rx;
+    uint64_t dropped;
+    uint64_t tx;
+    uint64_t rx;
 } __rte_cache_aligned;
 
 struct l2fwd_resources {
-	volatile uint8_t force_quit;
-	uint8_t event_mode;
-	uint8_t sched_type;
-	uint8_t mac_updating;
-	uint8_t rx_queue_per_lcore;
-	uint16_t nb_rxd;
-	uint16_t nb_txd;
-	uint32_t enabled_port_mask;
-	uint64_t timer_period;
-	struct rte_mempool *pktmbuf_pool;
-	uint32_t dst_ports[RTE_MAX_ETHPORTS];
-	struct rte_ether_addr eth_addr[RTE_MAX_ETHPORTS];
-	struct l2fwd_port_statistics port_stats[RTE_MAX_ETHPORTS];
-	void *evt_rsrc;
-	void *poll_rsrc;
+    volatile uint8_t force_quit;
+    uint8_t event_mode;
+    uint8_t sched_type;
+    uint8_t mac_updating;
+    uint8_t rx_queue_per_lcore;
+    uint16_t nb_rxd;
+    uint16_t nb_txd;
+    uint32_t enabled_port_mask;
+    uint64_t timer_period;
+    struct rte_mempool *pktmbuf_pool;
+    uint32_t dst_ports[RTE_MAX_ETHPORTS];
+    struct rte_ether_addr eth_addr[RTE_MAX_ETHPORTS];
+    struct l2fwd_port_statistics port_stats[RTE_MAX_ETHPORTS];
+    void *evt_rsrc;
+    void *poll_rsrc;
 } __rte_cache_aligned;
 
 static __rte_always_inline void
 l2fwd_mac_updating(struct rte_mbuf *m, uint32_t dest_port_id,
-		   struct rte_ether_addr *addr)
+           struct rte_ether_addr *addr)
 {
-	struct rte_ether_hdr *eth;
-	void *tmp;
+    struct rte_ether_hdr *eth;
+    void *tmp;
 
-	eth = rte_pktmbuf_mtod(m, struct rte_ether_hdr *);
+    eth = rte_pktmbuf_mtod(m, struct rte_ether_hdr *);
 
-	/* 02:00:00:00:00:xx */
-	tmp = &eth->d_addr.addr_bytes[0];
-	*((uint64_t *)tmp) = 0x000000000002 + ((uint64_t)dest_port_id << 40);
+    /* 02:00:00:00:00:xx */
+    tmp = &eth->d_addr.addr_bytes[0];
+    *((uint64_t *)tmp) = 0x000000000002 + ((uint64_t)dest_port_id << 40);
 
-	/* src addr */
-	rte_ether_addr_copy(addr, &eth->s_addr);
+    /* src addr */
+    rte_ether_addr_copy(addr, &eth->s_addr);
 }
 
 static __rte_always_inline struct l2fwd_resources *
 l2fwd_get_rsrc(void)
 {
-	static const char name[RTE_MEMZONE_NAMESIZE] = "rsrc";
-	const struct rte_memzone *mz;
+    static const char name[RTE_MEMZONE_NAMESIZE] = "rsrc";
+    const struct rte_memzone *mz;
 
-	mz = rte_memzone_lookup(name);
-	if (mz != NULL)
-		return mz->addr;
+    mz = rte_memzone_lookup(name);
+    if (mz != NULL)
+        return mz->addr;
 
-	mz = rte_memzone_reserve(name, sizeof(struct l2fwd_resources), 0, 0);
-	if (mz != NULL) {
-		struct l2fwd_resources *rsrc = mz->addr;
+    mz = rte_memzone_reserve(name, sizeof(struct l2fwd_resources), 0, 0);
+    if (mz != NULL) {
+        struct l2fwd_resources *rsrc = mz->addr;
 
-		memset(rsrc, 0, sizeof(struct l2fwd_resources));
-		rsrc->mac_updating = true;
-		rsrc->event_mode = true;
-		rsrc->rx_queue_per_lcore = 1;
-		rsrc->sched_type = RTE_SCHED_TYPE_ATOMIC;
-		rsrc->timer_period = 10 * rte_get_timer_hz();
+        memset(rsrc, 0, sizeof(struct l2fwd_resources));
+        rsrc->mac_updating = true;
+        rsrc->event_mode = true;
+        rsrc->rx_queue_per_lcore = 1;
+        rsrc->sched_type = RTE_SCHED_TYPE_ATOMIC;
+        rsrc->timer_period = 10 * rte_get_timer_hz();
 
-		return mz->addr;
-	}
+        return mz->addr;
+    }
 
-	rte_panic("Unable to allocate memory for l2fwd resources\n");
+    rte_panic("Unable to allocate memory for l2fwd resources\n");
 
-	return NULL;
+    return NULL;
 }
 
 int l2fwd_event_init_ports(struct l2fwd_resources *rsrc);

@@ -38,7 +38,7 @@ extern "C" {
  *   The flow_mask, representing the multiple flow types of a packet.
  */
 typedef uint16_t (*rte_latency_stats_flow_type_fn)(struct rte_mbuf *pkt,
-							void *user_param);
+                            void *user_param);
 
 /**
  *  Registers Rx/Tx callbacks for each active port, queue.
@@ -60,7 +60,7 @@ typedef uint16_t (*rte_latency_stats_flow_type_fn)(struct rte_mbuf *pkt,
  *    0     : On success
  */
 int rte_latencystats_init(uint64_t samp_intvl,
-			rte_latency_stats_flow_type_fn user_cb);
+            rte_latency_stats_flow_type_fn user_cb);
 
 /**
  * Calculates the latency and jitter values internally, exposing the updated
@@ -97,7 +97,7 @@ int rte_latencystats_uninit(void);
  *     shall not be used by the caller.
  */
 int rte_latencystats_get_names(struct rte_metric_name *names,
-				uint16_t size);
+                uint16_t size);
 
 /**
  * Retrieve latency statistics.
@@ -119,7 +119,7 @@ int rte_latencystats_get_names(struct rte_metric_name *names,
  *   -ENOMEM: On failure.
  */
 int rte_latencystats_get(struct rte_metric_value *values,
-			uint16_t size);
+            uint16_t size);
 
 #ifdef __cplusplus
 }

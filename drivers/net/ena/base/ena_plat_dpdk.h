@@ -41,14 +41,14 @@ typedef uint64_t dma_addr_t;
 #define SZ_256 (256U)
 #define SZ_4K (4096U)
 
-#define ENA_COM_OK	0
-#define ENA_COM_NO_MEM	-ENOMEM
-#define ENA_COM_INVAL	-EINVAL
-#define ENA_COM_NO_SPACE	-ENOSPC
-#define ENA_COM_NO_DEVICE	-ENODEV
-#define ENA_COM_TIMER_EXPIRED	-ETIME
-#define ENA_COM_FAULT	-EFAULT
-#define ENA_COM_TRY_AGAIN	-EAGAIN
+#define ENA_COM_OK    0
+#define ENA_COM_NO_MEM    -ENOMEM
+#define ENA_COM_INVAL    -EINVAL
+#define ENA_COM_NO_SPACE    -ENOSPC
+#define ENA_COM_NO_DEVICE    -ENODEV
+#define ENA_COM_TIMER_EXPIRED    -ETIME
+#define ENA_COM_FAULT    -EFAULT
+#define ENA_COM_TRY_AGAIN    -EAGAIN
 #define ENA_COM_UNSUPPORTED    -EOPNOTSUPP
 
 #define ____cacheline_aligned __rte_cache_aligned
@@ -67,20 +67,20 @@ typedef uint64_t dma_addr_t;
 #define __iomem
 
 #define US_PER_S 1000000
-#define ENA_GET_SYSTEM_USECS()						\
-	(rte_get_timer_cycles() * US_PER_S / rte_get_timer_hz())
+#define ENA_GET_SYSTEM_USECS()                        \
+    (rte_get_timer_cycles() * US_PER_S / rte_get_timer_hz())
 
 extern int ena_logtype_com;
 #if RTE_LOG_DP_LEVEL >= RTE_LOG_DEBUG
-#define ENA_ASSERT(cond, format, arg...)				\
-	do {								\
-		if (unlikely(!(cond))) {				\
-			rte_log(RTE_LOGTYPE_ERR, ena_logtype_com,	\
-				format, ##arg);				\
-			rte_panic("line %d\tassert \"" #cond "\""	\
-					"failed\n", __LINE__);		\
-		}							\
-	} while (0)
+#define ENA_ASSERT(cond, format, arg...)                \
+    do {                                \
+        if (unlikely(!(cond))) {                \
+            rte_log(RTE_LOGTYPE_ERR, ena_logtype_com,    \
+                format, ##arg);                \
+            rte_panic("line %d\tassert \"" #cond "\""    \
+                    "failed\n", __LINE__);        \
+        }                            \
+    } while (0)
 #else
 #define ENA_ASSERT(cond, format, arg...) do {} while (0)
 #endif
@@ -95,20 +95,20 @@ extern int ena_logtype_com;
 #define BITS_PER_LONG_LONG (__SIZEOF_LONG_LONG__ * 8)
 #define U64_C(x) x ## ULL
 #define BIT(nr)         (1UL << (nr))
-#define BITS_PER_LONG	(__SIZEOF_LONG__ * 8)
-#define GENMASK(h, l)	(((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
+#define BITS_PER_LONG    (__SIZEOF_LONG__ * 8)
+#define GENMASK(h, l)    (((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
 #define GENMASK_ULL(h, l) (((~0ULL) - (1ULL << (l)) + 1) & \
-			  (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
+              (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
 
 #ifdef RTE_LIBRTE_ENA_COM_DEBUG
 #define ena_trc_log(level, fmt, arg...) \
-	rte_log(RTE_LOG_ ## level, ena_logtype_com, \
-		"[ENA_COM: %s]" fmt, __func__, ##arg)
+    rte_log(RTE_LOG_ ## level, ena_logtype_com, \
+        "[ENA_COM: %s]" fmt, __func__, ##arg)
 
-#define ena_trc_dbg(format, arg...)	ena_trc_log(DEBUG, format, ##arg)
-#define ena_trc_info(format, arg...)	ena_trc_log(INFO, format, ##arg)
-#define ena_trc_warn(format, arg...)	ena_trc_log(WARNING, format, ##arg)
-#define ena_trc_err(format, arg...)	ena_trc_log(ERR, format, ##arg)
+#define ena_trc_dbg(format, arg...)    ena_trc_log(DEBUG, format, ##arg)
+#define ena_trc_info(format, arg...)    ena_trc_log(INFO, format, ##arg)
+#define ena_trc_warn(format, arg...)    ena_trc_log(WARNING, format, ##arg)
+#define ena_trc_err(format, arg...)    ena_trc_log(ERR, format, ##arg)
 #else
 #define ena_trc_dbg(format, arg...) do { } while (0)
 #define ena_trc_info(format, arg...) do { } while (0)
@@ -128,40 +128,40 @@ do {                                                                   \
 /* Spinlock related methods */
 #define ena_spinlock_t rte_spinlock_t
 #define ENA_SPINLOCK_INIT(spinlock) rte_spinlock_init(&spinlock)
-#define ENA_SPINLOCK_LOCK(spinlock, flags)				\
-	({(void)flags; rte_spinlock_lock(&spinlock); })
-#define ENA_SPINLOCK_UNLOCK(spinlock, flags)				\
-	({(void)flags; rte_spinlock_unlock(&(spinlock)); })
+#define ENA_SPINLOCK_LOCK(spinlock, flags)                \
+    ({(void)flags; rte_spinlock_lock(&spinlock); })
+#define ENA_SPINLOCK_UNLOCK(spinlock, flags)                \
+    ({(void)flags; rte_spinlock_unlock(&(spinlock)); })
 #define ENA_SPINLOCK_DESTROY(spinlock) ((void)spinlock)
 
-#define q_waitqueue_t			\
-	struct {			\
-		pthread_cond_t cond;	\
-		pthread_mutex_t mutex;	\
-	}
+#define q_waitqueue_t            \
+    struct {            \
+        pthread_cond_t cond;    \
+        pthread_mutex_t mutex;    \
+    }
 
 #define ena_wait_queue_t q_waitqueue_t
 
-#define ENA_WAIT_EVENT_INIT(waitqueue)					\
-	do {								\
-		pthread_mutex_init(&(waitqueue).mutex, NULL);		\
-		pthread_cond_init(&(waitqueue).cond, NULL);		\
-	} while (0)
+#define ENA_WAIT_EVENT_INIT(waitqueue)                    \
+    do {                                \
+        pthread_mutex_init(&(waitqueue).mutex, NULL);        \
+        pthread_cond_init(&(waitqueue).cond, NULL);        \
+    } while (0)
 
-#define ENA_WAIT_EVENT_WAIT(waitevent, timeout)				\
-	do {								\
-		struct timespec wait;					\
-		struct timeval now;					\
-		unsigned long timeout_us;				\
-		gettimeofday(&now, NULL);				\
-		wait.tv_sec = now.tv_sec + timeout / 1000000UL;		\
-		timeout_us = timeout % 1000000UL;			\
-		wait.tv_nsec = (now.tv_usec + timeout_us) * 1000UL;	\
-		pthread_mutex_lock(&waitevent.mutex);			\
-		pthread_cond_timedwait(&waitevent.cond,			\
-				&waitevent.mutex, &wait);		\
-		pthread_mutex_unlock(&waitevent.mutex);			\
-	} while (0)
+#define ENA_WAIT_EVENT_WAIT(waitevent, timeout)                \
+    do {                                \
+        struct timespec wait;                    \
+        struct timeval now;                    \
+        unsigned long timeout_us;                \
+        gettimeofday(&now, NULL);                \
+        wait.tv_sec = now.tv_sec + timeout / 1000000UL;        \
+        timeout_us = timeout % 1000000UL;            \
+        wait.tv_nsec = (now.tv_usec + timeout_us) * 1000UL;    \
+        pthread_mutex_lock(&waitevent.mutex);            \
+        pthread_cond_timedwait(&waitevent.cond,            \
+                &waitevent.mutex, &wait);        \
+        pthread_mutex_unlock(&waitevent.mutex);            \
+    } while (0)
 #define ENA_WAIT_EVENT_SIGNAL(waitevent) pthread_cond_signal(&waitevent.cond)
 /* pthread condition doesn't need to be rearmed after usage */
 #define ENA_WAIT_EVENT_CLEAR(...)
@@ -180,68 +180,68 @@ do {                                                                   \
  */
 extern uint32_t ena_alloc_cnt;
 
-#define ENA_MEM_ALLOC_COHERENT(dmadev, size, virt, phys, handle)	\
-	do {								\
-		const struct rte_memzone *mz;				\
-		char z_name[RTE_MEMZONE_NAMESIZE];			\
-		ENA_TOUCH(dmadev); ENA_TOUCH(handle);			\
-		snprintf(z_name, sizeof(z_name),			\
-				"ena_alloc_%d", ena_alloc_cnt++);	\
-		mz = rte_memzone_reserve(z_name, size, SOCKET_ID_ANY,	\
-				RTE_MEMZONE_IOVA_CONTIG);		\
-		handle = mz;						\
-		if (mz == NULL) {					\
-			virt = NULL;					\
-			phys = 0;					\
-		} else {						\
-			memset(mz->addr, 0, size);			\
-			virt = mz->addr;				\
-			phys = mz->iova;				\
-		}							\
-	} while (0)
-#define ENA_MEM_FREE_COHERENT(dmadev, size, virt, phys, handle) 	\
-		({ ENA_TOUCH(size); ENA_TOUCH(phys);			\
-		   ENA_TOUCH(dmadev);					\
-		   rte_memzone_free(handle); })
+#define ENA_MEM_ALLOC_COHERENT(dmadev, size, virt, phys, handle)    \
+    do {                                \
+        const struct rte_memzone *mz;                \
+        char z_name[RTE_MEMZONE_NAMESIZE];            \
+        ENA_TOUCH(dmadev); ENA_TOUCH(handle);            \
+        snprintf(z_name, sizeof(z_name),            \
+                "ena_alloc_%d", ena_alloc_cnt++);    \
+        mz = rte_memzone_reserve(z_name, size, SOCKET_ID_ANY,    \
+                RTE_MEMZONE_IOVA_CONTIG);        \
+        handle = mz;                        \
+        if (mz == NULL) {                    \
+            virt = NULL;                    \
+            phys = 0;                    \
+        } else {                        \
+            memset(mz->addr, 0, size);            \
+            virt = mz->addr;                \
+            phys = mz->iova;                \
+        }                            \
+    } while (0)
+#define ENA_MEM_FREE_COHERENT(dmadev, size, virt, phys, handle)     \
+        ({ ENA_TOUCH(size); ENA_TOUCH(phys);            \
+           ENA_TOUCH(dmadev);                    \
+           rte_memzone_free(handle); })
 
-#define ENA_MEM_ALLOC_COHERENT_NODE(					\
-	dmadev, size, virt, phys, mem_handle, node, dev_node)		\
-	do {								\
-		const struct rte_memzone *mz;				\
-		char z_name[RTE_MEMZONE_NAMESIZE];			\
-		ENA_TOUCH(dmadev); ENA_TOUCH(dev_node);			\
-		snprintf(z_name, sizeof(z_name),			\
-				"ena_alloc_%d", ena_alloc_cnt++);	\
-		mz = rte_memzone_reserve(z_name, size, node,		\
-				RTE_MEMZONE_IOVA_CONTIG);		\
-		mem_handle = mz;					\
-		if (mz == NULL) {					\
-			virt = NULL;					\
-			phys = 0;					\
-		} else {						\
-			memset(mz->addr, 0, size);			\
-			virt = mz->addr;				\
-			phys = mz->iova;				\
-		}							\
-	} while (0)
+#define ENA_MEM_ALLOC_COHERENT_NODE(                    \
+    dmadev, size, virt, phys, mem_handle, node, dev_node)        \
+    do {                                \
+        const struct rte_memzone *mz;                \
+        char z_name[RTE_MEMZONE_NAMESIZE];            \
+        ENA_TOUCH(dmadev); ENA_TOUCH(dev_node);            \
+        snprintf(z_name, sizeof(z_name),            \
+                "ena_alloc_%d", ena_alloc_cnt++);    \
+        mz = rte_memzone_reserve(z_name, size, node,        \
+                RTE_MEMZONE_IOVA_CONTIG);        \
+        mem_handle = mz;                    \
+        if (mz == NULL) {                    \
+            virt = NULL;                    \
+            phys = 0;                    \
+        } else {                        \
+            memset(mz->addr, 0, size);            \
+            virt = mz->addr;                \
+            phys = mz->iova;                \
+        }                            \
+    } while (0)
 
 #define ENA_MEM_ALLOC_NODE(dmadev, size, virt, node, dev_node) \
-	do {								\
-		ENA_TOUCH(dmadev); ENA_TOUCH(dev_node);			\
-		virt = rte_zmalloc_socket(NULL, size, 0, node);		\
-	} while (0)
+    do {                                \
+        ENA_TOUCH(dmadev); ENA_TOUCH(dev_node);            \
+        virt = rte_zmalloc_socket(NULL, size, 0, node);        \
+    } while (0)
 
 #define ENA_MEM_ALLOC(dmadev, size) rte_zmalloc(NULL, size, 1)
 #define ENA_MEM_FREE(dmadev, ptr) ({ENA_TOUCH(dmadev); rte_free(ptr); })
 
 #define ENA_DB_SYNC(mem_handle) ((void)mem_handle)
 
-#define ENA_REG_WRITE32(bus, value, reg)				\
-	({ (void)(bus); rte_write32((value), (reg)); })
-#define ENA_REG_WRITE32_RELAXED(bus, value, reg)			\
-	({ (void)(bus); rte_write32_relaxed((value), (reg)); })
-#define ENA_REG_READ32(bus, reg)					\
-	({ (void)(bus); rte_read32_relaxed((reg)); })
+#define ENA_REG_WRITE32(bus, value, reg)                \
+    ({ (void)(bus); rte_write32((value), (reg)); })
+#define ENA_REG_WRITE32_RELAXED(bus, value, reg)            \
+    ({ (void)(bus); rte_write32_relaxed((value), (reg)); })
+#define ENA_REG_READ32(bus, reg)                    \
+    ({ (void)(bus); rte_read32_relaxed((reg)); })
 
 #define ATOMIC32_INC(i32_ptr) rte_atomic32_inc(i32_ptr)
 #define ATOMIC32_DEC(i32_ptr) rte_atomic32_dec(i32_ptr)
@@ -265,7 +265,7 @@ extern uint32_t ena_alloc_cnt;
 #define upper_32_bits(x) ((uint32_t)(((x) >> 16) >> 16))
 
 #define ENA_TIME_EXPIRE(timeout)  (timeout < rte_get_timer_cycles())
-#define ENA_GET_SYSTEM_TIMEOUT(timeout_us)				\
+#define ENA_GET_SYSTEM_TIMEOUT(timeout_us)                \
     (timeout_us * rte_get_timer_hz() / 1000000 + rte_get_timer_cycles())
 #define ENA_WAIT_EVENT_DESTROY(waitqueue) ((void)(waitqueue))
 
@@ -278,15 +278,15 @@ extern uint32_t ena_alloc_cnt;
 #define READ_ONCE32(var) READ_ONCE(var)
 
 /* The size must be 8 byte align */
-#define ENA_MEMCPY_TO_DEVICE_64(dst, src, size)				\
-	do {								\
-		int count, i;						\
-		uint64_t *to = (uint64_t *)(dst);			\
-		const uint64_t *from = (const uint64_t *)(src);		\
-		count = (size) / 8;					\
-		for (i = 0; i < count; i++, from++, to++)		\
-			rte_write64_relaxed(*from, to);			\
-	} while(0)
+#define ENA_MEMCPY_TO_DEVICE_64(dst, src, size)                \
+    do {                                \
+        int count, i;                        \
+        uint64_t *to = (uint64_t *)(dst);            \
+        const uint64_t *from = (const uint64_t *)(src);        \
+        count = (size) / 8;                    \
+        for (i = 0; i < count; i++, from++, to++)        \
+            rte_write64_relaxed(*from, to);            \
+    } while(0)
 
 #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
 

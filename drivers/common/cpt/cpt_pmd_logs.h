@@ -16,17 +16,17 @@
  * platform.
  */
 #define CPT_PMD_DRV_LOG_RAW(level, fmt, args...) \
-		rte_log(RTE_LOG_ ## level, CPT_LOGTYPE, \
-			"cpt: %s(): " fmt "\n", __func__, ##args)
+        rte_log(RTE_LOG_ ## level, CPT_LOGTYPE, \
+            "cpt: %s(): " fmt "\n", __func__, ##args)
 
 #define CPT_PMD_INIT_FUNC_TRACE() CPT_PMD_DRV_LOG_RAW(DEBUG, " >>")
 
 #define CPT_LOG_INFO(fmt, args...) \
-	CPT_PMD_DRV_LOG_RAW(INFO, fmt, ## args)
+    CPT_PMD_DRV_LOG_RAW(INFO, fmt, ## args)
 #define CPT_LOG_WARN(fmt, args...) \
-	CPT_PMD_DRV_LOG_RAW(WARNING, fmt, ## args)
+    CPT_PMD_DRV_LOG_RAW(WARNING, fmt, ## args)
 #define CPT_LOG_ERR(fmt, args...) \
-	CPT_PMD_DRV_LOG_RAW(ERR, fmt, ## args)
+    CPT_PMD_DRV_LOG_RAW(ERR, fmt, ## args)
 
 /*
  * DP logs, toggled out at compile time if level lower than current level.
@@ -34,15 +34,15 @@
  * level of 'pmd' has to be used.
  */
 #define CPT_LOG_DP(level, fmt, args...) \
-	RTE_LOG_DP(level, PMD, fmt "\n", ## args)
+    RTE_LOG_DP(level, PMD, fmt "\n", ## args)
 
 #define CPT_LOG_DP_DEBUG(fmt, args...) \
-	CPT_LOG_DP(DEBUG, fmt, ## args)
+    CPT_LOG_DP(DEBUG, fmt, ## args)
 #define CPT_LOG_DP_INFO(fmt, args...) \
-	CPT_LOG_DP(INFO, fmt, ## args)
+    CPT_LOG_DP(INFO, fmt, ## args)
 #define CPT_LOG_DP_WARN(fmt, args...) \
-	CPT_LOG_DP(WARNING, fmt, ## args)
+    CPT_LOG_DP(WARNING, fmt, ## args)
 #define CPT_LOG_DP_ERR(fmt, args...) \
-	CPT_LOG_DP(ERR, fmt, ## args)
+    CPT_LOG_DP(ERR, fmt, ## args)
 
 #endif /* _CPT_PMD_LOGS_H_ */

@@ -27,17 +27,17 @@ extern "C" {
 #include <rte_compat.h>
 
 struct rte_log_dynamic_type {
-	const char *name;
-	uint32_t loglevel;
+    const char *name;
+    uint32_t loglevel;
 };
 
 /** The rte_log structure. */
 struct rte_logs {
-	uint32_t type;  /**< Bitfield with enabled logs. */
-	uint32_t level; /**< Log level. */
-	FILE *file;     /**< Output file set by rte_openlog_stream, or NULL. */
-	size_t dynamic_types_len;
-	struct rte_log_dynamic_type *dynamic_types;
+    uint32_t type;  /**< Bitfield with enabled logs. */
+    uint32_t level; /**< Log level. */
+    FILE *file;     /**< Output file set by rte_openlog_stream, or NULL. */
+    size_t dynamic_types_len;
+    struct rte_log_dynamic_type *dynamic_types;
 };
 
 /** Global log information */
@@ -286,10 +286,10 @@ struct rte_logs* rte_get_log_org_obj(void);
 int rte_log(uint32_t level, uint32_t logtype, const char *format, ...)
 #ifdef __GNUC__
 #if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 2))
-	__attribute__((cold))
+    __attribute__((cold))
 #endif
 #endif
-	__attribute__((format(printf, 3, 4)));
+    __attribute__((format(printf, 3, 4)));
 
 /**
  * Generates a log message.
@@ -318,7 +318,7 @@ int rte_log(uint32_t level, uint32_t logtype, const char *format, ...)
  *   - Negative on error.
  */
 int rte_vlog(uint32_t level, uint32_t logtype, const char *format, va_list ap)
-	__attribute__((format(printf,3,0)));
+    __attribute__((format(printf,3,0)));
 
 /**
  * Generates a log message.
@@ -339,9 +339,9 @@ int rte_vlog(uint32_t level, uint32_t logtype, const char *format, va_list ap)
  *   - 0: Success.
  *   - Negative on error.
  */
-#define RTE_LOG(l, t, ...)					\
-	 rte_log(RTE_LOG_ ## l,					\
-		 RTE_LOGTYPE_ ## t, "\033[31m"# t ": \033[0m" __VA_ARGS__)
+#define RTE_LOG(l, t, ...)                    \
+     rte_log(RTE_LOG_ ## l,                    \
+         RTE_LOGTYPE_ ## t, "\033[31m"# t ": \033[0m" __VA_ARGS__)
 
 /**
  * Generates a log message for data path.
@@ -363,11 +363,11 @@ int rte_vlog(uint32_t level, uint32_t logtype, const char *format, va_list ap)
  *   - 0: Success.
  *   - Negative on error.
  */
-#define RTE_LOG_DP(l, t, ...)					\
-	(void)((RTE_LOG_ ## l <= RTE_LOG_DP_LEVEL) ?		\
-	 rte_log(RTE_LOG_ ## l,					\
-		 RTE_LOGTYPE_ ## t, # t ": " __VA_ARGS__) :	\
-	 0)
+#define RTE_LOG_DP(l, t, ...)                    \
+    (void)((RTE_LOG_ ## l <= RTE_LOG_DP_LEVEL) ?        \
+     rte_log(RTE_LOG_ ## l,                    \
+         RTE_LOGTYPE_ ## t, # t ": " __VA_ARGS__) :    \
+     0)
 
 #ifdef __cplusplus
 }

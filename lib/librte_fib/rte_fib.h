@@ -18,47 +18,47 @@ struct rte_fib;
 struct rte_rib;
 
 /** Maximum depth value possible for IPv4 FIB. */
-#define RTE_FIB_MAXDEPTH	32
+#define RTE_FIB_MAXDEPTH    32
 
 /** Type of FIB struct */
 enum rte_fib_type {
-	RTE_FIB_DUMMY,		/**< RIB tree based FIB */
-	RTE_FIB_DIR24_8,	/**< DIR24_8 based FIB */
-	RTE_FIB_TYPE_MAX
+    RTE_FIB_DUMMY,        /**< RIB tree based FIB */
+    RTE_FIB_DIR24_8,    /**< DIR24_8 based FIB */
+    RTE_FIB_TYPE_MAX
 };
 
 /** Modify FIB function */
 typedef int (*rte_fib_modify_fn_t)(struct rte_fib *fib, uint32_t ip,
-	uint8_t depth, uint64_t next_hop, int op);
+    uint8_t depth, uint64_t next_hop, int op);
 /** FIB bulk lookup function */
 typedef void (*rte_fib_lookup_fn_t)(void *fib, const uint32_t *ips,
-	uint64_t *next_hops, const unsigned int n);
+    uint64_t *next_hops, const unsigned int n);
 
 enum rte_fib_op {
-	RTE_FIB_ADD,
-	RTE_FIB_DEL,
+    RTE_FIB_ADD,
+    RTE_FIB_DEL,
 };
 
 /** Size of nexthop (1 << nh_sz) bits for DIR24_8 based FIB */
 enum rte_fib_dir24_8_nh_sz {
-	RTE_FIB_DIR24_8_1B,
-	RTE_FIB_DIR24_8_2B,
-	RTE_FIB_DIR24_8_4B,
-	RTE_FIB_DIR24_8_8B
+    RTE_FIB_DIR24_8_1B,
+    RTE_FIB_DIR24_8_2B,
+    RTE_FIB_DIR24_8_4B,
+    RTE_FIB_DIR24_8_8B
 };
 
 /** FIB configuration structure */
 struct rte_fib_conf {
-	enum rte_fib_type type; /**< Type of FIB struct */
-	/** Default value returned on lookup if there is no route */
-	uint64_t default_nh;
-	int	max_routes;
-	union {
-		struct {
-			enum rte_fib_dir24_8_nh_sz nh_sz;
-			uint32_t	num_tbl8;
-		} dir24_8;
-	};
+    enum rte_fib_type type; /**< Type of FIB struct */
+    /** Default value returned on lookup if there is no route */
+    uint64_t default_nh;
+    int    max_routes;
+    union {
+        struct {
+            enum rte_fib_dir24_8_nh_sz nh_sz;
+            uint32_t    num_tbl8;
+        } dir24_8;
+    };
 };
 
 /**
@@ -158,7 +158,7 @@ rte_fib_delete(struct rte_fib *fib, uint32_t ip, uint8_t depth);
 __rte_experimental
 int
 rte_fib_lookup_bulk(struct rte_fib *fib, uint32_t *ips,
-		uint64_t *next_hops, int n);
+        uint64_t *next_hops, int n);
 /**
  * Get pointer to the dataplane specific struct
  *

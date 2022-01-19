@@ -67,7 +67,7 @@ int guest_channel_send_msg(struct channel_packet *pkt, unsigned int lcore_id);
  *  - Negative on error.
  */
 int rte_power_guest_channel_send_msg(struct channel_packet *pkt,
-			unsigned int lcore_id);
+            unsigned int lcore_id);
 
 /**
  * Read a message contained in pkt over the Virtio-Serial
@@ -88,8 +88,8 @@ int rte_power_guest_channel_send_msg(struct channel_packet *pkt,
  *  - Negative on error.
  */
 int power_guest_channel_read_msg(void *pkt,
-		size_t pkt_len,
-		unsigned int lcore_id);
+        size_t pkt_len,
+        unsigned int lcore_id);
 
 /**
  * Receive a message contained in pkt over the Virtio-Serial
@@ -112,8 +112,8 @@ int power_guest_channel_read_msg(void *pkt,
 __rte_experimental
 int
 rte_power_guest_channel_receive_msg(void *pkt,
-		size_t pkt_len,
-		unsigned int lcore_id);
+        size_t pkt_len,
+        unsigned int lcore_id);
 
 
 #ifdef __cplusplus

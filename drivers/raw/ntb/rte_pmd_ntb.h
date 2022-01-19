@@ -20,24 +20,24 @@
 #define NTB_MIN_DESC_SIZE           64
 
 struct ntb_dev_info {
-	uint32_t ntb_hdr_size;
-	/**< memzone needs to be mw size align or not. */
-	uint8_t mw_size_align;
-	uint8_t mw_cnt;
-	uint64_t *mw_size;
+    uint32_t ntb_hdr_size;
+    /**< memzone needs to be mw size align or not. */
+    uint8_t mw_size_align;
+    uint8_t mw_cnt;
+    uint64_t *mw_size;
 };
 
 struct ntb_dev_config {
-	uint16_t num_queues;
-	uint16_t queue_size;
-	uint8_t mz_num;
-	const struct rte_memzone **mz_list;
+    uint16_t num_queues;
+    uint16_t queue_size;
+    uint8_t mz_num;
+    const struct rte_memzone **mz_list;
 };
 
 struct ntb_queue_conf {
-	uint16_t nb_desc;
-	uint16_t tx_free_thresh;
-	struct rte_mempool *rx_mp;
+    uint16_t nb_desc;
+    uint16_t tx_free_thresh;
+    struct rte_mempool *rx_mp;
 };
 
 #endif /* _RTE_PMD_NTB_H_ */

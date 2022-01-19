@@ -56,34 +56,34 @@
  */
 static uint16_t
 rxq_handle_pending_error(struct mlx5_rxq_data *rxq, struct rte_mbuf **pkts,
-			 uint16_t pkts_n)
+             uint16_t pkts_n)
 {
-	uint16_t n = 0;
-	unsigned int i;
+    uint16_t n = 0;
+    unsigned int i;
 #ifdef MLX5_PMD_SOFT_COUNTERS
-	uint32_t err_bytes = 0;
+    uint32_t err_bytes = 0;
 #endif
 
-	for (i = 0; i < pkts_n; ++i) {
-		struct rte_mbuf *pkt = pkts[i];
+    for (i = 0; i < pkts_n; ++i) {
+        struct rte_mbuf *pkt = pkts[i];
 
-		if (pkt->packet_type == RTE_PTYPE_ALL_MASK || rxq->err_state) {
+        if (pkt->packet_type == RTE_PTYPE_ALL_MASK || rxq->err_state) {
 #ifdef MLX5_PMD_SOFT_COUNTERS
-			err_bytes += PKT_LEN(pkt);
+            err_bytes += PKT_LEN(pkt);
 #endif
-			rte_pktmbuf_free_seg(pkt);
-		} else {
-			pkts[n++] = pkt;
-		}
-	}
-	rxq->stats.idropped += (pkts_n - n);
+            rte_pktmbuf_free_seg(pkt);
+        } else {
+            pkts[n++] = pkt;
+        }
+    }
+    rxq->stats.idropped += (pkts_n - n);
 #ifdef MLX5_PMD_SOFT_COUNTERS
-	/* Correct counters of errored completions. */
-	rxq->stats.ipackets -= (pkts_n - n);
-	rxq->stats.ibytes -= err_bytes;
+    /* Correct counters of errored completions. */
+    rxq->stats.ipackets -= (pkts_n - n);
+    rxq->stats.ibytes -= err_bytes;
 #endif
-	mlx5_rx_err_handle(rxq, 1);
-	return n;
+    mlx5_rx_err_handle(rxq, 1);
+    return n;
 }
 
 /**
@@ -102,14 +102,14 @@ rxq_handle_pending_error(struct mlx5_rxq_data *rxq, struct rte_mbuf **pkts,
 uint16_t
 mlx5_rx_burst_vec(void *dpdk_rxq, struct rte_mbuf **pkts, uint16_t pkts_n)
 {
-	struct mlx5_rxq_data *rxq = dpdk_rxq;
-	uint16_t nb_rx;
-	uint64_t err = 0;
+    struct mlx5_rxq_data *rxq = dpdk_rxq;
+    uint16_t nb_rx;
+    uint64_t err = 0;
 
-	nb_rx = rxq_burst_v(rxq, pkts, pkts_n, &err);
-	if (unlikely(err | rxq->err_state))
-		nb_rx = rxq_handle_pending_error(rxq, pkts, nb_rx);
-	return nb_rx;
+    nb_rx = rxq_burst_v(rxq, pkts, pkts_n, &err);
+    if (unlikely(err | rxq->err_state))
+        nb_rx = rxq_handle_pending_error(rxq, pkts, nb_rx);
+    return nb_rx;
 }
 
 /**
@@ -124,16 +124,16 @@ mlx5_rx_burst_vec(void *dpdk_rxq, struct rte_mbuf **pkts, uint16_t pkts_n)
 int __attribute__((cold))
 mlx5_rxq_check_vec_support(struct mlx5_rxq_data *rxq)
 {
-	struct mlx5_rxq_ctrl *ctrl =
-		container_of(rxq, struct mlx5_rxq_ctrl, rxq);
+    struct mlx5_rxq_ctrl *ctrl =
+        container_of(rxq, struct mlx5_rxq_ctrl, rxq);
 
-	if (mlx5_mprq_enabled(ETH_DEV(ctrl->priv)))
-		return -ENOTSUP;
-	if (!ctrl->priv->config.rx_vec_en || rxq->sges_n != 0)
-		return -ENOTSUP;
-	if (rxq->lro)
-		return -ENOTSUP;
-	return 1;
+    if (mlx5_mprq_enabled(ETH_DEV(ctrl->priv)))
+        return -ENOTSUP;
+    if (!ctrl->priv->config.rx_vec_en || rxq->sges_n != 0)
+        return -ENOTSUP;
+    if (rxq->lro)
+        return -ENOTSUP;
+    return 1;
 }
 
 /**
@@ -148,23 +148,23 @@ mlx5_rxq_check_vec_support(struct mlx5_rxq_data *rxq)
 int __attribute__((cold))
 mlx5_check_vec_rx_support(struct rte_eth_dev *dev)
 {
-	struct mlx5_priv *priv = dev->data->dev_private;
-	uint16_t i;
+    struct mlx5_priv *priv = dev->data->dev_private;
+    uint16_t i;
 
-	if (!priv->config.rx_vec_en)
-		return -ENOTSUP;
-	if (mlx5_mprq_enabled(dev))
-		return -ENOTSUP;
-	/* All the configured queues should support. */
-	for (i = 0; i < priv->rxqs_n; ++i) {
-		struct mlx5_rxq_data *rxq = (*priv->rxqs)[i];
+    if (!priv->config.rx_vec_en)
+        return -ENOTSUP;
+    if (mlx5_mprq_enabled(dev))
+        return -ENOTSUP;
+    /* All the configured queues should support. */
+    for (i = 0; i < priv->rxqs_n; ++i) {
+        struct mlx5_rxq_data *rxq = (*priv->rxqs)[i];
 
-		if (!rxq)
-			continue;
-		if (mlx5_rxq_check_vec_support(rxq) < 0)
-			break;
-	}
-	if (i != priv->rxqs_n)
-		return -ENOTSUP;
-	return 1;
+        if (!rxq)
+            continue;
+        if (mlx5_rxq_check_vec_support(rxq) < 0)
+            break;
+    }
+    if (i != priv->rxqs_n)
+        return -ENOTSUP;
+    return 1;
 }

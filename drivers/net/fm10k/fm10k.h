@@ -78,7 +78,7 @@
 #define FM10K_TX_RS_THRESH_DEFAULT(txq)    32
 #define FM10K_TX_RS_THRESH_MIN(txq)        1
 #define FM10K_TX_RS_THRESH_MAX(txq)        \
-	RTE_MIN(((txq)->nb_desc - 2), (txq)->free_thresh)
+    RTE_MIN(((txq)->nb_desc - 2), (txq)->free_thresh)
 #define FM10K_TX_RS_THRESH_DIV(txq)        ((txq)->nb_desc)
 
 #define FM10K_VLAN_TAG_SIZE 4
@@ -107,77 +107,77 @@
 #define FM10K_RX_VEC_START              RTE_INTR_VEC_RXTX_OFFSET
 
 struct fm10k_macvlan_filter_info {
-	uint16_t vlan_num;       /* Total VLAN number */
-	uint16_t mac_num;        /* Total mac number */
-	uint16_t nb_queue_pools; /* Active queue pools number */
-	/* VMDQ ID for each MAC address */
-	uint8_t  mac_vmdq_id[FM10K_MAX_MACADDR_NUM];
-	uint32_t vfta[FM10K_VFTA_SIZE];        /* VLAN bitmap */
+    uint16_t vlan_num;       /* Total VLAN number */
+    uint16_t mac_num;        /* Total mac number */
+    uint16_t nb_queue_pools; /* Active queue pools number */
+    /* VMDQ ID for each MAC address */
+    uint8_t  mac_vmdq_id[FM10K_MAX_MACADDR_NUM];
+    uint32_t vfta[FM10K_VFTA_SIZE];        /* VLAN bitmap */
 };
 
 struct fm10k_dev_info {
-	volatile uint32_t enable;
-	volatile uint32_t glort;
-	/* Protect the mailbox to avoid race condition */
-	rte_spinlock_t    mbx_lock;
-	struct fm10k_macvlan_filter_info    macvlan;
-	/* Flag to indicate if RX vector conditions satisfied */
-	bool rx_vec_allowed;
-	bool sm_down;
+    volatile uint32_t enable;
+    volatile uint32_t glort;
+    /* Protect the mailbox to avoid race condition */
+    rte_spinlock_t    mbx_lock;
+    struct fm10k_macvlan_filter_info    macvlan;
+    /* Flag to indicate if RX vector conditions satisfied */
+    bool rx_vec_allowed;
+    bool sm_down;
 };
 
 /*
  * Structure to store private data for each driver instance.
  */
 struct fm10k_adapter {
-	struct fm10k_hw             hw;
-	struct fm10k_hw_stats       stats;
-	struct fm10k_dev_info       info;
+    struct fm10k_hw             hw;
+    struct fm10k_hw_stats       stats;
+    struct fm10k_dev_info       info;
 };
 
 #define FM10K_DEV_PRIVATE_TO_HW(adapter) \
-	(&((struct fm10k_adapter *)adapter)->hw)
+    (&((struct fm10k_adapter *)adapter)->hw)
 
 #define FM10K_DEV_PRIVATE_TO_STATS(adapter) \
-	(&((struct fm10k_adapter *)adapter)->stats)
+    (&((struct fm10k_adapter *)adapter)->stats)
 
 #define FM10K_DEV_PRIVATE_TO_INFO(adapter) \
-	(&((struct fm10k_adapter *)adapter)->info)
+    (&((struct fm10k_adapter *)adapter)->info)
 
 #define FM10K_DEV_PRIVATE_TO_MBXLOCK(adapter) \
-	(&(((struct fm10k_adapter *)adapter)->info.mbx_lock))
+    (&(((struct fm10k_adapter *)adapter)->info.mbx_lock))
 
 #define FM10K_DEV_PRIVATE_TO_MACVLAN(adapter) \
-		(&(((struct fm10k_adapter *)adapter)->info.macvlan))
+        (&(((struct fm10k_adapter *)adapter)->info.macvlan))
 
 struct fm10k_rx_queue {
-	struct rte_mempool *mp;
-	struct rte_mbuf **sw_ring;
-	volatile union fm10k_rx_desc *hw_ring;
-	struct rte_mbuf *pkt_first_seg; /* First segment of current packet. */
-	struct rte_mbuf *pkt_last_seg;  /* Last segment of current packet. */
-	uint64_t hw_ring_phys_addr;
-	uint64_t mbuf_initializer; /* value to init mbufs */
-	/* need to alloc dummy mbuf, for wraparound when scanning hw ring */
-	struct rte_mbuf fake_mbuf;
-	uint16_t next_dd;
-	uint16_t next_alloc;
-	uint16_t next_trigger;
-	uint16_t alloc_thresh;
-	volatile uint32_t *tail_ptr;
-	uint16_t nb_desc;
-	/* Number of faked desc added at the tail for Vector RX function */
-	uint16_t nb_fake_desc;
-	uint16_t queue_id;
-	/* Below 2 fields only valid in case vPMD is applied. */
-	uint16_t rxrearm_nb;     /* number of remaining to be re-armed */
-	uint16_t rxrearm_start;  /* the idx we start the re-arming from */
-	uint16_t rx_using_sse; /* indicates that vector RX is in use */
-	uint16_t port_id;
-	uint8_t drop_en;
-	uint8_t rx_deferred_start; /* don't start this queue in dev start. */
-	uint16_t rx_ftag_en; /* indicates FTAG RX supported */
-	uint64_t offloads; /* offloads of DEV_RX_OFFLOAD_* */
+    struct rte_mempool *mp;
+    struct rte_mbuf **sw_ring;
+    volatile union fm10k_rx_desc *hw_ring;
+    struct rte_mbuf *pkt_first_seg; /* First segment of current packet. */
+    struct rte_mbuf *pkt_last_seg;  /* Last segment of current packet. */
+    uint64_t hw_ring_phys_addr;
+    uint64_t mbuf_initializer; /* value to init mbufs */
+    /* need to alloc dummy mbuf, for wraparound when scanning hw ring */
+    struct rte_mbuf fake_mbuf;
+    uint16_t next_dd;
+    uint16_t next_alloc;
+    uint16_t next_trigger;
+    uint16_t alloc_thresh;
+    volatile uint32_t *tail_ptr;
+    uint16_t nb_desc;
+    /* Number of faked desc added at the tail for Vector RX function */
+    uint16_t nb_fake_desc;
+    uint16_t queue_id;
+    /* Below 2 fields only valid in case vPMD is applied. */
+    uint16_t rxrearm_nb;     /* number of remaining to be re-armed */
+    uint16_t rxrearm_start;  /* the idx we start the re-arming from */
+    uint16_t rx_using_sse; /* indicates that vector RX is in use */
+    uint16_t port_id;
+    uint8_t drop_en;
+    uint8_t rx_deferred_start; /* don't start this queue in dev start. */
+    uint16_t rx_ftag_en; /* indicates FTAG RX supported */
+    uint64_t offloads; /* offloads of DEV_RX_OFFLOAD_* */
 };
 
 /*
@@ -185,91 +185,91 @@ struct fm10k_rx_queue {
  * queues which are configured to allow multiple descriptors per packet
  */
 struct fifo {
-	uint16_t *list;
-	uint16_t *head;
-	uint16_t *tail;
-	uint16_t *endp;
+    uint16_t *list;
+    uint16_t *head;
+    uint16_t *tail;
+    uint16_t *endp;
 };
 
 struct fm10k_txq_ops;
 
 struct fm10k_tx_queue {
-	struct rte_mbuf **sw_ring;
-	struct fm10k_tx_desc *hw_ring;
-	uint64_t hw_ring_phys_addr;
-	struct fifo rs_tracker;
-	const struct fm10k_txq_ops *ops; /* txq ops */
-	uint16_t last_free;
-	uint16_t next_free;
-	uint16_t nb_free;
-	uint16_t nb_used;
-	uint16_t free_thresh;
-	uint16_t rs_thresh;
-	/* Below 2 fields only valid in case vPMD is applied. */
-	uint16_t next_rs; /* Next pos to set RS flag */
-	uint16_t next_dd; /* Next pos to check DD flag */
-	volatile uint32_t *tail_ptr;
-	uint64_t offloads; /* Offloads of DEV_TX_OFFLOAD_* */
-	uint16_t nb_desc;
-	uint16_t port_id;
-	uint8_t tx_deferred_start; /** don't start this queue in dev start. */
-	uint16_t queue_id;
-	uint16_t tx_ftag_en; /* indicates FTAG TX supported */
+    struct rte_mbuf **sw_ring;
+    struct fm10k_tx_desc *hw_ring;
+    uint64_t hw_ring_phys_addr;
+    struct fifo rs_tracker;
+    const struct fm10k_txq_ops *ops; /* txq ops */
+    uint16_t last_free;
+    uint16_t next_free;
+    uint16_t nb_free;
+    uint16_t nb_used;
+    uint16_t free_thresh;
+    uint16_t rs_thresh;
+    /* Below 2 fields only valid in case vPMD is applied. */
+    uint16_t next_rs; /* Next pos to set RS flag */
+    uint16_t next_dd; /* Next pos to check DD flag */
+    volatile uint32_t *tail_ptr;
+    uint64_t offloads; /* Offloads of DEV_TX_OFFLOAD_* */
+    uint16_t nb_desc;
+    uint16_t port_id;
+    uint8_t tx_deferred_start; /** don't start this queue in dev start. */
+    uint16_t queue_id;
+    uint16_t tx_ftag_en; /* indicates FTAG TX supported */
 };
 
 struct fm10k_txq_ops {
-	void (*reset)(struct fm10k_tx_queue *txq);
+    void (*reset)(struct fm10k_tx_queue *txq);
 };
 
 #define MBUF_DMA_ADDR(mb) \
-	((uint64_t) ((mb)->buf_iova + (mb)->data_off))
+    ((uint64_t) ((mb)->buf_iova + (mb)->data_off))
 
 /* enforce 512B alignment on default Rx DMA addresses */
 #define MBUF_DMA_ADDR_DEFAULT(mb) \
-	((uint64_t) RTE_ALIGN(((mb)->buf_iova + RTE_PKTMBUF_HEADROOM),\
-			FM10K_RX_DATABUF_ALIGN))
+    ((uint64_t) RTE_ALIGN(((mb)->buf_iova + RTE_PKTMBUF_HEADROOM),\
+            FM10K_RX_DATABUF_ALIGN))
 
 static inline void fifo_reset(struct fifo *fifo, uint32_t len)
 {
-	fifo->head = fifo->tail = fifo->list;
-	fifo->endp = fifo->list + len;
+    fifo->head = fifo->tail = fifo->list;
+    fifo->endp = fifo->list + len;
 }
 
 static inline void fifo_insert(struct fifo *fifo, uint16_t val)
 {
-	*fifo->head = val;
-	if (++fifo->head == fifo->endp)
-		fifo->head = fifo->list;
+    *fifo->head = val;
+    if (++fifo->head == fifo->endp)
+        fifo->head = fifo->list;
 }
 
 /* do not worry about list being empty since we only check it once we know
  * we have used enough descriptors to set the RS bit at least once */
 static inline uint16_t fifo_peek(struct fifo *fifo)
 {
-	return *fifo->tail;
+    return *fifo->tail;
 }
 
 static inline uint16_t fifo_remove(struct fifo *fifo)
 {
-	uint16_t val;
-	val = *fifo->tail;
-	if (++fifo->tail == fifo->endp)
-		fifo->tail = fifo->list;
-	return val;
+    uint16_t val;
+    val = *fifo->tail;
+    if (++fifo->tail == fifo->endp)
+        fifo->tail = fifo->list;
+    return val;
 }
 
 static inline void
 fm10k_pktmbuf_reset(struct rte_mbuf *mb, uint16_t in_port)
 {
-	rte_mbuf_refcnt_set(mb, 1);
-	mb->next = NULL;
-	mb->nb_segs = 1;
+    rte_mbuf_refcnt_set(mb, 1);
+    mb->next = NULL;
+    mb->nb_segs = 1;
 
-	/* enforce 512B alignment on default Rx virtual addresses */
-	mb->data_off = (uint16_t)(RTE_PTR_ALIGN((char *)mb->buf_addr +
-			RTE_PKTMBUF_HEADROOM, FM10K_RX_DATABUF_ALIGN)
-			- (char *)mb->buf_addr);
-	mb->port = in_port;
+    /* enforce 512B alignment on default Rx virtual addresses */
+    mb->data_off = (uint16_t)(RTE_PTR_ALIGN((char *)mb->buf_addr +
+            RTE_PKTMBUF_HEADROOM, FM10K_RX_DATABUF_ALIGN)
+            - (char *)mb->buf_addr);
+    mb->port = in_port;
 }
 
 /*
@@ -295,33 +295,33 @@ fm10k_pktmbuf_reset(struct rte_mbuf *mb, uint16_t in_port)
 static inline int
 fm10k_addr_alignment_valid(struct rte_mbuf *mb)
 {
-	uint64_t addr = MBUF_DMA_ADDR_DEFAULT(mb);
-	uint64_t boundary1, boundary2;
+    uint64_t addr = MBUF_DMA_ADDR_DEFAULT(mb);
+    uint64_t boundary1, boundary2;
 
-	/* 512B aligned? */
-	if (RTE_ALIGN(addr, FM10K_RX_DATABUF_ALIGN) == addr)
-		return 1;
+    /* 512B aligned? */
+    if (RTE_ALIGN(addr, FM10K_RX_DATABUF_ALIGN) == addr)
+        return 1;
 
-	/* 8B aligned, and max Ethernet frame would not cross a 4KB boundary? */
-	if (RTE_ALIGN(addr, 8) == addr) {
-		boundary1 = RTE_ALIGN_FLOOR(addr, 4096);
-		boundary2 = RTE_ALIGN_FLOOR(addr + RTE_ETHER_MAX_VLAN_FRAME_LEN,
-						4096);
-		if (boundary1 == boundary2)
-			return 1;
-	}
+    /* 8B aligned, and max Ethernet frame would not cross a 4KB boundary? */
+    if (RTE_ALIGN(addr, 8) == addr) {
+        boundary1 = RTE_ALIGN_FLOOR(addr, 4096);
+        boundary2 = RTE_ALIGN_FLOOR(addr + RTE_ETHER_MAX_VLAN_FRAME_LEN,
+                        4096);
+        if (boundary1 == boundary2)
+            return 1;
+    }
 
-	PMD_INIT_LOG(ERR, "Error: Invalid buffer alignment!");
+    PMD_INIT_LOG(ERR, "Error: Invalid buffer alignment!");
 
-	return 0;
+    return 0;
 }
 
 /* Rx and Tx prototypes */
 uint16_t fm10k_recv_pkts(void *rx_queue, struct rte_mbuf **rx_pkts,
-	uint16_t nb_pkts);
+    uint16_t nb_pkts);
 
 uint16_t fm10k_recv_scattered_pkts(void *rx_queue,
-		struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
+        struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
 
 uint32_t
 fm10k_dev_rx_queue_count(struct rte_eth_dev *dev, uint16_t rx_queue_id);
@@ -337,19 +337,19 @@ fm10k_dev_tx_descriptor_status(void *rx_queue, uint16_t offset);
 
 
 uint16_t fm10k_xmit_pkts(void *tx_queue, struct rte_mbuf **tx_pkts,
-	uint16_t nb_pkts);
+    uint16_t nb_pkts);
 
 uint16_t fm10k_prep_pkts(void *tx_queue, struct rte_mbuf **tx_pkts,
-	uint16_t nb_pkts);
+    uint16_t nb_pkts);
 
 int fm10k_rxq_vec_setup(struct fm10k_rx_queue *rxq);
 int fm10k_rx_vec_condition_check(struct rte_eth_dev *);
 void fm10k_rx_queue_release_mbufs_vec(struct fm10k_rx_queue *rxq);
 uint16_t fm10k_recv_pkts_vec(void *, struct rte_mbuf **, uint16_t);
 uint16_t fm10k_recv_scattered_pkts_vec(void *, struct rte_mbuf **,
-					uint16_t);
+                    uint16_t);
 uint16_t fm10k_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
-				    uint16_t nb_pkts);
+                    uint16_t nb_pkts);
 void fm10k_txq_vec_setup(struct fm10k_tx_queue *txq);
 int fm10k_tx_vec_condition_check(struct fm10k_tx_queue *txq);
 

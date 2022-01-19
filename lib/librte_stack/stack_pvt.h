@@ -14,17 +14,17 @@ extern "C" {
 extern int stack_logtype;
 
 #define STACK_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ##level, stack_logtype, "%s(): "fmt "\n", \
-		__func__, ##args)
+    rte_log(RTE_LOG_ ##level, stack_logtype, "%s(): "fmt "\n", \
+        __func__, ##args)
 
 #define STACK_LOG_ERR(fmt, args...) \
-	STACK_LOG(ERR, fmt, ## args)
+    STACK_LOG(ERR, fmt, ## args)
 
 #define STACK_LOG_WARN(fmt, args...) \
-	STACK_LOG(WARNING, fmt, ## args)
+    STACK_LOG(WARNING, fmt, ## args)
 
 #define STACK_LOG_INFO(fmt, args...) \
-	STACK_LOG(INFO, fmt, ## args)
+    STACK_LOG(INFO, fmt, ## args)
 
 
 #ifdef __cplusplus

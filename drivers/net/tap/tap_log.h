@@ -6,5 +6,5 @@
 extern int tap_logtype;
 
 #define TAP_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, tap_logtype, "%s(): " fmt "\n", \
-		__func__, ## args)
+    rte_log(RTE_LOG_ ## level, tap_logtype, "%s(): " fmt "\n", \
+        __func__, ## args)

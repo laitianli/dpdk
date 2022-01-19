@@ -22,29 +22,29 @@
 __rte_experimental
 static __rte_always_inline unsigned int
 __rte_stack_std_push(struct rte_stack *s, void * const *obj_table,
-		     unsigned int n)
+             unsigned int n)
 {
-	struct rte_stack_std *stack = &s->stack_std;
-	unsigned int index;
-	void **cache_objs;
+    struct rte_stack_std *stack = &s->stack_std;
+    unsigned int index;
+    void **cache_objs;
 
-	rte_spinlock_lock(&stack->lock);
-	cache_objs = &stack->objs[stack->len];
+    rte_spinlock_lock(&stack->lock);
+    cache_objs = &stack->objs[stack->len];
 
-	/* Is there sufficient space in the stack? */
-	if ((stack->len + n) > s->capacity) {
-		rte_spinlock_unlock(&stack->lock);
-		return 0;
-	}
+    /* Is there sufficient space in the stack? */
+    if ((stack->len + n) > s->capacity) {
+        rte_spinlock_unlock(&stack->lock);
+        return 0;
+    }
 
-	/* Add elements back into the cache */
-	for (index = 0; index < n; ++index, obj_table++)
-		cache_objs[index] = *obj_table;
+    /* Add elements back into the cache */
+    for (index = 0; index < n; ++index, obj_table++)
+        cache_objs[index] = *obj_table;
 
-	stack->len += n;
+    stack->len += n;
 
-	rte_spinlock_unlock(&stack->lock);
-	return n;
+    rte_spinlock_unlock(&stack->lock);
+    return n;
 }
 
 /**
@@ -63,27 +63,27 @@ __rte_experimental
 static __rte_always_inline unsigned int
 __rte_stack_std_pop(struct rte_stack *s, void **obj_table, unsigned int n)
 {
-	struct rte_stack_std *stack = &s->stack_std;
-	unsigned int index, len;
-	void **cache_objs;
+    struct rte_stack_std *stack = &s->stack_std;
+    unsigned int index, len;
+    void **cache_objs;
 
-	rte_spinlock_lock(&stack->lock);
+    rte_spinlock_lock(&stack->lock);
 
-	if (unlikely(n > stack->len)) {
-		rte_spinlock_unlock(&stack->lock);
-		return 0;
-	}
+    if (unlikely(n > stack->len)) {
+        rte_spinlock_unlock(&stack->lock);
+        return 0;
+    }
 
-	cache_objs = stack->objs;
+    cache_objs = stack->objs;
 
-	for (index = 0, len = stack->len - 1; index < n;
-			++index, len--, obj_table++)
-		*obj_table = cache_objs[len];
+    for (index = 0, len = stack->len - 1; index < n;
+            ++index, len--, obj_table++)
+        *obj_table = cache_objs[len];
 
-	stack->len -= n;
-	rte_spinlock_unlock(&stack->lock);
+    stack->len -= n;
+    rte_spinlock_unlock(&stack->lock);
 
-	return n;
+    return n;
 }
 
 /**
@@ -98,7 +98,7 @@ __rte_experimental
 static __rte_always_inline unsigned int
 __rte_stack_std_count(struct rte_stack *s)
 {
-	return (unsigned int)s->stack_std.len;
+    return (unsigned int)s->stack_std.len;
 }
 
 /**

@@ -9,38 +9,38 @@
 #include "base/common.h"
 
 enum {
-	MPS_ENTRY_UNUSED,	/* Keep this first so memset 0 renders
-				 * the correct state. Other states can
-				 * be added in future like MPS_ENTRY_BUSY
-				 * to reduce contention while mboxing
-				 * the request to f/w or to denote attributes
-				 * for a specific entry
-				 */
-	MPS_ENTRY_USED,
+    MPS_ENTRY_UNUSED,    /* Keep this first so memset 0 renders
+                 * the correct state. Other states can
+                 * be added in future like MPS_ENTRY_BUSY
+                 * to reduce contention while mboxing
+                 * the request to f/w or to denote attributes
+                 * for a specific entry
+                 */
+    MPS_ENTRY_USED,
 };
 
 struct mps_tcam_entry {
-	u8 state;
-	u16 idx;
+    u8 state;
+    u16 idx;
 
-	/* add data here which uniquely defines an entry */
-	u8 eth_addr[RTE_ETHER_ADDR_LEN];
-	u8 mask[RTE_ETHER_ADDR_LEN];
+    /* add data here which uniquely defines an entry */
+    u8 eth_addr[RTE_ETHER_ADDR_LEN];
+    u8 mask[RTE_ETHER_ADDR_LEN];
 
-	struct mpstcam_table *mpstcam; /* backptr */
-	rte_atomic32_t refcnt;
+    struct mpstcam_table *mpstcam; /* backptr */
+    rte_atomic32_t refcnt;
 };
 
 struct mpstcam_table {
-	u16 size;
-	rte_rwlock_t lock;
-	u16 free_idx;	/* next free index */
-	bool full;	/* since free index can be present
-			 * anywhere in the table, size and
-			 * free_idx cannot alone determine
-			 * if the table is full
-			 */
-	struct mps_tcam_entry entry[0];
+    u16 size;
+    rte_rwlock_t lock;
+    u16 free_idx;    /* next free index */
+    bool full;    /* since free index can be present
+             * anywhere in the table, size and
+             * free_idx cannot alone determine
+             * if the table is full
+             */
+    struct mps_tcam_entry entry[0];
 };
 
 struct mpstcam_table *t4_init_mpstcam(struct adapter *adap);

@@ -7,25 +7,25 @@
 
 #include <stdint.h>
 
-#define PARSE_DELIMITER				" \f\n\r\t\v"
+#define PARSE_DELIMITER                " \f\n\r\t\v"
 
-#define skip_white_spaces(pos)			\
-({						\
-	__typeof__(pos) _p = (pos);		\
-	for ( ; isspace(*_p); _p++)		\
-		;				\
-	_p;					\
+#define skip_white_spaces(pos)            \
+({                        \
+    __typeof__(pos) _p = (pos);        \
+    for ( ; isspace(*_p); _p++)        \
+        ;                \
+    _p;                    \
 })
 
 static inline size_t
 skip_digits(const char *src)
 {
-	size_t i;
+    size_t i;
 
-	for (i = 0; isdigit(src[i]); i++)
-		;
+    for (i = 0; isdigit(src[i]); i++)
+        ;
 
-	return i;
+    return i;
 }
 
 int parser_read_arg_bool(const char *p);

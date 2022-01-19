@@ -16,5 +16,5 @@
 uint64_t
 entry(void *arg)
 {
-	return 1;
+    return 1;
 }

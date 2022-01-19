@@ -25,10 +25,10 @@
 #endif
 
 struct tmgr_port {
-	TAILQ_ENTRY(tmgr_port) node;
-	char name[NAME_SIZE];
-	struct rte_sched_port *s;
-	uint32_t n_subports_per_port;
+    TAILQ_ENTRY(tmgr_port) node;
+    char name[NAME_SIZE];
+    struct rte_sched_port *s;
+    uint32_t n_subports_per_port;
 };
 
 TAILQ_HEAD(tmgr_port_list, tmgr_port);
@@ -40,11 +40,11 @@ struct tmgr_port *
 tmgr_port_find(const char *name);
 
 struct tmgr_port_params {
-	uint64_t rate;
-	uint32_t n_subports_per_port;
-	uint32_t frame_overhead;
-	uint32_t mtu;
-	uint32_t cpu_id;
+    uint64_t rate;
+    uint32_t n_subports_per_port;
+    uint32_t frame_overhead;
+    uint32_t mtu;
+    uint32_t cpu_id;
 };
 
 int
@@ -58,14 +58,14 @@ tmgr_port_create(const char *name, struct tmgr_port_params *params);
 
 int
 tmgr_subport_config(const char *port_name,
-	uint32_t subport_id,
-	uint32_t subport_profile_id);
+    uint32_t subport_id,
+    uint32_t subport_profile_id);
 
 int
 tmgr_pipe_config(const char *port_name,
-	uint32_t subport_id,
-	uint32_t pipe_id_first,
-	uint32_t pipe_id_last,
-	uint32_t pipe_profile_id);
+    uint32_t subport_id,
+    uint32_t pipe_id_first,
+    uint32_t pipe_id_last,
+    uint32_t pipe_profile_id);
 
 #endif /* _INCLUDE_TMGR_H_ */

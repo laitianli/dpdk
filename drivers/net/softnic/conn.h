@@ -18,20 +18,20 @@ struct softnic_conn;
 #endif
 
 typedef void (*softnic_conn_msg_handle_t)(char *msg_in,
-	char *msg_out,
-	size_t msg_out_len_max,
-	void *arg);
+    char *msg_out,
+    size_t msg_out_len_max,
+    void *arg);
 
 struct softnic_conn_params {
-	const char *welcome;
-	const char *prompt;
-	const char *addr;
-	uint16_t port;
-	size_t buf_size;
-	size_t msg_in_len_max;
-	size_t msg_out_len_max;
-	softnic_conn_msg_handle_t msg_handle;
-	void *msg_handle_arg;
+    const char *welcome;
+    const char *prompt;
+    const char *addr;
+    uint16_t port;
+    size_t buf_size;
+    size_t msg_in_len_max;
+    size_t msg_out_len_max;
+    softnic_conn_msg_handle_t msg_handle;
+    void *msg_handle_arg;
 };
 
 struct softnic_conn *

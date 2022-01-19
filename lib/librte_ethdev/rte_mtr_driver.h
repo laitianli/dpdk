@@ -25,112 +25,112 @@ extern "C" {
 #endif
 
 typedef int (*rte_mtr_capabilities_get_t)(struct rte_eth_dev *dev,
-	struct rte_mtr_capabilities *cap,
-	struct rte_mtr_error *error);
+    struct rte_mtr_capabilities *cap,
+    struct rte_mtr_error *error);
 /**< @internal MTR capabilities get */
 
 typedef int (*rte_mtr_meter_profile_add_t)(struct rte_eth_dev *dev,
-	uint32_t meter_profile_id,
-	struct rte_mtr_meter_profile *profile,
-	struct rte_mtr_error *error);
+    uint32_t meter_profile_id,
+    struct rte_mtr_meter_profile *profile,
+    struct rte_mtr_error *error);
 /**< @internal MTR meter profile add */
 
 typedef int (*rte_mtr_meter_profile_delete_t)(struct rte_eth_dev *dev,
-	uint32_t meter_profile_id,
-	struct rte_mtr_error *error);
+    uint32_t meter_profile_id,
+    struct rte_mtr_error *error);
 /**< @internal MTR meter profile delete */
 
 typedef int (*rte_mtr_create_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	struct rte_mtr_params *params,
-	int shared,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_params *params,
+    int shared,
+    struct rte_mtr_error *error);
 /**< @internal MTR object create */
 
 typedef int (*rte_mtr_destroy_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 /**< @internal MTR object destroy */
 
 typedef int (*rte_mtr_meter_enable_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 /**< @internal MTR object meter enable */
 
 typedef int (*rte_mtr_meter_disable_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_error *error);
 /**< @internal MTR object meter disable */
 
 typedef int (*rte_mtr_meter_profile_update_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	uint32_t meter_profile_id,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint32_t meter_profile_id,
+    struct rte_mtr_error *error);
 /**< @internal MTR object meter profile update */
 
 typedef int (*rte_mtr_meter_dscp_table_update_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	enum rte_color *dscp_table,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    enum rte_color *dscp_table,
+    struct rte_mtr_error *error);
 /**< @internal MTR object meter DSCP table update */
 
 typedef int (*rte_mtr_policer_actions_update_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	uint32_t action_mask,
-	enum rte_mtr_policer_action *actions,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint32_t action_mask,
+    enum rte_mtr_policer_action *actions,
+    struct rte_mtr_error *error);
 /**< @internal MTR object policer action update*/
 
 typedef int (*rte_mtr_stats_update_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	uint64_t stats_mask,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    uint64_t stats_mask,
+    struct rte_mtr_error *error);
 /**< @internal MTR object enabled stats update */
 
 typedef int (*rte_mtr_stats_read_t)(struct rte_eth_dev *dev,
-	uint32_t mtr_id,
-	struct rte_mtr_stats *stats,
-	uint64_t *stats_mask,
-	int clear,
-	struct rte_mtr_error *error);
+    uint32_t mtr_id,
+    struct rte_mtr_stats *stats,
+    uint64_t *stats_mask,
+    int clear,
+    struct rte_mtr_error *error);
 /**< @internal MTR object stats read */
 
 struct rte_mtr_ops {
-	/** MTR capabilities get */
-	rte_mtr_capabilities_get_t capabilities_get;
+    /** MTR capabilities get */
+    rte_mtr_capabilities_get_t capabilities_get;
 
-	/** MTR meter profile add */
-	rte_mtr_meter_profile_add_t meter_profile_add;
+    /** MTR meter profile add */
+    rte_mtr_meter_profile_add_t meter_profile_add;
 
-	/** MTR meter profile delete */
-	rte_mtr_meter_profile_delete_t meter_profile_delete;
+    /** MTR meter profile delete */
+    rte_mtr_meter_profile_delete_t meter_profile_delete;
 
-	/** MTR object create */
-	rte_mtr_create_t create;
+    /** MTR object create */
+    rte_mtr_create_t create;
 
-	/** MTR object destroy */
-	rte_mtr_destroy_t destroy;
+    /** MTR object destroy */
+    rte_mtr_destroy_t destroy;
 
-	/** MTR object meter enable */
-	rte_mtr_meter_enable_t meter_enable;
+    /** MTR object meter enable */
+    rte_mtr_meter_enable_t meter_enable;
 
-	/** MTR object meter disable */
-	rte_mtr_meter_disable_t meter_disable;
+    /** MTR object meter disable */
+    rte_mtr_meter_disable_t meter_disable;
 
-	/** MTR object meter profile update */
-	rte_mtr_meter_profile_update_t meter_profile_update;
+    /** MTR object meter profile update */
+    rte_mtr_meter_profile_update_t meter_profile_update;
 
-	/** MTR object meter DSCP table update */
-	rte_mtr_meter_dscp_table_update_t meter_dscp_table_update;
+    /** MTR object meter DSCP table update */
+    rte_mtr_meter_dscp_table_update_t meter_dscp_table_update;
 
-	/** MTR object policer action update */
-	rte_mtr_policer_actions_update_t policer_actions_update;
+    /** MTR object policer action update */
+    rte_mtr_policer_actions_update_t policer_actions_update;
 
-	/** MTR object enabled stats update */
-	rte_mtr_stats_update_t stats_update;
+    /** MTR object enabled stats update */
+    rte_mtr_stats_update_t stats_update;
 
-	/** MTR object stats read */
-	rte_mtr_stats_read_t stats_read;
+    /** MTR object stats read */
+    rte_mtr_stats_read_t stats_read;
 };
 
 /**
@@ -154,20 +154,20 @@ struct rte_mtr_ops {
  */
 static inline int
 rte_mtr_error_set(struct rte_mtr_error *error,
-		   int code,
-		   enum rte_mtr_error_type type,
-		   const void *cause,
-		   const char *message)
+           int code,
+           enum rte_mtr_error_type type,
+           const void *cause,
+           const char *message)
 {
-	if (error) {
-		*error = (struct rte_mtr_error){
-			.type = type,
-			.cause = cause,
-			.message = message,
-		};
-	}
-	rte_errno = code;
-	return code;
+    if (error) {
+        *error = (struct rte_mtr_error){
+            .type = type,
+            .cause = cause,
+            .message = message,
+        };
+    }
+    rte_errno = code;
+    return code;
 }
 
 /**

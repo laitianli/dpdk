@@ -26,15 +26,15 @@
  */
 static inline void
 mp_init_msg(struct rte_eth_dev *dev, struct rte_mp_msg *msg,
-	    enum hns3_mp_req_type type)
+        enum hns3_mp_req_type type)
 {
-	struct hns3_mp_param *param = (struct hns3_mp_param *)msg->param;
+    struct hns3_mp_param *param = (struct hns3_mp_param *)msg->param;
 
-	memset(msg, 0, sizeof(*msg));
-	strlcpy(msg->name, HNS3_MP_NAME, sizeof(msg->name));
-	msg->len_param = sizeof(*param);
-	param->type = type;
-	param->port_id = dev->data->port_id;
+    memset(msg, 0, sizeof(*msg));
+    strlcpy(msg->name, HNS3_MP_NAME, sizeof(msg->name));
+    msg->len_param = sizeof(*param);
+    param->type = type;
+    param->port_id = dev->data->port_id;
 }
 
 /*
@@ -50,9 +50,9 @@ mp_init_msg(struct rte_eth_dev *dev, struct rte_mp_msg *msg,
  */
 static int
 mp_primary_handle(const struct rte_mp_msg *mp_msg __rte_unused,
-		  const void *peer __rte_unused)
+          const void *peer __rte_unused)
 {
-	return 0;
+    return 0;
 }
 
 /*
@@ -69,45 +69,45 @@ mp_primary_handle(const struct rte_mp_msg *mp_msg __rte_unused,
 static int
 mp_secondary_handle(const struct rte_mp_msg *mp_msg, const void *peer)
 {
-	struct rte_mp_msg mp_res;
-	struct hns3_mp_param *res = (struct hns3_mp_param *)mp_res.param;
-	const struct hns3_mp_param *param =
-		(const struct hns3_mp_param *)mp_msg->param;
-	struct rte_eth_dev *dev;
-	int ret;
+    struct rte_mp_msg mp_res;
+    struct hns3_mp_param *res = (struct hns3_mp_param *)mp_res.param;
+    const struct hns3_mp_param *param =
+        (const struct hns3_mp_param *)mp_msg->param;
+    struct rte_eth_dev *dev;
+    int ret;
 
-	if (!rte_eth_dev_is_valid_port(param->port_id)) {
-		rte_errno = ENODEV;
-		PMD_INIT_LOG(ERR, "port %u invalid port ID", param->port_id);
-		return -rte_errno;
-	}
-	dev = &rte_eth_devices[param->port_id];
-	switch (param->type) {
-	case HNS3_MP_REQ_START_RXTX:
-		PMD_INIT_LOG(INFO, "port %u starting datapath",
-			     dev->data->port_id);
-		rte_mb();
-		hns3_set_rxtx_function(dev);
-		mp_init_msg(dev, &mp_res, param->type);
-		res->result = 0;
-		ret = rte_mp_reply(&mp_res, peer);
-		break;
-	case HNS3_MP_REQ_STOP_RXTX:
-		PMD_INIT_LOG(INFO, "port %u stopping datapath",
-			     dev->data->port_id);
-		hns3_set_rxtx_function(dev);
-		rte_mb();
-		mp_init_msg(dev, &mp_res, param->type);
-		res->result = 0;
-		ret = rte_mp_reply(&mp_res, peer);
-		break;
-	default:
-		rte_errno = EINVAL;
-		PMD_INIT_LOG(ERR, "port %u invalid mp request type",
-			     dev->data->port_id);
-		return -rte_errno;
-	}
-	return ret;
+    if (!rte_eth_dev_is_valid_port(param->port_id)) {
+        rte_errno = ENODEV;
+        PMD_INIT_LOG(ERR, "port %u invalid port ID", param->port_id);
+        return -rte_errno;
+    }
+    dev = &rte_eth_devices[param->port_id];
+    switch (param->type) {
+    case HNS3_MP_REQ_START_RXTX:
+        PMD_INIT_LOG(INFO, "port %u starting datapath",
+                 dev->data->port_id);
+        rte_mb();
+        hns3_set_rxtx_function(dev);
+        mp_init_msg(dev, &mp_res, param->type);
+        res->result = 0;
+        ret = rte_mp_reply(&mp_res, peer);
+        break;
+    case HNS3_MP_REQ_STOP_RXTX:
+        PMD_INIT_LOG(INFO, "port %u stopping datapath",
+                 dev->data->port_id);
+        hns3_set_rxtx_function(dev);
+        rte_mb();
+        mp_init_msg(dev, &mp_res, param->type);
+        res->result = 0;
+        ret = rte_mp_reply(&mp_res, peer);
+        break;
+    default:
+        rte_errno = EINVAL;
+        PMD_INIT_LOG(ERR, "port %u invalid mp request type",
+                 dev->data->port_id);
+        return -rte_errno;
+    }
+    return ret;
 }
 
 /*
@@ -121,48 +121,48 @@ mp_secondary_handle(const struct rte_mp_msg *mp_msg, const void *peer)
 static void
 mp_req_on_rxtx(struct rte_eth_dev *dev, enum hns3_mp_req_type type)
 {
-	struct hns3_hw *hw = HNS3_DEV_PRIVATE_TO_HW(dev->data->dev_private);
-	struct rte_mp_msg mp_req;
-	struct rte_mp_msg *mp_res;
-	struct rte_mp_reply mp_rep;
-	struct hns3_mp_param *res;
-	struct timespec ts;
-	int ret;
-	int i;
+    struct hns3_hw *hw = HNS3_DEV_PRIVATE_TO_HW(dev->data->dev_private);
+    struct rte_mp_msg mp_req;
+    struct rte_mp_msg *mp_res;
+    struct rte_mp_reply mp_rep;
+    struct hns3_mp_param *res;
+    struct timespec ts;
+    int ret;
+    int i;
 
-	if (!hw->secondary_cnt)
-		return;
-	if (type != HNS3_MP_REQ_START_RXTX && type != HNS3_MP_REQ_STOP_RXTX) {
-		hns3_err(hw, "port %u unknown request (req_type %d)",
-			 dev->data->port_id, type);
-		return;
-	}
-	mp_init_msg(dev, &mp_req, type);
-	ts.tv_sec = HNS3_MP_REQ_TIMEOUT_SEC;
-	ts.tv_nsec = 0;
-	ret = rte_mp_request_sync(&mp_req, &mp_rep, &ts);
-	if (ret) {
-		hns3_err(hw, "port %u failed to request stop/start Rx/Tx (%d)",
-			 dev->data->port_id, type);
-		goto exit;
-	}
-	if (mp_rep.nb_sent != mp_rep.nb_received) {
-		PMD_INIT_LOG(ERR,
-			"port %u not all secondaries responded (req_type %d)",
-			dev->data->port_id, type);
-		goto exit;
-	}
-	for (i = 0; i < mp_rep.nb_received; i++) {
-		mp_res = &mp_rep.msgs[i];
-		res = (struct hns3_mp_param *)mp_res->param;
-		if (res->result) {
-			hns3_err(hw, "port %u request failed on secondary #%d",
-				 dev->data->port_id, i);
-			goto exit;
-		}
-	}
+    if (!hw->secondary_cnt)
+        return;
+    if (type != HNS3_MP_REQ_START_RXTX && type != HNS3_MP_REQ_STOP_RXTX) {
+        hns3_err(hw, "port %u unknown request (req_type %d)",
+             dev->data->port_id, type);
+        return;
+    }
+    mp_init_msg(dev, &mp_req, type);
+    ts.tv_sec = HNS3_MP_REQ_TIMEOUT_SEC;
+    ts.tv_nsec = 0;
+    ret = rte_mp_request_sync(&mp_req, &mp_rep, &ts);
+    if (ret) {
+        hns3_err(hw, "port %u failed to request stop/start Rx/Tx (%d)",
+             dev->data->port_id, type);
+        goto exit;
+    }
+    if (mp_rep.nb_sent != mp_rep.nb_received) {
+        PMD_INIT_LOG(ERR,
+            "port %u not all secondaries responded (req_type %d)",
+            dev->data->port_id, type);
+        goto exit;
+    }
+    for (i = 0; i < mp_rep.nb_received; i++) {
+        mp_res = &mp_rep.msgs[i];
+        res = (struct hns3_mp_param *)mp_res->param;
+        if (res->result) {
+            hns3_err(hw, "port %u request failed on secondary #%d",
+                 dev->data->port_id, i);
+            goto exit;
+        }
+    }
 exit:
-	free(mp_rep.msgs);
+    free(mp_rep.msgs);
 }
 
 /*
@@ -174,7 +174,7 @@ exit:
  */
 void hns3_mp_req_start_rxtx(struct rte_eth_dev *dev)
 {
-	mp_req_on_rxtx(dev, HNS3_MP_REQ_START_RXTX);
+    mp_req_on_rxtx(dev, HNS3_MP_REQ_START_RXTX);
 }
 
 /*
@@ -186,7 +186,7 @@ void hns3_mp_req_start_rxtx(struct rte_eth_dev *dev)
  */
 void hns3_mp_req_stop_rxtx(struct rte_eth_dev *dev)
 {
-	mp_req_on_rxtx(dev, HNS3_MP_REQ_STOP_RXTX);
+    mp_req_on_rxtx(dev, HNS3_MP_REQ_STOP_RXTX);
 }
 
 /*
@@ -194,7 +194,7 @@ void hns3_mp_req_stop_rxtx(struct rte_eth_dev *dev)
  */
 void hns3_mp_init_primary(void)
 {
-	rte_mp_action_register(HNS3_MP_NAME, mp_primary_handle);
+    rte_mp_action_register(HNS3_MP_NAME, mp_primary_handle);
 }
 
 /*
@@ -202,7 +202,7 @@ void hns3_mp_init_primary(void)
  */
 void hns3_mp_uninit_primary(void)
 {
-	rte_mp_action_unregister(HNS3_MP_NAME);
+    rte_mp_action_unregister(HNS3_MP_NAME);
 }
 
 /*
@@ -210,5 +210,5 @@ void hns3_mp_uninit_primary(void)
  */
 void hns3_mp_init_secondary(void)
 {
-	rte_mp_action_register(HNS3_MP_NAME, mp_secondary_handle);
+    rte_mp_action_register(HNS3_MP_NAME, mp_secondary_handle);
 }

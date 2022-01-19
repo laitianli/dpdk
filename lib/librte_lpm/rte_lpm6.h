@@ -27,9 +27,9 @@ struct rte_lpm6;
 
 /** LPM configuration structure. */
 struct rte_lpm6_config {
-	uint32_t max_rules;      /**< Max number of rules. */
-	uint32_t number_tbl8s;   /**< Number of tbl8s to allocate. */
-	int flags;               /**< This field is currently unused. */
+    uint32_t max_rules;      /**< Max number of rules. */
+    uint32_t number_tbl8s;   /**< Number of tbl8s to allocate. */
+    int flags;               /**< This field is currently unused. */
 };
 
 /**
@@ -53,7 +53,7 @@ struct rte_lpm6_config {
  */
 struct rte_lpm6 *
 rte_lpm6_create(const char *name, int socket_id,
-		const struct rte_lpm6_config *config);
+        const struct rte_lpm6_config *config);
 
 /**
  * Find an existing LPM object and return a pointer to it.
@@ -95,7 +95,7 @@ rte_lpm6_free(struct rte_lpm6 *lpm);
  */
 int
 rte_lpm6_add(struct rte_lpm6 *lpm, uint8_t *ip, uint8_t depth,
-		uint32_t next_hop);
+        uint32_t next_hop);
 
 /**
  * Check if a rule is present in the LPM table,
@@ -114,7 +114,7 @@ rte_lpm6_add(struct rte_lpm6 *lpm, uint8_t *ip, uint8_t depth,
  */
 int
 rte_lpm6_is_rule_present(struct rte_lpm6 *lpm, uint8_t *ip, uint8_t depth,
-		uint32_t *next_hop);
+        uint32_t *next_hop);
 
 /**
  * Delete a rule from the LPM table.
@@ -147,7 +147,7 @@ rte_lpm6_delete(struct rte_lpm6 *lpm, uint8_t *ip, uint8_t depth);
  */
 int
 rte_lpm6_delete_bulk_func(struct rte_lpm6 *lpm,
-		uint8_t ips[][RTE_LPM6_IPV6_ADDR_SIZE], uint8_t *depths, unsigned n);
+        uint8_t ips[][RTE_LPM6_IPV6_ADDR_SIZE], uint8_t *depths, unsigned n);
 
 /**
  * Delete all rules from the LPM table.
@@ -191,8 +191,8 @@ rte_lpm6_lookup(const struct rte_lpm6 *lpm, uint8_t *ip, uint32_t *next_hop);
  */
 int
 rte_lpm6_lookup_bulk_func(const struct rte_lpm6 *lpm,
-		uint8_t ips[][RTE_LPM6_IPV6_ADDR_SIZE],
-		int32_t *next_hops, unsigned int n);
+        uint8_t ips[][RTE_LPM6_IPV6_ADDR_SIZE],
+        int32_t *next_hops, unsigned int n);
 
 #ifdef __cplusplus
 }

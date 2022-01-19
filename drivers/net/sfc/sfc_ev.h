@@ -25,39 +25,39 @@ struct sfc_dp_rxq;
 struct sfc_dp_txq;
 
 enum sfc_evq_state {
-	SFC_EVQ_UNINITIALIZED = 0,
-	SFC_EVQ_INITIALIZED,
-	SFC_EVQ_STARTING,
-	SFC_EVQ_STARTED,
+    SFC_EVQ_UNINITIALIZED = 0,
+    SFC_EVQ_INITIALIZED,
+    SFC_EVQ_STARTING,
+    SFC_EVQ_STARTED,
 
-	SFC_EVQ_NSTATES
+    SFC_EVQ_NSTATES
 };
 
 enum sfc_evq_type {
-	SFC_EVQ_TYPE_MGMT = 0,
-	SFC_EVQ_TYPE_RX,
-	SFC_EVQ_TYPE_TX,
+    SFC_EVQ_TYPE_MGMT = 0,
+    SFC_EVQ_TYPE_RX,
+    SFC_EVQ_TYPE_TX,
 
-	SFC_EVQ_NTYPES
+    SFC_EVQ_NTYPES
 };
 
 struct sfc_evq {
-	/* Used on datapath */
-	efx_evq_t			*common;
-	const efx_ev_callbacks_t	*callbacks;
-	unsigned int			read_ptr;
-	unsigned int			read_ptr_primed;
-	boolean_t			exception;
-	efsys_mem_t			mem;
-	struct sfc_dp_rxq		*dp_rxq;
-	struct sfc_dp_txq		*dp_txq;
+    /* Used on datapath */
+    efx_evq_t            *common;
+    const efx_ev_callbacks_t    *callbacks;
+    unsigned int            read_ptr;
+    unsigned int            read_ptr_primed;
+    boolean_t            exception;
+    efsys_mem_t            mem;
+    struct sfc_dp_rxq        *dp_rxq;
+    struct sfc_dp_txq        *dp_txq;
 
-	/* Not used on datapath */
-	struct sfc_adapter		*sa;
-	unsigned int			evq_index;
-	enum sfc_evq_state		init_state;
-	enum sfc_evq_type		type;
-	unsigned int			entries;
+    /* Not used on datapath */
+    struct sfc_adapter        *sa;
+    unsigned int            evq_index;
+    enum sfc_evq_state        init_state;
+    enum sfc_evq_type        type;
+    unsigned int            entries;
 };
 
 /*
@@ -71,15 +71,15 @@ struct sfc_evq {
 
 static inline unsigned int
 sfc_evq_index_by_rxq_sw_index(__rte_unused struct sfc_adapter *sa,
-			      unsigned int rxq_sw_index)
+                  unsigned int rxq_sw_index)
 {
-	return 1 + rxq_sw_index;
+    return 1 + rxq_sw_index;
 }
 
 static inline unsigned int
 sfc_evq_index_by_txq_sw_index(struct sfc_adapter *sa, unsigned int txq_sw_index)
 {
-	return 1 + sa->eth_dev->data->nb_rx_queues + txq_sw_index;
+    return 1 + sa->eth_dev->data->nb_rx_queues + txq_sw_index;
 }
 
 int sfc_ev_attach(struct sfc_adapter *sa);
@@ -88,8 +88,8 @@ int sfc_ev_start(struct sfc_adapter *sa);
 void sfc_ev_stop(struct sfc_adapter *sa);
 
 int sfc_ev_qinit(struct sfc_adapter *sa,
-		 enum sfc_evq_type type, unsigned int type_index,
-		 unsigned int entries, int socket_id, struct sfc_evq **evqp);
+         enum sfc_evq_type type, unsigned int type_index,
+         unsigned int entries, int socket_id, struct sfc_evq **evqp);
 void sfc_ev_qfini(struct sfc_evq *evq);
 int sfc_ev_qstart(struct sfc_evq *evq, unsigned int hw_index);
 void sfc_ev_qstop(struct sfc_evq *evq);

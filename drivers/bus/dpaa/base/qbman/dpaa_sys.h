@@ -21,7 +21,7 @@
  * interrupt handlers. We simply create/destroy corresponding structs.
  */
 int qbman_request_irq(int irq, irqreturn_t (*isr)(int irq, void *arg),
-		      unsigned long flags, const char *name, void *arg);
+              unsigned long flags, const char *name, void *arg);
 int qbman_free_irq(int irq, void *arg);
 
 void qbman_invoke_irq(int irq);

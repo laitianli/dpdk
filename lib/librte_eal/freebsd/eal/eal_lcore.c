@@ -18,27 +18,27 @@
 unsigned
 eal_cpu_core_id(__rte_unused unsigned lcore_id)
 {
-	return 0;
+    return 0;
 }
 
 static int
 eal_get_ncpus(void)
 {
-	static int ncpu = -1;
-	int mib[2] = {CTL_HW, HW_NCPU};
-	size_t len = sizeof(ncpu);
+    static int ncpu = -1;
+    int mib[2] = {CTL_HW, HW_NCPU};
+    size_t len = sizeof(ncpu);
 
-	if (ncpu < 0) {
-		sysctl(mib, 2, &ncpu, &len, NULL, 0);
-		RTE_LOG(INFO, EAL, "Sysctl reports %d cpus\n", ncpu);
-	}
-	return ncpu;
+    if (ncpu < 0) {
+        sysctl(mib, 2, &ncpu, &len, NULL, 0);
+        RTE_LOG(INFO, EAL, "Sysctl reports %d cpus\n", ncpu);
+    }
+    return ncpu;
 }
 
 unsigned
 eal_cpu_socket_id(__rte_unused unsigned cpu_id)
 {
-	return 0;
+    return 0;
 }
 
 /* Check if a cpu is present by the presence of the
@@ -47,6 +47,6 @@ eal_cpu_socket_id(__rte_unused unsigned cpu_id)
 int
 eal_cpu_detected(unsigned lcore_id)
 {
-	const unsigned ncpus = eal_get_ncpus();
-	return lcore_id < ncpus;
+    const unsigned ncpus = eal_get_ncpus();
+    return lcore_id < ncpus;
 }

@@ -26,22 +26,22 @@ extern "C" {
  * just beyond the end of the mbuf data structure returned by a port
  */
 #define RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset)          \
-	(&((uint8_t *)(mbuf))[offset])
+    (&((uint8_t *)(mbuf))[offset])
 #define RTE_MBUF_METADATA_UINT16_PTR(mbuf, offset)         \
-	((uint16_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
+    ((uint16_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
 #define RTE_MBUF_METADATA_UINT32_PTR(mbuf, offset)         \
-	((uint32_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
+    ((uint32_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
 #define RTE_MBUF_METADATA_UINT64_PTR(mbuf, offset)         \
-	((uint64_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
+    ((uint64_t *) RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
 
 #define RTE_MBUF_METADATA_UINT8(mbuf, offset)              \
-	(*RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
+    (*RTE_MBUF_METADATA_UINT8_PTR(mbuf, offset))
 #define RTE_MBUF_METADATA_UINT16(mbuf, offset)             \
-	(*RTE_MBUF_METADATA_UINT16_PTR(mbuf, offset))
+    (*RTE_MBUF_METADATA_UINT16_PTR(mbuf, offset))
 #define RTE_MBUF_METADATA_UINT32(mbuf, offset)             \
-	(*RTE_MBUF_METADATA_UINT32_PTR(mbuf, offset))
+    (*RTE_MBUF_METADATA_UINT32_PTR(mbuf, offset))
 #define RTE_MBUF_METADATA_UINT64(mbuf, offset)             \
-	(*RTE_MBUF_METADATA_UINT64_PTR(mbuf, offset))
+    (*RTE_MBUF_METADATA_UINT64_PTR(mbuf, offset))
 /**@}*/
 
 /*
@@ -54,8 +54,8 @@ Cannot be changed. */
 
 /** Input port statistics */
 struct rte_port_in_stats {
-	uint64_t n_pkts_in;
-	uint64_t n_pkts_drop;
+    uint64_t n_pkts_in;
+    uint64_t n_pkts_drop;
 };
 
 /**
@@ -93,9 +93,9 @@ typedef int (*rte_port_in_op_free)(void *port);
  *   0 on success, error code otherwise
  */
 typedef int (*rte_port_in_op_rx)(
-	void *port,
-	struct rte_mbuf **pkts,
-	uint32_t n_pkts);
+    void *port,
+    struct rte_mbuf **pkts,
+    uint32_t n_pkts);
 
 /**
  * Input port stats get
@@ -111,16 +111,16 @@ typedef int (*rte_port_in_op_rx)(
  *   Error code or 0 on success.
  */
 typedef int (*rte_port_in_op_stats_read)(
-		void *port,
-		struct rte_port_in_stats *stats,
-		int clear);
+        void *port,
+        struct rte_port_in_stats *stats,
+        int clear);
 
 /** Input port interface defining the input port operation */
 struct rte_port_in_ops {
-	rte_port_in_op_create f_create;      /**< Create */
-	rte_port_in_op_free f_free;          /**< Free */
-	rte_port_in_op_rx f_rx;              /**< Packet RX (packet burst) */
-	rte_port_in_op_stats_read f_stats;   /**< Stats */
+    rte_port_in_op_create f_create;      /**< Create */
+    rte_port_in_op_free f_free;          /**< Free */
+    rte_port_in_op_rx f_rx;              /**< Packet RX (packet burst) */
+    rte_port_in_op_stats_read f_stats;   /**< Stats */
 };
 
 /*
@@ -129,8 +129,8 @@ struct rte_port_in_ops {
  */
 /** Output port statistics */
 struct rte_port_out_stats {
-	uint64_t n_pkts_in;
-	uint64_t n_pkts_drop;
+    uint64_t n_pkts_in;
+    uint64_t n_pkts_drop;
 };
 
 /**
@@ -166,8 +166,8 @@ typedef int (*rte_port_out_op_free)(void *port);
  *   0 on success, error code otherwise
  */
 typedef int (*rte_port_out_op_tx)(
-	void *port,
-	struct rte_mbuf *pkt);
+    void *port,
+    struct rte_mbuf *pkt);
 
 /**
  * Output port packet burst TX
@@ -185,9 +185,9 @@ typedef int (*rte_port_out_op_tx)(
  *   0 on success, error code otherwise
  */
 typedef int (*rte_port_out_op_tx_bulk)(
-	void *port,
-	struct rte_mbuf **pkt,
-	uint64_t pkts_mask);
+    void *port,
+    struct rte_mbuf **pkt,
+    uint64_t pkts_mask);
 
 /**
  * Output port flush
@@ -213,18 +213,18 @@ typedef int (*rte_port_out_op_flush)(void *port);
  *   Error code or 0 on success.
  */
 typedef int (*rte_port_out_op_stats_read)(
-		void *port,
-		struct rte_port_out_stats *stats,
-		int clear);
+        void *port,
+        struct rte_port_out_stats *stats,
+        int clear);
 
 /** Output port interface defining the output port operation */
 struct rte_port_out_ops {
-	rte_port_out_op_create f_create;      /**< Create */
-	rte_port_out_op_free f_free;          /**< Free */
-	rte_port_out_op_tx f_tx;              /**< Packet TX (single packet) */
-	rte_port_out_op_tx_bulk f_tx_bulk;    /**< Packet TX (packet burst) */
-	rte_port_out_op_flush f_flush;        /**< Flush */
-	rte_port_out_op_stats_read f_stats;   /**< Stats */
+    rte_port_out_op_create f_create;      /**< Create */
+    rte_port_out_op_free f_free;          /**< Free */
+    rte_port_out_op_tx f_tx;              /**< Packet TX (single packet) */
+    rte_port_out_op_tx_bulk f_tx_bulk;    /**< Packet TX (packet burst) */
+    rte_port_out_op_flush f_flush;        /**< Flush */
+    rte_port_out_op_stats_read f_stats;   /**< Stats */
 };
 
 #ifdef __cplusplus

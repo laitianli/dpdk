@@ -37,12 +37,12 @@ extern "C" {
  * Request id.
  */
 enum rte_avp_req_id {
-	RTE_AVP_REQ_UNKNOWN = 0,
-	RTE_AVP_REQ_CHANGE_MTU,
-	RTE_AVP_REQ_CFG_NETWORK_IF,
-	RTE_AVP_REQ_CFG_DEVICE,
-	RTE_AVP_REQ_SHUTDOWN_DEVICE,
-	RTE_AVP_REQ_MAX,
+    RTE_AVP_REQ_UNKNOWN = 0,
+    RTE_AVP_REQ_CHANGE_MTU,
+    RTE_AVP_REQ_CFG_NETWORK_IF,
+    RTE_AVP_REQ_CFG_DEVICE,
+    RTE_AVP_REQ_SHUTDOWN_DEVICE,
+    RTE_AVP_REQ_MAX,
 };
 
 /**@{ AVP device driver types */
@@ -62,27 +62,27 @@ enum rte_avp_req_id {
  * Structure for AVP queue configuration query request/result
  */
 struct rte_avp_device_config {
-	uint64_t device_id;	/**< Unique system identifier */
-	uint32_t driver_type; /**< Device Driver type */
-	uint32_t driver_version; /**< Device Driver version */
-	uint32_t features; /**< Negotiated features */
-	uint16_t num_tx_queues;	/**< Number of active transmit queues */
-	uint16_t num_rx_queues;	/**< Number of active receive queues */
-	uint8_t if_up; /**< 1: interface up, 0: interface down */
+    uint64_t device_id;    /**< Unique system identifier */
+    uint32_t driver_type; /**< Device Driver type */
+    uint32_t driver_version; /**< Device Driver version */
+    uint32_t features; /**< Negotiated features */
+    uint16_t num_tx_queues;    /**< Number of active transmit queues */
+    uint16_t num_rx_queues;    /**< Number of active receive queues */
+    uint8_t if_up; /**< 1: interface up, 0: interface down */
 } __attribute__ ((__packed__));
 
 /*
  * Structure for AVP request.
  */
 struct rte_avp_request {
-	uint32_t req_id; /**< Request id */
-	RTE_STD_C11
-	union {
-		uint32_t new_mtu; /**< New MTU */
-		uint8_t if_up;	/**< 1: interface up, 0: interface down */
-	struct rte_avp_device_config config; /**< Queue configuration */
-	};
-	int32_t result;	/**< Result for processing request */
+    uint32_t req_id; /**< Request id */
+    RTE_STD_C11
+    union {
+        uint32_t new_mtu; /**< New MTU */
+        uint8_t if_up;    /**< 1: interface up, 0: interface down */
+    struct rte_avp_device_config config; /**< Queue configuration */
+    };
+    int32_t result;    /**< Result for processing request */
 } __attribute__ ((__packed__));
 
 /*
@@ -91,11 +91,11 @@ struct rte_avp_request {
  * Writing should never overwrite the read position
  */
 struct rte_avp_fifo {
-	volatile unsigned int write; /**< Next position to be written*/
-	volatile unsigned int read; /**< Next position to be read */
-	unsigned int len; /**< Circular buffer length */
-	unsigned int elem_size; /**< Pointer size - for 32/64 bit OS */
-	void *volatile buffer[]; /**< The buffer contains mbuf pointers */
+    volatile unsigned int write; /**< Next position to be written*/
+    volatile unsigned int read; /**< Next position to be read */
+    unsigned int len; /**< Circular buffer length */
+    unsigned int elem_size; /**< Pointer size - for 32/64 bit OS */
+    void *volatile buffer[]; /**< The buffer contains mbuf pointers */
 };
 
 
@@ -103,19 +103,19 @@ struct rte_avp_fifo {
  * AVP packet buffer header used to define the exchange of packet data.
  */
 struct rte_avp_desc {
-	uint64_t pad0;
-	void *pkt_mbuf; /**< Reference to packet mbuf */
-	uint8_t pad1[14];
-	uint16_t ol_flags; /**< Offload features. */
-	void *next;	/**< Reference to next buffer in chain */
-	void *data;	/**< Start address of data in segment buffer. */
-	uint16_t data_len; /**< Amount of data in segment buffer. */
-	uint8_t nb_segs; /**< Number of segments */
-	uint8_t pad2;
-	uint16_t pkt_len; /**< Total pkt len: sum of all segment data_len. */
-	uint32_t pad3;
-	uint16_t vlan_tci; /**< VLAN Tag Control Identifier (CPU order). */
-	uint32_t pad4;
+    uint64_t pad0;
+    void *pkt_mbuf; /**< Reference to packet mbuf */
+    uint8_t pad1[14];
+    uint16_t ol_flags; /**< Offload features. */
+    void *next;    /**< Reference to next buffer in chain */
+    void *data;    /**< Start address of data in segment buffer. */
+    uint16_t data_len; /**< Amount of data in segment buffer. */
+    uint8_t nb_segs; /**< Number of segments */
+    uint8_t pad2;
+    uint16_t pkt_len; /**< Total pkt len: sum of all segment data_len. */
+    uint32_t pad3;
+    uint16_t vlan_tci; /**< VLAN Tag Control Identifier (CPU order). */
+    uint32_t pad4;
 } __attribute__ ((__aligned__(RTE_CACHE_LINE_SIZE), __packed__));
 
 
@@ -158,7 +158,7 @@ struct rte_avp_desc {
 /**@} */
 
 /**@{ AVP PCI MSI-X vectors */
-#define RTE_AVP_MIGRATION_MSIX_VECTOR 0	/**< Migration interrupts */
+#define RTE_AVP_MIGRATION_MSIX_VECTOR 0    /**< Migration interrupts */
 #define RTE_AVP_MAX_MSIX_VECTORS 1
 /**@} */
 
@@ -192,9 +192,9 @@ struct rte_avp_desc {
  * Description of a single memory region
  */
 struct rte_avp_memmap {
-	void *addr;
-	rte_iova_t phys_addr;
-	uint64_t length;
+    void *addr;
+    rte_iova_t phys_addr;
+    uint64_t length;
 };
 
 /*
@@ -211,10 +211,10 @@ struct rte_avp_memmap {
  * Defines a list of memory regions exported from the host to the guest
  */
 struct rte_avp_memmap_info {
-	uint32_t magic; /**< Memory validation marker */
-	uint32_t version; /**< Data format version */
-	uint32_t nb_maps;
-	struct rte_avp_memmap maps[RTE_AVP_MAX_MAPS];
+    uint32_t magic; /**< Memory validation marker */
+    uint32_t version; /**< Data format version */
+    uint32_t nb_maps;
+    struct rte_avp_memmap maps[RTE_AVP_MAX_MAPS];
 };
 
 /*
@@ -257,8 +257,8 @@ struct rte_avp_memmap_info {
  */
 #define RTE_AVP_CURRENT_HOST_VERSION \
 RTE_AVP_MAKE_VERSION(RTE_AVP_RELEASE_VERSION_1, \
-		     RTE_AVP_MAJOR_VERSION_0, \
-		     RTE_AVP_MINOR_VERSION_1)
+             RTE_AVP_MAJOR_VERSION_0, \
+             RTE_AVP_MINOR_VERSION_1)
 
 
 /**
@@ -266,8 +266,8 @@ RTE_AVP_MAKE_VERSION(RTE_AVP_RELEASE_VERSION_1, \
  */
 #define RTE_AVP_CURRENT_GUEST_VERSION \
 RTE_AVP_MAKE_VERSION(RTE_AVP_RELEASE_VERSION_1, \
-		     RTE_AVP_MAJOR_VERSION_2, \
-		     RTE_AVP_MINOR_VERSION_13)
+             RTE_AVP_MAJOR_VERSION_2, \
+             RTE_AVP_MINOR_VERSION_13)
 
 /**
  * Access AVP device version values
@@ -294,9 +294,9 @@ RTE_AVP_MAKE_VERSION(RTE_AVP_RELEASE_VERSION_1, \
  * Defines address translation parameters for each support mbuf pool
  */
 struct rte_avp_mempool_info {
-	void *addr;
-	rte_iova_t phys_addr;
-	uint64_t length;
+    void *addr;
+    rte_iova_t phys_addr;
+    uint64_t length;
 };
 
 /*
@@ -304,63 +304,63 @@ struct rte_avp_mempool_info {
  * via inter-VM shared memory when used in a guest.
  */
 struct rte_avp_device_info {
-	uint32_t magic;	/**< Memory validation marker */
-	uint32_t version; /**< Data format version */
+    uint32_t magic;    /**< Memory validation marker */
+    uint32_t version; /**< Data format version */
 
-	char ifname[RTE_AVP_NAMESIZE];	/**< Network device name for AVP */
+    char ifname[RTE_AVP_NAMESIZE];    /**< Network device name for AVP */
 
-	rte_iova_t tx_phys;
-	rte_iova_t rx_phys;
-	rte_iova_t alloc_phys;
-	rte_iova_t free_phys;
+    rte_iova_t tx_phys;
+    rte_iova_t rx_phys;
+    rte_iova_t alloc_phys;
+    rte_iova_t free_phys;
 
-	uint32_t features; /**< Supported feature bitmap */
-	uint8_t min_rx_queues; /**< Minimum supported receive/free queues */
-	uint8_t num_rx_queues; /**< Recommended number of receive/free queues */
-	uint8_t max_rx_queues; /**< Maximum supported receive/free queues */
-	uint8_t min_tx_queues; /**< Minimum supported transmit/alloc queues */
-	uint8_t num_tx_queues;
-	/**< Recommended number of transmit/alloc queues */
-	uint8_t max_tx_queues; /**< Maximum supported transmit/alloc queues */
+    uint32_t features; /**< Supported feature bitmap */
+    uint8_t min_rx_queues; /**< Minimum supported receive/free queues */
+    uint8_t num_rx_queues; /**< Recommended number of receive/free queues */
+    uint8_t max_rx_queues; /**< Maximum supported receive/free queues */
+    uint8_t min_tx_queues; /**< Minimum supported transmit/alloc queues */
+    uint8_t num_tx_queues;
+    /**< Recommended number of transmit/alloc queues */
+    uint8_t max_tx_queues; /**< Maximum supported transmit/alloc queues */
 
-	uint32_t tx_size; /**< Size of each transmit queue */
-	uint32_t rx_size; /**< Size of each receive queue */
-	uint32_t alloc_size; /**< Size of each alloc queue */
-	uint32_t free_size;	/**< Size of each free queue */
+    uint32_t tx_size; /**< Size of each transmit queue */
+    uint32_t rx_size; /**< Size of each receive queue */
+    uint32_t alloc_size; /**< Size of each alloc queue */
+    uint32_t free_size;    /**< Size of each free queue */
 
-	/* Used by Ethtool */
-	rte_iova_t req_phys;
-	rte_iova_t resp_phys;
-	rte_iova_t sync_phys;
-	void *sync_va;
+    /* Used by Ethtool */
+    rte_iova_t req_phys;
+    rte_iova_t resp_phys;
+    rte_iova_t sync_phys;
+    void *sync_va;
 
-	/* mbuf mempool (used when a single memory area is supported) */
-	void *mbuf_va;
-	rte_iova_t mbuf_phys;
+    /* mbuf mempool (used when a single memory area is supported) */
+    void *mbuf_va;
+    rte_iova_t mbuf_phys;
 
-	/* mbuf mempools */
-	struct rte_avp_mempool_info pool[RTE_AVP_MAX_MEMPOOLS];
+    /* mbuf mempools */
+    struct rte_avp_mempool_info pool[RTE_AVP_MAX_MEMPOOLS];
 
 #ifdef __KERNEL__
-	/* Ethernet info */
-	char ethaddr[ETH_ALEN];
+    /* Ethernet info */
+    char ethaddr[ETH_ALEN];
 #else
-	char ethaddr[RTE_ETHER_ADDR_LEN];
+    char ethaddr[RTE_ETHER_ADDR_LEN];
 #endif
 
-	uint8_t mode; /**< device mode, i.e guest, host, trace */
+    uint8_t mode; /**< device mode, i.e guest, host, trace */
 
-	/* mbuf size */
-	unsigned int mbuf_size;
+    /* mbuf size */
+    unsigned int mbuf_size;
 
-	/*
-	 * unique id to differentiate between two instantiations of the same
-	 * AVP device (i.e., the guest needs to know if the device has been
-	 * deleted and recreated).
-	 */
-	uint64_t device_id;
+    /*
+     * unique id to differentiate between two instantiations of the same
+     * AVP device (i.e., the guest needs to know if the device has been
+     * deleted and recreated).
+     */
+    uint64_t device_id;
 
-	uint32_t max_rx_pkt_len; /**< Maximum receive unit size */
+    uint32_t max_rx_pkt_len; /**< Maximum receive unit size */
 };
 
 #define RTE_AVP_MAX_QUEUES 8 /**< Maximum number of queues per device */

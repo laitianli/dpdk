@@ -33,13 +33,13 @@ struct rte_ipsec_session;
  *   (see rte_ipsec_pkt_process for more details).
  */
 struct rte_ipsec_sa_pkt_func {
-	uint16_t (*prepare)(const struct rte_ipsec_session *ss,
-				struct rte_mbuf *mb[],
-				struct rte_crypto_op *cop[],
-				uint16_t num);
-	uint16_t (*process)(const struct rte_ipsec_session *ss,
-				struct rte_mbuf *mb[],
-				uint16_t num);
+    uint16_t (*prepare)(const struct rte_ipsec_session *ss,
+                struct rte_mbuf *mb[],
+                struct rte_crypto_op *cop[],
+                uint16_t num);
+    uint16_t (*process)(const struct rte_ipsec_session *ss,
+                struct rte_mbuf *mb[],
+                uint16_t num);
 };
 
 /**
@@ -51,26 +51,26 @@ struct rte_ipsec_sa_pkt_func {
  * - session/device specific functions to prepare/process IPsec packets.
  */
 struct rte_ipsec_session {
-	/**
-	 * SA that session belongs to.
-	 * Note that multiple sessions can belong to the same SA.
-	 */
-	struct rte_ipsec_sa *sa;
-	/** session action type */
-	enum rte_security_session_action_type type;
-	/** session and related data */
-	union {
-		struct {
-			struct rte_cryptodev_sym_session *ses;
-		} crypto;
-		struct {
-			struct rte_security_session *ses;
-			struct rte_security_ctx *ctx;
-			uint32_t ol_flags;
-		} security;
-	};
-	/** functions to prepare/process IPsec packets */
-	struct rte_ipsec_sa_pkt_func pkt_func;
+    /**
+     * SA that session belongs to.
+     * Note that multiple sessions can belong to the same SA.
+     */
+    struct rte_ipsec_sa *sa;
+    /** session action type */
+    enum rte_security_session_action_type type;
+    /** session and related data */
+    union {
+        struct {
+            struct rte_cryptodev_sym_session *ses;
+        } crypto;
+        struct {
+            struct rte_security_session *ses;
+            struct rte_security_ctx *ctx;
+            uint32_t ol_flags;
+        } security;
+    };
+    /** functions to prepare/process IPsec packets */
+    struct rte_ipsec_sa_pkt_func pkt_func;
 } __rte_cache_aligned;
 
 /**
@@ -112,9 +112,9 @@ rte_ipsec_session_prepare(struct rte_ipsec_session *ss);
 __rte_experimental
 static inline uint16_t
 rte_ipsec_pkt_crypto_prepare(const struct rte_ipsec_session *ss,
-	struct rte_mbuf *mb[], struct rte_crypto_op *cop[], uint16_t num)
+    struct rte_mbuf *mb[], struct rte_crypto_op *cop[], uint16_t num)
 {
-	return ss->pkt_func.prepare(ss, mb, cop, num);
+    return ss->pkt_func.prepare(ss, mb, cop, num);
 }
 
 /**
@@ -143,9 +143,9 @@ rte_ipsec_pkt_crypto_prepare(const struct rte_ipsec_session *ss,
 __rte_experimental
 static inline uint16_t
 rte_ipsec_pkt_process(const struct rte_ipsec_session *ss, struct rte_mbuf *mb[],
-	uint16_t num)
+    uint16_t num)
 {
-	return ss->pkt_func.process(ss, mb, num);
+    return ss->pkt_func.process(ss, mb, num);
 }
 
 #include <rte_ipsec_group.h>

@@ -17,11 +17,11 @@ extern "C" {
  * This structure is the header of a cirbuf type.
  */
 struct cirbuf {
-	unsigned int maxlen;    /**< total len of the fifo (number of elements) */
-	unsigned int start;     /**< indice of the first elt */
-	unsigned int end;       /**< indice of the last elt */
-	unsigned int len;       /**< current len of fifo */
-	char *buf;
+    unsigned int maxlen;    /**< total len of the fifo (number of elements) */
+    unsigned int start;     /**< indice of the first elt */
+    unsigned int end;       /**< indice of the last elt */
+    unsigned int len;       /**< current len of fifo */
+    char *buf;
 };
 
 #ifdef RTE_LIBRTE_CMDLINE_DEBUG
@@ -70,9 +70,9 @@ int cirbuf_init(struct cirbuf *cbuf, char *buf, unsigned int start, unsigned int
  *   e: char that takes the value for each iteration
  */
 #define CIRBUF_FOREACH(c, i, e)                                 \
-	for ( i=0, e=(c)->buf[(c)->start] ;                     \
-		i<((c)->len) ;                                  \
-		i ++,  e=(c)->buf[((c)->start+i)%((c)->maxlen)])
+    for ( i=0, e=(c)->buf[(c)->start] ;                     \
+        i<((c)->len) ;                                  \
+        i ++,  e=(c)->buf[((c)->start+i)%((c)->maxlen)])
 
 
 /**

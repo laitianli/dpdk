@@ -6,9 +6,9 @@
 #define _NITROX_LOGS_H_
 
 #define LOG_PREFIX "NITROX: "
-#define NITROX_LOG(level, fmt, args...)					\
-	rte_log(RTE_LOG_ ## level, nitrox_logtype,			\
-		LOG_PREFIX "%s:%d " fmt, __func__, __LINE__, ## args)
+#define NITROX_LOG(level, fmt, args...)                    \
+    rte_log(RTE_LOG_ ## level, nitrox_logtype,            \
+        LOG_PREFIX "%s:%d " fmt, __func__, __LINE__, ## args)
 
 extern int nitrox_logtype;
 

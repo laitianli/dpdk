@@ -8,8 +8,8 @@
 
 void
 find_match_vec(struct rte_distributor *d,
-			uint16_t *data_ptr,
-			uint16_t *output_ptr)
+            uint16_t *data_ptr,
+            uint16_t *output_ptr)
 {
-	find_match_scalar(d, data_ptr, output_ptr);
+    find_match_scalar(d, data_ptr, output_ptr);
 }

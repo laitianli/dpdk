@@ -27,22 +27,22 @@
 
 /* Bit-field manipulation. */
 #define BITFIELD_DECLARE(bf, type, size) \
-	type bf[(((size_t)(size) / (sizeof(type) * CHAR_BIT)) + \
-		 !!((size_t)(size) % (sizeof(type) * CHAR_BIT)))]
+    type bf[(((size_t)(size) / (sizeof(type) * CHAR_BIT)) + \
+         !!((size_t)(size) % (sizeof(type) * CHAR_BIT)))]
 #define BITFIELD_DEFINE(bf, type, size) \
-	BITFIELD_DECLARE((bf), type, (size)) = { 0 }
+    BITFIELD_DECLARE((bf), type, (size)) = { 0 }
 #define BITFIELD_SET(bf, b) \
-	(assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
-	 (void)((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] |= \
-		((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT)))))
+    (assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
+     (void)((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] |= \
+        ((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT)))))
 #define BITFIELD_RESET(bf, b) \
-	(assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
-	 (void)((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] &= \
-		~((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT)))))
+    (assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
+     (void)((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] &= \
+        ~((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT)))))
 #define BITFIELD_ISSET(bf, b) \
-	(assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
-	 !!(((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] & \
-	     ((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT))))))
+    (assert((size_t)(b) < (sizeof(bf) * CHAR_BIT)), \
+     !!(((bf)[((b) / (sizeof((bf)[0]) * CHAR_BIT))] & \
+         ((size_t)1 << ((b) % (sizeof((bf)[0]) * CHAR_BIT))))))
 
 /* Convert a bit number to the corresponding 64-bit mask */
 #define MLX5_BITSHIFT(v) (UINT64_C(1) << (v))
@@ -63,22 +63,22 @@
 static inline const char *
 pmd_drv_log_basename(const char *s)
 {
-	const char *n = s;
+    const char *n = s;
 
-	while (*n)
-		if (*(n++) == '/')
-			s = n;
-	return s;
+    while (*n)
+        if (*(n++) == '/')
+            s = n;
+    return s;
 }
 
 extern int mlx5_logtype;
 
 #define PMD_DRV_LOG___(level, ...) \
-	rte_log(RTE_LOG_ ## level, \
-		mlx5_logtype, \
-		RTE_FMT(MLX5_DRIVER_NAME ": " \
-			RTE_FMT_HEAD(__VA_ARGS__,), \
-		RTE_FMT_TAIL(__VA_ARGS__,)))
+    rte_log(RTE_LOG_ ## level, \
+        mlx5_logtype, \
+        RTE_FMT(MLX5_DRIVER_NAME ": " \
+            RTE_FMT_HEAD(__VA_ARGS__,), \
+        RTE_FMT_TAIL(__VA_ARGS__,)))
 
 /*
  * When debugging is enabled (NDEBUG not defined), file, line and function
@@ -87,28 +87,28 @@ extern int mlx5_logtype;
 #ifndef NDEBUG
 
 #define PMD_DRV_LOG__(level, ...) \
-	PMD_DRV_LOG___(level, "%s:%u: %s(): " __VA_ARGS__)
+    PMD_DRV_LOG___(level, "%s:%u: %s(): " __VA_ARGS__)
 #define PMD_DRV_LOG_(level, s, ...) \
-	PMD_DRV_LOG__(level, \
-		s "\n" PMD_DRV_LOG_COMMA \
-		pmd_drv_log_basename(__FILE__) PMD_DRV_LOG_COMMA \
-		__LINE__ PMD_DRV_LOG_COMMA \
-		__func__, \
-		__VA_ARGS__)
+    PMD_DRV_LOG__(level, \
+        s "\n" PMD_DRV_LOG_COMMA \
+        pmd_drv_log_basename(__FILE__) PMD_DRV_LOG_COMMA \
+        __LINE__ PMD_DRV_LOG_COMMA \
+        __func__, \
+        __VA_ARGS__)
 
 #else /* NDEBUG */
 #define PMD_DRV_LOG__(level, ...) \
-	PMD_DRV_LOG___(level, __VA_ARGS__)
+    PMD_DRV_LOG___(level, __VA_ARGS__)
 #define PMD_DRV_LOG_(level, s, ...) \
-	PMD_DRV_LOG__(level, s "\n", __VA_ARGS__)
+    PMD_DRV_LOG__(level, s "\n", __VA_ARGS__)
 
 #endif /* NDEBUG */
 
 /* Generic printf()-like logging macro with automatic line feed. */
 #define DRV_LOG(level, ...) \
-	PMD_DRV_LOG_(level, \
-		__VA_ARGS__ PMD_DRV_LOG_STRIP PMD_DRV_LOG_OPAREN, \
-		PMD_DRV_LOG_CPAREN)
+    PMD_DRV_LOG_(level, \
+        __VA_ARGS__ PMD_DRV_LOG_STRIP PMD_DRV_LOG_OPAREN, \
+        PMD_DRV_LOG_CPAREN)
 
 /* claim_zero() does not perform any check when debugging is disabled. */
 #ifndef NDEBUG
@@ -140,15 +140,15 @@ extern int mlx5_logtype;
 
 /* Transpose flags. Useful to convert IBV to DPDK flags. */
 #define TRANSPOSE(val, from, to) \
-	(((from) >= (to)) ? \
-	 (((val) & (from)) / ((from) / (to))) : \
-	 (((val) & (from)) * ((to) / (from))))
+    (((from) >= (to)) ? \
+     (((val) & (from)) / ((from) / (to))) : \
+     (((val) & (from)) * ((to) / (from))))
 
 /* Allocate a buffer on the stack and fill it with a printf format string. */
 #define MKSTR(name, ...) \
-	char name[snprintf(NULL, 0, __VA_ARGS__) + 1]; \
-	\
-	snprintf(name, sizeof(name), __VA_ARGS__)
+    char name[snprintf(NULL, 0, __VA_ARGS__) + 1]; \
+    \
+    snprintf(name, sizeof(name), __VA_ARGS__)
 
 /**
  * Return logarithm of the nearest power of two above input value.
@@ -162,16 +162,16 @@ extern int mlx5_logtype;
 static inline unsigned int
 log2above(unsigned int v)
 {
-	unsigned int l;
-	unsigned int r;
+    unsigned int l;
+    unsigned int r;
 
-	for (l = 0, r = 0; (v >> 1); ++l, v >>= 1)
-		r |= (v & 1);
-	return l + r;
+    for (l = 0, r = 0; (v >> 1); ++l, v >>= 1)
+        r |= (v & 1);
+    return l + r;
 }
 
 /** Maximum size of string for naming the hlist table. */
-#define MLX5_HLIST_NAMESIZE			32
+#define MLX5_HLIST_NAMESIZE            32
 
 /**
  * Structure of the entry in the hash list, user should define its own struct
@@ -179,8 +179,8 @@ log2above(unsigned int v)
  * now and its user's responsibility to guarantee there is no collision.
  */
 struct mlx5_hlist_entry {
-	LIST_ENTRY(mlx5_hlist_entry) next; /* entry pointers in the list. */
-	uint64_t key; /* user defined 'key', could be the hash signature. */
+    LIST_ENTRY(mlx5_hlist_entry) next; /* entry pointers in the list. */
+    uint64_t key; /* user defined 'key', could be the hash signature. */
 };
 
 /** Structure for hash head. */
@@ -191,12 +191,12 @@ typedef void (*mlx5_hlist_destroy_callback_fn)(void *p, void *ctx);
 
 /** hash list table structure */
 struct mlx5_hlist {
-	char name[MLX5_HLIST_NAMESIZE]; /**< Name of the hash list. */
-	/**< number of heads, need to be power of 2. */
-	uint32_t table_sz;
-	/**< mask to get the index of the list heads. */
-	uint32_t mask;
-	struct mlx5_hlist_head heads[];	/**< list head arrays. */
+    char name[MLX5_HLIST_NAMESIZE]; /**< Name of the hash list. */
+    /**< number of heads, need to be power of 2. */
+    uint32_t table_sz;
+    /**< mask to get the index of the list heads. */
+    uint32_t mask;
+    struct mlx5_hlist_head heads[];    /**< list head arrays. */
 };
 
 /**
@@ -256,7 +256,7 @@ int mlx5_hlist_insert(struct mlx5_hlist *h, struct mlx5_hlist_entry *entry);
  *   Entry to be removed from the hash list table.
  */
 void mlx5_hlist_remove(struct mlx5_hlist *h __rte_unused,
-		       struct mlx5_hlist_entry *entry);
+               struct mlx5_hlist_entry *entry);
 
 /**
  * Destroy the hash list table, all the entries already inserted into the lists
@@ -271,6 +271,6 @@ void mlx5_hlist_remove(struct mlx5_hlist *h __rte_unused,
  *   Common context parameter used by callback function for each entry.
  */
 void mlx5_hlist_destroy(struct mlx5_hlist *h,
-			mlx5_hlist_destroy_callback_fn cb, void *ctx);
+            mlx5_hlist_destroy_callback_fn cb, void *ctx);
 
 #endif /* RTE_PMD_MLX5_UTILS_H_ */

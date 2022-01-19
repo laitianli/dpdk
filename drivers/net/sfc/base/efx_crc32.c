@@ -80,19 +80,19 @@ static const uint32_t efx_crc32_table[256] = {
 };
 
 /* Calculate the IEEE 802.3 CRC32 of a MAC addr */
-	__checkReturn		uint32_t
+    __checkReturn        uint32_t
 efx_crc32_calculate(
-	__in			uint32_t crc_init,
-	__in_ecount(length)	uint8_t const *input,
-	__in			int length)
+    __in            uint32_t crc_init,
+    __in_ecount(length)    uint8_t const *input,
+    __in            int length)
 {
-	int index;
-	uint32_t crc = crc_init;
+    int index;
+    uint32_t crc = crc_init;
 
-	for (index = 0; index < length; index++) {
-		uint32_t data = *(input++);
-		crc = (crc >> 8) ^ efx_crc32_table[(crc ^ data) & 0xff];
-	}
+    for (index = 0; index < length; index++) {
+        uint32_t data = *(input++);
+        crc = (crc >> 8) ^ efx_crc32_table[(crc ^ data) & 0xff];
+    }
 
-	return (crc);
+    return (crc);
 }

@@ -89,17 +89,17 @@
  * Size of job descriptor submitted to SEC device for each packet to
  * be processed.
  * Job descriptor contains 3 DMA address pointers:
- *	- to shared descriptor, to input buffer and to output buffer.
+ *    - to shared descriptor, to input buffer and to output buffer.
  * The job descriptor contains other SEC specific commands as well:
- *	- HEADER command, SEQ IN PTR command SEQ OUT PTR command and opaque data
+ *    - HEADER command, SEQ IN PTR command SEQ OUT PTR command and opaque data
  *      each measuring 4 bytes.
  * Job descriptor size, depending on physical address representation:
- *	- 32 bit - size is 28 bytes - cacheline-aligned size is 64 bytes
- *	- 36 bit - size is 40 bytes - cacheline-aligned size is 64 bytes
+ *    - 32 bit - size is 28 bytes - cacheline-aligned size is 64 bytes
+ *    - 36 bit - size is 40 bytes - cacheline-aligned size is 64 bytes
  * @note: Job descriptor must be cacheline-aligned to ensure efficient
- *	memory access.
+ *    memory access.
  * @note: If other format is used for job descriptor, then the size must be
- *	revised.
+ *    revised.
  */
 #define SEC_JOB_DESCRIPTOR_SIZE     64
 
@@ -127,18 +127,18 @@
  * DMA memory required for an input ring of a job ring.
  */
 #define SEC_DMA_MEM_INPUT_RING_SIZE     ((SEC_JOB_INPUT_RING_ENTRY_SIZE) * \
-					(SEC_JOB_RING_SIZE))
+                    (SEC_JOB_RING_SIZE))
 
 /*
  * DMA memory required for an output ring of a job ring.
  *  Required extra 4 byte for status word per each entry.
  */
 #define SEC_DMA_MEM_OUTPUT_RING_SIZE    ((SEC_JOB_OUTPUT_RING_ENTRY_SIZE) * \
-					(SEC_JOB_RING_SIZE))
+                    (SEC_JOB_RING_SIZE))
 
 /* DMA memory required for a job ring, including both input and output rings. */
 #define SEC_DMA_MEM_JOB_RING_SIZE       ((SEC_DMA_MEM_INPUT_RING_SIZE) + \
-					(SEC_DMA_MEM_OUTPUT_RING_SIZE))
+                    (SEC_DMA_MEM_OUTPUT_RING_SIZE))
 
 /*
  * When calling sec_init() UA will provide an area of virtual memory
@@ -149,7 +149,7 @@
  *  translate addresses allocated from this memory area.
  */
 #define SEC_DMA_MEMORY_SIZE          ((SEC_DMA_MEM_JOB_RING_SIZE) * \
-					(MAX_SEC_JOB_RINGS))
+                    (MAX_SEC_JOB_RINGS))
 
 #define L1_CACHE_BYTES 64
 

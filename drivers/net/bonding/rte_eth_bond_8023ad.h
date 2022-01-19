@@ -36,118 +36,118 @@ extern "C" {
 #define MARKER_TLV_TYPE_RESP                0x02
 
 typedef void (*rte_eth_bond_8023ad_ext_slowrx_fn)(uint16_t slave_id,
-						  struct rte_mbuf *lacp_pkt);
+                          struct rte_mbuf *lacp_pkt);
 
 enum rte_bond_8023ad_selection {
-	UNSELECTED,
-	STANDBY,
-	SELECTED
+    UNSELECTED,
+    STANDBY,
+    SELECTED
 };
 
 enum rte_bond_8023ad_agg_selection {
-	AGG_BANDWIDTH,
-	AGG_COUNT,
-	AGG_STABLE
+    AGG_BANDWIDTH,
+    AGG_COUNT,
+    AGG_STABLE
 };
 
 /** Generic slow protocol structure */
 struct slow_protocol {
-	uint8_t subtype;
-	uint8_t reserved_119[119];
+    uint8_t subtype;
+    uint8_t reserved_119[119];
 } __attribute__((__packed__));
 
 /** Generic slow protocol frame type structure */
 struct slow_protocol_frame {
-	struct rte_ether_hdr eth_hdr;
-	struct slow_protocol slow_protocol;
+    struct rte_ether_hdr eth_hdr;
+    struct slow_protocol slow_protocol;
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 struct port_params {
-	uint16_t system_priority;
-	/**< System priority (unused in current implementation) */
-	struct rte_ether_addr system;
-	/**< System ID - Slave MAC address, same as bonding MAC address */
-	uint16_t key;
-	/**< Speed information (implementation dependednt) and duplex. */
-	uint16_t port_priority;
-	/**< Priority of this (unused in current implementation) */
-	uint16_t port_number;
-	/**< Port number. It corresponds to slave port id. */
+    uint16_t system_priority;
+    /**< System priority (unused in current implementation) */
+    struct rte_ether_addr system;
+    /**< System ID - Slave MAC address, same as bonding MAC address */
+    uint16_t key;
+    /**< Speed information (implementation dependednt) and duplex. */
+    uint16_t port_priority;
+    /**< Priority of this (unused in current implementation) */
+    uint16_t port_number;
+    /**< Port number. It corresponds to slave port id. */
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 struct lacpdu_actor_partner_params {
-	uint8_t tlv_type_info;
-	uint8_t info_length;
-	struct port_params port_params;
-	uint8_t state;
-	uint8_t reserved_3[3];
+    uint8_t tlv_type_info;
+    uint8_t info_length;
+    struct port_params port_params;
+    uint8_t state;
+    uint8_t reserved_3[3];
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 /** LACPDU structure (5.4.2 in 802.1AX documentation). */
 struct lacpdu {
-	uint8_t subtype;
-	uint8_t version_number;
+    uint8_t subtype;
+    uint8_t version_number;
 
-	struct lacpdu_actor_partner_params actor;
-	struct lacpdu_actor_partner_params partner;
+    struct lacpdu_actor_partner_params actor;
+    struct lacpdu_actor_partner_params partner;
 
-	uint8_t tlv_type_collector_info;
-	uint8_t collector_info_length;
-	uint16_t collector_max_delay;
-	uint8_t reserved_12[12];
+    uint8_t tlv_type_collector_info;
+    uint8_t collector_info_length;
+    uint16_t collector_max_delay;
+    uint8_t reserved_12[12];
 
-	uint8_t tlv_type_terminator;
-	uint8_t terminator_length;
-	uint8_t reserved_50[50];
+    uint8_t tlv_type_terminator;
+    uint8_t terminator_length;
+    uint8_t reserved_50[50];
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 /** LACPDU frame: Contains ethernet header and LACPDU. */
 struct lacpdu_header {
-	struct rte_ether_hdr eth_hdr;
-	struct lacpdu lacpdu;
+    struct rte_ether_hdr eth_hdr;
+    struct lacpdu lacpdu;
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 struct marker {
-	uint8_t subtype;
-	uint8_t version_number;
+    uint8_t subtype;
+    uint8_t version_number;
 
-	uint8_t tlv_type_marker;
-	uint8_t info_length;
-	uint16_t requester_port;
-	struct rte_ether_addr requester_system;
-	uint32_t requester_transaction_id;
-	uint8_t reserved_2[2];
+    uint8_t tlv_type_marker;
+    uint8_t info_length;
+    uint16_t requester_port;
+    struct rte_ether_addr requester_system;
+    uint32_t requester_transaction_id;
+    uint8_t reserved_2[2];
 
-	uint8_t tlv_type_terminator;
-	uint8_t terminator_length;
-	uint8_t reserved_90[90];
+    uint8_t tlv_type_terminator;
+    uint8_t terminator_length;
+    uint8_t reserved_90[90];
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 struct marker_header {
-	struct rte_ether_hdr eth_hdr;
-	struct marker marker;
+    struct rte_ether_hdr eth_hdr;
+    struct marker marker;
 } __attribute__((__packed__)) __attribute__((aligned(2)));
 
 struct rte_eth_bond_8023ad_conf {
-	uint32_t fast_periodic_ms;
-	uint32_t slow_periodic_ms;
-	uint32_t short_timeout_ms;
-	uint32_t long_timeout_ms;
-	uint32_t aggregate_wait_timeout_ms;
-	uint32_t tx_period_ms;
-	uint32_t rx_marker_period_ms;
-	uint32_t update_timeout_ms;
-	rte_eth_bond_8023ad_ext_slowrx_fn slowrx_cb;
-	enum rte_bond_8023ad_agg_selection agg_selection;
+    uint32_t fast_periodic_ms;
+    uint32_t slow_periodic_ms;
+    uint32_t short_timeout_ms;
+    uint32_t long_timeout_ms;
+    uint32_t aggregate_wait_timeout_ms;
+    uint32_t tx_period_ms;
+    uint32_t rx_marker_period_ms;
+    uint32_t update_timeout_ms;
+    rte_eth_bond_8023ad_ext_slowrx_fn slowrx_cb;
+    enum rte_bond_8023ad_agg_selection agg_selection;
 };
 
 struct rte_eth_bond_8023ad_slave_info {
-	enum rte_bond_8023ad_selection selected;
-	uint8_t actor_state;
-	struct port_params actor;
-	uint8_t partner_state;
-	struct port_params partner;
-	uint16_t agg_port_id;
+    enum rte_bond_8023ad_selection selected;
+    uint8_t actor_state;
+    struct port_params actor;
+    uint8_t partner_state;
+    struct port_params partner;
+    uint16_t agg_port_id;
 };
 
 /**
@@ -156,7 +156,7 @@ struct rte_eth_bond_8023ad_slave_info {
  * Function returns current configuration of 802.3AX mode.
  *
  * @param port_id   Bonding device id
- * @param conf		Pointer to timeout structure.
+ * @param conf        Pointer to timeout structure.
  *
  * @return
  *   0 - if ok
@@ -164,7 +164,7 @@ struct rte_eth_bond_8023ad_slave_info {
  */
 int
 rte_eth_bond_8023ad_conf_get(uint16_t port_id,
-		struct rte_eth_bond_8023ad_conf *conf);
+        struct rte_eth_bond_8023ad_conf *conf);
 
 /**
  * @internal
@@ -172,14 +172,14 @@ rte_eth_bond_8023ad_conf_get(uint16_t port_id,
  * Function set new configuration of 802.3AX mode.
  *
  * @param port_id   Bonding device id
- * @param conf		Configuration, if NULL set default configuration.
+ * @param conf        Configuration, if NULL set default configuration.
  * @return
  *   0 - if ok
  *   -EINVAL if configuration is invalid.
  */
 int
 rte_eth_bond_8023ad_setup(uint16_t port_id,
-		struct rte_eth_bond_8023ad_conf *conf);
+        struct rte_eth_bond_8023ad_conf *conf);
 
 /**
  * @internal
@@ -187,7 +187,7 @@ rte_eth_bond_8023ad_setup(uint16_t port_id,
  * Function returns current state of given slave device.
  *
  * @param slave_id  Port id of valid slave.
- * @param conf		buffer for configuration
+ * @param conf        buffer for configuration
  * @return
  *   0 - if ok
  *   -EINVAL if conf is NULL or slave id is invalid (not a slave of given
@@ -195,7 +195,7 @@ rte_eth_bond_8023ad_setup(uint16_t port_id,
  */
 int
 rte_eth_bond_8023ad_slave_info(uint16_t port_id, uint16_t slave_id,
-		struct rte_eth_bond_8023ad_slave_info *conf);
+        struct rte_eth_bond_8023ad_slave_info *conf);
 
 #ifdef __cplusplus
 }
@@ -204,22 +204,22 @@ rte_eth_bond_8023ad_slave_info(uint16_t port_id, uint16_t slave_id,
 /**
  * Configure a slave port to start collecting.
  *
- * @param port_id	Bonding device id
- * @param slave_id	Port id of valid slave.
- * @param enabled	Non-zero when collection enabled.
+ * @param port_id    Bonding device id
+ * @param slave_id    Port id of valid slave.
+ * @param enabled    Non-zero when collection enabled.
  * @return
  *   0 - if ok
  *   -EINVAL if slave is not valid.
  */
 int
 rte_eth_bond_8023ad_ext_collect(uint16_t port_id, uint16_t slave_id,
-				int enabled);
+                int enabled);
 
 /**
  * Get COLLECTING flag from slave port actor state.
  *
- * @param port_id	Bonding device id
- * @param slave_id	Port id of valid slave.
+ * @param port_id    Bonding device id
+ * @param slave_id    Port id of valid slave.
  * @return
  *   0 - if not set
  *   1 - if set
@@ -231,22 +231,22 @@ rte_eth_bond_8023ad_ext_collect_get(uint16_t port_id, uint16_t slave_id);
 /**
  * Configure a slave port to start distributing.
  *
- * @param port_id	Bonding device id
- * @param slave_id	Port id of valid slave.
- * @param enabled	Non-zero when distribution enabled.
+ * @param port_id    Bonding device id
+ * @param slave_id    Port id of valid slave.
+ * @param enabled    Non-zero when distribution enabled.
  * @return
  *   0 - if ok
  *   -EINVAL if slave is not valid.
  */
 int
 rte_eth_bond_8023ad_ext_distrib(uint16_t port_id, uint16_t slave_id,
-				int enabled);
+                int enabled);
 
 /**
  * Get DISTRIBUTING flag from slave port actor state.
  *
- * @param port_id	Bonding device id
- * @param slave_id	Port id of valid slave.
+ * @param port_id    Bonding device id
+ * @param slave_id    Port id of valid slave.
  * @return
  *   0 - if not set
  *   1 - if set
@@ -259,16 +259,16 @@ rte_eth_bond_8023ad_ext_distrib_get(uint16_t port_id, uint16_t slave_id);
  * LACPDU transmit path for external 802.3ad state machine.  Caller retains
  * ownership of the packet on failure.
  *
- * @param port_id	Bonding device id
- * @param slave_id	Port ID of valid slave device.
- * @param lacp_pkt	mbuf containing LACPDU.
+ * @param port_id    Bonding device id
+ * @param slave_id    Port ID of valid slave device.
+ * @param lacp_pkt    mbuf containing LACPDU.
  *
  * @return
  *   0 on success, negative value otherwise.
  */
 int
 rte_eth_bond_8023ad_ext_slowtx(uint16_t port_id, uint16_t slave_id,
-		struct rte_mbuf *lacp_pkt);
+        struct rte_mbuf *lacp_pkt);
 
 /**
  * Enable dedicated hw queues for 802.3ad control plane traffic on on slaves
@@ -330,5 +330,5 @@ rte_eth_bond_8023ad_agg_selection_get(uint16_t port_id);
  */
 int
 rte_eth_bond_8023ad_agg_selection_set(uint16_t port_id,
-		enum rte_bond_8023ad_agg_selection agg_selection);
+        enum rte_bond_8023ad_agg_selection agg_selection);
 #endif /* RTE_ETH_BOND_8023AD_H_ */

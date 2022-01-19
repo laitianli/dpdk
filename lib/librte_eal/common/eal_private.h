@@ -16,22 +16,22 @@
  * Structure storing internal configuration (per-lcore)
  */
 struct lcore_config {
-	pthread_t thread_id;       /**< pthread identifier */
-	int pipe_master2slave[2];  /**< communication pipe with master */
-	int pipe_slave2master[2];  /**< communication pipe with master */
+    pthread_t thread_id;       /**< pthread identifier */
+    int pipe_master2slave[2];  /**< communication pipe with master */
+    int pipe_slave2master[2];  /**< communication pipe with master */
 
-	lcore_function_t * volatile f; /**< function to call */
-	void * volatile arg;       /**< argument of function */
-	volatile int ret;          /**< return value of function */
+    lcore_function_t * volatile f; /**< function to call */
+    void * volatile arg;       /**< argument of function */
+    volatile int ret;          /**< return value of function */
 
-	volatile enum rte_lcore_state_t state; /**< lcore state */
-	unsigned int socket_id;    /**< physical socket id for this lcore */
-	unsigned int core_id;      /**< core number on socket for this lcore */
-	int core_index;            /**< relative index, starting from 0 */
-	uint8_t core_role;         /**< role of core eg: OFF, RTE, SERVICE */
-	uint8_t detected;          /**< true if lcore was detected */
+    volatile enum rte_lcore_state_t state; /**< lcore state */
+    unsigned int socket_id;    /**< physical socket id for this lcore */
+    unsigned int core_id;      /**< core number on socket for this lcore */
+    int core_index;            /**< relative index, starting from 0 */
+    uint8_t core_role;         /**< role of core eg: OFF, RTE, SERVICE */
+    uint8_t detected;          /**< true if lcore was detected */
 
-	rte_cpuset_t cpuset;       /**< cpu set which the lcore affinity to */
+    rte_cpuset_t cpuset;       /**< cpu set which the lcore affinity to */
 };
 
 extern struct lcore_config lcore_config[RTE_MAX_LCORE];
@@ -40,25 +40,25 @@ extern struct lcore_config lcore_config[RTE_MAX_LCORE];
  * The global RTE configuration structure.
  */
 struct rte_config {
-	/* rte_eal_cpu_init()函数中赋值 */
-	uint32_t master_lcore;       /**< Id of the master lcore */
-	uint32_t lcore_count;        /**< Number of available logical cores. */
-	uint32_t numa_node_count;    /**< Number of detected NUMA nodes. */
-	uint32_t numa_nodes[RTE_MAX_NUMA_NODES]; /**< List of detected NUMA nodes. */
-	uint32_t service_lcore_count;/**< Number of available service cores. */
-	enum rte_lcore_role_t lcore_role[RTE_MAX_LCORE]; /**< State of cores. */
+    /* rte_eal_cpu_init()函数中赋值 */
+    uint32_t master_lcore;       /**< Id of the master lcore */
+    uint32_t lcore_count;        /**< Number of available logical cores. */
+    uint32_t numa_node_count;    /**< Number of detected NUMA nodes. */
+    uint32_t numa_nodes[RTE_MAX_NUMA_NODES]; /**< List of detected NUMA nodes. */
+    uint32_t service_lcore_count;/**< Number of available service cores. */
+    enum rte_lcore_role_t lcore_role[RTE_MAX_LCORE]; /**< State of cores. */
 
-	/** Primary or secondary configuration */
-	enum rte_proc_type_t process_type;
+    /** Primary or secondary configuration */
+    enum rte_proc_type_t process_type;
 
-	/** PA or VA mapping mode */
-	enum rte_iova_mode iova_mode;
+    /** PA or VA mapping mode */
+    enum rte_iova_mode iova_mode;
 
-	/**
-	 * Pointer to memory configuration, which may be shared across multiple
-	 * DPDK instances
-	 */
-	struct rte_mem_config *mem_config;
+    /**
+     * Pointer to memory configuration, which may be shared across multiple
+     * DPDK instances
+     */
+    struct rte_mem_config *mem_config;
 } __attribute__((__packed__));
 
 /**
@@ -195,12 +195,12 @@ int rte_eal_alarm_init(void);
  * etc.) loaded.
  *
  * @param module_name
- *	The module's name which need to be checked
+ *    The module's name which need to be checked
  *
  * @return
- *	-1 means some error happens(NULL pointer or open failure)
- *	0  means the module not loaded
- *	1  means the module loaded
+ *    -1 means some error happens(NULL pointer or open failure)
+ *    0  means the module not loaded
+ *    1  means the module loaded
  */
 int rte_eal_check_module(const char *module_name);
 
@@ -235,7 +235,7 @@ int rte_eal_check_module(const char *module_name);
 /**< immediately unmap reserved virtual area. */
 void *
 eal_get_virtual_area(void *requested_addr, size_t *size,
-		size_t page_sz, int flags, int mmap_flags);
+        size_t page_sz, int flags, int mmap_flags);
 
 /**
  * Get cpu core_id.
@@ -352,7 +352,7 @@ void rte_mp_channel_cleanup(void);
  */
 int
 rte_devargs_layers_parse(struct rte_devargs *devargs,
-			 const char *devstr);
+             const char *devstr);
 
 /*
  * probe a device at local process.
@@ -380,12 +380,12 @@ int local_dev_remove(struct rte_device *dev);
  * Iterate over all buses to find the corresponding bus to handle the sigbus
  * error.
  * @param failure_addr
- *	Pointer of the fault address of the sigbus error.
+ *    Pointer of the fault address of the sigbus error.
  *
  * @return
- *	 0 success to handle the sigbus.
- *	-1 failed to handle the sigbus
- *	 1 no bus can handler the sigbus
+ *     0 success to handle the sigbus.
+ *    -1 failed to handle the sigbus
+ *     1 no bus can handler the sigbus
  */
 int rte_bus_sigbus_handler(const void *failure_addr);
 

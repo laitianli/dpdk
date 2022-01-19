@@ -8,10 +8,10 @@
 #include <cpuid.h>
 
 enum cpu_register_t {
-	RTE_REG_EAX = 0,
-	RTE_REG_EBX,
-	RTE_REG_ECX,
-	RTE_REG_EDX,
+    RTE_REG_EAX = 0,
+    RTE_REG_EBX,
+    RTE_REG_ECX,
+    RTE_REG_EDX,
 };
 
 typedef uint32_t cpuid_registers_t[4];

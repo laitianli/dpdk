@@ -31,7 +31,7 @@ void dev_uninit(struct rte_eth_dev *dev, void *user_data);
  * extension to specify the number of supported ports.
  */
 uint8_t dev_get_port_count(struct rte_eth_dev *dev,
-			   void *user_data);
+               void *user_data);
 
 /*
  * The following functions are optional and are directly mapped
@@ -41,50 +41,50 @@ uint8_t dev_get_port_count(struct rte_eth_dev *dev,
  */
 
 int dev_configure(struct rte_eth_dev *dev,
-		  void *user_data);
+          void *user_data);
 
 int dev_start(struct rte_eth_dev *dev,
-	      void *user_data);
+          void *user_data);
 
 void dev_stop(struct rte_eth_dev *dev,
-	      void *user_data);
+          void *user_data);
 
 void dev_close(struct rte_eth_dev *dev,
-	       void *user_data);
+           void *user_data);
 
 int link_update(struct rte_eth_dev *dev,
-		int wait_to_complete,
-		void *user_data);
+        int wait_to_complete,
+        void *user_data);
 
 int dev_set_link_up(struct rte_eth_dev *dev,
-		    void *user_data);
+            void *user_data);
 
 int dev_set_link_down(struct rte_eth_dev *dev,
-		      void *user_data);
+              void *user_data);
 
 int stats_get(struct rte_eth_dev *dev,
-	       struct rte_eth_stats *stats,
-	       void *user_data);
+           struct rte_eth_stats *stats,
+           void *user_data);
 
 void stats_reset(struct rte_eth_dev *dev,
-		 void *user_data);
+         void *user_data);
 
 void mac_addr_add(struct rte_eth_dev *dev,
-		  struct rte_ether_addr *macadr,
-		  uint32_t index,
-		  uint32_t pool,
-		  void *user_data);
+          struct rte_ether_addr *macadr,
+          uint32_t index,
+          uint32_t pool,
+          void *user_data);
 
 void mac_addr_remove(struct rte_eth_dev *dev,
-		     uint32_t index,
-		     void *user_data);
+             uint32_t index,
+             void *user_data);
 
 void mac_addr_set(struct rte_eth_dev *dev,
-		  struct rte_ether_addr *mac_addr,
-		  void *user_data);
+          struct rte_ether_addr *mac_addr,
+          void *user_data);
 
 int set_mtu(struct rte_eth_dev *dev,
-	    uint16_t size,
-	    void *user_data);
+        uint16_t size,
+        void *user_data);
 
 #endif

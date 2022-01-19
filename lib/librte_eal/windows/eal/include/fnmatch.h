@@ -21,24 +21,24 @@ extern "C" {
  * with the given regular expression pattern.
  *
  * @param pattern
- *	regular expression notation decribing the pattern to match
+ *    regular expression notation decribing the pattern to match
  *
  * @param string
- *	source string to searcg for the pattern
+ *    source string to searcg for the pattern
  *
  * @param flag
- *	containing information about the pattern
+ *    containing information about the pattern
  *
  * @return
- *	if the pattern is found then return 0 or else FNM_NOMATCH
+ *    if the pattern is found then return 0 or else FNM_NOMATCH
  */
 static inline int fnmatch(__rte_unused const char *pattern,
-		__rte_unused const char *string,
-		__rte_unused int flags)
+        __rte_unused const char *string,
+        __rte_unused int flags)
 {
-	/* TODO */
-	/* This is a stub, not the expected result */
-	return FNM_NOMATCH;
+    /* TODO */
+    /* This is a stub, not the expected result */
+    return FNM_NOMATCH;
 }
 
 #ifdef __cplusplus

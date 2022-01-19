@@ -32,8 +32,8 @@ extern "C" {
 
 /** ring_reader port parameters */
 struct rte_port_ring_reader_params {
-	/** Underlying consumer ring that has to be pre-initialized */
-	struct rte_ring *ring;
+    /** Underlying consumer ring that has to be pre-initialized */
+    struct rte_ring *ring;
 };
 
 /** ring_reader port operations */
@@ -41,12 +41,12 @@ extern struct rte_port_in_ops rte_port_ring_reader_ops;
 
 /** ring_writer port parameters */
 struct rte_port_ring_writer_params {
-	/** Underlying producer ring that has to be pre-initialized */
-	struct rte_ring *ring;
+    /** Underlying producer ring that has to be pre-initialized */
+    struct rte_ring *ring;
 
-	/** Recommended burst size to ring. The actual burst size can be
-		bigger or smaller than this value. */
-	uint32_t tx_burst_sz;
+    /** Recommended burst size to ring. The actual burst size can be
+        bigger or smaller than this value. */
+    uint32_t tx_burst_sz;
 };
 
 /** ring_writer port operations */
@@ -54,15 +54,15 @@ extern struct rte_port_out_ops rte_port_ring_writer_ops;
 
 /** ring_writer_nodrop port parameters */
 struct rte_port_ring_writer_nodrop_params {
-	/** Underlying producer ring that has to be pre-initialized */
-	struct rte_ring *ring;
+    /** Underlying producer ring that has to be pre-initialized */
+    struct rte_ring *ring;
 
-	/** Recommended burst size to ring. The actual burst size can be
-		bigger or smaller than this value. */
-	uint32_t tx_burst_sz;
+    /** Recommended burst size to ring. The actual burst size can be
+        bigger or smaller than this value. */
+    uint32_t tx_burst_sz;
 
-	/** Maximum number of retries, 0 for no limit */
-	uint32_t n_retries;
+    /** Maximum number of retries, 0 for no limit */
+    uint32_t n_retries;
 };
 
 /** ring_writer_nodrop port operations */
@@ -82,7 +82,7 @@ extern struct rte_port_out_ops rte_port_ring_multi_writer_ops;
 
 /** ring_multi_writer_nodrop port parameters */
 #define rte_port_ring_multi_writer_nodrop_params \
-	rte_port_ring_writer_nodrop_params
+    rte_port_ring_writer_nodrop_params
 
 /** ring_multi_writer_nodrop port operations */
 extern struct rte_port_out_ops rte_port_ring_multi_writer_nodrop_ops;

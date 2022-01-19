@@ -7,7 +7,7 @@
 #define _BNXT_UTIL_H_
 
 #ifndef BIT
-#define BIT(n)	(1UL << (n))
+#define BIT(n)    (1UL << (n))
 #endif /* BIT */
 
 int bnxt_check_zero_bytes(const uint8_t *bytes, int len);

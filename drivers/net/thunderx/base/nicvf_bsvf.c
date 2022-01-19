@@ -14,31 +14,31 @@ static STAILQ_HEAD(, svf_entry) head = STAILQ_HEAD_INITIALIZER(head);
 void
 nicvf_bsvf_push(struct svf_entry *entry)
 {
-	assert(entry != NULL);
-	assert(entry->vf != NULL);
+    assert(entry != NULL);
+    assert(entry->vf != NULL);
 
-	STAILQ_INSERT_TAIL(&head, entry, next);
+    STAILQ_INSERT_TAIL(&head, entry, next);
 }
 
 struct svf_entry *
 nicvf_bsvf_pop(void)
 {
-	struct svf_entry *entry;
+    struct svf_entry *entry;
 
-	assert(!STAILQ_EMPTY(&head));
+    assert(!STAILQ_EMPTY(&head));
 
-	entry = STAILQ_FIRST(&head);
+    entry = STAILQ_FIRST(&head);
 
-	assert(entry != NULL);
-	assert(entry->vf != NULL);
+    assert(entry != NULL);
+    assert(entry->vf != NULL);
 
-	STAILQ_REMOVE_HEAD(&head, next);
+    STAILQ_REMOVE_HEAD(&head, next);
 
-	return entry;
+    return entry;
 }
 
 int
 nicvf_bsvf_empty(void)
 {
-	return STAILQ_EMPTY(&head);
+    return STAILQ_EMPTY(&head);
 }

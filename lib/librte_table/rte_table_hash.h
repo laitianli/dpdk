@@ -54,36 +54,36 @@ extern "C" {
 
 /** Hash function */
 typedef uint64_t (*rte_table_hash_op_hash)(
-	void *key,
-	void *key_mask,
-	uint32_t key_size,
-	uint64_t seed);
+    void *key,
+    void *key_mask,
+    uint32_t key_size,
+    uint64_t seed);
 
 /** Hash table parameters */
 struct rte_table_hash_params {
-	/** Name */
-	const char *name;
+    /** Name */
+    const char *name;
 
-	/** Key size (number of bytes) */
-	uint32_t key_size;
+    /** Key size (number of bytes) */
+    uint32_t key_size;
 
-	/** Byte offset within packet meta-data where the key is located */
-	uint32_t key_offset;
+    /** Byte offset within packet meta-data where the key is located */
+    uint32_t key_offset;
 
-	/** Key mask */
-	uint8_t *key_mask;
+    /** Key mask */
+    uint8_t *key_mask;
 
-	/** Number of keys */
-	uint32_t n_keys;
+    /** Number of keys */
+    uint32_t n_keys;
 
-	/** Number of buckets */
-	uint32_t n_buckets;
+    /** Number of buckets */
+    uint32_t n_buckets;
 
-	/** Hash function */
-	rte_table_hash_op_hash f_hash;
+    /** Hash function */
+    rte_table_hash_op_hash f_hash;
 
-	/** Seed value for the hash function */
-	uint64_t seed;
+    /** Seed value for the hash function */
+    uint64_t seed;
 };
 
 /** Extendable bucket hash table operations */

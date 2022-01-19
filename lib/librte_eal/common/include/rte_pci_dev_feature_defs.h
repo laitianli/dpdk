@@ -7,10 +7,10 @@
 
 /* interrupt mode */
 enum rte_intr_mode {
-	RTE_INTR_MODE_NONE = 0,
-	RTE_INTR_MODE_LEGACY,
-	RTE_INTR_MODE_MSI,
-	RTE_INTR_MODE_MSIX
+    RTE_INTR_MODE_NONE = 0,
+    RTE_INTR_MODE_LEGACY,
+    RTE_INTR_MODE_MSI,
+    RTE_INTR_MODE_MSIX
 };
 
 #endif /* _RTE_PCI_DEV_DEFS_H_ */

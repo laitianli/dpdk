@@ -30,88 +30,88 @@
  */
 
 struct rb_node {
-	struct rb_node *prev, *next;
+    struct rb_node *prev, *next;
 };
 
 struct dpa_rbtree {
-	struct rb_node *head, *tail;
+    struct rb_node *head, *tail;
 };
 
 #define DPAA_RBTREE { NULL, NULL }
 static inline void dpa_rbtree_init(struct dpa_rbtree *tree)
 {
-	tree->head = tree->tail = NULL;
+    tree->head = tree->tail = NULL;
 }
 
 #define QMAN_NODE2OBJ(ptr, type, node_field) \
-	(type *)((char *)ptr - offsetof(type, node_field))
+    (type *)((char *)ptr - offsetof(type, node_field))
 
 #define IMPLEMENT_DPAA_RBTREE(name, type, node_field, val_field) \
 static inline int name##_push(struct dpa_rbtree *tree, type *obj) \
 { \
-	struct rb_node *node = tree->head; \
-	if (!node) { \
-		tree->head = tree->tail = &obj->node_field; \
-		obj->node_field.prev = obj->node_field.next = NULL; \
-		return 0; \
-	} \
-	while (node) { \
-		type *item = QMAN_NODE2OBJ(node, type, node_field); \
-		if (obj->val_field == item->val_field) \
-			return -EBUSY; \
-		if (obj->val_field < item->val_field) { \
-			if (tree->head == node) \
-				tree->head = &obj->node_field; \
-			else \
-				node->prev->next = &obj->node_field; \
-			obj->node_field.prev = node->prev; \
-			obj->node_field.next = node; \
-			node->prev = &obj->node_field; \
-			return 0; \
-		} \
-		node = node->next; \
-	} \
-	obj->node_field.prev = tree->tail; \
-	obj->node_field.next = NULL; \
-	tree->tail->next = &obj->node_field; \
-	tree->tail = &obj->node_field; \
-	return 0; \
+    struct rb_node *node = tree->head; \
+    if (!node) { \
+        tree->head = tree->tail = &obj->node_field; \
+        obj->node_field.prev = obj->node_field.next = NULL; \
+        return 0; \
+    } \
+    while (node) { \
+        type *item = QMAN_NODE2OBJ(node, type, node_field); \
+        if (obj->val_field == item->val_field) \
+            return -EBUSY; \
+        if (obj->val_field < item->val_field) { \
+            if (tree->head == node) \
+                tree->head = &obj->node_field; \
+            else \
+                node->prev->next = &obj->node_field; \
+            obj->node_field.prev = node->prev; \
+            obj->node_field.next = node; \
+            node->prev = &obj->node_field; \
+            return 0; \
+        } \
+        node = node->next; \
+    } \
+    obj->node_field.prev = tree->tail; \
+    obj->node_field.next = NULL; \
+    tree->tail->next = &obj->node_field; \
+    tree->tail = &obj->node_field; \
+    return 0; \
 } \
 static inline void name##_del(struct dpa_rbtree *tree, type *obj) \
 { \
-	if (tree->head == &obj->node_field) { \
-		if (tree->tail == &obj->node_field) \
-			/* Only item in the list */ \
-			tree->head = tree->tail = NULL; \
-		else { \
-			/* Is the head, next != NULL */ \
-			tree->head = tree->head->next; \
-			tree->head->prev = NULL; \
-		} \
-	} else { \
-		if (tree->tail == &obj->node_field) { \
-			/* Is the tail, prev != NULL */ \
-			tree->tail = tree->tail->prev; \
-			tree->tail->next = NULL; \
-		} else { \
-			/* Is neither the head nor the tail */ \
-			obj->node_field.prev->next = obj->node_field.next; \
-			obj->node_field.next->prev = obj->node_field.prev; \
-		} \
-	} \
+    if (tree->head == &obj->node_field) { \
+        if (tree->tail == &obj->node_field) \
+            /* Only item in the list */ \
+            tree->head = tree->tail = NULL; \
+        else { \
+            /* Is the head, next != NULL */ \
+            tree->head = tree->head->next; \
+            tree->head->prev = NULL; \
+        } \
+    } else { \
+        if (tree->tail == &obj->node_field) { \
+            /* Is the tail, prev != NULL */ \
+            tree->tail = tree->tail->prev; \
+            tree->tail->next = NULL; \
+        } else { \
+            /* Is neither the head nor the tail */ \
+            obj->node_field.prev->next = obj->node_field.next; \
+            obj->node_field.next->prev = obj->node_field.prev; \
+        } \
+    } \
 } \
 static inline type *name##_find(struct dpa_rbtree *tree, u32 val) \
 { \
-	struct rb_node *node = tree->head; \
-	while (node) { \
-		type *item = QMAN_NODE2OBJ(node, type, node_field); \
-		if (val == item->val_field) \
-			return item; \
-		if (val < item->val_field) \
-			return NULL; \
-		node = node->next; \
-	} \
-	return NULL; \
+    struct rb_node *node = tree->head; \
+    while (node) { \
+        type *item = QMAN_NODE2OBJ(node, type, node_field); \
+        if (val == item->val_field) \
+            return item; \
+        if (val < item->val_field) \
+            return NULL; \
+        node = node->next; \
+    } \
+    return NULL; \
 }
 
 #endif /* __DPAA_RBTREE_H */

@@ -15,36 +15,36 @@
 void
 nicvf_svf_push(struct nicvf *vf)
 {
-	struct svf_entry *entry = NULL;
+    struct svf_entry *entry = NULL;
 
-	assert(vf != NULL);
+    assert(vf != NULL);
 
-	entry = rte_zmalloc("nicvf", sizeof(*entry), RTE_CACHE_LINE_SIZE);
-	if (entry == NULL)
-		rte_panic("Cannoc allocate memory for svf_entry\n");
+    entry = rte_zmalloc("nicvf", sizeof(*entry), RTE_CACHE_LINE_SIZE);
+    if (entry == NULL)
+        rte_panic("Cannoc allocate memory for svf_entry\n");
 
-	entry->vf = vf;
+    entry->vf = vf;
 
-	nicvf_bsvf_push(entry);
+    nicvf_bsvf_push(entry);
 }
 
 struct nicvf *
 nicvf_svf_pop(void)
 {
-	struct nicvf *vf;
-	struct svf_entry *entry;
+    struct nicvf *vf;
+    struct svf_entry *entry;
 
-	entry = nicvf_bsvf_pop();
+    entry = nicvf_bsvf_pop();
 
-	vf = entry->vf;
+    vf = entry->vf;
 
-	rte_free(entry);
+    rte_free(entry);
 
-	return vf;
+    return vf;
 }
 
 int
 nicvf_svf_empty(void)
 {
-	return nicvf_bsvf_empty();
+    return nicvf_bsvf_empty();
 }

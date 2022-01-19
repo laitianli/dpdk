@@ -7,5 +7,5 @@
 enum rte_hypervisor
 rte_hypervisor_get(void)
 {
-	return RTE_HYPERVISOR_UNKNOWN;
+    return RTE_HYPERVISOR_UNKNOWN;
 }

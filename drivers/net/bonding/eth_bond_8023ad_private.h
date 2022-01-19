@@ -84,97 +84,97 @@
 
 /** Variables associated with each port (5.4.7 in 802.1AX documentation). */
 struct port {
-	/**
-	 * The operational values of the Actor's state parameters. Bitmask
-	 * of port states.
-	 */
-	uint8_t actor_state;
+    /**
+     * The operational values of the Actor's state parameters. Bitmask
+     * of port states.
+     */
+    uint8_t actor_state;
 
-	/** The operational Actor's port parameters */
-	struct port_params actor;
+    /** The operational Actor's port parameters */
+    struct port_params actor;
 
-	/**
-	 * The operational value of the Actor's view of the current values of
-	 * the Partner's state parameters. The Actor sets this variable either
-	 * to the value received from the Partner in an LACPDU, or to the value
-	 * of Partner_Admin_Port_State. Bitmask of port states.
-	 */
-	uint8_t partner_state;
+    /**
+     * The operational value of the Actor's view of the current values of
+     * the Partner's state parameters. The Actor sets this variable either
+     * to the value received from the Partner in an LACPDU, or to the value
+     * of Partner_Admin_Port_State. Bitmask of port states.
+     */
+    uint8_t partner_state;
 
-	/** The operational Partner's port parameters */
-	struct port_params partner;
+    /** The operational Partner's port parameters */
+    struct port_params partner;
 
-	/* Additional port parameters not listed in documentation */
-	/** State machine flags */
-	uint16_t sm_flags;
-	enum rte_bond_8023ad_selection selected;
+    /* Additional port parameters not listed in documentation */
+    /** State machine flags */
+    uint16_t sm_flags;
+    enum rte_bond_8023ad_selection selected;
 
-	/** Indicates if either allmulti or promisc has been enforced on the
-	 * slave so that we can receive lacp packets
-	 */
+    /** Indicates if either allmulti or promisc has been enforced on the
+     * slave so that we can receive lacp packets
+     */
 #define BOND_8023AD_FORCED_ALLMULTI (1 << 0)
 #define BOND_8023AD_FORCED_PROMISC (1 << 1)
-	uint8_t forced_rx_flags;
+    uint8_t forced_rx_flags;
 
-	uint64_t current_while_timer;
-	uint64_t periodic_timer;
-	uint64_t wait_while_timer;
-	uint64_t tx_machine_timer;
-	uint64_t tx_marker_timer;
-	/* Agregator parameters */
-	/** Used aggregator port ID */
-	uint16_t aggregator_port_id;
+    uint64_t current_while_timer;
+    uint64_t periodic_timer;
+    uint64_t wait_while_timer;
+    uint64_t tx_machine_timer;
+    uint64_t tx_marker_timer;
+    /* Agregator parameters */
+    /** Used aggregator port ID */
+    uint16_t aggregator_port_id;
 
-	/** Memory pool used to allocate rings */
-	struct rte_mempool *mbuf_pool;
+    /** Memory pool used to allocate rings */
+    struct rte_mempool *mbuf_pool;
 
-	/** Ring of LACP packets from RX burst function */
-	struct rte_ring *rx_ring;
+    /** Ring of LACP packets from RX burst function */
+    struct rte_ring *rx_ring;
 
-	/** Ring of slow protocol packets (LACP and MARKERS) to TX burst function */
-	struct rte_ring *tx_ring;
+    /** Ring of slow protocol packets (LACP and MARKERS) to TX burst function */
+    struct rte_ring *tx_ring;
 
-	/** Timer which is also used as mutex. If is 0 (not running) RX marker
-	 * packet might be responded. Otherwise shall be dropped. It is zeroed in
-	 * mode 4 callback function after expire. */
-	volatile uint64_t rx_marker_timer;
+    /** Timer which is also used as mutex. If is 0 (not running) RX marker
+     * packet might be responded. Otherwise shall be dropped. It is zeroed in
+     * mode 4 callback function after expire. */
+    volatile uint64_t rx_marker_timer;
 
-	uint64_t warning_timer;
-	volatile uint16_t warnings_to_show;
+    uint64_t warning_timer;
+    volatile uint16_t warnings_to_show;
 
-	/** Memory pool used to allocate slow queues */
-	struct rte_mempool *slow_pool;
+    /** Memory pool used to allocate slow queues */
+    struct rte_mempool *slow_pool;
 };
 
 struct mode8023ad_private {
-	uint64_t fast_periodic_timeout;
-	uint64_t slow_periodic_timeout;
-	uint64_t short_timeout;
-	uint64_t long_timeout;
-	uint64_t aggregate_wait_timeout;
-	uint64_t tx_period_timeout;
-	uint64_t rx_marker_timeout;
-	uint64_t update_timeout_us;
-	rte_eth_bond_8023ad_ext_slowrx_fn slowrx_cb;
-	uint8_t external_sm;
-	struct rte_ether_addr mac_addr;
+    uint64_t fast_periodic_timeout;
+    uint64_t slow_periodic_timeout;
+    uint64_t short_timeout;
+    uint64_t long_timeout;
+    uint64_t aggregate_wait_timeout;
+    uint64_t tx_period_timeout;
+    uint64_t rx_marker_timeout;
+    uint64_t update_timeout_us;
+    rte_eth_bond_8023ad_ext_slowrx_fn slowrx_cb;
+    uint8_t external_sm;
+    struct rte_ether_addr mac_addr;
 
-	struct rte_eth_link slave_link;
-	/***< slave link properties */
+    struct rte_eth_link slave_link;
+    /***< slave link properties */
 
-	/**
-	 * Configuration of dedicated hardware queues for control plane
-	 * traffic
-	 */
-	struct {
-		uint8_t enabled;
+    /**
+     * Configuration of dedicated hardware queues for control plane
+     * traffic
+     */
+    struct {
+        uint8_t enabled;
 
-		struct rte_flow *flow[RTE_MAX_ETHPORTS];
+        struct rte_flow *flow[RTE_MAX_ETHPORTS];
 
-		uint16_t rx_qid;
-		uint16_t tx_qid;
-	} dedicated_queues;
-	enum rte_bond_8023ad_agg_selection agg_selection;
+        uint16_t rx_qid;
+        uint16_t tx_qid;
+    } dedicated_queues;
+    enum rte_bond_8023ad_agg_selection agg_selection;
 };
 
 /**
@@ -200,7 +200,7 @@ struct bond_dev_private;
  */
 void
 bond_mode_8023ad_setup(struct rte_eth_dev *dev,
-		struct rte_eth_bond_8023ad_conf *conf);
+        struct rte_eth_bond_8023ad_conf *conf);
 
 /**
  * @internal
@@ -258,7 +258,7 @@ bond_mode_8023ad_stop(struct rte_eth_dev *dev);
  */
 void
 bond_mode_8023ad_handle_slow_pkt(struct bond_dev_private *internals,
-				 uint16_t slave_id, struct rte_mbuf *pkt);
+                 uint16_t slave_id, struct rte_mbuf *pkt);
 
 /**
  * @internal
@@ -297,7 +297,7 @@ bond_mode_8023ad_mac_address_update(struct rte_eth_dev *bond_dev);
 
 int
 bond_ethdev_8023ad_flow_verify(struct rte_eth_dev *bond_dev,
-		uint16_t slave_port);
+        uint16_t slave_port);
 
 int
 bond_ethdev_8023ad_flow_set(struct rte_eth_dev *bond_dev, uint16_t slave_port);

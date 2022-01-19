@@ -117,9 +117,9 @@ static volatile uint64_t end_time;
 static volatile int test_failed;
 
 struct mytimerinfo {
-	struct rte_timer tim;
-	unsigned id;
-	unsigned count;
+    struct rte_timer tim;
+    unsigned id;
+    unsigned count;
 };
 
 static struct mytimerinfo mytiminfo[NB_TIMER];
@@ -128,77 +128,77 @@ static void timer_basic_cb(struct rte_timer *tim, void *arg);
 
 static void
 mytimer_reset(struct mytimerinfo *timinfo, uint64_t ticks,
-	      enum rte_timer_type type, unsigned tim_lcore,
-	      rte_timer_cb_t fct)
+          enum rte_timer_type type, unsigned tim_lcore,
+          rte_timer_cb_t fct)
 {
-	rte_timer_reset_sync(&timinfo->tim, ticks, type, tim_lcore,
-			     fct, timinfo);
+    rte_timer_reset_sync(&timinfo->tim, ticks, type, tim_lcore,
+                 fct, timinfo);
 }
 
 /* timer callback for stress tests */
 static void
 timer_stress_cb(__attribute__((unused)) struct rte_timer *tim,
-		__attribute__((unused)) void *arg)
+        __attribute__((unused)) void *arg)
 {
-	long r;
-	unsigned lcore_id = rte_lcore_id();
-	uint64_t hz = rte_get_timer_hz();
+    long r;
+    unsigned lcore_id = rte_lcore_id();
+    uint64_t hz = rte_get_timer_hz();
 
-	if (rte_timer_pending(tim))
-		return;
+    if (rte_timer_pending(tim))
+        return;
 
-	r = rte_rand();
-	if ((r & 0xff) == 0) {
-		mytimer_reset(&mytiminfo[0], hz, SINGLE, lcore_id,
-			      timer_stress_cb);
-	}
-	else if ((r & 0xff) == 1) {
-		mytimer_reset(&mytiminfo[0], hz, SINGLE,
-			      rte_get_next_lcore(lcore_id, 0, 1),
-			      timer_stress_cb);
-	}
-	else if ((r & 0xff) == 2) {
-		rte_timer_stop(&mytiminfo[0].tim);
-	}
+    r = rte_rand();
+    if ((r & 0xff) == 0) {
+        mytimer_reset(&mytiminfo[0], hz, SINGLE, lcore_id,
+                  timer_stress_cb);
+    }
+    else if ((r & 0xff) == 1) {
+        mytimer_reset(&mytiminfo[0], hz, SINGLE,
+                  rte_get_next_lcore(lcore_id, 0, 1),
+                  timer_stress_cb);
+    }
+    else if ((r & 0xff) == 2) {
+        rte_timer_stop(&mytiminfo[0].tim);
+    }
 }
 
 static int
 timer_stress_main_loop(__attribute__((unused)) void *arg)
 {
-	uint64_t hz = rte_get_timer_hz();
-	unsigned lcore_id = rte_lcore_id();
-	uint64_t cur_time;
-	int64_t diff = 0;
-	long r;
+    uint64_t hz = rte_get_timer_hz();
+    unsigned lcore_id = rte_lcore_id();
+    uint64_t cur_time;
+    int64_t diff = 0;
+    long r;
 
-	while (diff >= 0) {
+    while (diff >= 0) {
 
-		/* call the timer handler on each core */
-		rte_timer_manage();
+        /* call the timer handler on each core */
+        rte_timer_manage();
 
-		/* simulate the processing of a packet
-		 * (1 us = 2000 cycles at 2 Ghz) */
-		rte_delay_us(1);
+        /* simulate the processing of a packet
+         * (1 us = 2000 cycles at 2 Ghz) */
+        rte_delay_us(1);
 
-		/* randomly stop or reset timer */
-		r = rte_rand();
-		lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
-		if ((r & 0xff) == 0) {
-			/* 100 us */
-			mytimer_reset(&mytiminfo[0], hz/10000, SINGLE, lcore_id,
-				      timer_stress_cb);
-		}
-		else if ((r & 0xff) == 1) {
-			rte_timer_stop_sync(&mytiminfo[0].tim);
-		}
-		cur_time = rte_get_timer_cycles();
-		diff = end_time - cur_time;
-	}
+        /* randomly stop or reset timer */
+        r = rte_rand();
+        lcore_id = rte_get_next_lcore(lcore_id, 0, 1);
+        if ((r & 0xff) == 0) {
+            /* 100 us */
+            mytimer_reset(&mytiminfo[0], hz/10000, SINGLE, lcore_id,
+                      timer_stress_cb);
+        }
+        else if ((r & 0xff) == 1) {
+            rte_timer_stop_sync(&mytiminfo[0].tim);
+        }
+        cur_time = rte_get_timer_cycles();
+        diff = end_time - cur_time;
+    }
 
-	lcore_id = rte_lcore_id();
-	RTE_LOG(INFO, TESTTIMER, "core %u finished\n", lcore_id);
+    lcore_id = rte_lcore_id();
+    RTE_LOG(INFO, TESTTIMER, "core %u finished\n", lcore_id);
 
-	return 0;
+    return 0;
 }
 
 /* Need to synchronize slave lcores through multiple steps. */
@@ -208,54 +208,54 @@ static rte_atomic16_t slave_state[RTE_MAX_LCORE];
 static void
 master_init_slaves(void)
 {
-	unsigned i;
+    unsigned i;
 
-	RTE_LCORE_FOREACH_SLAVE(i) {
-		rte_atomic16_set(&slave_state[i], SLAVE_WAITING);
-	}
+    RTE_LCORE_FOREACH_SLAVE(i) {
+        rte_atomic16_set(&slave_state[i], SLAVE_WAITING);
+    }
 }
 
 static void
 master_start_slaves(void)
 {
-	unsigned i;
+    unsigned i;
 
-	RTE_LCORE_FOREACH_SLAVE(i) {
-		rte_atomic16_set(&slave_state[i], SLAVE_RUN_SIGNAL);
-	}
-	RTE_LCORE_FOREACH_SLAVE(i) {
-		while (rte_atomic16_read(&slave_state[i]) != SLAVE_RUNNING)
-			rte_pause();
-	}
+    RTE_LCORE_FOREACH_SLAVE(i) {
+        rte_atomic16_set(&slave_state[i], SLAVE_RUN_SIGNAL);
+    }
+    RTE_LCORE_FOREACH_SLAVE(i) {
+        while (rte_atomic16_read(&slave_state[i]) != SLAVE_RUNNING)
+            rte_pause();
+    }
 }
 
 static void
 master_wait_for_slaves(void)
 {
-	unsigned i;
+    unsigned i;
 
-	RTE_LCORE_FOREACH_SLAVE(i) {
-		while (rte_atomic16_read(&slave_state[i]) != SLAVE_FINISHED)
-			rte_pause();
-	}
+    RTE_LCORE_FOREACH_SLAVE(i) {
+        while (rte_atomic16_read(&slave_state[i]) != SLAVE_FINISHED)
+            rte_pause();
+    }
 }
 
 static void
 slave_wait_to_start(void)
 {
-	unsigned lcore_id = rte_lcore_id();
+    unsigned lcore_id = rte_lcore_id();
 
-	while (rte_atomic16_read(&slave_state[lcore_id]) != SLAVE_RUN_SIGNAL)
-		rte_pause();
-	rte_atomic16_set(&slave_state[lcore_id], SLAVE_RUNNING);
+    while (rte_atomic16_read(&slave_state[lcore_id]) != SLAVE_RUN_SIGNAL)
+        rte_pause();
+    rte_atomic16_set(&slave_state[lcore_id], SLAVE_RUNNING);
 }
 
 static void
 slave_finish(void)
 {
-	unsigned lcore_id = rte_lcore_id();
+    unsigned lcore_id = rte_lcore_id();
 
-	rte_atomic16_set(&slave_state[lcore_id], SLAVE_FINISHED);
+    rte_atomic16_set(&slave_state[lcore_id], SLAVE_FINISHED);
 }
 
 
@@ -266,7 +266,7 @@ static volatile int cb_count = 0;
 static void
 timer_stress2_cb(struct rte_timer *tim __rte_unused, void *arg __rte_unused)
 {
-	cb_count++;
+    cb_count++;
 }
 
 #define NB_STRESS2_TIMERS 8192
@@ -274,327 +274,327 @@ timer_stress2_cb(struct rte_timer *tim __rte_unused, void *arg __rte_unused)
 static int
 timer_stress2_main_loop(__attribute__((unused)) void *arg)
 {
-	static struct rte_timer *timers;
-	int i, ret;
-	uint64_t delay = rte_get_timer_hz() / 20;
-	unsigned lcore_id = rte_lcore_id();
-	unsigned master = rte_get_master_lcore();
-	int32_t my_collisions = 0;
-	static rte_atomic32_t collisions;
+    static struct rte_timer *timers;
+    int i, ret;
+    uint64_t delay = rte_get_timer_hz() / 20;
+    unsigned lcore_id = rte_lcore_id();
+    unsigned master = rte_get_master_lcore();
+    int32_t my_collisions = 0;
+    static rte_atomic32_t collisions;
 
-	if (lcore_id == master) {
-		cb_count = 0;
-		test_failed = 0;
-		rte_atomic32_set(&collisions, 0);
-		master_init_slaves();
-		timers = rte_malloc(NULL, sizeof(*timers) * NB_STRESS2_TIMERS, 0);
-		if (timers == NULL) {
-			printf("Test Failed\n");
-			printf("- Cannot allocate memory for timers\n" );
-			test_failed = 1;
-			master_start_slaves();
-			goto cleanup;
-		}
-		for (i = 0; i < NB_STRESS2_TIMERS; i++)
-			rte_timer_init(&timers[i]);
-		master_start_slaves();
-	} else {
-		slave_wait_to_start();
-		if (test_failed)
-			goto cleanup;
-	}
+    if (lcore_id == master) {
+        cb_count = 0;
+        test_failed = 0;
+        rte_atomic32_set(&collisions, 0);
+        master_init_slaves();
+        timers = rte_malloc(NULL, sizeof(*timers) * NB_STRESS2_TIMERS, 0);
+        if (timers == NULL) {
+            printf("Test Failed\n");
+            printf("- Cannot allocate memory for timers\n" );
+            test_failed = 1;
+            master_start_slaves();
+            goto cleanup;
+        }
+        for (i = 0; i < NB_STRESS2_TIMERS; i++)
+            rte_timer_init(&timers[i]);
+        master_start_slaves();
+    } else {
+        slave_wait_to_start();
+        if (test_failed)
+            goto cleanup;
+    }
 
-	/* have all cores schedule all timers on master lcore */
-	for (i = 0; i < NB_STRESS2_TIMERS; i++) {
-		ret = rte_timer_reset(&timers[i], delay, SINGLE, master,
-				timer_stress2_cb, NULL);
-		/* there will be collisions when multiple cores simultaneously
-		 * configure the same timers */
-		if (ret != 0)
-			my_collisions++;
-	}
-	if (my_collisions != 0)
-		rte_atomic32_add(&collisions, my_collisions);
+    /* have all cores schedule all timers on master lcore */
+    for (i = 0; i < NB_STRESS2_TIMERS; i++) {
+        ret = rte_timer_reset(&timers[i], delay, SINGLE, master,
+                timer_stress2_cb, NULL);
+        /* there will be collisions when multiple cores simultaneously
+         * configure the same timers */
+        if (ret != 0)
+            my_collisions++;
+    }
+    if (my_collisions != 0)
+        rte_atomic32_add(&collisions, my_collisions);
 
-	/* wait long enough for timers to expire */
-	rte_delay_ms(100);
+    /* wait long enough for timers to expire */
+    rte_delay_ms(100);
 
-	/* all cores rendezvous */
-	if (lcore_id == master) {
-		master_wait_for_slaves();
-	} else {
-		slave_finish();
-	}
+    /* all cores rendezvous */
+    if (lcore_id == master) {
+        master_wait_for_slaves();
+    } else {
+        slave_finish();
+    }
 
-	/* now check that we get the right number of callbacks */
-	if (lcore_id == master) {
-		my_collisions = rte_atomic32_read(&collisions);
-		if (my_collisions != 0)
-			printf("- %d timer reset collisions (OK)\n", my_collisions);
-		rte_timer_manage();
-		if (cb_count != NB_STRESS2_TIMERS) {
-			printf("Test Failed\n");
-			printf("- Stress test 2, part 1 failed\n");
-			printf("- Expected %d callbacks, got %d\n", NB_STRESS2_TIMERS,
-					cb_count);
-			test_failed = 1;
-			master_start_slaves();
-			goto cleanup;
-		}
-		cb_count = 0;
+    /* now check that we get the right number of callbacks */
+    if (lcore_id == master) {
+        my_collisions = rte_atomic32_read(&collisions);
+        if (my_collisions != 0)
+            printf("- %d timer reset collisions (OK)\n", my_collisions);
+        rte_timer_manage();
+        if (cb_count != NB_STRESS2_TIMERS) {
+            printf("Test Failed\n");
+            printf("- Stress test 2, part 1 failed\n");
+            printf("- Expected %d callbacks, got %d\n", NB_STRESS2_TIMERS,
+                    cb_count);
+            test_failed = 1;
+            master_start_slaves();
+            goto cleanup;
+        }
+        cb_count = 0;
 
-		/* proceed */
-		master_start_slaves();
-	} else {
-		/* proceed */
-		slave_wait_to_start();
-		if (test_failed)
-			goto cleanup;
-	}
+        /* proceed */
+        master_start_slaves();
+    } else {
+        /* proceed */
+        slave_wait_to_start();
+        if (test_failed)
+            goto cleanup;
+    }
 
-	/* now test again, just stop and restart timers at random after init*/
-	for (i = 0; i < NB_STRESS2_TIMERS; i++)
-		rte_timer_reset(&timers[i], delay, SINGLE, master,
-				timer_stress2_cb, NULL);
+    /* now test again, just stop and restart timers at random after init*/
+    for (i = 0; i < NB_STRESS2_TIMERS; i++)
+        rte_timer_reset(&timers[i], delay, SINGLE, master,
+                timer_stress2_cb, NULL);
 
-	/* pick random timer to reset, stopping them first half the time */
-	for (i = 0; i < 100000; i++) {
-		int r = rand() % NB_STRESS2_TIMERS;
-		if (i % 2)
-			rte_timer_stop(&timers[r]);
-		rte_timer_reset(&timers[r], delay, SINGLE, master,
-				timer_stress2_cb, NULL);
-	}
+    /* pick random timer to reset, stopping them first half the time */
+    for (i = 0; i < 100000; i++) {
+        int r = rand() % NB_STRESS2_TIMERS;
+        if (i % 2)
+            rte_timer_stop(&timers[r]);
+        rte_timer_reset(&timers[r], delay, SINGLE, master,
+                timer_stress2_cb, NULL);
+    }
 
-	/* wait long enough for timers to expire */
-	rte_delay_ms(100);
+    /* wait long enough for timers to expire */
+    rte_delay_ms(100);
 
-	/* now check that we get the right number of callbacks */
-	if (lcore_id == master) {
-		master_wait_for_slaves();
+    /* now check that we get the right number of callbacks */
+    if (lcore_id == master) {
+        master_wait_for_slaves();
 
-		rte_timer_manage();
-		if (cb_count != NB_STRESS2_TIMERS) {
-			printf("Test Failed\n");
-			printf("- Stress test 2, part 2 failed\n");
-			printf("- Expected %d callbacks, got %d\n", NB_STRESS2_TIMERS,
-					cb_count);
-			test_failed = 1;
-		} else {
-			printf("Test OK\n");
-		}
-	}
+        rte_timer_manage();
+        if (cb_count != NB_STRESS2_TIMERS) {
+            printf("Test Failed\n");
+            printf("- Stress test 2, part 2 failed\n");
+            printf("- Expected %d callbacks, got %d\n", NB_STRESS2_TIMERS,
+                    cb_count);
+            test_failed = 1;
+        } else {
+            printf("Test OK\n");
+        }
+    }
 
 cleanup:
-	if (lcore_id == master) {
-		master_wait_for_slaves();
-		if (timers != NULL) {
-			rte_free(timers);
-			timers = NULL;
-		}
-	} else {
-		slave_finish();
-	}
+    if (lcore_id == master) {
+        master_wait_for_slaves();
+        if (timers != NULL) {
+            rte_free(timers);
+            timers = NULL;
+        }
+    } else {
+        slave_finish();
+    }
 
-	return 0;
+    return 0;
 }
 
 /* timer callback for basic tests */
 static void
 timer_basic_cb(struct rte_timer *tim, void *arg)
 {
-	struct mytimerinfo *timinfo = arg;
-	uint64_t hz = rte_get_timer_hz();
-	unsigned lcore_id = rte_lcore_id();
-	uint64_t cur_time = rte_get_timer_cycles();
+    struct mytimerinfo *timinfo = arg;
+    uint64_t hz = rte_get_timer_hz();
+    unsigned lcore_id = rte_lcore_id();
+    uint64_t cur_time = rte_get_timer_cycles();
 
-	if (rte_timer_pending(tim))
-		return;
+    if (rte_timer_pending(tim))
+        return;
 
-	timinfo->count ++;
+    timinfo->count ++;
 
-	RTE_LOG(INFO, TESTTIMER,
-		"%"PRIu64": callback id=%u count=%u on core %u\n",
-		cur_time, timinfo->id, timinfo->count, lcore_id);
+    RTE_LOG(INFO, TESTTIMER,
+        "%"PRIu64": callback id=%u count=%u on core %u\n",
+        cur_time, timinfo->id, timinfo->count, lcore_id);
 
-	/* reload timer 0 on same core */
-	if (timinfo->id == 0 && timinfo->count < 20) {
-		mytimer_reset(timinfo, hz, SINGLE, lcore_id, timer_basic_cb);
-		return;
-	}
+    /* reload timer 0 on same core */
+    if (timinfo->id == 0 && timinfo->count < 20) {
+        mytimer_reset(timinfo, hz, SINGLE, lcore_id, timer_basic_cb);
+        return;
+    }
 
-	/* reload timer 1 on next core */
-	if (timinfo->id == 1 && timinfo->count < 10) {
-		mytimer_reset(timinfo, hz*2, SINGLE,
-			      rte_get_next_lcore(lcore_id, 0, 1),
-			      timer_basic_cb);
-		return;
-	}
+    /* reload timer 1 on next core */
+    if (timinfo->id == 1 && timinfo->count < 10) {
+        mytimer_reset(timinfo, hz*2, SINGLE,
+                  rte_get_next_lcore(lcore_id, 0, 1),
+                  timer_basic_cb);
+        return;
+    }
 
-	/* Explicitelly stop timer 0. Once stop() called, we can even
-	 * erase the content of the structure: it is not referenced
-	 * anymore by any code (in case of dynamic structure, it can
-	 * be freed) */
-	if (timinfo->id == 0 && timinfo->count == 20) {
+    /* Explicitelly stop timer 0. Once stop() called, we can even
+     * erase the content of the structure: it is not referenced
+     * anymore by any code (in case of dynamic structure, it can
+     * be freed) */
+    if (timinfo->id == 0 && timinfo->count == 20) {
 
-		/* stop_sync() is not needed, because we know that the
-		 * status of timer is only modified by this core */
-		rte_timer_stop(tim);
-		memset(tim, 0xAA, sizeof(struct rte_timer));
-		return;
-	}
+        /* stop_sync() is not needed, because we know that the
+         * status of timer is only modified by this core */
+        rte_timer_stop(tim);
+        memset(tim, 0xAA, sizeof(struct rte_timer));
+        return;
+    }
 
-	/* stop timer3, and restart a new timer0 (it was removed 5
-	 * seconds ago) for a single shot */
-	if (timinfo->id == 2 && timinfo->count == 25) {
-		rte_timer_stop_sync(&mytiminfo[3].tim);
+    /* stop timer3, and restart a new timer0 (it was removed 5
+     * seconds ago) for a single shot */
+    if (timinfo->id == 2 && timinfo->count == 25) {
+        rte_timer_stop_sync(&mytiminfo[3].tim);
 
-		/* need to reinit because structure was erased with 0xAA */
-		rte_timer_init(&mytiminfo[0].tim);
-		mytimer_reset(&mytiminfo[0], hz, SINGLE, lcore_id,
-			      timer_basic_cb);
-	}
+        /* need to reinit because structure was erased with 0xAA */
+        rte_timer_init(&mytiminfo[0].tim);
+        mytimer_reset(&mytiminfo[0], hz, SINGLE, lcore_id,
+                  timer_basic_cb);
+    }
 }
 
 static int
 timer_basic_main_loop(__attribute__((unused)) void *arg)
 {
-	uint64_t hz = rte_get_timer_hz();
-	unsigned lcore_id = rte_lcore_id();
-	uint64_t cur_time;
-	int64_t diff = 0;
+    uint64_t hz = rte_get_timer_hz();
+    unsigned lcore_id = rte_lcore_id();
+    uint64_t cur_time;
+    int64_t diff = 0;
 
-	/* launch all timers on core 0 */
-	if (lcore_id == rte_get_master_lcore()) {
-		mytimer_reset(&mytiminfo[0], hz/4, SINGLE, lcore_id,
-			      timer_basic_cb);
-		mytimer_reset(&mytiminfo[1], hz/2, SINGLE, lcore_id,
-			      timer_basic_cb);
-		mytimer_reset(&mytiminfo[2], hz/4, PERIODICAL, lcore_id,
-			      timer_basic_cb);
-		mytimer_reset(&mytiminfo[3], hz/4, PERIODICAL,
-			      rte_get_next_lcore(lcore_id, 0, 1),
-			      timer_basic_cb);
-	}
+    /* launch all timers on core 0 */
+    if (lcore_id == rte_get_master_lcore()) {
+        mytimer_reset(&mytiminfo[0], hz/4, SINGLE, lcore_id,
+                  timer_basic_cb);
+        mytimer_reset(&mytiminfo[1], hz/2, SINGLE, lcore_id,
+                  timer_basic_cb);
+        mytimer_reset(&mytiminfo[2], hz/4, PERIODICAL, lcore_id,
+                  timer_basic_cb);
+        mytimer_reset(&mytiminfo[3], hz/4, PERIODICAL,
+                  rte_get_next_lcore(lcore_id, 0, 1),
+                  timer_basic_cb);
+    }
 
-	while (diff >= 0) {
+    while (diff >= 0) {
 
-		/* call the timer handler on each core */
-		rte_timer_manage();
+        /* call the timer handler on each core */
+        rte_timer_manage();
 
-		/* simulate the processing of a packet
-		 * (3 us = 6000 cycles at 2 Ghz) */
-		rte_delay_us(3);
+        /* simulate the processing of a packet
+         * (3 us = 6000 cycles at 2 Ghz) */
+        rte_delay_us(3);
 
-		cur_time = rte_get_timer_cycles();
-		diff = end_time - cur_time;
-	}
-	RTE_LOG(INFO, TESTTIMER, "core %u finished\n", lcore_id);
+        cur_time = rte_get_timer_cycles();
+        diff = end_time - cur_time;
+    }
+    RTE_LOG(INFO, TESTTIMER, "core %u finished\n", lcore_id);
 
-	return 0;
+    return 0;
 }
 
 static int
 timer_sanity_check(void)
 {
 #ifdef RTE_LIBEAL_USE_HPET
-	if (eal_timer_source != EAL_TIMER_HPET) {
-		printf("Not using HPET, can't sanity check timer sources\n");
-		return 0;
-	}
+    if (eal_timer_source != EAL_TIMER_HPET) {
+        printf("Not using HPET, can't sanity check timer sources\n");
+        return 0;
+    }
 
-	const uint64_t t_hz = rte_get_tsc_hz();
-	const uint64_t h_hz = rte_get_hpet_hz();
-	printf("Hertz values: TSC = %"PRIu64", HPET = %"PRIu64"\n", t_hz, h_hz);
+    const uint64_t t_hz = rte_get_tsc_hz();
+    const uint64_t h_hz = rte_get_hpet_hz();
+    printf("Hertz values: TSC = %"PRIu64", HPET = %"PRIu64"\n", t_hz, h_hz);
 
-	const uint64_t tsc_start = rte_get_tsc_cycles();
-	const uint64_t hpet_start = rte_get_hpet_cycles();
-	rte_delay_ms(100); /* delay 1/10 second */
-	const uint64_t tsc_end = rte_get_tsc_cycles();
-	const uint64_t hpet_end = rte_get_hpet_cycles();
-	printf("Measured cycles: TSC = %"PRIu64", HPET = %"PRIu64"\n",
-			tsc_end-tsc_start, hpet_end-hpet_start);
+    const uint64_t tsc_start = rte_get_tsc_cycles();
+    const uint64_t hpet_start = rte_get_hpet_cycles();
+    rte_delay_ms(100); /* delay 1/10 second */
+    const uint64_t tsc_end = rte_get_tsc_cycles();
+    const uint64_t hpet_end = rte_get_hpet_cycles();
+    printf("Measured cycles: TSC = %"PRIu64", HPET = %"PRIu64"\n",
+            tsc_end-tsc_start, hpet_end-hpet_start);
 
-	const double tsc_time = (double)(tsc_end - tsc_start)/t_hz;
-	const double hpet_time = (double)(hpet_end - hpet_start)/h_hz;
-	/* get the percentage that the times differ by */
-	const double time_diff = fabs(tsc_time - hpet_time)*100/tsc_time;
-	printf("Measured time: TSC = %.4f, HPET = %.4f\n", tsc_time, hpet_time);
+    const double tsc_time = (double)(tsc_end - tsc_start)/t_hz;
+    const double hpet_time = (double)(hpet_end - hpet_start)/h_hz;
+    /* get the percentage that the times differ by */
+    const double time_diff = fabs(tsc_time - hpet_time)*100/tsc_time;
+    printf("Measured time: TSC = %.4f, HPET = %.4f\n", tsc_time, hpet_time);
 
-	printf("Elapsed time measured by TSC and HPET differ by %f%%\n",
-			time_diff);
-	if (time_diff > 0.1) {
-		printf("Error times differ by >0.1%%");
-		return -1;
-	}
+    printf("Elapsed time measured by TSC and HPET differ by %f%%\n",
+            time_diff);
+    if (time_diff > 0.1) {
+        printf("Error times differ by >0.1%%");
+        return -1;
+    }
 #endif
-	return 0;
+    return 0;
 }
 
 static int
 test_timer(void)
 {
-	unsigned i;
-	uint64_t cur_time;
-	uint64_t hz;
+    unsigned i;
+    uint64_t cur_time;
+    uint64_t hz;
 
-	if (rte_lcore_count() < 2) {
-		printf("Not enough cores for timer_autotest, expecting at least 2\n");
-		return TEST_SKIPPED;
-	}
+    if (rte_lcore_count() < 2) {
+        printf("Not enough cores for timer_autotest, expecting at least 2\n");
+        return TEST_SKIPPED;
+    }
 
-	/* sanity check our timer sources and timer config values */
-	if (timer_sanity_check() < 0) {
-		printf("Timer sanity checks failed\n");
-		return TEST_FAILED;
-	}
+    /* sanity check our timer sources and timer config values */
+    if (timer_sanity_check() < 0) {
+        printf("Timer sanity checks failed\n");
+        return TEST_FAILED;
+    }
 
-	/* init timer */
-	for (i=0; i<NB_TIMER; i++) {
-		memset(&mytiminfo[i], 0, sizeof(struct mytimerinfo));
-		mytiminfo[i].id = i;
-		rte_timer_init(&mytiminfo[i].tim);
-	}
+    /* init timer */
+    for (i=0; i<NB_TIMER; i++) {
+        memset(&mytiminfo[i], 0, sizeof(struct mytimerinfo));
+        mytiminfo[i].id = i;
+        rte_timer_init(&mytiminfo[i].tim);
+    }
 
-	/* calculate the "end of test" time */
-	cur_time = rte_get_timer_cycles();
-	hz = rte_get_timer_hz();
-	end_time = cur_time + (hz * TEST_DURATION_S);
+    /* calculate the "end of test" time */
+    cur_time = rte_get_timer_cycles();
+    hz = rte_get_timer_hz();
+    end_time = cur_time + (hz * TEST_DURATION_S);
 
-	/* start other cores */
-	printf("Start timer stress tests\n");
-	rte_eal_mp_remote_launch(timer_stress_main_loop, NULL, CALL_MASTER);
-	rte_eal_mp_wait_lcore();
+    /* start other cores */
+    printf("Start timer stress tests\n");
+    rte_eal_mp_remote_launch(timer_stress_main_loop, NULL, CALL_MASTER);
+    rte_eal_mp_wait_lcore();
 
-	/* stop timer 0 used for stress test */
-	rte_timer_stop_sync(&mytiminfo[0].tim);
+    /* stop timer 0 used for stress test */
+    rte_timer_stop_sync(&mytiminfo[0].tim);
 
-	/* run a second, slightly different set of stress tests */
-	printf("\nStart timer stress tests 2\n");
-	test_failed = 0;
-	rte_eal_mp_remote_launch(timer_stress2_main_loop, NULL, CALL_MASTER);
-	rte_eal_mp_wait_lcore();
-	if (test_failed)
-		return TEST_FAILED;
+    /* run a second, slightly different set of stress tests */
+    printf("\nStart timer stress tests 2\n");
+    test_failed = 0;
+    rte_eal_mp_remote_launch(timer_stress2_main_loop, NULL, CALL_MASTER);
+    rte_eal_mp_wait_lcore();
+    if (test_failed)
+        return TEST_FAILED;
 
-	/* calculate the "end of test" time */
-	cur_time = rte_get_timer_cycles();
-	hz = rte_get_timer_hz();
-	end_time = cur_time + (hz * TEST_DURATION_S);
+    /* calculate the "end of test" time */
+    cur_time = rte_get_timer_cycles();
+    hz = rte_get_timer_hz();
+    end_time = cur_time + (hz * TEST_DURATION_S);
 
-	/* start other cores */
-	printf("\nStart timer basic tests\n");
-	rte_eal_mp_remote_launch(timer_basic_main_loop, NULL, CALL_MASTER);
-	rte_eal_mp_wait_lcore();
+    /* start other cores */
+    printf("\nStart timer basic tests\n");
+    rte_eal_mp_remote_launch(timer_basic_main_loop, NULL, CALL_MASTER);
+    rte_eal_mp_wait_lcore();
 
-	/* stop all timers */
-	for (i=0; i<NB_TIMER; i++) {
-		rte_timer_stop_sync(&mytiminfo[i].tim);
-	}
+    /* stop all timers */
+    for (i=0; i<NB_TIMER; i++) {
+        rte_timer_stop_sync(&mytiminfo[i].tim);
+    }
 
-	rte_timer_dump_stats(stdout);
+    rte_timer_dump_stats(stdout);
 
-	return TEST_SUCCESS;
+    return TEST_SUCCESS;
 }
 
 REGISTER_TEST_COMMAND(timer_autotest, test_timer);

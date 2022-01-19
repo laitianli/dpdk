@@ -26,34 +26,34 @@ extern "C" {
  * Final value will be 2^value.
  */
 struct rte_param_log2_range {
-	uint8_t min;	/**< Minimum log2 value */
-	uint8_t max;	/**< Maximum log2 value */
-	uint8_t increment;
-	/**< If a range of sizes are supported,
-	 * this parameter is used to indicate
-	 * increments in base 2 log byte value
-	 * that are supported between the minimum and maximum
-	 */
+    uint8_t min;    /**< Minimum log2 value */
+    uint8_t max;    /**< Maximum log2 value */
+    uint8_t increment;
+    /**< If a range of sizes are supported,
+     * this parameter is used to indicate
+     * increments in base 2 log byte value
+     * that are supported between the minimum and maximum
+     */
 };
 
 /** Structure used to capture a capability of a comp device */
 struct rte_compressdev_capabilities {
-	enum rte_comp_algorithm algo;
-	/* Compression algorithm */
-	uint64_t comp_feature_flags;
-	/**< Bitmask of flags for compression service features */
-	struct rte_param_log2_range window_size;
-	/**< Window size range in base two log byte values */
+    enum rte_comp_algorithm algo;
+    /* Compression algorithm */
+    uint64_t comp_feature_flags;
+    /**< Bitmask of flags for compression service features */
+    struct rte_param_log2_range window_size;
+    /**< Window size range in base two log byte values */
 };
 
 /** Macro used at end of comp PMD list */
 #define RTE_COMP_END_OF_CAPABILITIES_LIST() \
-	{ RTE_COMP_ALGO_UNSPECIFIED }
+    { RTE_COMP_ALGO_UNSPECIFIED }
 
 __rte_experimental
 const struct rte_compressdev_capabilities *
 rte_compressdev_capability_get(uint8_t dev_id,
-			enum rte_comp_algorithm algo);
+            enum rte_comp_algorithm algo);
 
 /**
  * compression device supported feature flags
@@ -62,19 +62,19 @@ rte_compressdev_capability_get(uint8_t dev_id,
  *
  * Keep these flags synchronised with rte_compressdev_get_feature_name()
  */
-#define	RTE_COMPDEV_FF_HW_ACCELERATED		(1ULL << 0)
+#define    RTE_COMPDEV_FF_HW_ACCELERATED        (1ULL << 0)
 /**< Operations are off-loaded to an external hardware accelerator */
-#define	RTE_COMPDEV_FF_CPU_SSE			(1ULL << 1)
+#define    RTE_COMPDEV_FF_CPU_SSE            (1ULL << 1)
 /**< Utilises CPU SIMD SSE instructions */
-#define	RTE_COMPDEV_FF_CPU_AVX			(1ULL << 2)
+#define    RTE_COMPDEV_FF_CPU_AVX            (1ULL << 2)
 /**< Utilises CPU SIMD AVX instructions */
-#define	RTE_COMPDEV_FF_CPU_AVX2			(1ULL << 3)
+#define    RTE_COMPDEV_FF_CPU_AVX2            (1ULL << 3)
 /**< Utilises CPU SIMD AVX2 instructions */
-#define	RTE_COMPDEV_FF_CPU_AVX512		(1ULL << 4)
+#define    RTE_COMPDEV_FF_CPU_AVX512        (1ULL << 4)
 /**< Utilises CPU SIMD AVX512 instructions */
-#define	RTE_COMPDEV_FF_CPU_NEON			(1ULL << 5)
+#define    RTE_COMPDEV_FF_CPU_NEON            (1ULL << 5)
 /**< Utilises CPU NEON instructions */
-#define RTE_COMPDEV_FF_OP_DONE_IN_DEQUEUE	(1ULL << 6)
+#define RTE_COMPDEV_FF_OP_DONE_IN_DEQUEUE    (1ULL << 6)
 /**< A PMD should set this if the bulk of the
  * processing is done during the dequeue. It should leave it
  * cleared if the processing is done during the enqueue (default).
@@ -96,27 +96,27 @@ rte_compressdev_get_feature_name(uint64_t flag);
 
 /**  comp device information */
 struct rte_compressdev_info {
-	const char *driver_name;		/**< Driver name. */
-	uint64_t feature_flags;			/**< Feature flags */
-	const struct rte_compressdev_capabilities *capabilities;
-	/**< Array of devices supported capabilities */
-	uint16_t max_nb_queue_pairs;
-	/**< Maximum number of queues pairs supported by device.
-	 * (If 0, there is no limit in maximum number of queue pairs)
-	 */
+    const char *driver_name;        /**< Driver name. */
+    uint64_t feature_flags;            /**< Feature flags */
+    const struct rte_compressdev_capabilities *capabilities;
+    /**< Array of devices supported capabilities */
+    uint16_t max_nb_queue_pairs;
+    /**< Maximum number of queues pairs supported by device.
+     * (If 0, there is no limit in maximum number of queue pairs)
+     */
 };
 
 /** comp device statistics */
 struct rte_compressdev_stats {
-	uint64_t enqueued_count;
-	/**< Count of all operations enqueued */
-	uint64_t dequeued_count;
-	/**< Count of all operations dequeued */
+    uint64_t enqueued_count;
+    /**< Count of all operations enqueued */
+    uint64_t dequeued_count;
+    /**< Count of all operations dequeued */
 
-	uint64_t enqueue_err_count;
-	/**< Total error count on operations enqueued */
-	uint64_t dequeue_err_count;
-	/**< Total error count on operations dequeued */
+    uint64_t enqueue_err_count;
+    /**< Total error count on operations enqueued */
+    uint64_t dequeue_err_count;
+    /**< Total error count on operations dequeued */
 };
 
 
@@ -174,7 +174,7 @@ rte_compressdev_count(void);
 __rte_experimental
 uint8_t
 rte_compressdev_devices_get(const char *driver_name, uint8_t *devices,
-		uint8_t nb_devices);
+        uint8_t nb_devices);
 
 /*
  * Return the NUMA socket to which a device is connected.
@@ -192,14 +192,14 @@ rte_compressdev_socket_id(uint8_t dev_id);
 
 /** Compress device configuration structure */
 struct rte_compressdev_config {
-	int socket_id;
-	/**< Socket on which to allocate resources */
-	uint16_t nb_queue_pairs;
-	/**< Total number of queue pairs to configure on a device */
-	uint16_t max_nb_priv_xforms;
-	/**< Max number of private_xforms which will be created on the device */
-	uint16_t max_nb_streams;
-	/**< Max number of streams which will be created on the device */
+    int socket_id;
+    /**< Socket on which to allocate resources */
+    uint16_t nb_queue_pairs;
+    /**< Total number of queue pairs to configure on a device */
+    uint16_t max_nb_priv_xforms;
+    /**< Max number of private_xforms which will be created on the device */
+    uint16_t max_nb_streams;
+    /**< Max number of streams which will be created on the device */
 };
 
 /**
@@ -220,7 +220,7 @@ struct rte_compressdev_config {
 __rte_experimental
 int
 rte_compressdev_configure(uint8_t dev_id,
-			struct rte_compressdev_config *config);
+            struct rte_compressdev_config *config);
 
 /**
  * Start a device.
@@ -295,7 +295,7 @@ rte_compressdev_close(uint8_t dev_id);
 __rte_experimental
 int
 rte_compressdev_queue_pair_setup(uint8_t dev_id, uint16_t queue_pair_id,
-		uint32_t max_inflight_ops, int socket_id);
+        uint32_t max_inflight_ops, int socket_id);
 
 /**
  * Get the number of queue pairs on a specific comp device
@@ -412,7 +412,7 @@ rte_compressdev_info_get(uint8_t dev_id, struct rte_compressdev_info *dev_info);
 __rte_experimental
 uint16_t
 rte_compressdev_dequeue_burst(uint8_t dev_id, uint16_t qp_id,
-		struct rte_comp_op **ops, uint16_t nb_ops);
+        struct rte_comp_op **ops, uint16_t nb_ops);
 
 /**
  * Enqueue a burst of operations for processing on a compression device.
@@ -467,7 +467,7 @@ rte_compressdev_dequeue_burst(uint8_t dev_id, uint16_t qp_id,
 __rte_experimental
 uint16_t
 rte_compressdev_enqueue_burst(uint8_t dev_id, uint16_t qp_id,
-		struct rte_comp_op **ops, uint16_t nb_ops);
+        struct rte_comp_op **ops, uint16_t nb_ops);
 
 /**
  * This should alloc a stream from the device's mempool and initialise it.
@@ -496,8 +496,8 @@ rte_compressdev_enqueue_burst(uint8_t dev_id, uint16_t qp_id,
 __rte_experimental
 int
 rte_compressdev_stream_create(uint8_t dev_id,
-		const struct rte_comp_xform *xform,
-		void **stream);
+        const struct rte_comp_xform *xform,
+        void **stream);
 
 /**
  * This should clear the stream and return it to the device's mempool.
@@ -545,8 +545,8 @@ rte_compressdev_stream_free(uint8_t dev_id, void *stream);
 __rte_experimental
 int
 rte_compressdev_private_xform_create(uint8_t dev_id,
-		const struct rte_comp_xform *xform,
-		void **private_xform);
+        const struct rte_comp_xform *xform,
+        void **private_xform);
 
 /**
  * This should clear the private_xform and return it to the device's mempool.

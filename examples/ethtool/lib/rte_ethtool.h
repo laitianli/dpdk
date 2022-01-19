@@ -83,7 +83,7 @@ int rte_ethtool_get_regs_len(uint16_t port_id);
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_get_regs(uint16_t port_id, struct ethtool_regs *regs,
-			    void *data);
+                void *data);
 
 /**
  * Retrieve the Ethernet device link status
@@ -106,7 +106,7 @@ int rte_ethtool_get_link(uint16_t port_id);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @return
- *	 - (> 0) device EEPROM size in bytes
+ *     - (> 0) device EEPROM size in bytes
  *   - (0) device has NO EEPROM
  *   - (-ENOTSUP) if hardware doesn't support.
  *   - (-ENODEV) if *port_id* invalid.
@@ -121,9 +121,9 @@ int rte_ethtool_get_eeprom_len(uint16_t port_id);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param eeprom
- *	 The pointer of ethtool_eeprom that provides eeprom range
+ *     The pointer of ethtool_eeprom that provides eeprom range
  * @param words
- *	 A buffer that holds data read from eeprom
+ *     A buffer that holds data read from eeprom
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -131,7 +131,7 @@ int rte_ethtool_get_eeprom_len(uint16_t port_id);
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_get_eeprom(uint16_t port_id, struct ethtool_eeprom *eeprom,
-			      void *words);
+                  void *words);
 
 /**
  * Setting EEPROM content based upon eeprom range described in ethtool
@@ -140,9 +140,9 @@ int rte_ethtool_get_eeprom(uint16_t port_id, struct ethtool_eeprom *eeprom,
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param eeprom
- *	 The pointer of ethtool_eeprom that provides eeprom range
+ *     The pointer of ethtool_eeprom that provides eeprom range
  * @param words
- *	 A buffer that holds data to be written into eeprom
+ *     A buffer that holds data to be written into eeprom
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -151,7 +151,7 @@ int rte_ethtool_get_eeprom(uint16_t port_id, struct ethtool_eeprom *eeprom,
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_set_eeprom(uint16_t port_id, struct ethtool_eeprom *eeprom,
-			      void *words);
+                  void *words);
 
 /**
  * Retrieve the type and size of plugin module EEPROM
@@ -159,7 +159,7 @@ int rte_ethtool_set_eeprom(uint16_t port_id, struct ethtool_eeprom *eeprom,
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param modinfo
- *	 The pointer that provides the type and size of plugin module EEPROM.
+ *     The pointer that provides the type and size of plugin module EEPROM.
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -174,10 +174,10 @@ int rte_ethtool_get_module_info(uint16_t port_id, uint32_t *modinfo);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param eeprom
- *	 The pointer of ethtool_eeprom that provides plugin module eeprom
+ *     The pointer of ethtool_eeprom that provides plugin module eeprom
  *   offset and length
  * @param words
- *	 A buffer that holds data read from plugin module eeprom
+ *     A buffer that holds data read from plugin module eeprom
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -185,7 +185,7 @@ int rte_ethtool_get_module_info(uint16_t port_id, uint32_t *modinfo);
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_get_module_eeprom(uint16_t port_id,
-				  struct ethtool_eeprom *eeprom, void *words);
+                  struct ethtool_eeprom *eeprom, void *words);
 
 /**
  * Retrieve the Ethernet device pause frame configuration according to
@@ -195,8 +195,8 @@ int rte_ethtool_get_module_eeprom(uint16_t port_id,
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param pause_param
- *	 The pointer of ethtool_coalesce that gets pause frame
- *	 configuration parameters
+ *     The pointer of ethtool_coalesce that gets pause frame
+ *     configuration parameters
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -205,7 +205,7 @@ int rte_ethtool_get_module_eeprom(uint16_t port_id,
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_get_pauseparam(uint16_t port_id,
-				   struct ethtool_pauseparam *pause_param);
+                   struct ethtool_pauseparam *pause_param);
 
 /**
  * Setting the Ethernet device pause frame configuration according to
@@ -214,7 +214,7 @@ int rte_ethtool_get_pauseparam(uint16_t port_id,
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param pause_param
- *	 The pointer of ethtool_coalesce that gets ring configuration parameters
+ *     The pointer of ethtool_coalesce that gets ring configuration parameters
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -223,7 +223,7 @@ int rte_ethtool_get_pauseparam(uint16_t port_id,
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_set_pauseparam(uint16_t port_id,
-				   struct ethtool_pauseparam *param);
+                   struct ethtool_pauseparam *param);
 
 /**
  * Start the Ethernet device.
@@ -255,7 +255,7 @@ int rte_ethtool_net_stop(uint16_t port_id);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param addr
- *	 MAC address of the Ethernet device.
+ *     MAC address of the Ethernet device.
  * @return
  *   - (0) if successful.
  *   - (-ENODEV) if *port_id* invalid.
@@ -268,7 +268,7 @@ int rte_ethtool_net_get_mac_addr(uint16_t port_id, struct rte_ether_addr *addr);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param addr
- *	 The new MAC addr.
+ *     The new MAC addr.
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -284,7 +284,7 @@ int rte_ethtool_net_set_mac_addr(uint16_t port_id, struct rte_ether_addr *addr);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param addr
- *	 A pointer to a buffer (6-byte, 48bit) for the target MAC address
+ *     A pointer to a buffer (6-byte, 48bit) for the target MAC address
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -293,7 +293,7 @@ int rte_ethtool_net_set_mac_addr(uint16_t port_id, struct rte_ether_addr *addr);
  *   - others depends on the specific operations implementation.
  */
 int rte_ethtool_net_validate_addr(uint16_t port_id,
-				struct rte_ether_addr *addr);
+                struct rte_ether_addr *addr);
 
 /**
  * Setting the Ethernet device maximum Tx unit.
@@ -301,7 +301,7 @@ int rte_ethtool_net_validate_addr(uint16_t port_id,
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param mtu
- *	 New MTU
+ *     New MTU
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -317,7 +317,7 @@ int rte_ethtool_net_change_mtu(uint16_t port_id, int mtu);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param stats
- *	 A pointer to struct rte_eth_stats for statistics parameters
+ *     A pointer to struct rte_eth_stats for statistics parameters
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -333,7 +333,7 @@ int rte_ethtool_net_get_stats64(uint16_t port_id, struct rte_eth_stats *stats);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param vid
- *	 A new VLAN id
+ *     A new VLAN id
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -348,7 +348,7 @@ int rte_ethtool_net_vlan_rx_add_vid(uint16_t port_id, uint16_t vid);
  * @param port_id
  *   The port identifier of the Ethernet device.
  * @param vid
- *	 A new VLAN id
+ *     A new VLAN id
  * @return
  *   - (0) if successful.
  *   - (-ENOTSUP) if hardware doesn't support.
@@ -387,7 +387,7 @@ int rte_ethtool_net_set_rx_mode(uint16_t port_id);
  *   are used, and the function only gets parameters for queue 0.
  */
 int rte_ethtool_get_ringparam(uint16_t port_id,
-	struct ethtool_ringparam *ring_param);
+    struct ethtool_ringparam *ring_param);
 
 /**
  * Setting ring parameters for Ethernet device.
@@ -406,7 +406,7 @@ int rte_ethtool_get_ringparam(uint16_t port_id,
  *   are used, and the function only sets parameters for queue 0.
  */
 int rte_ethtool_set_ringparam(uint16_t port_id,
-	struct ethtool_ringparam *ring_param);
+    struct ethtool_ringparam *ring_param);
 
 
 #ifdef __cplusplus

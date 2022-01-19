@@ -52,65 +52,65 @@
 /* Macros */
 #define APP_METADATA_OFFSET(offset) (sizeof(struct rte_mbuf) + (offset))
 
-#define RING_ENQUEUE(ring, value) do {					\
-	struct rte_mbuf *m;						\
-	uint32_t *k32, *signature;					\
-	uint8_t *key;							\
-									\
-	m = rte_pktmbuf_alloc(pool);					\
-	if (m == NULL)							\
-		return -1;						\
-	signature = RTE_MBUF_METADATA_UINT32_PTR(m,			\
-			APP_METADATA_OFFSET(0));		\
-	key = RTE_MBUF_METADATA_UINT8_PTR(m,			\
-			APP_METADATA_OFFSET(32));		\
-	k32 = (uint32_t *) key;						\
-	k32[0] = (value);						\
-	*signature = pipeline_test_hash(key, NULL, 0, 0);		\
-	rte_ring_enqueue((ring), m);					\
+#define RING_ENQUEUE(ring, value) do {                    \
+    struct rte_mbuf *m;                        \
+    uint32_t *k32, *signature;                    \
+    uint8_t *key;                            \
+                                    \
+    m = rte_pktmbuf_alloc(pool);                    \
+    if (m == NULL)                            \
+        return -1;                        \
+    signature = RTE_MBUF_METADATA_UINT32_PTR(m,            \
+            APP_METADATA_OFFSET(0));        \
+    key = RTE_MBUF_METADATA_UINT8_PTR(m,            \
+            APP_METADATA_OFFSET(32));        \
+    k32 = (uint32_t *) key;                        \
+    k32[0] = (value);                        \
+    *signature = pipeline_test_hash(key, NULL, 0, 0);        \
+    rte_ring_enqueue((ring), m);                    \
 } while (0)
 
-#define RUN_PIPELINE(pipeline) do {					\
-	rte_pipeline_run((pipeline));					\
-	rte_pipeline_flush((pipeline));					\
+#define RUN_PIPELINE(pipeline) do {                    \
+    rte_pipeline_run((pipeline));                    \
+    rte_pipeline_flush((pipeline));                    \
 } while (0)
 
-#define VERIFY(var, value) do {						\
-	if ((var) != -(value))						\
-		return var;						\
+#define VERIFY(var, value) do {                        \
+    if ((var) != -(value))                        \
+        return var;                        \
 } while (0)
 
-#define VERIFY_TRAFFIC(ring, sent, expected) do {			\
-	unsigned i, n = 0;						\
-	void *mbuf = NULL;						\
-									\
-	for (i = 0; i < (sent); i++) {					\
-		if (!rte_ring_dequeue((ring), &mbuf)) {			\
-			if (mbuf == NULL)				\
-				continue;				\
-			n++;						\
-			rte_pktmbuf_free((struct rte_mbuf *)mbuf);	\
-		}							\
-		else							\
-			break;						\
-	}								\
-	printf("Expected %d, got %d\n", expected, n);			\
-	if (n != (expected)) {						\
-		return -21;						\
-	}								\
+#define VERIFY_TRAFFIC(ring, sent, expected) do {            \
+    unsigned i, n = 0;                        \
+    void *mbuf = NULL;                        \
+                                    \
+    for (i = 0; i < (sent); i++) {                    \
+        if (!rte_ring_dequeue((ring), &mbuf)) {            \
+            if (mbuf == NULL)                \
+                continue;                \
+            n++;                        \
+            rte_pktmbuf_free((struct rte_mbuf *)mbuf);    \
+        }                            \
+        else                            \
+            break;                        \
+    }                                \
+    printf("Expected %d, got %d\n", expected, n);            \
+    if (n != (expected)) {                        \
+        return -21;                        \
+    }                                \
 } while (0)
 
 /* Function definitions */
 uint64_t pipeline_test_hash(
-	void *key,
-	__attribute__((unused)) void *key_mask,
-	__attribute__((unused)) uint32_t key_size,
-	__attribute__((unused)) uint64_t seed);
+    void *key,
+    __attribute__((unused)) void *key_mask,
+    __attribute__((unused)) uint32_t key_size,
+    __attribute__((unused)) uint64_t seed);
 
 uint32_t pipeline_test_hash_cuckoo(
-	const void *key,
-	__attribute__((unused)) uint32_t key_size,
-	__attribute__((unused)) uint32_t seed);
+    const void *key,
+    __attribute__((unused)) uint32_t key_size,
+    __attribute__((unused)) uint32_t seed);
 
 /* Extern variables */
 extern struct rte_pipeline *p;
@@ -137,48 +137,48 @@ extern rte_pipeline_table_action_handler_miss action_handler_miss;
 
 /* Global data types */
 struct manage_ops {
-	uint32_t op_id;
-	void *op_data;
-	int expected_result;
+    uint32_t op_id;
+    void *op_data;
+    int expected_result;
 };
 
 /* Internal pipeline structures */
 struct rte_port_in {
-	struct rte_port_in_ops ops;
-	uint32_t burst_size;
-	uint32_t table_id;
-	void *h_port;
+    struct rte_port_in_ops ops;
+    uint32_t burst_size;
+    uint32_t table_id;
+    void *h_port;
 };
 
 struct rte_port_out {
-	struct rte_port_out_ops ops;
-	void *h_port;
+    struct rte_port_out_ops ops;
+    void *h_port;
 };
 
 struct rte_table {
-	struct rte_table_ops ops;
-	rte_pipeline_table_action_handler_hit f_action;
-	uint32_t table_next_id;
-	uint32_t table_next_id_valid;
-	uint8_t actions_lookup_miss[RTE_CACHE_LINE_SIZE];
-	uint32_t action_data_size;
-	void *h_table;
+    struct rte_table_ops ops;
+    rte_pipeline_table_action_handler_hit f_action;
+    uint32_t table_next_id;
+    uint32_t table_next_id_valid;
+    uint8_t actions_lookup_miss[RTE_CACHE_LINE_SIZE];
+    uint32_t action_data_size;
+    void *h_table;
 };
 
 #define RTE_PIPELINE_MAX_NAME_SZ                           124
 
 struct rte_pipeline {
-	char name[RTE_PIPELINE_MAX_NAME_SZ];
-	uint32_t socket_id;
-	struct rte_port_in ports_in[16];
-	struct rte_port_out ports_out[16];
-	struct rte_table tables[64];
-	uint32_t num_ports_in;
-	uint32_t num_ports_out;
-	uint32_t num_tables;
-	struct rte_mbuf *pkts[RTE_PORT_IN_BURST_SIZE_MAX];
-	struct rte_table_entry *actions[RTE_PORT_IN_BURST_SIZE_MAX];
-	uint64_t mask_action[64];
-	uint32_t mask_actions;
+    char name[RTE_PIPELINE_MAX_NAME_SZ];
+    uint32_t socket_id;
+    struct rte_port_in ports_in[16];
+    struct rte_port_out ports_out[16];
+    struct rte_table tables[64];
+    uint32_t num_ports_in;
+    uint32_t num_ports_out;
+    uint32_t num_tables;
+    struct rte_mbuf *pkts[RTE_PORT_IN_BURST_SIZE_MAX];
+    struct rte_table_entry *actions[RTE_PORT_IN_BURST_SIZE_MAX];
+    uint64_t mask_action[64];
+    uint32_t mask_actions;
 };
 #endif

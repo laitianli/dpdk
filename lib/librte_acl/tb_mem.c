@@ -18,62 +18,62 @@
 static struct tb_mem_block *
 tb_pool(struct tb_mem_pool *pool, size_t sz)
 {
-	struct tb_mem_block *block;
-	uint8_t *ptr;
-	size_t size;
+    struct tb_mem_block *block;
+    uint8_t *ptr;
+    size_t size;
 
-	size = sz + pool->alignment - 1;
-	block = calloc(1, size + sizeof(*pool->block));
-	if (block == NULL) {
-		RTE_LOG(ERR, MALLOC, "%s(%zu)\n failed, currently allocated "
-			"by pool: %zu bytes\n", __func__, sz, pool->alloc);
-		siglongjmp(pool->fail, -ENOMEM);
-		return NULL;
-	}
+    size = sz + pool->alignment - 1;
+    block = calloc(1, size + sizeof(*pool->block));
+    if (block == NULL) {
+        RTE_LOG(ERR, MALLOC, "%s(%zu)\n failed, currently allocated "
+            "by pool: %zu bytes\n", __func__, sz, pool->alloc);
+        siglongjmp(pool->fail, -ENOMEM);
+        return NULL;
+    }
 
-	block->pool = pool;
+    block->pool = pool;
 
-	block->next = pool->block;
-	pool->block = block;
+    block->next = pool->block;
+    pool->block = block;
 
-	pool->alloc += size;
+    pool->alloc += size;
 
-	ptr = (uint8_t *)(block + 1);
-	block->mem = RTE_PTR_ALIGN_CEIL(ptr, pool->alignment);
-	block->size = size - (block->mem - ptr);
+    ptr = (uint8_t *)(block + 1);
+    block->mem = RTE_PTR_ALIGN_CEIL(ptr, pool->alignment);
+    block->size = size - (block->mem - ptr);
 
-	return block;
+    return block;
 }
 
 void *
 tb_alloc(struct tb_mem_pool *pool, size_t size)
 {
-	struct tb_mem_block *block;
-	void *ptr;
-	size_t new_sz;
+    struct tb_mem_block *block;
+    void *ptr;
+    size_t new_sz;
 
-	size = RTE_ALIGN_CEIL(size, pool->alignment);
+    size = RTE_ALIGN_CEIL(size, pool->alignment);
 
-	block = pool->block;
-	if (block == NULL || block->size < size) {
-		new_sz = (size > pool->min_alloc) ? size : pool->min_alloc;
-		block = tb_pool(pool, new_sz);
-	}
-	ptr = block->mem;
-	block->size -= size;
-	block->mem += size;
-	return ptr;
+    block = pool->block;
+    if (block == NULL || block->size < size) {
+        new_sz = (size > pool->min_alloc) ? size : pool->min_alloc;
+        block = tb_pool(pool, new_sz);
+    }
+    ptr = block->mem;
+    block->size -= size;
+    block->mem += size;
+    return ptr;
 }
 
 void
 tb_free_pool(struct tb_mem_pool *pool)
 {
-	struct tb_mem_block *next, *block;
+    struct tb_mem_block *next, *block;
 
-	for (block = pool->block; block != NULL; block = next) {
-		next = block->next;
-		free(block);
-	}
-	pool->block = NULL;
-	pool->alloc = 0;
+    for (block = pool->block; block != NULL; block = next) {
+        next = block->next;
+        free(block);
+    }
+    pool->block = NULL;
+    pool->alloc = 0;
 }

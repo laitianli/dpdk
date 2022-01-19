@@ -20,18 +20,18 @@
 #endif
 
 #define PMD_INIT_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, nicvf_logtype_init, \
-			"%s(): " fmt "\n", __func__, ## args)
+    rte_log(RTE_LOG_ ## level, nicvf_logtype_init, \
+            "%s(): " fmt "\n", __func__, ## args)
 #define PMD_INIT_FUNC_TRACE() PMD_INIT_LOG(DEBUG, ">>")
 
 #define PMD_DRV_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, nicvf_logtype_driver, \
-			"%s(): " fmt "\n", __func__, ## args)
+    rte_log(RTE_LOG_ ## level, nicvf_logtype_driver, \
+            "%s(): " fmt "\n", __func__, ## args)
 #define PMD_DRV_FUNC_TRACE() PMD_DRV_LOG(DEBUG, ">>")
 
 #define PMD_MBOX_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, nicvf_logtype_mbox, \
-			"%s(): " fmt "\n", __func__, ## args)
+    rte_log(RTE_LOG_ ## level, nicvf_logtype_mbox, \
+            "%s(): " fmt "\n", __func__, ## args)
 #define PMD_MBOX_FUNC_TRACE() PMD_DRV_LOG(DEBUG, ">>")
 
 #define PMD_RX_LOG PMD_DRV_LOG

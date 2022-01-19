@@ -70,145 +70,145 @@
 #define MRVL_PP2_TX_SHADOWQ_MASK (MRVL_PP2_TX_SHADOWQ_SIZE - 1)
 
 /** Minimum number of sent buffers to release from shadow queue to BM */
-#define MRVL_PP2_BUF_RELEASE_BURST_SIZE	64
+#define MRVL_PP2_BUF_RELEASE_BURST_SIZE    64
 
-#define MRVL_PP2_VLAN_TAG_LEN	4
-#define MRVL_PP2_ETH_HDRS_LEN	(RTE_ETHER_HDR_LEN + RTE_ETHER_CRC_LEN + \
-				(2 * MRVL_PP2_VLAN_TAG_LEN))
-#define MRVL_PP2_HDRS_LEN		(MV_MH_SIZE + MRVL_PP2_ETH_HDRS_LEN)
-#define MRVL_PP2_MTU_TO_MRU(mtu)	((mtu) + MRVL_PP2_HDRS_LEN)
-#define MRVL_PP2_MRU_TO_MTU(mru)	((mru) - MRVL_PP2_HDRS_LEN)
+#define MRVL_PP2_VLAN_TAG_LEN    4
+#define MRVL_PP2_ETH_HDRS_LEN    (RTE_ETHER_HDR_LEN + RTE_ETHER_CRC_LEN + \
+                (2 * MRVL_PP2_VLAN_TAG_LEN))
+#define MRVL_PP2_HDRS_LEN        (MV_MH_SIZE + MRVL_PP2_ETH_HDRS_LEN)
+#define MRVL_PP2_MTU_TO_MRU(mtu)    ((mtu) + MRVL_PP2_HDRS_LEN)
+#define MRVL_PP2_MRU_TO_MTU(mru)    ((mru) - MRVL_PP2_HDRS_LEN)
 
 /** Maximum length of a match string */
 #define MRVL_MATCH_LEN 16
 
 /** Parsed fields in processed rte_flow_item. */
 enum mrvl_parsed_fields {
-	/* eth flags */
-	F_DMAC =         BIT(0),
-	F_SMAC =         BIT(1),
-	F_TYPE =         BIT(2),
-	/* vlan flags */
-	F_VLAN_PRI =     BIT(3),
-	F_VLAN_ID =      BIT(4),
-	F_VLAN_TCI =     BIT(5), /* not supported by MUSDK yet */
-	/* ip4 flags */
-	F_IP4_TOS =      BIT(6),
-	F_IP4_SIP =      BIT(7),
-	F_IP4_DIP =      BIT(8),
-	F_IP4_PROTO =    BIT(9),
-	/* ip6 flags */
-	F_IP6_TC =       BIT(10), /* not supported by MUSDK yet */
-	F_IP6_SIP =      BIT(11),
-	F_IP6_DIP =      BIT(12),
-	F_IP6_FLOW =     BIT(13),
-	F_IP6_NEXT_HDR = BIT(14),
-	/* tcp flags */
-	F_TCP_SPORT =    BIT(15),
-	F_TCP_DPORT =    BIT(16),
-	/* udp flags */
-	F_UDP_SPORT =    BIT(17),
-	F_UDP_DPORT =    BIT(18),
+    /* eth flags */
+    F_DMAC =         BIT(0),
+    F_SMAC =         BIT(1),
+    F_TYPE =         BIT(2),
+    /* vlan flags */
+    F_VLAN_PRI =     BIT(3),
+    F_VLAN_ID =      BIT(4),
+    F_VLAN_TCI =     BIT(5), /* not supported by MUSDK yet */
+    /* ip4 flags */
+    F_IP4_TOS =      BIT(6),
+    F_IP4_SIP =      BIT(7),
+    F_IP4_DIP =      BIT(8),
+    F_IP4_PROTO =    BIT(9),
+    /* ip6 flags */
+    F_IP6_TC =       BIT(10), /* not supported by MUSDK yet */
+    F_IP6_SIP =      BIT(11),
+    F_IP6_DIP =      BIT(12),
+    F_IP6_FLOW =     BIT(13),
+    F_IP6_NEXT_HDR = BIT(14),
+    /* tcp flags */
+    F_TCP_SPORT =    BIT(15),
+    F_TCP_DPORT =    BIT(16),
+    /* udp flags */
+    F_UDP_SPORT =    BIT(17),
+    F_UDP_DPORT =    BIT(18),
 };
 
 /** PMD-specific definition of a flow rule handle. */
 struct mrvl_mtr;
 struct rte_flow {
-	LIST_ENTRY(rte_flow) next;
-	struct mrvl_mtr *mtr;
+    LIST_ENTRY(rte_flow) next;
+    struct mrvl_mtr *mtr;
 
-	enum mrvl_parsed_fields pattern;
+    enum mrvl_parsed_fields pattern;
 
-	struct pp2_cls_tbl_rule rule;
-	struct pp2_cls_cos_desc cos;
-	struct pp2_cls_tbl_action action;
+    struct pp2_cls_tbl_rule rule;
+    struct pp2_cls_cos_desc cos;
+    struct pp2_cls_tbl_action action;
 };
 
 struct mrvl_mtr_profile {
-	LIST_ENTRY(mrvl_mtr_profile) next;
-	uint32_t profile_id;
-	int refcnt;
-	struct rte_mtr_meter_profile profile;
+    LIST_ENTRY(mrvl_mtr_profile) next;
+    uint32_t profile_id;
+    int refcnt;
+    struct rte_mtr_meter_profile profile;
 };
 
 struct mrvl_mtr {
-	LIST_ENTRY(mrvl_mtr) next;
-	uint32_t mtr_id;
-	int refcnt;
-	int shared;
-	int enabled;
-	int plcr_bit;
-	struct mrvl_mtr_profile *profile;
-	struct pp2_cls_plcr *plcr;
+    LIST_ENTRY(mrvl_mtr) next;
+    uint32_t mtr_id;
+    int refcnt;
+    int shared;
+    int enabled;
+    int plcr_bit;
+    struct mrvl_mtr_profile *profile;
+    struct pp2_cls_plcr *plcr;
 };
 
 struct mrvl_tm_shaper_profile {
-	LIST_ENTRY(mrvl_tm_shaper_profile) next;
-	uint32_t id;
-	int refcnt;
-	struct rte_tm_shaper_params params;
+    LIST_ENTRY(mrvl_tm_shaper_profile) next;
+    uint32_t id;
+    int refcnt;
+    struct rte_tm_shaper_params params;
 };
 
 enum {
-	MRVL_NODE_PORT,
-	MRVL_NODE_QUEUE,
+    MRVL_NODE_PORT,
+    MRVL_NODE_QUEUE,
 };
 
 struct mrvl_tm_node {
-	LIST_ENTRY(mrvl_tm_node) next;
-	uint32_t id;
-	uint32_t type;
-	int refcnt;
-	struct mrvl_tm_node *parent;
-	struct mrvl_tm_shaper_profile *profile;
-	uint8_t weight;
-	uint64_t stats_mask;
+    LIST_ENTRY(mrvl_tm_node) next;
+    uint32_t id;
+    uint32_t type;
+    int refcnt;
+    struct mrvl_tm_node *parent;
+    struct mrvl_tm_shaper_profile *profile;
+    uint8_t weight;
+    uint64_t stats_mask;
 };
 
 struct mrvl_priv {
-	/* Hot fields, used in fast path. */
-	struct pp2_bpool *bpool;  /**< BPool pointer */
-	struct pp2_ppio	*ppio;    /**< Port handler pointer */
-	rte_spinlock_t lock;	  /**< Spinlock for checking bpool status */
-	uint16_t bpool_max_size;  /**< BPool maximum size */
-	uint16_t bpool_min_size;  /**< BPool minimum size  */
-	uint16_t bpool_init_size; /**< Configured BPool size  */
+    /* Hot fields, used in fast path. */
+    struct pp2_bpool *bpool;  /**< BPool pointer */
+    struct pp2_ppio    *ppio;    /**< Port handler pointer */
+    rte_spinlock_t lock;      /**< Spinlock for checking bpool status */
+    uint16_t bpool_max_size;  /**< BPool maximum size */
+    uint16_t bpool_min_size;  /**< BPool minimum size  */
+    uint16_t bpool_init_size; /**< Configured BPool size  */
 
-	/** Mapping for DPDK rx queue->(TC, MRVL relative inq) */
-	struct {
-		uint8_t tc;  /**< Traffic Class */
-		uint8_t inq; /**< Relative in-queue number */
-	} rxq_map[MRVL_PP2_RXQ_MAX] __rte_cache_aligned;
+    /** Mapping for DPDK rx queue->(TC, MRVL relative inq) */
+    struct {
+        uint8_t tc;  /**< Traffic Class */
+        uint8_t inq; /**< Relative in-queue number */
+    } rxq_map[MRVL_PP2_RXQ_MAX] __rte_cache_aligned;
 
-	/* Configuration data, used sporadically. */
-	uint8_t pp_id;
-	uint8_t ppio_id;
-	uint8_t bpool_bit;
-	uint8_t rss_hf_tcp;
-	uint8_t uc_mc_flushed;
-	uint8_t vlan_flushed;
-	uint8_t isolated;
-	uint8_t multiseg;
+    /* Configuration data, used sporadically. */
+    uint8_t pp_id;
+    uint8_t ppio_id;
+    uint8_t bpool_bit;
+    uint8_t rss_hf_tcp;
+    uint8_t uc_mc_flushed;
+    uint8_t vlan_flushed;
+    uint8_t isolated;
+    uint8_t multiseg;
 
-	struct pp2_ppio_params ppio_params;
-	struct pp2_cls_qos_tbl_params qos_tbl_params;
-	struct pp2_cls_tbl *qos_tbl;
-	uint16_t nb_rx_queues;
+    struct pp2_ppio_params ppio_params;
+    struct pp2_cls_qos_tbl_params qos_tbl_params;
+    struct pp2_cls_tbl *qos_tbl;
+    uint16_t nb_rx_queues;
 
-	struct pp2_cls_tbl_params cls_tbl_params;
-	struct pp2_cls_tbl *cls_tbl;
-	uint32_t cls_tbl_pattern;
-	LIST_HEAD(mrvl_flows, rte_flow) flows;
+    struct pp2_cls_tbl_params cls_tbl_params;
+    struct pp2_cls_tbl *cls_tbl;
+    uint32_t cls_tbl_pattern;
+    LIST_HEAD(mrvl_flows, rte_flow) flows;
 
-	struct pp2_cls_plcr *default_policer;
+    struct pp2_cls_plcr *default_policer;
 
-	LIST_HEAD(profiles, mrvl_mtr_profile) profiles;
-	LIST_HEAD(mtrs, mrvl_mtr) mtrs;
-	uint32_t used_plcrs;
+    LIST_HEAD(profiles, mrvl_mtr_profile) profiles;
+    LIST_HEAD(mtrs, mrvl_mtr) mtrs;
+    uint32_t used_plcrs;
 
-	LIST_HEAD(shaper_profiles, mrvl_tm_shaper_profile) shaper_profiles;
-	LIST_HEAD(nodes, mrvl_tm_node) nodes;
-	uint64_t rate_max;
+    LIST_HEAD(shaper_profiles, mrvl_tm_shaper_profile) shaper_profiles;
+    LIST_HEAD(nodes, mrvl_tm_node) nodes;
+    uint64_t rate_max;
 };
 
 /** Flow operations forward declaration. */
@@ -224,7 +224,7 @@ extern const struct rte_tm_ops mrvl_tm_ops;
 extern int mrvl_logtype;
 
 #define MRVL_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, mrvl_logtype, "%s(): " fmt "\n", \
-		__func__, ##args)
+    rte_log(RTE_LOG_ ## level, mrvl_logtype, "%s(): " fmt "\n", \
+        __func__, ##args)
 
 #endif /* _MRVL_ETHDEV_H_ */

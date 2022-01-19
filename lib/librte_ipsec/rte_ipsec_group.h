@@ -26,13 +26,13 @@ extern "C" {
  * See below for particular usage.
  */
 struct rte_ipsec_group {
-	union {
-		uint64_t val;
-		void *ptr;
-	} id; /**< grouped by value */
-	struct rte_mbuf **m;  /**< start of the group */
-	uint32_t cnt;         /**< number of entries in the group */
-	int32_t rc;           /**< status code associated with the group */
+    union {
+        uint64_t val;
+        void *ptr;
+    } id; /**< grouped by value */
+    struct rte_mbuf **m;  /**< start of the group */
+    uint32_t cnt;         /**< number of entries in the group */
+    int32_t rc;           /**< status code associated with the group */
 };
 
 /**
@@ -46,17 +46,17 @@ __rte_experimental
 static inline struct rte_ipsec_session *
 rte_ipsec_ses_from_crypto(const struct rte_crypto_op *cop)
 {
-	const struct rte_security_session *ss;
-	const struct rte_cryptodev_sym_session *cs;
+    const struct rte_security_session *ss;
+    const struct rte_cryptodev_sym_session *cs;
 
-	if (cop->sess_type == RTE_CRYPTO_OP_SECURITY_SESSION) {
-		ss = cop->sym[0].sec_session;
-		return (void *)(uintptr_t)ss->opaque_data;
-	} else if (cop->sess_type == RTE_CRYPTO_OP_WITH_SESSION) {
-		cs = cop->sym[0].session;
-		return (void *)(uintptr_t)cs->opaque_data;
-	}
-	return NULL;
+    if (cop->sess_type == RTE_CRYPTO_OP_SECURITY_SESSION) {
+        ss = cop->sym[0].sec_session;
+        return (void *)(uintptr_t)ss->opaque_data;
+    } else if (cop->sess_type == RTE_CRYPTO_OP_WITH_SESSION) {
+        cs = cop->sym[0].session;
+        return (void *)(uintptr_t)cs->opaque_data;
+    }
+    return NULL;
 }
 
 /**
@@ -82,68 +82,68 @@ rte_ipsec_ses_from_crypto(const struct rte_crypto_op *cop)
 __rte_experimental
 static inline uint16_t
 rte_ipsec_pkt_crypto_group(const struct rte_crypto_op *cop[],
-	struct rte_mbuf *mb[], struct rte_ipsec_group grp[], uint16_t num)
+    struct rte_mbuf *mb[], struct rte_ipsec_group grp[], uint16_t num)
 {
-	uint32_t i, j, k, n;
-	void *ns, *ps;
-	struct rte_mbuf *m, *dr[num];
+    uint32_t i, j, k, n;
+    void *ns, *ps;
+    struct rte_mbuf *m, *dr[num];
 
-	j = 0;
-	k = 0;
-	n = 0;
-	ps = NULL;
+    j = 0;
+    k = 0;
+    n = 0;
+    ps = NULL;
 
-	for (i = 0; i != num; i++) {
+    for (i = 0; i != num; i++) {
 
-		m = cop[i]->sym[0].m_src;
-		ns = cop[i]->sym[0].session;
+        m = cop[i]->sym[0].m_src;
+        ns = cop[i]->sym[0].session;
 
-		m->ol_flags |= PKT_RX_SEC_OFFLOAD;
-		if (cop[i]->status != RTE_CRYPTO_OP_STATUS_SUCCESS)
-			m->ol_flags |= PKT_RX_SEC_OFFLOAD_FAILED;
+        m->ol_flags |= PKT_RX_SEC_OFFLOAD;
+        if (cop[i]->status != RTE_CRYPTO_OP_STATUS_SUCCESS)
+            m->ol_flags |= PKT_RX_SEC_OFFLOAD_FAILED;
 
-		/* no valid session found */
-		if (ns == NULL) {
-			dr[k++] = m;
-			continue;
-		}
+        /* no valid session found */
+        if (ns == NULL) {
+            dr[k++] = m;
+            continue;
+        }
 
-		/* different SA */
-		if (ps != ns) {
+        /* different SA */
+        if (ps != ns) {
 
-			/*
-			 * we already have an open group - finalize it,
-			 * then open a new one.
-			 */
-			if (ps != NULL) {
-				grp[n].id.ptr =
-					rte_ipsec_ses_from_crypto(cop[i - 1]);
-				grp[n].cnt = mb + j - grp[n].m;
-				n++;
-			}
+            /*
+             * we already have an open group - finalize it,
+             * then open a new one.
+             */
+            if (ps != NULL) {
+                grp[n].id.ptr =
+                    rte_ipsec_ses_from_crypto(cop[i - 1]);
+                grp[n].cnt = mb + j - grp[n].m;
+                n++;
+            }
 
-			/* start new group */
-			grp[n].m = mb + j;
-			ps = ns;
-		}
+            /* start new group */
+            grp[n].m = mb + j;
+            ps = ns;
+        }
 
-		mb[j++] = m;
-	}
+        mb[j++] = m;
+    }
 
-	/* finalise last group */
-	if (ps != NULL) {
-		grp[n].id.ptr = rte_ipsec_ses_from_crypto(cop[i - 1]);
-		grp[n].cnt = mb + j - grp[n].m;
-		n++;
-	}
+    /* finalise last group */
+    if (ps != NULL) {
+        grp[n].id.ptr = rte_ipsec_ses_from_crypto(cop[i - 1]);
+        grp[n].cnt = mb + j - grp[n].m;
+        n++;
+    }
 
-	/* copy mbufs with unknown session beyond recognised ones */
-	if (k != 0 && k != num) {
-		for (i = 0; i != k; i++)
-			mb[j + i] = dr[i];
-	}
+    /* copy mbufs with unknown session beyond recognised ones */
+    if (k != 0 && k != num) {
+        for (i = 0; i != k; i++)
+            mb[j + i] = dr[i];
+    }
 
-	return n;
+    return n;
 }
 
 #ifdef __cplusplus

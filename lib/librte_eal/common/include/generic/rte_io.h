@@ -236,113 +236,113 @@ rte_write64(uint64_t value, volatile void *addr);
 static __rte_always_inline uint8_t
 rte_read8_relaxed(const volatile void *addr)
 {
-	return *(const volatile uint8_t *)addr;
+    return *(const volatile uint8_t *)addr;
 }
 
 static __rte_always_inline uint16_t
 rte_read16_relaxed(const volatile void *addr)
 {
-	return *(const volatile uint16_t *)addr;
+    return *(const volatile uint16_t *)addr;
 }
 
 static __rte_always_inline uint32_t
 rte_read32_relaxed(const volatile void *addr)
 {
-	return *(const volatile uint32_t *)addr;
+    return *(const volatile uint32_t *)addr;
 }
 
 static __rte_always_inline uint64_t
 rte_read64_relaxed(const volatile void *addr)
 {
-	return *(const volatile uint64_t *)addr;
+    return *(const volatile uint64_t *)addr;
 }
 
 static __rte_always_inline void
 rte_write8_relaxed(uint8_t value, volatile void *addr)
 {
-	*(volatile uint8_t *)addr = value;
+    *(volatile uint8_t *)addr = value;
 }
 
 static __rte_always_inline void
 rte_write16_relaxed(uint16_t value, volatile void *addr)
 {
-	*(volatile uint16_t *)addr = value;
+    *(volatile uint16_t *)addr = value;
 }
 
 static __rte_always_inline void
 rte_write32_relaxed(uint32_t value, volatile void *addr)
 {
-	*(volatile uint32_t *)addr = value;
+    *(volatile uint32_t *)addr = value;
 }
 
 static __rte_always_inline void
 rte_write64_relaxed(uint64_t value, volatile void *addr)
 {
-	*(volatile uint64_t *)addr = value;
+    *(volatile uint64_t *)addr = value;
 }
 
 static __rte_always_inline uint8_t
 rte_read8(const volatile void *addr)
 {
-	uint8_t val;
-	val = rte_read8_relaxed(addr);
-	rte_io_rmb();
-	return val;
+    uint8_t val;
+    val = rte_read8_relaxed(addr);
+    rte_io_rmb();
+    return val;
 }
 
 static __rte_always_inline uint16_t
 rte_read16(const volatile void *addr)
 {
-	uint16_t val;
-	val = rte_read16_relaxed(addr);
-	rte_io_rmb();
-	return val;
+    uint16_t val;
+    val = rte_read16_relaxed(addr);
+    rte_io_rmb();
+    return val;
 }
 
 static __rte_always_inline uint32_t
 rte_read32(const volatile void *addr)
 {
-	uint32_t val;
-	val = rte_read32_relaxed(addr);
-	rte_io_rmb();
-	return val;
+    uint32_t val;
+    val = rte_read32_relaxed(addr);
+    rte_io_rmb();
+    return val;
 }
 
 static __rte_always_inline uint64_t
 rte_read64(const volatile void *addr)
 {
-	uint64_t val;
-	val = rte_read64_relaxed(addr);
-	rte_io_rmb();
-	return val;
+    uint64_t val;
+    val = rte_read64_relaxed(addr);
+    rte_io_rmb();
+    return val;
 }
 
 static __rte_always_inline void
 rte_write8(uint8_t value, volatile void *addr)
 {
-	rte_io_wmb();
-	rte_write8_relaxed(value, addr);
+    rte_io_wmb();
+    rte_write8_relaxed(value, addr);
 }
 
 static __rte_always_inline void
 rte_write16(uint16_t value, volatile void *addr)
 {
-	rte_io_wmb();
-	rte_write16_relaxed(value, addr);
+    rte_io_wmb();
+    rte_write16_relaxed(value, addr);
 }
 
 static __rte_always_inline void
 rte_write32(uint32_t value, volatile void *addr)
 {
-	rte_io_wmb();
-	rte_write32_relaxed(value, addr);
+    rte_io_wmb();
+    rte_write32_relaxed(value, addr);
 }
 
 static __rte_always_inline void
 rte_write64(uint64_t value, volatile void *addr)
 {
-	rte_io_wmb();
-	rte_write64_relaxed(value, addr);
+    rte_io_wmb();
+    rte_write64_relaxed(value, addr);
 }
 
 #endif /* RTE_OVERRIDE_IO_H */

@@ -269,7 +269,7 @@
 #define S_T6_EGRTHRESHOLDPACKING    16
 #define M_T6_EGRTHRESHOLDPACKING    0xffU
 #define G_T6_EGRTHRESHOLDPACKING(x) (((x) >> S_T6_EGRTHRESHOLDPACKING) & \
-				     M_T6_EGRTHRESHOLDPACKING)
+                     M_T6_EGRTHRESHOLDPACKING)
 
 #define S_EGRTHRESHOLD    8
 #define M_EGRTHRESHOLD    0x3fU
@@ -280,7 +280,7 @@
 #define M_EGRTHRESHOLDPACKING    0x3fU
 #define V_EGRTHRESHOLDPACKING(x) ((x) << S_EGRTHRESHOLDPACKING)
 #define G_EGRTHRESHOLDPACKING(x) (((x) >> S_EGRTHRESHOLDPACKING) & \
-				  M_EGRTHRESHOLDPACKING)
+                  M_EGRTHRESHOLDPACKING)
 
 #define S_INGTHRESHOLD    2
 #define M_INGTHRESHOLD    0x3fU
@@ -422,15 +422,15 @@
 #define M_T6_TOTMAXTAG    0x7U
 #define V_T6_TOTMAXTAG(x) ((x) << S_T6_TOTMAXTAG)
 
-#define A_PCIE_CMD_CFG	0x5980
+#define A_PCIE_CMD_CFG    0x5980
 
-#define S_MINTAG	0
-#define M_MINTAG	0xffU
-#define V_MINTAG(x)	((x) << S_MINTAG)
+#define S_MINTAG    0
+#define M_MINTAG    0xffU
+#define V_MINTAG(x)    ((x) << S_MINTAG)
 
-#define S_T6_MINTAG	0
-#define M_T6_MINTAG	0xffU
-#define V_T6_MINTAG(x)	((x) << S_T6_MINTAG)
+#define S_T6_MINTAG    0
+#define M_T6_MINTAG    0xffU
+#define V_T6_MINTAG(x)    ((x) << S_T6_MINTAG)
 
 /* registers for module CIM */
 #define CIM_BASE_ADDR 0x7b00
@@ -479,7 +479,7 @@
 #define M_DELAYEDACKRESOLUTION    0xffU
 #define V_DELAYEDACKRESOLUTION(x) ((x) << S_DELAYEDACKRESOLUTION)
 #define G_DELAYEDACKRESOLUTION(x) (((x) >> S_DELAYEDACKRESOLUTION) & \
-				   M_DELAYEDACKRESOLUTION)
+                   M_DELAYEDACKRESOLUTION)
 
 #define A_TP_CCTRL_TABLE 0x7ddc
 
@@ -580,8 +580,8 @@
 #define V_CSUM_HAS_PSEUDO_HDR(x) ((x) << S_CSUM_HAS_PSEUDO_HDR)
 #define F_CSUM_HAS_PSEUDO_HDR    V_CSUM_HAS_PSEUDO_HDR(1U)
 
-#define S_RM_OVLAN	9
-#define V_RM_OVLAN(x)	((x) << S_RM_OVLAN)
+#define S_RM_OVLAN    9
+#define V_RM_OVLAN(x)    ((x) << S_RM_OVLAN)
 
 /* registers for module MA */
 #define A_MA_EDRAM0_BAR 0x77c0
@@ -819,56 +819,56 @@
 #define A_MPS_VF_STAT_RX_VF_UCAST_FRAMES_L 0xf0
 #define A_MPS_VF_STAT_RX_VF_ERR_FRAMES_L 0xf8
 
-#define A_MPS_PORT0_RX_IVLAN	0x3011c
+#define A_MPS_PORT0_RX_IVLAN    0x3011c
 
-#define S_IVLAN_ETYPE		0
-#define M_IVLAN_ETYPE		0xffffU
-#define V_IVLAN_ETYPE(x)	((x) << S_IVLAN_ETYPE)
+#define S_IVLAN_ETYPE        0
+#define M_IVLAN_ETYPE        0xffffU
+#define V_IVLAN_ETYPE(x)    ((x) << S_IVLAN_ETYPE)
 
-#define MPS_PORT_RX_IVLAN_STRIDE	0x4000
-#define MPS_PORT_RX_IVLAN(idx)		\
-	(A_MPS_PORT0_RX_IVLAN + (idx) * MPS_PORT_RX_IVLAN_STRIDE)
+#define MPS_PORT_RX_IVLAN_STRIDE    0x4000
+#define MPS_PORT_RX_IVLAN(idx)        \
+    (A_MPS_PORT0_RX_IVLAN + (idx) * MPS_PORT_RX_IVLAN_STRIDE)
 
-#define A_MPS_PORT0_RX_OVLAN0	0x30120
+#define A_MPS_PORT0_RX_OVLAN0    0x30120
 
-#define S_OVLAN_MASK	16
-#define M_OVLAN_MASK	0xffffU
-#define V_OVLAN_MASK(x)	((x) << S_OVLAN_MASK)
+#define S_OVLAN_MASK    16
+#define M_OVLAN_MASK    0xffffU
+#define V_OVLAN_MASK(x)    ((x) << S_OVLAN_MASK)
 
-#define S_OVLAN_ETYPE		0
-#define M_OVLAN_ETYPE		0xffffU
-#define V_OVLAN_ETYPE(x)	((x) << S_OVLAN_ETYPE)
+#define S_OVLAN_ETYPE        0
+#define M_OVLAN_ETYPE        0xffffU
+#define V_OVLAN_ETYPE(x)    ((x) << S_OVLAN_ETYPE)
 
-#define MPS_PORT_RX_OVLAN_STRIDE	0x4000
-#define MPS_PORT_RX_OVLAN_BASE(idx)	\
+#define MPS_PORT_RX_OVLAN_STRIDE    0x4000
+#define MPS_PORT_RX_OVLAN_BASE(idx)    \
 (A_MPS_PORT0_RX_OVLAN0 + (idx) * MPS_PORT_RX_OVLAN_STRIDE)
-#define MPS_PORT_RX_OVLAN_REG(idx, reg)	(MPS_PORT_RX_OVLAN_BASE(idx) + (reg))
+#define MPS_PORT_RX_OVLAN_REG(idx, reg)    (MPS_PORT_RX_OVLAN_BASE(idx) + (reg))
 
-#define A_RX_OVLAN0	0x0
-#define A_RX_OVLAN1	0x4
-#define A_RX_OVLAN2	0x8
+#define A_RX_OVLAN0    0x0
+#define A_RX_OVLAN1    0x4
+#define A_RX_OVLAN2    0x8
 
-#define A_MPS_PORT0_RX_CTL	0x30100
+#define A_MPS_PORT0_RX_CTL    0x30100
 
-#define S_OVLAN_EN0	0
-#define V_OVLAN_EN0(x)	((x) << S_OVLAN_EN0)
-#define F_OVLAN_EN0	V_OVLAN_EN0(1)
+#define S_OVLAN_EN0    0
+#define V_OVLAN_EN0(x)    ((x) << S_OVLAN_EN0)
+#define F_OVLAN_EN0    V_OVLAN_EN0(1)
 
-#define S_OVLAN_EN1	1
-#define V_OVLAN_EN1(x)	((x) << S_OVLAN_EN1)
-#define F_OVLAN_EN1	V_OVLAN_EN1(1)
+#define S_OVLAN_EN1    1
+#define V_OVLAN_EN1(x)    ((x) << S_OVLAN_EN1)
+#define F_OVLAN_EN1    V_OVLAN_EN1(1)
 
-#define S_OVLAN_EN2	2
-#define V_OVLAN_EN2(x)	((x) << S_OVLAN_EN2)
-#define F_OVLAN_EN2	V_OVLAN_EN2(1)
+#define S_OVLAN_EN2    2
+#define V_OVLAN_EN2(x)    ((x) << S_OVLAN_EN2)
+#define F_OVLAN_EN2    V_OVLAN_EN2(1)
 
-#define S_IVLAN_EN	4
-#define V_IVLAN_EN(x)	((x) << S_IVLAN_EN)
-#define F_IVLAN_EN	V_IVLAN_EN(1)
+#define S_IVLAN_EN    4
+#define V_IVLAN_EN(x)    ((x) << S_IVLAN_EN)
+#define F_IVLAN_EN    V_IVLAN_EN(1)
 
-#define MPS_PORT_RX_CTL_STRIDE	0x4000
-#define MPS_PORT_RX_CTL(idx)	\
-	(A_MPS_PORT0_RX_CTL + (idx) * MPS_PORT_RX_CTL_STRIDE)
+#define MPS_PORT_RX_CTL_STRIDE    0x4000
+#define MPS_PORT_RX_CTL(idx)    \
+    (A_MPS_PORT0_RX_CTL + (idx) * MPS_PORT_RX_CTL_STRIDE)
 
 /* registers for module ULP_RX */
 #define ULP_RX_BASE_ADDR 0x19150

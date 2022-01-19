@@ -15,9 +15,9 @@
 #define EVENTDEV_NAME_OCTEONTX_PMD event_octeontx
 
 #define SSOVF_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, otx_logtype_ssovf, \
-			"[%s] %s() " fmt "\n", \
-			RTE_STR(EVENTDEV_NAME_OCTEONTX_PMD), __func__, ## args)
+    rte_log(RTE_LOG_ ## level, otx_logtype_ssovf, \
+            "[%s] %s() " fmt "\n", \
+            RTE_STR(EVENTDEV_NAME_OCTEONTX_PMD), __func__, ## args)
 
 #define ssovf_log_info(fmt, ...) SSOVF_LOG(INFO, fmt, ##__VA_ARGS__)
 #define ssovf_log_dbg(fmt, ...) SSOVF_LOG(DEBUG, fmt, ##__VA_ARGS__)
@@ -93,95 +93,95 @@
 
 /* ARM64 specific functions */
 #if defined(RTE_ARCH_ARM64)
-#define ssovf_load_pair(val0, val1, addr) ({		\
-			asm volatile(			\
-			"ldp %x[x0], %x[x1], [%x[p1]]"	\
-			:[x0]"=r"(val0), [x1]"=r"(val1) \
-			:[p1]"r"(addr)			\
-			); })
+#define ssovf_load_pair(val0, val1, addr) ({        \
+            asm volatile(            \
+            "ldp %x[x0], %x[x1], [%x[p1]]"    \
+            :[x0]"=r"(val0), [x1]"=r"(val1) \
+            :[p1]"r"(addr)            \
+            ); })
 
-#define ssovf_store_pair(val0, val1, addr) ({		\
-			asm volatile(			\
-			"stp %x[x0], %x[x1], [%x[p1]]"	\
-			::[x0]"r"(val0), [x1]"r"(val1), [p1]"r"(addr) \
-			); })
+#define ssovf_store_pair(val0, val1, addr) ({        \
+            asm volatile(            \
+            "stp %x[x0], %x[x1], [%x[p1]]"    \
+            ::[x0]"r"(val0), [x1]"r"(val1), [p1]"r"(addr) \
+            ); })
 #else /* Un optimized functions for building on non arm64 arch */
 
-#define ssovf_load_pair(val0, val1, addr)		\
-do {							\
-	val0 = rte_read64(addr);			\
-	val1 = rte_read64(((uint8_t *)addr) + 8);	\
+#define ssovf_load_pair(val0, val1, addr)        \
+do {                            \
+    val0 = rte_read64(addr);            \
+    val1 = rte_read64(((uint8_t *)addr) + 8);    \
 } while (0)
 
-#define ssovf_store_pair(val0, val1, addr)		\
-do {							\
-	rte_write64(val0, addr);			\
-	rte_write64(val1, (((uint8_t *)addr) + 8));	\
+#define ssovf_store_pair(val0, val1, addr)        \
+do {                            \
+    rte_write64(val0, addr);            \
+    rte_write64(val1, (((uint8_t *)addr) + 8));    \
 } while (0)
 #endif
 
 struct ssovf_info {
-	uint16_t domain; /* Domain id */
-	uint8_t total_ssovfs; /* Total sso groups available in domain */
-	uint8_t total_ssowvfs;/* Total sso hws available in domain */
+    uint16_t domain; /* Domain id */
+    uint8_t total_ssovfs; /* Total sso groups available in domain */
+    uint8_t total_ssowvfs;/* Total sso hws available in domain */
 };
 
 enum ssovf_type {
-	OCTEONTX_SSO_GROUP, /* SSO group vf */
-	OCTEONTX_SSO_HWS,  /* SSO hardware workslot vf */
+    OCTEONTX_SSO_GROUP, /* SSO group vf */
+    OCTEONTX_SSO_HWS,  /* SSO hardware workslot vf */
 };
 
 struct ssovf_evdev {
-	uint8_t max_event_queues;
-	uint8_t max_event_ports;
-	uint8_t is_timeout_deq;
-	uint8_t nb_event_queues;
-	uint8_t nb_event_ports;
-	uint32_t min_deq_timeout_ns;
-	uint32_t max_deq_timeout_ns;
-	int32_t max_num_events;
+    uint8_t max_event_queues;
+    uint8_t max_event_ports;
+    uint8_t is_timeout_deq;
+    uint8_t nb_event_queues;
+    uint8_t nb_event_ports;
+    uint32_t min_deq_timeout_ns;
+    uint32_t max_deq_timeout_ns;
+    int32_t max_num_events;
 } __rte_cache_aligned;
 
 /* Event port aka HWS */
 struct ssows {
-	uint8_t cur_tt;
-	uint8_t cur_grp;
-	uint8_t swtag_req;
-	uint8_t *base;
-	uint8_t *getwork;
-	uint8_t *grps[SSO_MAX_VHGRP];
-	uint8_t port;
+    uint8_t cur_tt;
+    uint8_t cur_grp;
+    uint8_t swtag_req;
+    uint8_t *base;
+    uint8_t *getwork;
+    uint8_t *grps[SSO_MAX_VHGRP];
+    uint8_t port;
 } __rte_cache_aligned;
 
 static inline struct ssovf_evdev *
 ssovf_pmd_priv(const struct rte_eventdev *eventdev)
 {
-	return eventdev->data->dev_private;
+    return eventdev->data->dev_private;
 }
 
 extern int otx_logtype_ssovf;
 
 uint16_t ssows_enq(void *port, const struct rte_event *ev);
 uint16_t ssows_enq_burst(void *port,
-		const struct rte_event ev[], uint16_t nb_events);
+        const struct rte_event ev[], uint16_t nb_events);
 uint16_t ssows_enq_new_burst(void *port,
-		const struct rte_event ev[], uint16_t nb_events);
+        const struct rte_event ev[], uint16_t nb_events);
 uint16_t ssows_enq_fwd_burst(void *port,
-		const struct rte_event ev[], uint16_t nb_events);
+        const struct rte_event ev[], uint16_t nb_events);
 uint16_t ssows_deq(void *port, struct rte_event *ev, uint64_t timeout_ticks);
 uint16_t ssows_deq_burst(void *port, struct rte_event ev[],
-		uint16_t nb_events, uint64_t timeout_ticks);
+        uint16_t nb_events, uint64_t timeout_ticks);
 uint16_t ssows_deq_timeout(void *port, struct rte_event *ev,
-		uint64_t timeout_ticks);
+        uint64_t timeout_ticks);
 uint16_t ssows_deq_timeout_burst(void *port, struct rte_event ev[],
-		uint16_t nb_events, uint64_t timeout_ticks);
+        uint16_t nb_events, uint64_t timeout_ticks);
 
 typedef void (*ssows_handle_event_t)(void *arg, struct rte_event ev);
 void ssows_flush_events(struct ssows *ws, uint8_t queue_id,
-		ssows_handle_event_t fn, void *arg);
+        ssows_handle_event_t fn, void *arg);
 void ssows_reset(struct ssows *ws);
 uint16_t sso_event_tx_adapter_enqueue(void *port,
-		struct rte_event ev[], uint16_t nb_events);
+        struct rte_event ev[], uint16_t nb_events);
 int ssovf_info(struct ssovf_info *info);
 void *ssovf_bar(enum ssovf_type, uint8_t id, uint8_t bar);
 int test_eventdev_octeontx(void);

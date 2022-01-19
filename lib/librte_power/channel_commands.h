@@ -52,69 +52,69 @@ extern "C" {
 #define MAX_VCPU_PER_VM         8
 
 struct t_boost_status {
-	bool tbEnabled;
+    bool tbEnabled;
 };
 
 struct timer_profile {
-	int busy_hours[HOURS];
-	int quiet_hours[HOURS];
-	int hours_to_use_traffic_profile[HOURS];
+    int busy_hours[HOURS];
+    int quiet_hours[HOURS];
+    int hours_to_use_traffic_profile[HOURS];
 };
 
 enum workload {HIGH, MEDIUM, LOW};
 enum policy_to_use {
-	TRAFFIC,
-	TIME,
-	WORKLOAD,
-	BRANCH_RATIO
+    TRAFFIC,
+    TIME,
+    WORKLOAD,
+    BRANCH_RATIO
 };
 
 struct traffic {
-	uint32_t min_packet_thresh;
-	uint32_t avg_max_packet_thresh;
-	uint32_t max_max_packet_thresh;
+    uint32_t min_packet_thresh;
+    uint32_t avg_max_packet_thresh;
+    uint32_t max_max_packet_thresh;
 };
 
 #define CORE_TYPE_VIRTUAL 0
 #define CORE_TYPE_PHYSICAL 1
 
 struct channel_packet {
-	uint64_t resource_id; /**< core_num, device */
-	uint32_t unit;        /**< scale down/up/min/max */
-	uint32_t command;     /**< Power, IO, etc */
-	char vm_name[VM_MAX_NAME_SZ];
+    uint64_t resource_id; /**< core_num, device */
+    uint32_t unit;        /**< scale down/up/min/max */
+    uint32_t command;     /**< Power, IO, etc */
+    char vm_name[VM_MAX_NAME_SZ];
 
-	uint64_t vfid[MAX_VFS];
-	int nb_mac_to_monitor;
-	struct traffic traffic_policy;
-	uint8_t vcpu_to_control[MAX_VCPU_PER_VM];
-	uint8_t num_vcpu;
-	struct timer_profile timer_policy;
-	bool core_type;
-	enum workload workload;
-	enum policy_to_use policy_to_use;
-	struct t_boost_status t_boost_status;
+    uint64_t vfid[MAX_VFS];
+    int nb_mac_to_monitor;
+    struct traffic traffic_policy;
+    uint8_t vcpu_to_control[MAX_VCPU_PER_VM];
+    uint8_t num_vcpu;
+    struct timer_profile timer_policy;
+    bool core_type;
+    enum workload workload;
+    enum policy_to_use policy_to_use;
+    struct t_boost_status t_boost_status;
 };
 
 struct channel_packet_freq_list {
-	uint64_t resource_id; /**< core_num, device */
-	uint32_t unit;        /**< scale down/up/min/max */
-	uint32_t command;     /**< Power, IO, etc */
-	char vm_name[VM_MAX_NAME_SZ];
+    uint64_t resource_id; /**< core_num, device */
+    uint32_t unit;        /**< scale down/up/min/max */
+    uint32_t command;     /**< Power, IO, etc */
+    char vm_name[VM_MAX_NAME_SZ];
 
-	uint32_t freq_list[MAX_VCPU_PER_VM];
-	uint8_t num_vcpu;
+    uint32_t freq_list[MAX_VCPU_PER_VM];
+    uint8_t num_vcpu;
 };
 
 struct channel_packet_caps_list {
-	uint64_t resource_id; /**< core_num, device */
-	uint32_t unit;        /**< scale down/up/min/max */
-	uint32_t command;     /**< Power, IO, etc */
-	char vm_name[VM_MAX_NAME_SZ];
+    uint64_t resource_id; /**< core_num, device */
+    uint32_t unit;        /**< scale down/up/min/max */
+    uint32_t command;     /**< Power, IO, etc */
+    char vm_name[VM_MAX_NAME_SZ];
 
-	uint64_t turbo[MAX_VCPU_PER_VM];
-	uint64_t priority[MAX_VCPU_PER_VM];
-	uint8_t num_vcpu;
+    uint64_t turbo[MAX_VCPU_PER_VM];
+    uint64_t priority[MAX_VCPU_PER_VM];
+    uint8_t num_vcpu;
 };
 
 

@@ -32,7 +32,7 @@
 #endif
 
 #ifndef BITS_PER_LONG
-#define BITS_PER_LONG	(__SIZEOF_LONG__ * 8)
+#define BITS_PER_LONG    (__SIZEOF_LONG__ * 8)
 #endif
 #ifndef BITS_PER_LONG_LONG
 #define BITS_PER_LONG_LONG (__SIZEOF_LONG_LONG__ * 8)
@@ -40,12 +40,12 @@
 
 #ifndef GENMASK
 #define GENMASK(h, l) \
-		(((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
+        (((~0UL) << (l)) & (~0UL >> (BITS_PER_LONG - 1 - (h))))
 #endif
 #ifndef GENMASK_ULL
 #define GENMASK_ULL(h, l) \
-	(((~0ULL) - (1ULL << (l)) + 1) & \
-	 (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
+    (((~0ULL) - (1ULL << (l)) + 1) & \
+     (~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
 #endif
 
 /* Compiler attributes */
@@ -56,14 +56,14 @@
 /* Intra device related functions */
 struct otx2_npa_lf;
 struct otx2_idev_cfg {
-	uint16_t sso_pf_func;
-	uint16_t npa_pf_func;
-	struct otx2_npa_lf *npa_lf;
-	RTE_STD_C11
-	union {
-		rte_atomic16_t npa_refcnt;
-		uint16_t npa_refcnt_u16;
-	};
+    uint16_t sso_pf_func;
+    uint16_t npa_pf_func;
+    struct otx2_npa_lf *npa_lf;
+    RTE_STD_C11
+    union {
+        rte_atomic16_t npa_refcnt;
+        uint16_t npa_refcnt_u16;
+    };
 };
 
 struct otx2_idev_cfg *otx2_intra_dev_get_cfg(void);
@@ -86,17 +86,17 @@ extern int otx2_logtype_tm;
 extern int otx2_logtype_tim;
 extern int otx2_logtype_dpi;
 
-#define otx2_err(fmt, args...)			\
-	RTE_LOG(ERR, PMD, "%s():%u " fmt "\n",	\
-		__func__, __LINE__, ## args)
+#define otx2_err(fmt, args...)            \
+    RTE_LOG(ERR, PMD, "%s():%u " fmt "\n",    \
+        __func__, __LINE__, ## args)
 
-#define otx2_info(fmt, args...)						\
-	RTE_LOG(INFO, PMD, fmt"\n", ## args)
+#define otx2_info(fmt, args...)                        \
+    RTE_LOG(INFO, PMD, fmt"\n", ## args)
 
-#define otx2_dbg(subsystem, fmt, args...)				\
-	rte_log(RTE_LOG_DEBUG, otx2_logtype_ ## subsystem,		\
-		"[%s] %s():%u " fmt "\n",				\
-		 #subsystem, __func__, __LINE__, ##args)
+#define otx2_dbg(subsystem, fmt, args...)                \
+    rte_log(RTE_LOG_DEBUG, otx2_logtype_ ## subsystem,        \
+        "[%s] %s():%u " fmt "\n",                \
+         #subsystem, __func__, __LINE__, ##args)
 
 #define otx2_base_dbg(fmt, ...) otx2_dbg(base, fmt, ##__VA_ARGS__)
 #define otx2_mbox_dbg(fmt, ...) otx2_dbg(mbox, fmt, ##__VA_ARGS__)
@@ -109,23 +109,23 @@ extern int otx2_logtype_dpi;
 #define otx2_dpi_dbg(fmt, ...) otx2_dbg(dpi, fmt, ##__VA_ARGS__)
 
 /* PCI IDs */
-#define PCI_VENDOR_ID_CAVIUM			0x177D
+#define PCI_VENDOR_ID_CAVIUM            0x177D
 #define PCI_DEVID_OCTEONTX2_RVU_PF              0xA063
-#define PCI_DEVID_OCTEONTX2_RVU_VF		0xA064
-#define PCI_DEVID_OCTEONTX2_RVU_AF		0xA065
-#define PCI_DEVID_OCTEONTX2_RVU_SSO_TIM_PF	0xA0F9
-#define PCI_DEVID_OCTEONTX2_RVU_SSO_TIM_VF	0xA0FA
-#define PCI_DEVID_OCTEONTX2_RVU_NPA_PF		0xA0FB
-#define PCI_DEVID_OCTEONTX2_RVU_NPA_VF		0xA0FC
-#define PCI_DEVID_OCTEONTX2_RVU_CPT_PF		0xA0FD
-#define PCI_DEVID_OCTEONTX2_RVU_CPT_VF		0xA0FE
-#define PCI_DEVID_OCTEONTX2_RVU_AF_VF		0xA0f8
-#define PCI_DEVID_OCTEONTX2_DPI_VF		0xA081
-#define PCI_DEVID_OCTEONTX2_RVU_SDP_PF		0xA0f6
-#define PCI_DEVID_OCTEONTX2_RVU_SDP_VF		0xA0f7
+#define PCI_DEVID_OCTEONTX2_RVU_VF        0xA064
+#define PCI_DEVID_OCTEONTX2_RVU_AF        0xA065
+#define PCI_DEVID_OCTEONTX2_RVU_SSO_TIM_PF    0xA0F9
+#define PCI_DEVID_OCTEONTX2_RVU_SSO_TIM_VF    0xA0FA
+#define PCI_DEVID_OCTEONTX2_RVU_NPA_PF        0xA0FB
+#define PCI_DEVID_OCTEONTX2_RVU_NPA_VF        0xA0FC
+#define PCI_DEVID_OCTEONTX2_RVU_CPT_PF        0xA0FD
+#define PCI_DEVID_OCTEONTX2_RVU_CPT_VF        0xA0FE
+#define PCI_DEVID_OCTEONTX2_RVU_AF_VF        0xA0f8
+#define PCI_DEVID_OCTEONTX2_DPI_VF        0xA081
+#define PCI_DEVID_OCTEONTX2_RVU_SDP_PF        0xA0f6
+#define PCI_DEVID_OCTEONTX2_RVU_SDP_VF        0xA0f7
 
 /* Subsystem Device ID */
-#define PCI_SUBSYS_DEVID_96XX_95XX		0xB200
+#define PCI_SUBSYS_DEVID_96XX_95XX        0xB200
 
 /*
  * REVID for RVU PCIe devices.
@@ -134,15 +134,15 @@ extern int otx2_logtype_dpi;
  * Bits 7..4: midr id, 0:96, 1:95, 2:loki, f:unknown
  */
 
-#define RVU_PCI_REV_MIDR_ID(rev_id)		(rev_id >> 4)
-#define RVU_PCI_REV_MAJOR(rev_id)		((rev_id >> 2) & 0x3)
-#define RVU_PCI_REV_MINOR(rev_id)		(rev_id & 0x3)
+#define RVU_PCI_REV_MIDR_ID(rev_id)        (rev_id >> 4)
+#define RVU_PCI_REV_MAJOR(rev_id)        ((rev_id >> 2) & 0x3)
+#define RVU_PCI_REV_MINOR(rev_id)        (rev_id & 0x3)
 
-#define RVU_PCI_CN96XX_MIDR_ID			0x0
-#define RVU_PCI_CNF95XX_MIDR_ID			0x1
+#define RVU_PCI_CN96XX_MIDR_ID            0x0
+#define RVU_PCI_CNF95XX_MIDR_ID            0x1
 
 /* PCI Config offsets */
-#define RVU_PCI_REVISION_ID			0x08
+#define RVU_PCI_REVISION_ID            0x08
 
 /* IO Access */
 #define otx2_read64(addr) rte_read64_relaxed((void *)(addr))

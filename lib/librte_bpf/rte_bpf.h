@@ -28,81 +28,81 @@ extern "C" {
  * Possible types for function/BPF program arguments.
  */
 enum rte_bpf_arg_type {
-	RTE_BPF_ARG_UNDEF,      /**< undefined */
-	RTE_BPF_ARG_RAW,        /**< scalar value */
-	RTE_BPF_ARG_PTR = 0x10, /**< pointer to data buffer */
-	RTE_BPF_ARG_PTR_MBUF,   /**< pointer to rte_mbuf */
-	RTE_BPF_ARG_RESERVED,   /**< reserved for internal use */
+    RTE_BPF_ARG_UNDEF,      /**< undefined */
+    RTE_BPF_ARG_RAW,        /**< scalar value */
+    RTE_BPF_ARG_PTR = 0x10, /**< pointer to data buffer */
+    RTE_BPF_ARG_PTR_MBUF,   /**< pointer to rte_mbuf */
+    RTE_BPF_ARG_RESERVED,   /**< reserved for internal use */
 };
 
 /**
  * function argument information
  */
 struct rte_bpf_arg {
-	enum rte_bpf_arg_type type;
-	/**
-	 * for ptr type - max size of data buffer it points to
-	 * for raw type - the size (in bytes) of the value
-	 */
-	size_t size;
-	size_t buf_size;
-	/**< for mbuf ptr type, max size of rte_mbuf data buffer */
+    enum rte_bpf_arg_type type;
+    /**
+     * for ptr type - max size of data buffer it points to
+     * for raw type - the size (in bytes) of the value
+     */
+    size_t size;
+    size_t buf_size;
+    /**< for mbuf ptr type, max size of rte_mbuf data buffer */
 };
 
 /**
  * determine is argument a pointer
  */
-#define RTE_BPF_ARG_PTR_TYPE(x)	((x) & RTE_BPF_ARG_PTR)
+#define RTE_BPF_ARG_PTR_TYPE(x)    ((x) & RTE_BPF_ARG_PTR)
 
 /**
  * Possible types for external symbols.
  */
 enum rte_bpf_xtype {
-	RTE_BPF_XTYPE_FUNC, /**< function */
-	RTE_BPF_XTYPE_VAR,  /**< variable */
-	RTE_BPF_XTYPE_NUM
+    RTE_BPF_XTYPE_FUNC, /**< function */
+    RTE_BPF_XTYPE_VAR,  /**< variable */
+    RTE_BPF_XTYPE_NUM
 };
 
 /**
  * Definition for external symbols available in the BPF program.
  */
 struct rte_bpf_xsym {
-	const char *name;        /**< name */
-	enum rte_bpf_xtype type; /**< type */
-	union {
-		struct {
-			uint64_t (*val)(uint64_t, uint64_t, uint64_t,
-				uint64_t, uint64_t);
-			uint32_t nb_args;
-			struct rte_bpf_arg args[EBPF_FUNC_MAX_ARGS];
-			/**< Function arguments descriptions. */
-			struct rte_bpf_arg ret; /**< function return value. */
-		} func;
-		struct {
-			void *val; /**< actual memory location */
-			struct rte_bpf_arg desc; /**< type, size, etc. */
-		} var; /**< external variable */
-	};
+    const char *name;        /**< name */
+    enum rte_bpf_xtype type; /**< type */
+    union {
+        struct {
+            uint64_t (*val)(uint64_t, uint64_t, uint64_t,
+                uint64_t, uint64_t);
+            uint32_t nb_args;
+            struct rte_bpf_arg args[EBPF_FUNC_MAX_ARGS];
+            /**< Function arguments descriptions. */
+            struct rte_bpf_arg ret; /**< function return value. */
+        } func;
+        struct {
+            void *val; /**< actual memory location */
+            struct rte_bpf_arg desc; /**< type, size, etc. */
+        } var; /**< external variable */
+    };
 };
 
 /**
  * Input parameters for loading eBPF code.
  */
 struct rte_bpf_prm {
-	const struct ebpf_insn *ins; /**< array of eBPF instructions */
-	uint32_t nb_ins;            /**< number of instructions in ins */
-	const struct rte_bpf_xsym *xsym;
-	/**< array of external symbols that eBPF code is allowed to reference */
-	uint32_t nb_xsym; /**< number of elements in xsym */
-	struct rte_bpf_arg prog_arg; /**< eBPF program input arg description */
+    const struct ebpf_insn *ins; /**< array of eBPF instructions */
+    uint32_t nb_ins;            /**< number of instructions in ins */
+    const struct rte_bpf_xsym *xsym;
+    /**< array of external symbols that eBPF code is allowed to reference */
+    uint32_t nb_xsym; /**< number of elements in xsym */
+    struct rte_bpf_arg prog_arg; /**< eBPF program input arg description */
 };
 
 /**
  * Information about compiled into native ISA eBPF code.
  */
 struct rte_bpf_jit {
-	uint64_t (*func)(void *); /**< JIT-ed native code */
-	size_t sz;                /**< size of JIT-ed code */
+    uint64_t (*func)(void *); /**< JIT-ed native code */
+    size_t sz;                /**< size of JIT-ed code */
 };
 
 struct rte_bpf;
@@ -156,7 +156,7 @@ rte_bpf_load(const struct rte_bpf_prm *prm);
 __rte_experimental
 struct rte_bpf *
 rte_bpf_elf_load(const struct rte_bpf_prm *prm, const char *fname,
-		const char *sname);
+        const char *sname);
 /**
  * Execute given BPF bytecode.
  *
@@ -188,7 +188,7 @@ rte_bpf_exec(const struct rte_bpf *bpf, void *ctx);
 __rte_experimental
 uint32_t
 rte_bpf_exec_burst(const struct rte_bpf *bpf, void *ctx[], uint64_t rc[],
-		uint32_t num);
+        uint32_t num);
 
 /**
  * Provide information about natively compiled code for given BPF handle.

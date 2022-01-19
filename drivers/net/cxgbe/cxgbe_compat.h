@@ -24,23 +24,23 @@ extern int cxgbe_logtype;
 extern int cxgbe_mbox_logtype;
 
 #define dev_printf(level, logtype, fmt, ...) \
-	rte_log(RTE_LOG_ ## level, logtype, \
-		"rte_cxgbe_pmd: " fmt, ##__VA_ARGS__)
+    rte_log(RTE_LOG_ ## level, logtype, \
+        "rte_cxgbe_pmd: " fmt, ##__VA_ARGS__)
 
 #define dev_err(x, fmt, ...) \
-	dev_printf(ERR, cxgbe_logtype, fmt, ##__VA_ARGS__)
+    dev_printf(ERR, cxgbe_logtype, fmt, ##__VA_ARGS__)
 #define dev_info(x, fmt, ...) \
-	dev_printf(INFO, cxgbe_logtype, fmt, ##__VA_ARGS__)
+    dev_printf(INFO, cxgbe_logtype, fmt, ##__VA_ARGS__)
 #define dev_warn(x, fmt, ...) \
-	dev_printf(WARNING, cxgbe_logtype, fmt, ##__VA_ARGS__)
+    dev_printf(WARNING, cxgbe_logtype, fmt, ##__VA_ARGS__)
 #define dev_debug(x, fmt, ...) \
-	dev_printf(DEBUG, cxgbe_logtype, fmt, ##__VA_ARGS__)
+    dev_printf(DEBUG, cxgbe_logtype, fmt, ##__VA_ARGS__)
 
 #define CXGBE_DEBUG_MBOX(x, fmt, ...) \
-	dev_printf(DEBUG, cxgbe_mbox_logtype, "MBOX:" fmt, ##__VA_ARGS__)
+    dev_printf(DEBUG, cxgbe_mbox_logtype, "MBOX:" fmt, ##__VA_ARGS__)
 
 #define CXGBE_FUNC_TRACE() \
-	dev_printf(DEBUG, cxgbe_logtype, "CXGBE trace: %s\n", __func__)
+    dev_printf(DEBUG, cxgbe_logtype, "CXGBE trace: %s\n", __func__)
 
 #define pr_err(fmt, ...) dev_err(0, fmt, ##__VA_ARGS__)
 #define pr_warn(fmt, ...) dev_warn(0, fmt, ##__VA_ARGS__)
@@ -48,16 +48,16 @@ extern int cxgbe_mbox_logtype;
 #define BUG() pr_err("BUG at %s:%d", __func__, __LINE__)
 
 #define ASSERT(x) do {\
-	if (!(x)) \
-		rte_panic("CXGBE: x"); \
+    if (!(x)) \
+        rte_panic("CXGBE: x"); \
 } while (0)
 #define BUG_ON(x) ASSERT(!(x))
 
 #ifndef WARN_ON
 #define WARN_ON(x) do { \
-	int ret = !!(x); \
-	if (unlikely(ret)) \
-		pr_warn("WARN_ON: \"" #x "\" at %s:%d\n", __func__, __LINE__); \
+    int ret = !!(x); \
+    if (unlikely(ret)) \
+        pr_warn("WARN_ON: \"" #x "\" at %s:%d\n", __func__, __LINE__); \
 } while (0)
 #endif
 
@@ -90,40 +90,40 @@ typedef int       bool;
 typedef uint64_t  dma_addr_t;
 
 #ifndef __le16
-#define __le16	uint16_t
+#define __le16    uint16_t
 #endif
 #ifndef __le32
-#define __le32	uint32_t
+#define __le32    uint32_t
 #endif
 #ifndef __le64
-#define __le64	uint64_t
+#define __le64    uint64_t
 #endif
 #ifndef __be16
-#define __be16	uint16_t
+#define __be16    uint16_t
 #endif
 #ifndef __be32
-#define __be32	uint32_t
+#define __be32    uint32_t
 #endif
 #ifndef __be64
-#define __be64	uint64_t
+#define __be64    uint64_t
 #endif
 #ifndef __u8
-#define __u8	uint8_t
+#define __u8    uint8_t
 #endif
 #ifndef __u16
-#define __u16	uint16_t
+#define __u16    uint16_t
 #endif
 #ifndef __u32
-#define __u32	uint32_t
+#define __u32    uint32_t
 #endif
 #ifndef __u64
-#define __u64	uint64_t
+#define __u64    uint64_t
 #endif
 
-#define FALSE	0
-#define TRUE	1
-#define false	0
-#define true	1
+#define FALSE    0
+#define TRUE    1
+#define false    0
+#define true    1
 
 #ifndef min
 #define min(a, b) RTE_MIN(a, b)
@@ -140,8 +140,8 @@ typedef uint64_t  dma_addr_t;
 
 #ifndef container_of
 #define container_of(ptr, type, member) ({ \
-		typeof(((type *)0)->member)(*__mptr) = (ptr); \
-		(type *)((char *)__mptr - offsetof(type, member)); })
+        typeof(((type *)0)->member)(*__mptr) = (ptr); \
+        (type *)((char *)__mptr - offsetof(type, member)); })
 #endif
 
 #define ARRAY_SIZE(arr) RTE_DIM(arr)
@@ -183,12 +183,12 @@ typedef char *caddr_t;
 
 static inline uint8_t hweight32(uint32_t word32)
 {
-	uint32_t res = word32 - ((word32 >> 1) & 0x55555555);
+    uint32_t res = word32 - ((word32 >> 1) & 0x55555555);
 
-	res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
-	res = (res + (res >> 4)) & 0x0F0F0F0F;
-	res = res + (res >> 8);
-	return (res + (res >> 16)) & 0x000000FF;
+    res = (res & 0x33333333) + ((res >> 2) & 0x33333333);
+    res = (res + (res >> 4)) & 0x0F0F0F0F;
+    res = res + (res >> 8);
+    return (res + (res >> 16)) & 0x000000FF;
 
 } /* weight32 */
 
@@ -201,50 +201,50 @@ static inline uint8_t hweight32(uint32_t word32)
  */
 static inline int cxgbe_fls(int x)
 {
-	return x ? sizeof(x) * 8 - __builtin_clz(x) : 0;
+    return x ? sizeof(x) * 8 - __builtin_clz(x) : 0;
 }
 
 static inline unsigned long ilog2(unsigned long n)
 {
-	unsigned int e = 0;
+    unsigned int e = 0;
 
-	while (n) {
-		if (n & ~((1 << 8) - 1)) {
-			e += 8;
-			n >>= 8;
-			continue;
-		}
+    while (n) {
+        if (n & ~((1 << 8) - 1)) {
+            e += 8;
+            n >>= 8;
+            continue;
+        }
 
-		if (n & ~((1 << 4) - 1)) {
-			e += 4;
-			n >>= 4;
-		}
+        if (n & ~((1 << 4) - 1)) {
+            e += 4;
+            n >>= 4;
+        }
 
-		for (;;) {
-			n >>= 1;
-			if (n == 0)
-				break;
-			e++;
-		}
-	}
+        for (;;) {
+            n >>= 1;
+            if (n == 0)
+                break;
+            e++;
+        }
+    }
 
-	return e;
+    return e;
 }
 
 static inline void writel(unsigned int val, volatile void __iomem *addr)
 {
-	rte_write32(val, addr);
+    rte_write32(val, addr);
 }
 
 static inline void writeq(u64 val, volatile void __iomem *addr)
 {
-	writel(val, addr);
-	writel(val >> 32, (void *)((uintptr_t)addr + 4));
+    writel(val, addr);
+    writel(val >> 32, (void *)((uintptr_t)addr + 4));
 }
 
 static inline void writel_relaxed(unsigned int val, volatile void __iomem *addr)
 {
-	rte_write32_relaxed(val, addr);
+    rte_write32_relaxed(val, addr);
 }
 
 /*
@@ -252,11 +252,11 @@ static inline void writel_relaxed(unsigned int val, volatile void __iomem *addr)
  * overflow or loss of precision.
  */
 static inline unsigned int mult_frac(unsigned int x, unsigned int numer,
-				     unsigned int denom)
+                     unsigned int denom)
 {
-	unsigned int quot = x / denom;
-	unsigned int rem = x % denom;
+    unsigned int quot = x / denom;
+    unsigned int rem = x % denom;
 
-	return (quot * numer) + ((rem * numer) / denom);
+    return (quot * numer) + ((rem * numer) / denom);
 }
 #endif /* _CXGBE_COMPAT_H_ */

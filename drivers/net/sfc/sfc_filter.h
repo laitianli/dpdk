@@ -19,22 +19,22 @@ extern "C" {
 #endif
 
 struct sfc_filter {
-	/** Number of elements in match_supported array */
-	size_t				supported_match_num;
-	/** Driver cache of supported filter match masks */
-	uint32_t			*supported_match;
-	/** List of flow rules */
-	struct sfc_flow_list		flow_list;
-	/**
-	 * Supports any of ip_proto, remote host or local host
-	 * filters. This flag is used for filter match exceptions
-	 */
-	boolean_t			supports_ip_proto_or_addr_filter;
-	/**
-	 * Supports any of remote port or local port filters.
-	 * This flag is used for filter match exceptions
-	 */
-	boolean_t			supports_rem_or_local_port_filter;
+    /** Number of elements in match_supported array */
+    size_t                supported_match_num;
+    /** Driver cache of supported filter match masks */
+    uint32_t            *supported_match;
+    /** List of flow rules */
+    struct sfc_flow_list        flow_list;
+    /**
+     * Supports any of ip_proto, remote host or local host
+     * filters. This flag is used for filter match exceptions
+     */
+    boolean_t            supports_ip_proto_or_addr_filter;
+    /**
+     * Supports any of remote port or local port filters.
+     * This flag is used for filter match exceptions
+     */
+    boolean_t            supports_rem_or_local_port_filter;
 };
 
 struct sfc_adapter;

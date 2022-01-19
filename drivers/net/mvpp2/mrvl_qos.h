@@ -19,32 +19,32 @@
 
 /* QoS config. */
 struct mrvl_qos_cfg {
-	struct port_cfg {
-		int rate_limit_enable;
-		struct pp2_ppio_rate_limit_params rate_limit_params;
-		struct {
-			uint8_t inq[MRVL_PP2_RXQ_MAX];
-			uint8_t dscp[MRVL_CP_PER_TC];
-			uint8_t pcp[MRVL_CP_PER_TC];
-			uint8_t inqs;
-			uint8_t dscps;
-			uint8_t pcps;
-			enum pp2_ppio_color color;
-		} tc[MRVL_PP2_TC_MAX];
-		struct {
-			enum pp2_ppio_outq_sched_mode sched_mode;
-			uint8_t weight;
-			int rate_limit_enable;
-			struct pp2_ppio_rate_limit_params rate_limit_params;
-		} outq[MRVL_PP2_RXQ_MAX];
-		enum pp2_cls_qos_tbl_type mapping_priority;
-		uint16_t inqs;
-		uint16_t outqs;
-		uint8_t default_tc;
-		uint8_t use_global_defaults;
-		struct pp2_cls_plcr_params policer_params;
-		uint8_t setup_policer;
-	} port[RTE_MAX_ETHPORTS];
+    struct port_cfg {
+        int rate_limit_enable;
+        struct pp2_ppio_rate_limit_params rate_limit_params;
+        struct {
+            uint8_t inq[MRVL_PP2_RXQ_MAX];
+            uint8_t dscp[MRVL_CP_PER_TC];
+            uint8_t pcp[MRVL_CP_PER_TC];
+            uint8_t inqs;
+            uint8_t dscps;
+            uint8_t pcps;
+            enum pp2_ppio_color color;
+        } tc[MRVL_PP2_TC_MAX];
+        struct {
+            enum pp2_ppio_outq_sched_mode sched_mode;
+            uint8_t weight;
+            int rate_limit_enable;
+            struct pp2_ppio_rate_limit_params rate_limit_params;
+        } outq[MRVL_PP2_RXQ_MAX];
+        enum pp2_cls_qos_tbl_type mapping_priority;
+        uint16_t inqs;
+        uint16_t outqs;
+        uint8_t default_tc;
+        uint8_t use_global_defaults;
+        struct pp2_cls_plcr_params policer_params;
+        uint8_t setup_policer;
+    } port[RTE_MAX_ETHPORTS];
 };
 
 /** Global QoS configuration. */
@@ -62,7 +62,7 @@ extern struct mrvl_qos_cfg *mrvl_qos_cfg;
  */
 int
 mrvl_get_qoscfg(const char *key __rte_unused, const char *path,
-		void *extra_args);
+        void *extra_args);
 
 /**
  * Configure RX Queues in a given port.
@@ -76,7 +76,7 @@ mrvl_get_qoscfg(const char *key __rte_unused, const char *path,
  */
 int
 mrvl_configure_rxqs(struct mrvl_priv *priv, uint16_t portid,
-		    uint16_t max_queues);
+            uint16_t max_queues);
 
 /**
  * Configure TX Queues in a given port.
@@ -90,7 +90,7 @@ mrvl_configure_rxqs(struct mrvl_priv *priv, uint16_t portid,
  */
 int
 mrvl_configure_txqs(struct mrvl_priv *priv, uint16_t portid,
-		    uint16_t max_queues);
+            uint16_t max_queues);
 
 /**
  * Start QoS mapping.

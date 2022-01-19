@@ -31,61 +31,61 @@ extern "C" {
 #define RTE_STACK_MZ_PREFIX "STK_"
 /** The maximum length of a stack name. */
 #define RTE_STACK_NAMESIZE (RTE_MEMZONE_NAMESIZE - \
-			   sizeof(RTE_STACK_MZ_PREFIX) + 1)
+               sizeof(RTE_STACK_MZ_PREFIX) + 1)
 
 struct rte_stack_lf_elem {
-	void *data;			/**< Data pointer */
-	struct rte_stack_lf_elem *next;	/**< Next pointer */
+    void *data;            /**< Data pointer */
+    struct rte_stack_lf_elem *next;    /**< Next pointer */
 };
 
 struct rte_stack_lf_head {
-	struct rte_stack_lf_elem *top; /**< Stack top */
-	uint64_t cnt; /**< Modification counter for avoiding ABA problem */
+    struct rte_stack_lf_elem *top; /**< Stack top */
+    uint64_t cnt; /**< Modification counter for avoiding ABA problem */
 };
 
 struct rte_stack_lf_list {
-	/** List head */
-	struct rte_stack_lf_head head __rte_aligned(16);
-	/** List len */
-	uint64_t len;
+    /** List head */
+    struct rte_stack_lf_head head __rte_aligned(16);
+    /** List len */
+    uint64_t len;
 };
 
 /* Structure containing two lock-free LIFO lists: the stack itself and a list
  * of free linked-list elements.
  */
 struct rte_stack_lf {
-	/** LIFO list of elements */
-	struct rte_stack_lf_list used __rte_cache_aligned;
-	/** LIFO list of free elements */
-	struct rte_stack_lf_list free __rte_cache_aligned;
-	/** LIFO elements */
-	struct rte_stack_lf_elem elems[] __rte_cache_aligned;
+    /** LIFO list of elements */
+    struct rte_stack_lf_list used __rte_cache_aligned;
+    /** LIFO list of free elements */
+    struct rte_stack_lf_list free __rte_cache_aligned;
+    /** LIFO elements */
+    struct rte_stack_lf_elem elems[] __rte_cache_aligned;
 };
 
 /* Structure containing the LIFO, its current length, and a lock for mutual
  * exclusion.
  */
 struct rte_stack_std {
-	rte_spinlock_t lock; /**< LIFO lock */
-	uint32_t len; /**< LIFO len */
-	void *objs[]; /**< LIFO pointer table */
+    rte_spinlock_t lock; /**< LIFO lock */
+    uint32_t len; /**< LIFO len */
+    void *objs[]; /**< LIFO pointer table */
 };
 
 /* The RTE stack structure contains the LIFO structure itself, plus metadata
  * such as its name and memzone pointer.
  */
 struct rte_stack {
-	/** Name of the stack. */
-	char name[RTE_STACK_NAMESIZE] __rte_cache_aligned;
-	/** Memzone containing the rte_stack structure. */
-	const struct rte_memzone *memzone;
-	uint32_t capacity; /**< Usable size of the stack. */
-	uint32_t flags; /**< Flags supplied at creation. */
-	RTE_STD_C11
-	union {
-		struct rte_stack_lf stack_lf; /**< Lock-free LIFO structure. */
-		struct rte_stack_std stack_std;	/**< LIFO structure. */
-	};
+    /** Name of the stack. */
+    char name[RTE_STACK_NAMESIZE] __rte_cache_aligned;
+    /** Memzone containing the rte_stack structure. */
+    const struct rte_memzone *memzone;
+    uint32_t capacity; /**< Usable size of the stack. */
+    uint32_t flags; /**< Flags supplied at creation. */
+    RTE_STD_C11
+    union {
+        struct rte_stack_lf stack_lf; /**< Lock-free LIFO structure. */
+        struct rte_stack_std stack_std;    /**< LIFO structure. */
+    };
 } __rte_cache_aligned;
 
 /**
@@ -116,13 +116,13 @@ __rte_experimental
 static __rte_always_inline unsigned int
 rte_stack_push(struct rte_stack *s, void * const *obj_table, unsigned int n)
 {
-	RTE_ASSERT(s != NULL);
-	RTE_ASSERT(obj_table != NULL);
+    RTE_ASSERT(s != NULL);
+    RTE_ASSERT(obj_table != NULL);
 
-	if (s->flags & RTE_STACK_F_LF)
-		return __rte_stack_lf_push(s, obj_table, n);
-	else
-		return __rte_stack_std_push(s, obj_table, n);
+    if (s->flags & RTE_STACK_F_LF)
+        return __rte_stack_lf_push(s, obj_table, n);
+    else
+        return __rte_stack_std_push(s, obj_table, n);
 }
 
 /**
@@ -144,13 +144,13 @@ __rte_experimental
 static __rte_always_inline unsigned int
 rte_stack_pop(struct rte_stack *s, void **obj_table, unsigned int n)
 {
-	RTE_ASSERT(s != NULL);
-	RTE_ASSERT(obj_table != NULL);
+    RTE_ASSERT(s != NULL);
+    RTE_ASSERT(obj_table != NULL);
 
-	if (s->flags & RTE_STACK_F_LF)
-		return __rte_stack_lf_pop(s, obj_table, n);
-	else
-		return __rte_stack_std_pop(s, obj_table, n);
+    if (s->flags & RTE_STACK_F_LF)
+        return __rte_stack_lf_pop(s, obj_table, n);
+    else
+        return __rte_stack_std_pop(s, obj_table, n);
 }
 
 /**
@@ -168,12 +168,12 @@ __rte_experimental
 static __rte_always_inline unsigned int
 rte_stack_count(struct rte_stack *s)
 {
-	RTE_ASSERT(s != NULL);
+    RTE_ASSERT(s != NULL);
 
-	if (s->flags & RTE_STACK_F_LF)
-		return __rte_stack_lf_count(s);
-	else
-		return __rte_stack_std_count(s);
+    if (s->flags & RTE_STACK_F_LF)
+        return __rte_stack_lf_count(s);
+    else
+        return __rte_stack_std_count(s);
 }
 
 /**
@@ -191,9 +191,9 @@ __rte_experimental
 static __rte_always_inline unsigned int
 rte_stack_free_count(struct rte_stack *s)
 {
-	RTE_ASSERT(s != NULL);
+    RTE_ASSERT(s != NULL);
 
-	return s->capacity - rte_stack_count(s);
+    return s->capacity - rte_stack_count(s);
 }
 
 /**
@@ -229,7 +229,7 @@ rte_stack_free_count(struct rte_stack *s)
 __rte_experimental
 struct rte_stack *
 rte_stack_create(const char *name, unsigned int count, int socket_id,
-		 uint32_t flags);
+         uint32_t flags);
 
 /**
  * @warning

@@ -110,7 +110,7 @@
 #define RTE_MAX_VIRTIO_CRYPTO 32
 
 /* DPAA SEC max cryptodev devices*/
-#define RTE_LIBRTE_DPAA_MAX_CRYPTODEV	4
+#define RTE_LIBRTE_DPAA_MAX_CRYPTODEV    4
 
 /* fm10k defines */
 #define RTE_LIBRTE_FM10K_RX_OLFLAGS_ENABLE 1

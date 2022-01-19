@@ -15,10 +15,10 @@
 #include "common.h"
 
 struct kni {
-	TAILQ_ENTRY(kni) node;
-	char name[NAME_SIZE];
+    TAILQ_ENTRY(kni) node;
+    char name[NAME_SIZE];
 #ifdef RTE_LIBRTE_KNI
-	struct rte_kni *k;
+    struct rte_kni *k;
 #endif
 };
 
@@ -31,10 +31,10 @@ struct kni *
 kni_find(const char *name);
 
 struct kni_params {
-	const char *link_name;
-	const char *mempool_name;
-	int force_bind;
-	uint32_t thread_id;
+    const char *link_name;
+    const char *mempool_name;
+    int force_bind;
+    uint32_t thread_id;
 };
 
 struct kni *

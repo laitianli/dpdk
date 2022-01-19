@@ -33,30 +33,30 @@ struct rte_cfgfile;
 
 /** Configuration file entry */
 struct rte_cfgfile_entry {
-	char name[CFG_NAME_LEN]; /**< Name */
-	char value[CFG_VALUE_LEN]; /**< Value */
+    char name[CFG_NAME_LEN]; /**< Name */
+    char value[CFG_VALUE_LEN]; /**< Value */
 };
 
 /** Configuration file operation optional arguments */
 struct rte_cfgfile_parameters {
-	/** Config file comment character; one of '!', '#', '%', ';', '@' */
-	char comment_character;
+    /** Config file comment character; one of '!', '#', '%', ';', '@' */
+    char comment_character;
 };
 
 /**@{ cfgfile load operation flags */
 enum {
-	/**
-	 * Indicates that the file supports key value entries before the first
-	 * defined section.  These entries can be accessed in the "GLOBAL"
-	 * section.
-	 */
-	CFG_FLAG_GLOBAL_SECTION = 1,
+    /**
+     * Indicates that the file supports key value entries before the first
+     * defined section.  These entries can be accessed in the "GLOBAL"
+     * section.
+     */
+    CFG_FLAG_GLOBAL_SECTION = 1,
 
-	/**
-	 * Indicates that file supports key value entries where the value can
-	 * be zero length (e.g., "key=").
-	 */
-	CFG_FLAG_EMPTY_VALUES = 2,
+    /**
+     * Indicates that file supports key value entries where the value can
+     * be zero length (e.g., "key=").
+     */
+    CFG_FLAG_EMPTY_VALUES = 2,
 };
 /**@} */
 
@@ -89,7 +89,7 @@ struct rte_cfgfile *rte_cfgfile_load(const char *filename, int flags);
  *   Handle to configuration file on success, NULL otherwise
  */
 struct rte_cfgfile *rte_cfgfile_load_with_params(const char *filename,
-	int flags, const struct rte_cfgfile_parameters *params);
+    int flags, const struct rte_cfgfile_parameters *params);
 
 /**
  * Create new cfgfile instance with empty sections and entries
@@ -135,8 +135,8 @@ rte_cfgfile_add_section(struct rte_cfgfile *cfg, const char *sectionname);
  *   0 on success, -EEXIST if entry already exist, -EINVAL if bad argument
  */
 int rte_cfgfile_add_entry(struct rte_cfgfile *cfg,
-		const char *sectionname, const char *entryname,
-		const char *entryvalue);
+        const char *sectionname, const char *entryname,
+        const char *entryvalue);
 
 /**
  * Update value of specified entry name in given section in config file
@@ -153,7 +153,7 @@ int rte_cfgfile_add_entry(struct rte_cfgfile *cfg,
  *   0 on success, -EINVAL if bad argument
  */
 int rte_cfgfile_set_entry(struct rte_cfgfile *cfg, const char *sectionname,
-		const char *entryname, const char *entryvalue);
+        const char *entryname, const char *entryvalue);
 
 /**
  * Save object cfgfile to file on disc
@@ -180,7 +180,7 @@ int rte_cfgfile_save(struct rte_cfgfile *cfg, const char *filename);
 *   Number of sections
 */
 int rte_cfgfile_num_sections(struct rte_cfgfile *cfg, const char *sec_name,
-	size_t length);
+    size_t length);
 
 /**
 * Get name of all config file sections.
@@ -200,7 +200,7 @@ int rte_cfgfile_num_sections(struct rte_cfgfile *cfg, const char *sec_name,
 *   Number of populated sections names
 */
 int rte_cfgfile_sections(struct rte_cfgfile *cfg, char *sections[],
-	int max_sections);
+    int max_sections);
 
 /**
 * Check if given section exists in config file
@@ -228,7 +228,7 @@ int rte_cfgfile_has_section(struct rte_cfgfile *cfg, const char *sectionname);
 *   Number of entries in section on success, -1 otherwise
 */
 int rte_cfgfile_section_num_entries(struct rte_cfgfile *cfg,
-	const char *sectionname);
+    const char *sectionname);
 
 /**
 * Get number of entries in given config file section
@@ -247,8 +247,8 @@ int rte_cfgfile_section_num_entries(struct rte_cfgfile *cfg,
 *   Number of entries in section on success, -1 otherwise
 */
 int rte_cfgfile_section_num_entries_by_index(struct rte_cfgfile *cfg,
-	char *sectionname,
-	int index);
+    char *sectionname,
+    int index);
 
 /**
 * Get section entries as key-value pairs
@@ -269,9 +269,9 @@ int rte_cfgfile_section_num_entries_by_index(struct rte_cfgfile *cfg,
 *   Number of entries populated on success, -1 otherwise
 */
 int rte_cfgfile_section_entries(struct rte_cfgfile *cfg,
-	const char *sectionname,
-	struct rte_cfgfile_entry *entries,
-	int max_entries);
+    const char *sectionname,
+    struct rte_cfgfile_entry *entries,
+    int max_entries);
 
 /**
 * Get section entries as key-value pairs
@@ -296,10 +296,10 @@ int rte_cfgfile_section_entries(struct rte_cfgfile *cfg,
 *   Number of entries populated on success, -1 otherwise
 */
 int rte_cfgfile_section_entries_by_index(struct rte_cfgfile *cfg,
-	int index,
-	char *sectionname,
-	struct rte_cfgfile_entry *entries,
-	int max_entries);
+    int index,
+    char *sectionname,
+    struct rte_cfgfile_entry *entries,
+    int max_entries);
 
 /**
 * Get value of the named entry in named config file section
@@ -317,8 +317,8 @@ int rte_cfgfile_section_entries_by_index(struct rte_cfgfile *cfg,
 *   Entry value on success, NULL otherwise
 */
 const char *rte_cfgfile_get_entry(struct rte_cfgfile *cfg,
-	const char *sectionname,
-	const char *entryname);
+    const char *sectionname,
+    const char *entryname);
 
 /**
 * Check if given entry exists in named config file section
@@ -336,7 +336,7 @@ const char *rte_cfgfile_get_entry(struct rte_cfgfile *cfg,
 *   TRUE (value different than 0) if entry exists, FALSE (value 0) otherwise
 */
 int rte_cfgfile_has_entry(struct rte_cfgfile *cfg, const char *sectionname,
-	const char *entryname);
+    const char *entryname);
 
 /**
 * Close config file

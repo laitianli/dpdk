@@ -35,24 +35,24 @@ extern "C" {
 
 /** ring_reader_ipv4_frag port parameters */
 struct rte_port_ring_reader_frag_params {
-	/** Underlying single consumer ring that has to be pre-initialized. */
-	struct rte_ring *ring;
+    /** Underlying single consumer ring that has to be pre-initialized. */
+    struct rte_ring *ring;
 
-	/** Maximum Transfer Unit (MTU). Maximum IP packet size (in bytes). */
-	uint32_t mtu;
+    /** Maximum Transfer Unit (MTU). Maximum IP packet size (in bytes). */
+    uint32_t mtu;
 
-	/** Size of application dependent meta-data stored per each input packet
-	    that has to be copied to each of the fragments originating from the
-	    same input IP datagram. */
-	uint32_t metadata_size;
+    /** Size of application dependent meta-data stored per each input packet
+        that has to be copied to each of the fragments originating from the
+        same input IP datagram. */
+    uint32_t metadata_size;
 
-	/** Pre-initialized buffer pool used for allocating direct buffers for
-	    the output fragments. */
-	struct rte_mempool *pool_direct;
+    /** Pre-initialized buffer pool used for allocating direct buffers for
+        the output fragments. */
+    struct rte_mempool *pool_direct;
 
-	/** Pre-initialized buffer pool used for allocating indirect buffers for
-	    the output fragments. */
-	struct rte_mempool *pool_indirect;
+    /** Pre-initialized buffer pool used for allocating indirect buffers for
+        the output fragments. */
+    struct rte_mempool *pool_indirect;
 };
 
 #define rte_port_ring_reader_ipv4_frag_params rte_port_ring_reader_frag_params

@@ -19,9 +19,9 @@ extern "C" {
  * State of an lcore.
  */
 enum rte_lcore_state_t {
-	WAIT,       /**< waiting a new command */
-	RUNNING,    /**< executing command */
-	FINISHED,   /**< command executed */
+    WAIT,       /**< waiting a new command */
+    RUNNING,    /**< executing command */
+    FINISHED,   /**< command executed */
 };
 
 /**
@@ -69,8 +69,8 @@ int rte_eal_remote_launch(lcore_function_t *f, void *arg, unsigned slave_id);
  * launched on all logical cores.
  */
 enum rte_rmt_call_master_t {
-	SKIP_MASTER = 0, /**< lcore handler not executed by master core. */
-	CALL_MASTER,     /**< lcore handler executed by master core. */
+    SKIP_MASTER = 0, /**< lcore handler not executed by master core. */
+    CALL_MASTER,     /**< lcore handler executed by master core. */
 };
 
 /**
@@ -95,7 +95,7 @@ enum rte_rmt_call_master_t {
  *     case, no message is sent to any of the lcores.
  */
 int rte_eal_mp_remote_launch(lcore_function_t *f, void *arg,
-			     enum rte_rmt_call_master_t call_master);
+                 enum rte_rmt_call_master_t call_master);
 
 /**
  * Get the state of the lcore identified by slave_id.

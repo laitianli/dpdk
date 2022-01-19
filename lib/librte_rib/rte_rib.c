@@ -19,46 +19,46 @@
 
 TAILQ_HEAD(rte_rib_list, rte_tailq_entry);
 static struct rte_tailq_elem rte_rib_tailq = {
-	.name = "RTE_RIB",
+    .name = "RTE_RIB",
 };
 EAL_REGISTER_TAILQ(rte_rib_tailq)
 
-#define RTE_RIB_VALID_NODE	1
+#define RTE_RIB_VALID_NODE    1
 /* Maximum depth value possible for IPv4 RIB. */
-#define RIB_MAXDEPTH		32
+#define RIB_MAXDEPTH        32
 /* Maximum length of a RIB name. */
-#define RTE_RIB_NAMESIZE	64
+#define RTE_RIB_NAMESIZE    64
 
 struct rte_rib_node {
-	struct rte_rib_node	*left;
-	struct rte_rib_node	*right;
-	struct rte_rib_node	*parent;
-	uint32_t	ip;
-	uint8_t		depth;
-	uint8_t		flag;
-	uint64_t	nh;
-	__extension__ uint64_t	ext[0];
+    struct rte_rib_node    *left;
+    struct rte_rib_node    *right;
+    struct rte_rib_node    *parent;
+    uint32_t    ip;
+    uint8_t        depth;
+    uint8_t        flag;
+    uint64_t    nh;
+    __extension__ uint64_t    ext[0];
 };
 
 struct rte_rib {
-	char		name[RTE_RIB_NAMESIZE];
-	struct rte_rib_node	*tree;
-	struct rte_mempool	*node_pool;
-	uint32_t		cur_nodes;
-	uint32_t		cur_routes;
-	uint32_t		max_nodes;
+    char        name[RTE_RIB_NAMESIZE];
+    struct rte_rib_node    *tree;
+    struct rte_mempool    *node_pool;
+    uint32_t        cur_nodes;
+    uint32_t        cur_routes;
+    uint32_t        max_nodes;
 };
 
 static inline bool
 is_valid_node(struct rte_rib_node *node)
 {
-	return (node->flag & RTE_RIB_VALID_NODE) == RTE_RIB_VALID_NODE;
+    return (node->flag & RTE_RIB_VALID_NODE) == RTE_RIB_VALID_NODE;
 }
 
 static inline bool
 is_right_node(struct rte_rib_node *node)
 {
-	return node->parent->right == node;
+    return node->parent->right == node;
 }
 
 /*
@@ -67,95 +67,95 @@ is_right_node(struct rte_rib_node *node)
 static inline bool
 is_covered(uint32_t ip1, uint32_t ip2, uint8_t depth)
 {
-	return ((ip1 ^ ip2) & rte_rib_depth_to_mask(depth)) == 0;
+    return ((ip1 ^ ip2) & rte_rib_depth_to_mask(depth)) == 0;
 }
 
 static inline struct rte_rib_node *
 get_nxt_node(struct rte_rib_node *node, uint32_t ip)
 {
-	return (ip & (1 << (31 - node->depth))) ? node->right : node->left;
+    return (ip & (1 << (31 - node->depth))) ? node->right : node->left;
 }
 
 static struct rte_rib_node *
 node_alloc(struct rte_rib *rib)
 {
-	struct rte_rib_node *ent;
-	int ret;
+    struct rte_rib_node *ent;
+    int ret;
 
-	ret = rte_mempool_get(rib->node_pool, (void *)&ent);
-	if (unlikely(ret != 0))
-		return NULL;
-	++rib->cur_nodes;
-	return ent;
+    ret = rte_mempool_get(rib->node_pool, (void *)&ent);
+    if (unlikely(ret != 0))
+        return NULL;
+    ++rib->cur_nodes;
+    return ent;
 }
 
 static void
 node_free(struct rte_rib *rib, struct rte_rib_node *ent)
 {
-	--rib->cur_nodes;
-	rte_mempool_put(rib->node_pool, ent);
+    --rib->cur_nodes;
+    rte_mempool_put(rib->node_pool, ent);
 }
 
 struct rte_rib_node *
 rte_rib_lookup(struct rte_rib *rib, uint32_t ip)
 {
-	struct rte_rib_node *cur, *prev = NULL;
+    struct rte_rib_node *cur, *prev = NULL;
 
-	if (rib == NULL) {
-		rte_errno = EINVAL;
-		return NULL;
-	}
+    if (rib == NULL) {
+        rte_errno = EINVAL;
+        return NULL;
+    }
 
-	cur = rib->tree;
-	while ((cur != NULL) && is_covered(ip, cur->ip, cur->depth)) {
-		if (is_valid_node(cur))
-			prev = cur;
-		cur = get_nxt_node(cur, ip);
-	}
-	return prev;
+    cur = rib->tree;
+    while ((cur != NULL) && is_covered(ip, cur->ip, cur->depth)) {
+        if (is_valid_node(cur))
+            prev = cur;
+        cur = get_nxt_node(cur, ip);
+    }
+    return prev;
 }
 
 struct rte_rib_node *
 rte_rib_lookup_parent(struct rte_rib_node *ent)
 {
-	struct rte_rib_node *tmp;
+    struct rte_rib_node *tmp;
 
-	if (ent == NULL)
-		return NULL;
-	tmp = ent->parent;
-	while ((tmp != NULL) &&	!is_valid_node(tmp))
-		tmp = tmp->parent;
-	return tmp;
+    if (ent == NULL)
+        return NULL;
+    tmp = ent->parent;
+    while ((tmp != NULL) &&    !is_valid_node(tmp))
+        tmp = tmp->parent;
+    return tmp;
 }
 
 static struct rte_rib_node *
 __rib_lookup_exact(struct rte_rib *rib, uint32_t ip, uint8_t depth)
 {
-	struct rte_rib_node *cur;
+    struct rte_rib_node *cur;
 
-	cur = rib->tree;
-	while (cur != NULL) {
-		if ((cur->ip == ip) && (cur->depth == depth) &&
-				is_valid_node(cur))
-			return cur;
-		if ((cur->depth > depth) ||
-				!is_covered(ip, cur->ip, cur->depth))
-			break;
-		cur = get_nxt_node(cur, ip);
-	}
-	return NULL;
+    cur = rib->tree;
+    while (cur != NULL) {
+        if ((cur->ip == ip) && (cur->depth == depth) &&
+                is_valid_node(cur))
+            return cur;
+        if ((cur->depth > depth) ||
+                !is_covered(ip, cur->ip, cur->depth))
+            break;
+        cur = get_nxt_node(cur, ip);
+    }
+    return NULL;
 }
 
 struct rte_rib_node *
 rte_rib_lookup_exact(struct rte_rib *rib, uint32_t ip, uint8_t depth)
 {
-	if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
-		rte_errno = EINVAL;
-		return NULL;
-	}
-	ip &= rte_rib_depth_to_mask(depth);
+    if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
+        rte_errno = EINVAL;
+        return NULL;
+    }
+    ip &= rte_rib_depth_to_mask(depth);
 
-	return __rib_lookup_exact(rib, ip, depth);
+    return __rib_lookup_exact(rib, ip, depth);
 }
 
 /*
@@ -165,368 +165,368 @@ rte_rib_lookup_exact(struct rte_rib *rib, uint32_t ip, uint8_t depth)
  */
 struct rte_rib_node *
 rte_rib_get_nxt(struct rte_rib *rib, uint32_t ip,
-	uint8_t depth, struct rte_rib_node *last, int flag)
+    uint8_t depth, struct rte_rib_node *last, int flag)
 {
-	struct rte_rib_node *tmp, *prev = NULL;
+    struct rte_rib_node *tmp, *prev = NULL;
 
-	if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
-		rte_errno = EINVAL;
-		return NULL;
-	}
+    if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
+        rte_errno = EINVAL;
+        return NULL;
+    }
 
-	if (last == NULL) {
-		tmp = rib->tree;
-		while ((tmp) && (tmp->depth < depth))
-			tmp = get_nxt_node(tmp, ip);
-	} else {
-		tmp = last;
-		while ((tmp->parent != NULL) && (is_right_node(tmp) ||
-				(tmp->parent->right == NULL))) {
-			tmp = tmp->parent;
-			if (is_valid_node(tmp) &&
-					(is_covered(tmp->ip, ip, depth) &&
-					(tmp->depth > depth)))
-				return tmp;
-		}
-		tmp = (tmp->parent) ? tmp->parent->right : NULL;
-	}
-	while (tmp) {
-		if (is_valid_node(tmp) &&
-				(is_covered(tmp->ip, ip, depth) &&
-				(tmp->depth > depth))) {
-			prev = tmp;
-			if (flag == RTE_RIB_GET_NXT_COVER)
-				return prev;
-		}
-		tmp = (tmp->left) ? tmp->left : tmp->right;
-	}
-	return prev;
+    if (last == NULL) {
+        tmp = rib->tree;
+        while ((tmp) && (tmp->depth < depth))
+            tmp = get_nxt_node(tmp, ip);
+    } else {
+        tmp = last;
+        while ((tmp->parent != NULL) && (is_right_node(tmp) ||
+                (tmp->parent->right == NULL))) {
+            tmp = tmp->parent;
+            if (is_valid_node(tmp) &&
+                    (is_covered(tmp->ip, ip, depth) &&
+                    (tmp->depth > depth)))
+                return tmp;
+        }
+        tmp = (tmp->parent) ? tmp->parent->right : NULL;
+    }
+    while (tmp) {
+        if (is_valid_node(tmp) &&
+                (is_covered(tmp->ip, ip, depth) &&
+                (tmp->depth > depth))) {
+            prev = tmp;
+            if (flag == RTE_RIB_GET_NXT_COVER)
+                return prev;
+        }
+        tmp = (tmp->left) ? tmp->left : tmp->right;
+    }
+    return prev;
 }
 
 void
 rte_rib_remove(struct rte_rib *rib, uint32_t ip, uint8_t depth)
 {
-	struct rte_rib_node *cur, *prev, *child;
+    struct rte_rib_node *cur, *prev, *child;
 
-	cur = rte_rib_lookup_exact(rib, ip, depth);
-	if (cur == NULL)
-		return;
+    cur = rte_rib_lookup_exact(rib, ip, depth);
+    if (cur == NULL)
+        return;
 
-	--rib->cur_routes;
-	cur->flag &= ~RTE_RIB_VALID_NODE;
-	while (!is_valid_node(cur)) {
-		if ((cur->left != NULL) && (cur->right != NULL))
-			return;
-		child = (cur->left == NULL) ? cur->right : cur->left;
-		if (child != NULL)
-			child->parent = cur->parent;
-		if (cur->parent == NULL) {
-			rib->tree = child;
-			node_free(rib, cur);
-			return;
-		}
-		if (cur->parent->left == cur)
-			cur->parent->left = child;
-		else
-			cur->parent->right = child;
-		prev = cur;
-		cur = cur->parent;
-		node_free(rib, prev);
-	}
+    --rib->cur_routes;
+    cur->flag &= ~RTE_RIB_VALID_NODE;
+    while (!is_valid_node(cur)) {
+        if ((cur->left != NULL) && (cur->right != NULL))
+            return;
+        child = (cur->left == NULL) ? cur->right : cur->left;
+        if (child != NULL)
+            child->parent = cur->parent;
+        if (cur->parent == NULL) {
+            rib->tree = child;
+            node_free(rib, cur);
+            return;
+        }
+        if (cur->parent->left == cur)
+            cur->parent->left = child;
+        else
+            cur->parent->right = child;
+        prev = cur;
+        cur = cur->parent;
+        node_free(rib, prev);
+    }
 }
 
 struct rte_rib_node *
 rte_rib_insert(struct rte_rib *rib, uint32_t ip, uint8_t depth)
 {
-	struct rte_rib_node **tmp;
-	struct rte_rib_node *prev = NULL;
-	struct rte_rib_node *new_node = NULL;
-	struct rte_rib_node *common_node = NULL;
-	int d = 0;
-	uint32_t common_prefix;
-	uint8_t common_depth;
+    struct rte_rib_node **tmp;
+    struct rte_rib_node *prev = NULL;
+    struct rte_rib_node *new_node = NULL;
+    struct rte_rib_node *common_node = NULL;
+    int d = 0;
+    uint32_t common_prefix;
+    uint8_t common_depth;
 
-	if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
-		rte_errno = EINVAL;
-		return NULL;
-	}
+    if ((rib == NULL) || (depth > RIB_MAXDEPTH)) {
+        rte_errno = EINVAL;
+        return NULL;
+    }
 
-	tmp = &rib->tree;
-	ip &= rte_rib_depth_to_mask(depth);
-	new_node = __rib_lookup_exact(rib, ip, depth);
-	if (new_node != NULL) {
-		rte_errno = EEXIST;
-		return NULL;
-	}
+    tmp = &rib->tree;
+    ip &= rte_rib_depth_to_mask(depth);
+    new_node = __rib_lookup_exact(rib, ip, depth);
+    if (new_node != NULL) {
+        rte_errno = EEXIST;
+        return NULL;
+    }
 
-	new_node = node_alloc(rib);
-	if (new_node == NULL) {
-		rte_errno = ENOMEM;
-		return NULL;
-	}
-	new_node->left = NULL;
-	new_node->right = NULL;
-	new_node->parent = NULL;
-	new_node->ip = ip;
-	new_node->depth = depth;
-	new_node->flag = RTE_RIB_VALID_NODE;
+    new_node = node_alloc(rib);
+    if (new_node == NULL) {
+        rte_errno = ENOMEM;
+        return NULL;
+    }
+    new_node->left = NULL;
+    new_node->right = NULL;
+    new_node->parent = NULL;
+    new_node->ip = ip;
+    new_node->depth = depth;
+    new_node->flag = RTE_RIB_VALID_NODE;
 
-	/* traverse down the tree to find matching node or closest matching */
-	while (1) {
-		/* insert as the last node in the branch */
-		if (*tmp == NULL) {
-			*tmp = new_node;
-			new_node->parent = prev;
-			++rib->cur_routes;
-			return *tmp;
-		}
-		/*
-		 * Intermediate node found.
-		 * Previous rte_rib_lookup_exact() returned NULL
-		 * but node with proper search criteria is found.
-		 * Validate intermediate node and return.
-		 */
-		if ((ip == (*tmp)->ip) && (depth == (*tmp)->depth)) {
-			node_free(rib, new_node);
-			(*tmp)->flag |= RTE_RIB_VALID_NODE;
-			++rib->cur_routes;
-			return *tmp;
-		}
-		d = (*tmp)->depth;
-		if ((d >= depth) || !is_covered(ip, (*tmp)->ip, d))
-			break;
-		prev = *tmp;
-		tmp = (ip & (1 << (31 - d))) ? &(*tmp)->right : &(*tmp)->left;
-	}
-	/* closest node found, new_node should be inserted in the middle */
-	common_depth = RTE_MIN(depth, (*tmp)->depth);
-	common_prefix = ip ^ (*tmp)->ip;
-	d = __builtin_clz(common_prefix);
+    /* traverse down the tree to find matching node or closest matching */
+    while (1) {
+        /* insert as the last node in the branch */
+        if (*tmp == NULL) {
+            *tmp = new_node;
+            new_node->parent = prev;
+            ++rib->cur_routes;
+            return *tmp;
+        }
+        /*
+         * Intermediate node found.
+         * Previous rte_rib_lookup_exact() returned NULL
+         * but node with proper search criteria is found.
+         * Validate intermediate node and return.
+         */
+        if ((ip == (*tmp)->ip) && (depth == (*tmp)->depth)) {
+            node_free(rib, new_node);
+            (*tmp)->flag |= RTE_RIB_VALID_NODE;
+            ++rib->cur_routes;
+            return *tmp;
+        }
+        d = (*tmp)->depth;
+        if ((d >= depth) || !is_covered(ip, (*tmp)->ip, d))
+            break;
+        prev = *tmp;
+        tmp = (ip & (1 << (31 - d))) ? &(*tmp)->right : &(*tmp)->left;
+    }
+    /* closest node found, new_node should be inserted in the middle */
+    common_depth = RTE_MIN(depth, (*tmp)->depth);
+    common_prefix = ip ^ (*tmp)->ip;
+    d = __builtin_clz(common_prefix);
 
-	common_depth = RTE_MIN(d, common_depth);
-	common_prefix = ip & rte_rib_depth_to_mask(common_depth);
-	if ((common_prefix == ip) && (common_depth == depth)) {
-		/* insert as a parent */
-		if ((*tmp)->ip & (1 << (31 - depth)))
-			new_node->right = *tmp;
-		else
-			new_node->left = *tmp;
-		new_node->parent = (*tmp)->parent;
-		(*tmp)->parent = new_node;
-		*tmp = new_node;
-	} else {
-		/* create intermediate node */
-		common_node = node_alloc(rib);
-		if (common_node == NULL) {
-			node_free(rib, new_node);
-			rte_errno = ENOMEM;
-			return NULL;
-		}
-		common_node->ip = common_prefix;
-		common_node->depth = common_depth;
-		common_node->flag = 0;
-		common_node->parent = (*tmp)->parent;
-		new_node->parent = common_node;
-		(*tmp)->parent = common_node;
-		if ((new_node->ip & (1 << (31 - common_depth))) == 0) {
-			common_node->left = new_node;
-			common_node->right = *tmp;
-		} else {
-			common_node->left = *tmp;
-			common_node->right = new_node;
-		}
-		*tmp = common_node;
-	}
-	++rib->cur_routes;
-	return new_node;
+    common_depth = RTE_MIN(d, common_depth);
+    common_prefix = ip & rte_rib_depth_to_mask(common_depth);
+    if ((common_prefix == ip) && (common_depth == depth)) {
+        /* insert as a parent */
+        if ((*tmp)->ip & (1 << (31 - depth)))
+            new_node->right = *tmp;
+        else
+            new_node->left = *tmp;
+        new_node->parent = (*tmp)->parent;
+        (*tmp)->parent = new_node;
+        *tmp = new_node;
+    } else {
+        /* create intermediate node */
+        common_node = node_alloc(rib);
+        if (common_node == NULL) {
+            node_free(rib, new_node);
+            rte_errno = ENOMEM;
+            return NULL;
+        }
+        common_node->ip = common_prefix;
+        common_node->depth = common_depth;
+        common_node->flag = 0;
+        common_node->parent = (*tmp)->parent;
+        new_node->parent = common_node;
+        (*tmp)->parent = common_node;
+        if ((new_node->ip & (1 << (31 - common_depth))) == 0) {
+            common_node->left = new_node;
+            common_node->right = *tmp;
+        } else {
+            common_node->left = *tmp;
+            common_node->right = new_node;
+        }
+        *tmp = common_node;
+    }
+    ++rib->cur_routes;
+    return new_node;
 }
 
 int
 rte_rib_get_ip(struct rte_rib_node *node, uint32_t *ip)
 {
-	if ((node == NULL) || (ip == NULL)) {
-		rte_errno = EINVAL;
-		return -1;
-	}
-	*ip = node->ip;
-	return 0;
+    if ((node == NULL) || (ip == NULL)) {
+        rte_errno = EINVAL;
+        return -1;
+    }
+    *ip = node->ip;
+    return 0;
 }
 
 int
 rte_rib_get_depth(struct rte_rib_node *node, uint8_t *depth)
 {
-	if ((node == NULL) || (depth == NULL)) {
-		rte_errno = EINVAL;
-		return -1;
-	}
-	*depth = node->depth;
-	return 0;
+    if ((node == NULL) || (depth == NULL)) {
+        rte_errno = EINVAL;
+        return -1;
+    }
+    *depth = node->depth;
+    return 0;
 }
 
 void *
 rte_rib_get_ext(struct rte_rib_node *node)
 {
-	return (node == NULL) ? NULL : &node->ext[0];
+    return (node == NULL) ? NULL : &node->ext[0];
 }
 
 int
 rte_rib_get_nh(struct rte_rib_node *node, uint64_t *nh)
 {
-	if ((node == NULL) || (nh == NULL)) {
-		rte_errno = EINVAL;
-		return -1;
-	}
-	*nh = node->nh;
-	return 0;
+    if ((node == NULL) || (nh == NULL)) {
+        rte_errno = EINVAL;
+        return -1;
+    }
+    *nh = node->nh;
+    return 0;
 }
 
 int
 rte_rib_set_nh(struct rte_rib_node *node, uint64_t nh)
 {
-	if (node == NULL) {
-		rte_errno = EINVAL;
-		return -1;
-	}
-	node->nh = nh;
-	return 0;
+    if (node == NULL) {
+        rte_errno = EINVAL;
+        return -1;
+    }
+    node->nh = nh;
+    return 0;
 }
 
 struct rte_rib *
 rte_rib_create(const char *name, int socket_id, struct rte_rib_conf *conf)
 {
-	char mem_name[RTE_RIB_NAMESIZE];
-	struct rte_rib *rib = NULL;
-	struct rte_tailq_entry *te;
-	struct rte_rib_list *rib_list;
-	struct rte_mempool *node_pool;
+    char mem_name[RTE_RIB_NAMESIZE];
+    struct rte_rib *rib = NULL;
+    struct rte_tailq_entry *te;
+    struct rte_rib_list *rib_list;
+    struct rte_mempool *node_pool;
 
-	/* Check user arguments. */
-	if ((name == NULL) || (conf == NULL) ||
-			(conf->max_nodes == 0)) {
-		rte_errno = EINVAL;
-		return NULL;
-	}
+    /* Check user arguments. */
+    if ((name == NULL) || (conf == NULL) ||
+            (conf->max_nodes == 0)) {
+        rte_errno = EINVAL;
+        return NULL;
+    }
 
-	snprintf(mem_name, sizeof(mem_name), "MP_%s", name);
-	node_pool = rte_mempool_create(mem_name, conf->max_nodes,
-		sizeof(struct rte_rib_node) + conf->ext_sz, 0, 0,
-		NULL, NULL, NULL, NULL, socket_id, 0);
+    snprintf(mem_name, sizeof(mem_name), "MP_%s", name);
+    node_pool = rte_mempool_create(mem_name, conf->max_nodes,
+        sizeof(struct rte_rib_node) + conf->ext_sz, 0, 0,
+        NULL, NULL, NULL, NULL, socket_id, 0);
 
-	if (node_pool == NULL) {
-		RTE_LOG(ERR, LPM,
-			"Can not allocate mempool for RIB %s\n", name);
-		return NULL;
-	}
+    if (node_pool == NULL) {
+        RTE_LOG(ERR, LPM,
+            "Can not allocate mempool for RIB %s\n", name);
+        return NULL;
+    }
 
-	snprintf(mem_name, sizeof(mem_name), "RIB_%s", name);
-	rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
+    snprintf(mem_name, sizeof(mem_name), "RIB_%s", name);
+    rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
 
-	rte_mcfg_tailq_write_lock();
+    rte_mcfg_tailq_write_lock();
 
-	/* guarantee there's no existing */
-	TAILQ_FOREACH(te, rib_list, next) {
-		rib = (struct rte_rib *)te->data;
-		if (strncmp(name, rib->name, RTE_RIB_NAMESIZE) == 0)
-			break;
-	}
-	rib = NULL;
-	if (te != NULL) {
-		rte_errno = EEXIST;
-		goto exit;
-	}
+    /* guarantee there's no existing */
+    TAILQ_FOREACH(te, rib_list, next) {
+        rib = (struct rte_rib *)te->data;
+        if (strncmp(name, rib->name, RTE_RIB_NAMESIZE) == 0)
+            break;
+    }
+    rib = NULL;
+    if (te != NULL) {
+        rte_errno = EEXIST;
+        goto exit;
+    }
 
-	/* allocate tailq entry */
-	te = rte_zmalloc("RIB_TAILQ_ENTRY", sizeof(*te), 0);
-	if (te == NULL) {
-		RTE_LOG(ERR, LPM,
-			"Can not allocate tailq entry for RIB %s\n", name);
-		rte_errno = ENOMEM;
-		goto exit;
-	}
+    /* allocate tailq entry */
+    te = rte_zmalloc("RIB_TAILQ_ENTRY", sizeof(*te), 0);
+    if (te == NULL) {
+        RTE_LOG(ERR, LPM,
+            "Can not allocate tailq entry for RIB %s\n", name);
+        rte_errno = ENOMEM;
+        goto exit;
+    }
 
-	/* Allocate memory to store the RIB data structures. */
-	rib = rte_zmalloc_socket(mem_name,
-		sizeof(struct rte_rib),	RTE_CACHE_LINE_SIZE, socket_id);
-	if (rib == NULL) {
-		RTE_LOG(ERR, LPM, "RIB %s memory allocation failed\n", name);
-		rte_errno = ENOMEM;
-		goto free_te;
-	}
+    /* Allocate memory to store the RIB data structures. */
+    rib = rte_zmalloc_socket(mem_name,
+        sizeof(struct rte_rib),    RTE_CACHE_LINE_SIZE, socket_id);
+    if (rib == NULL) {
+        RTE_LOG(ERR, LPM, "RIB %s memory allocation failed\n", name);
+        rte_errno = ENOMEM;
+        goto free_te;
+    }
 
-	rte_strlcpy(rib->name, name, sizeof(rib->name));
-	rib->tree = NULL;
-	rib->max_nodes = conf->max_nodes;
-	rib->node_pool = node_pool;
-	te->data = (void *)rib;
-	TAILQ_INSERT_TAIL(rib_list, te, next);
+    rte_strlcpy(rib->name, name, sizeof(rib->name));
+    rib->tree = NULL;
+    rib->max_nodes = conf->max_nodes;
+    rib->node_pool = node_pool;
+    te->data = (void *)rib;
+    TAILQ_INSERT_TAIL(rib_list, te, next);
 
-	rte_mcfg_tailq_write_unlock();
+    rte_mcfg_tailq_write_unlock();
 
-	return rib;
+    return rib;
 
 free_te:
-	rte_free(te);
+    rte_free(te);
 exit:
-	rte_mcfg_tailq_write_unlock();
-	rte_mempool_free(node_pool);
+    rte_mcfg_tailq_write_unlock();
+    rte_mempool_free(node_pool);
 
-	return NULL;
+    return NULL;
 }
 
 struct rte_rib *
 rte_rib_find_existing(const char *name)
 {
-	struct rte_rib *rib = NULL;
-	struct rte_tailq_entry *te;
-	struct rte_rib_list *rib_list;
+    struct rte_rib *rib = NULL;
+    struct rte_tailq_entry *te;
+    struct rte_rib_list *rib_list;
 
-	rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
+    rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
 
-	rte_mcfg_tailq_read_lock();
-	TAILQ_FOREACH(te, rib_list, next) {
-		rib = (struct rte_rib *) te->data;
-		if (strncmp(name, rib->name, RTE_RIB_NAMESIZE) == 0)
-			break;
-	}
-	rte_mcfg_tailq_read_unlock();
+    rte_mcfg_tailq_read_lock();
+    TAILQ_FOREACH(te, rib_list, next) {
+        rib = (struct rte_rib *) te->data;
+        if (strncmp(name, rib->name, RTE_RIB_NAMESIZE) == 0)
+            break;
+    }
+    rte_mcfg_tailq_read_unlock();
 
-	if (te == NULL) {
-		rte_errno = ENOENT;
-		return NULL;
-	}
+    if (te == NULL) {
+        rte_errno = ENOENT;
+        return NULL;
+    }
 
-	return rib;
+    return rib;
 }
 
 void
 rte_rib_free(struct rte_rib *rib)
 {
-	struct rte_tailq_entry *te;
-	struct rte_rib_list *rib_list;
-	struct rte_rib_node *tmp = NULL;
+    struct rte_tailq_entry *te;
+    struct rte_rib_list *rib_list;
+    struct rte_rib_node *tmp = NULL;
 
-	if (rib == NULL)
-		return;
+    if (rib == NULL)
+        return;
 
-	rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
+    rib_list = RTE_TAILQ_CAST(rte_rib_tailq.head, rte_rib_list);
 
-	rte_mcfg_tailq_write_lock();
+    rte_mcfg_tailq_write_lock();
 
-	/* find our tailq entry */
-	TAILQ_FOREACH(te, rib_list, next) {
-		if (te->data == (void *)rib)
-			break;
-	}
-	if (te != NULL)
-		TAILQ_REMOVE(rib_list, te, next);
+    /* find our tailq entry */
+    TAILQ_FOREACH(te, rib_list, next) {
+        if (te->data == (void *)rib)
+            break;
+    }
+    if (te != NULL)
+        TAILQ_REMOVE(rib_list, te, next);
 
-	rte_mcfg_tailq_write_unlock();
+    rte_mcfg_tailq_write_unlock();
 
-	while ((tmp = rte_rib_get_nxt(rib, 0, 0, tmp,
-			RTE_RIB_GET_NXT_ALL)) != NULL)
-		rte_rib_remove(rib, tmp->ip, tmp->depth);
+    while ((tmp = rte_rib_get_nxt(rib, 0, 0, tmp,
+            RTE_RIB_GET_NXT_ALL)) != NULL)
+        rte_rib_remove(rib, tmp->ip, tmp->depth);
 
-	rte_mempool_free(rib->node_pool);
-	rte_free(rib);
-	rte_free(te);
+    rte_mempool_free(rib->node_pool);
+    rte_free(rib);
+    rte_free(te);
 }

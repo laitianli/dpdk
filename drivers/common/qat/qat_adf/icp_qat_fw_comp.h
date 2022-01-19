@@ -7,17 +7,17 @@
 #include "icp_qat_fw.h"
 
 enum icp_qat_fw_comp_cmd_id {
-	ICP_QAT_FW_COMP_CMD_STATIC = 0,
-	/*!< Static Compress Request */
+    ICP_QAT_FW_COMP_CMD_STATIC = 0,
+    /*!< Static Compress Request */
 
-	ICP_QAT_FW_COMP_CMD_DYNAMIC = 1,
-	/*!< Dynamic Compress Request */
+    ICP_QAT_FW_COMP_CMD_DYNAMIC = 1,
+    /*!< Dynamic Compress Request */
 
-	ICP_QAT_FW_COMP_CMD_DECOMPRESS = 2,
-	/*!< Decompress Request */
+    ICP_QAT_FW_COMP_CMD_DECOMPRESS = 2,
+    /*!< Decompress Request */
 
-	ICP_QAT_FW_COMP_CMD_DELIMITER
-	/**< Delimiter type */
+    ICP_QAT_FW_COMP_CMD_DELIMITER
+    /**< Delimiter type */
 };
 
 /**< Flag usage */
@@ -132,88 +132,88 @@ enum icp_qat_fw_comp_cmd_id {
  */
 
 #define ICP_QAT_FW_COMP_FLAGS_BUILD(sesstype, autoselect, enhanced_asb,        \
-				    ret_uncomp, secure_ram)                    \
-	((((sesstype)&ICP_QAT_FW_COMP_SESSION_TYPE_MASK)                       \
-	  << ICP_QAT_FW_COMP_SESSION_TYPE_BITPOS) |                            \
-	 (((autoselect)&ICP_QAT_FW_COMP_AUTO_SELECT_BEST_MASK)                 \
-	  << ICP_QAT_FW_COMP_AUTO_SELECT_BEST_BITPOS) |                        \
-	 (((enhanced_asb)&ICP_QAT_FW_COMP_ENHANCED_AUTO_SELECT_BEST_MASK)      \
-	  << ICP_QAT_FW_COMP_ENHANCED_AUTO_SELECT_BEST_BITPOS) |               \
-	 (((ret_uncomp)&ICP_QAT_FW_COMP_RET_DISABLE_TYPE0_HEADER_DATA_MASK)    \
-	  << ICP_QAT_FW_COMP_RET_DISABLE_TYPE0_HEADER_DATA_BITPOS) |           \
-	 (((secure_ram)&ICP_QAT_FW_COMP_DISABLE_SECURE_RAM_AS_INTMD_BUF_MASK)  \
-	  << ICP_QAT_FW_COMP_DISABLE_SECURE_RAM_AS_INTMD_BUF_BITPOS))
+                    ret_uncomp, secure_ram)                    \
+    ((((sesstype)&ICP_QAT_FW_COMP_SESSION_TYPE_MASK)                       \
+      << ICP_QAT_FW_COMP_SESSION_TYPE_BITPOS) |                            \
+     (((autoselect)&ICP_QAT_FW_COMP_AUTO_SELECT_BEST_MASK)                 \
+      << ICP_QAT_FW_COMP_AUTO_SELECT_BEST_BITPOS) |                        \
+     (((enhanced_asb)&ICP_QAT_FW_COMP_ENHANCED_AUTO_SELECT_BEST_MASK)      \
+      << ICP_QAT_FW_COMP_ENHANCED_AUTO_SELECT_BEST_BITPOS) |               \
+     (((ret_uncomp)&ICP_QAT_FW_COMP_RET_DISABLE_TYPE0_HEADER_DATA_MASK)    \
+      << ICP_QAT_FW_COMP_RET_DISABLE_TYPE0_HEADER_DATA_BITPOS) |           \
+     (((secure_ram)&ICP_QAT_FW_COMP_DISABLE_SECURE_RAM_AS_INTMD_BUF_MASK)  \
+      << ICP_QAT_FW_COMP_DISABLE_SECURE_RAM_AS_INTMD_BUF_BITPOS))
 
 union icp_qat_fw_comp_req_hdr_cd_pars {
-	/**< LWs 2-5 */
-	struct {
-		uint64_t content_desc_addr;
-		/**< Address of the content descriptor */
+    /**< LWs 2-5 */
+    struct {
+        uint64_t content_desc_addr;
+        /**< Address of the content descriptor */
 
-		uint16_t content_desc_resrvd1;
-		/**< Content descriptor reserved field */
+        uint16_t content_desc_resrvd1;
+        /**< Content descriptor reserved field */
 
-		uint8_t content_desc_params_sz;
-		/**< Size of the content descriptor parameters in quad words.
-		 * These parameters describe the session setup configuration
-		 * info for the slices that this request relies upon i.e.
-		 * the configuration word and cipher key needed by the cipher
-		 * slice if there is a request for cipher processing.
-		 */
+        uint8_t content_desc_params_sz;
+        /**< Size of the content descriptor parameters in quad words.
+         * These parameters describe the session setup configuration
+         * info for the slices that this request relies upon i.e.
+         * the configuration word and cipher key needed by the cipher
+         * slice if there is a request for cipher processing.
+         */
 
-		uint8_t content_desc_hdr_resrvd2;
-		/**< Content descriptor reserved field */
+        uint8_t content_desc_hdr_resrvd2;
+        /**< Content descriptor reserved field */
 
-		uint32_t content_desc_resrvd3;
-		/**< Content descriptor reserved field */
-	} s;
+        uint32_t content_desc_resrvd3;
+        /**< Content descriptor reserved field */
+    } s;
 
-	struct {
-		uint32_t comp_slice_cfg_word[ICP_QAT_FW_NUM_LONGWORDS_2];
-		/* Compression Slice Config Word */
+    struct {
+        uint32_t comp_slice_cfg_word[ICP_QAT_FW_NUM_LONGWORDS_2];
+        /* Compression Slice Config Word */
 
-		uint32_t content_desc_resrvd4;
-		/**< Content descriptor reserved field */
+        uint32_t content_desc_resrvd4;
+        /**< Content descriptor reserved field */
 
-	} sl;
+    } sl;
 
 };
 
 struct icp_qat_fw_comp_req_params {
-	/**< LW 14 */
-	uint32_t comp_len;
-	/**< Size of input to process in bytes Note:  Only EOP requests can be
-	 * odd for decompression. IA must set LSB to zero for odd sized
-	 * intermediate inputs
-	 */
+    /**< LW 14 */
+    uint32_t comp_len;
+    /**< Size of input to process in bytes Note:  Only EOP requests can be
+     * odd for decompression. IA must set LSB to zero for odd sized
+     * intermediate inputs
+     */
 
-	/**< LW 15 */
-	uint32_t out_buffer_sz;
-	/**< Size of output buffer in bytes */
+    /**< LW 15 */
+    uint32_t out_buffer_sz;
+    /**< Size of output buffer in bytes */
 
-	/**< LW 16 */
-	uint32_t initial_crc32;
-	/**< CRC of previously processed bytes */
+    /**< LW 16 */
+    uint32_t initial_crc32;
+    /**< CRC of previously processed bytes */
 
-	/**< LW 17 */
-	uint32_t initial_adler;
-	/**< Adler of previously processed bytes */
+    /**< LW 17 */
+    uint32_t initial_adler;
+    /**< Adler of previously processed bytes */
 
-	/**< LW 18 */
-	uint32_t req_par_flags;
+    /**< LW 18 */
+    uint32_t req_par_flags;
 
-	/**< LW 19 */
-	uint32_t rsrvd;
+    /**< LW 19 */
+    uint32_t rsrvd;
 };
 
 #define ICP_QAT_FW_COMP_REQ_PARAM_FLAGS_BUILD(sop, eop, bfinal, cnv, cnvnr)    \
-	((((sop)&ICP_QAT_FW_COMP_SOP_MASK) << ICP_QAT_FW_COMP_SOP_BITPOS) |    \
-	 (((eop)&ICP_QAT_FW_COMP_EOP_MASK) << ICP_QAT_FW_COMP_EOP_BITPOS) |    \
-	 (((bfinal)&ICP_QAT_FW_COMP_BFINAL_MASK)                               \
-	  << ICP_QAT_FW_COMP_BFINAL_BITPOS) |                                  \
-	 ((cnv & ICP_QAT_FW_COMP_CNV_MASK) << ICP_QAT_FW_COMP_CNV_BITPOS) |    \
-	 ((cnvnr & ICP_QAT_FW_COMP_CNV_RECOVERY_MASK)                          \
-	  << ICP_QAT_FW_COMP_CNV_RECOVERY_BITPOS))
+    ((((sop)&ICP_QAT_FW_COMP_SOP_MASK) << ICP_QAT_FW_COMP_SOP_BITPOS) |    \
+     (((eop)&ICP_QAT_FW_COMP_EOP_MASK) << ICP_QAT_FW_COMP_EOP_BITPOS) |    \
+     (((bfinal)&ICP_QAT_FW_COMP_BFINAL_MASK)                               \
+      << ICP_QAT_FW_COMP_BFINAL_BITPOS) |                                  \
+     ((cnv & ICP_QAT_FW_COMP_CNV_MASK) << ICP_QAT_FW_COMP_CNV_BITPOS) |    \
+     ((cnvnr & ICP_QAT_FW_COMP_CNV_RECOVERY_MASK)                          \
+      << ICP_QAT_FW_COMP_CNV_RECOVERY_BITPOS))
 
 #define ICP_QAT_FW_COMP_NOT_SOP 0
 /**< @ingroup icp_qat_fw_comp
@@ -316,167 +316,167 @@ struct icp_qat_fw_comp_req_params {
  */
 
 struct icp_qat_fw_xlt_req_params {
-	/**< LWs 20-21 */
-	uint64_t inter_buff_ptr;
-	/**< This field specifies the physical address of an intermediate
-	 *  buffer SGL array. The array contains a pair of 64-bit
-	 *  intermediate buffer pointers to SGL buffer descriptors, one pair
-	 *  per CPM. Please refer to the CPM1.6 Firmware Interface HLD
-	 *  specification for more details.
-	 */
+    /**< LWs 20-21 */
+    uint64_t inter_buff_ptr;
+    /**< This field specifies the physical address of an intermediate
+     *  buffer SGL array. The array contains a pair of 64-bit
+     *  intermediate buffer pointers to SGL buffer descriptors, one pair
+     *  per CPM. Please refer to the CPM1.6 Firmware Interface HLD
+     *  specification for more details.
+     */
 };
 
 
 struct icp_qat_fw_comp_cd_hdr {
-	/**< LW 24 */
-	uint16_t ram_bank_flags;
-	/**< Flags to show which ram banks to access */
+    /**< LW 24 */
+    uint16_t ram_bank_flags;
+    /**< Flags to show which ram banks to access */
 
-	uint8_t comp_cfg_offset;
-	/**< Quad word offset from the content descriptor parameters address
-	 * to the parameters for the compression processing
-	 */
+    uint8_t comp_cfg_offset;
+    /**< Quad word offset from the content descriptor parameters address
+     * to the parameters for the compression processing
+     */
 
-	uint8_t next_curr_id;
-	/**< This field combines the next and current id (each four bits) -
-	 * the next id is the most significant nibble.
-	 * Next Id:  Set to the next slice to pass the compressed data through.
-	 * Set to ICP_QAT_FW_SLICE_DRAM_WR if the data is not to go through
-	 * anymore slices after compression
-	 * Current Id: Initialised with the compression slice type
-	 */
+    uint8_t next_curr_id;
+    /**< This field combines the next and current id (each four bits) -
+     * the next id is the most significant nibble.
+     * Next Id:  Set to the next slice to pass the compressed data through.
+     * Set to ICP_QAT_FW_SLICE_DRAM_WR if the data is not to go through
+     * anymore slices after compression
+     * Current Id: Initialised with the compression slice type
+     */
 
-	/**< LW 25 */
-	uint32_t resrvd;
-	/**< LWs 26-27 */
+    /**< LW 25 */
+    uint32_t resrvd;
+    /**< LWs 26-27 */
 
-	uint64_t comp_state_addr;
-	/**< Pointer to compression state */
+    uint64_t comp_state_addr;
+    /**< Pointer to compression state */
 
-	/**< LWs 28-29 */
-	uint64_t ram_banks_addr;
-	/**< Pointer to banks */
+    /**< LWs 28-29 */
+    uint64_t ram_banks_addr;
+    /**< Pointer to banks */
 
 };
 
 
 struct icp_qat_fw_xlt_cd_hdr {
-	/**< LW 30 */
-	uint16_t resrvd1;
-	/**< Reserved field and assumed set to 0 */
+    /**< LW 30 */
+    uint16_t resrvd1;
+    /**< Reserved field and assumed set to 0 */
 
-	uint8_t resrvd2;
-	/**< Reserved field and assumed set to 0 */
+    uint8_t resrvd2;
+    /**< Reserved field and assumed set to 0 */
 
-	uint8_t next_curr_id;
-	/**< This field combines the next and current id (each four bits) -
-	 * the next id is the most significant nibble.
-	 * Next Id:  Set to the next slice to pass the translated data through.
-	 * Set to ICP_QAT_FW_SLICE_DRAM_WR if the data is not to go through
-	 * any more slices after compression
-	 * Current Id: Initialised with the translation slice type
-	 */
+    uint8_t next_curr_id;
+    /**< This field combines the next and current id (each four bits) -
+     * the next id is the most significant nibble.
+     * Next Id:  Set to the next slice to pass the translated data through.
+     * Set to ICP_QAT_FW_SLICE_DRAM_WR if the data is not to go through
+     * any more slices after compression
+     * Current Id: Initialised with the translation slice type
+     */
 
-	/**< LW 31 */
-	uint32_t resrvd3;
-	/**< Reserved and should be set to zero, needed for quadword
-	 * alignment
-	 */
+    /**< LW 31 */
+    uint32_t resrvd3;
+    /**< Reserved and should be set to zero, needed for quadword
+     * alignment
+     */
 };
 
 struct icp_qat_fw_comp_req {
-	/**< LWs 0-1 */
-	struct icp_qat_fw_comn_req_hdr comn_hdr;
-	/**< Common request header - for Service Command Id,
-	 * use service-specific Compression Command Id.
-	 * Service Specific Flags - use Compression Command Flags
-	 */
+    /**< LWs 0-1 */
+    struct icp_qat_fw_comn_req_hdr comn_hdr;
+    /**< Common request header - for Service Command Id,
+     * use service-specific Compression Command Id.
+     * Service Specific Flags - use Compression Command Flags
+     */
 
-	/**< LWs 2-5 */
-	union icp_qat_fw_comp_req_hdr_cd_pars cd_pars;
-	/**< Compression service-specific content descriptor field which points
-	 * either to a content descriptor parameter block or contains the
-	 * compression slice config word.
-	 */
+    /**< LWs 2-5 */
+    union icp_qat_fw_comp_req_hdr_cd_pars cd_pars;
+    /**< Compression service-specific content descriptor field which points
+     * either to a content descriptor parameter block or contains the
+     * compression slice config word.
+     */
 
-	/**< LWs 6-13 */
-	struct icp_qat_fw_comn_req_mid comn_mid;
-	/**< Common request middle section */
+    /**< LWs 6-13 */
+    struct icp_qat_fw_comn_req_mid comn_mid;
+    /**< Common request middle section */
 
-	/**< LWs 14-19 */
-	struct icp_qat_fw_comp_req_params comp_pars;
-	/**< Compression request Parameters block */
+    /**< LWs 14-19 */
+    struct icp_qat_fw_comp_req_params comp_pars;
+    /**< Compression request Parameters block */
 
-	/**< LWs 20-21 */
-	union {
-		struct icp_qat_fw_xlt_req_params xlt_pars;
-		/**< Translation request Parameters block */
-		uint32_t resrvd1[ICP_QAT_FW_NUM_LONGWORDS_2];
-		/**< Reserved if not used for translation */
+    /**< LWs 20-21 */
+    union {
+        struct icp_qat_fw_xlt_req_params xlt_pars;
+        /**< Translation request Parameters block */
+        uint32_t resrvd1[ICP_QAT_FW_NUM_LONGWORDS_2];
+        /**< Reserved if not used for translation */
 
-	} u1;
+    } u1;
 
-	/**< LWs 22-23 */
-	union {
-		uint32_t resrvd2[ICP_QAT_FW_NUM_LONGWORDS_2];
-		/**< Reserved - not used if Batch and Pack is disabled.*/
+    /**< LWs 22-23 */
+    union {
+        uint32_t resrvd2[ICP_QAT_FW_NUM_LONGWORDS_2];
+        /**< Reserved - not used if Batch and Pack is disabled.*/
 
-		uint64_t bnp_res_table_addr;
-		/**< A generic pointer to the unbounded list of
-		 * icp_qat_fw_resp_comp_pars members. This pointer is only
-		 * used when the Batch and Pack is enabled.
-		 */
-	} u3;
+        uint64_t bnp_res_table_addr;
+        /**< A generic pointer to the unbounded list of
+         * icp_qat_fw_resp_comp_pars members. This pointer is only
+         * used when the Batch and Pack is enabled.
+         */
+    } u3;
 
-	/**< LWs 24-29 */
-	struct icp_qat_fw_comp_cd_hdr comp_cd_ctrl;
-	/**< Compression request content descriptor control block header */
+    /**< LWs 24-29 */
+    struct icp_qat_fw_comp_cd_hdr comp_cd_ctrl;
+    /**< Compression request content descriptor control block header */
 
-	/**< LWs 30-31 */
-	union {
-		struct icp_qat_fw_xlt_cd_hdr xlt_cd_ctrl;
-		/**< Translation request content descriptor
-		 * control block header
-		 */
+    /**< LWs 30-31 */
+    union {
+        struct icp_qat_fw_xlt_cd_hdr xlt_cd_ctrl;
+        /**< Translation request content descriptor
+         * control block header
+         */
 
-		uint32_t resrvd3[ICP_QAT_FW_NUM_LONGWORDS_2];
-		/**< Reserved if not used for translation */
-	} u2;
+        uint32_t resrvd3[ICP_QAT_FW_NUM_LONGWORDS_2];
+        /**< Reserved if not used for translation */
+    } u2;
 };
 
 struct icp_qat_fw_resp_comp_pars {
-	/**< LW 4 */
-	uint32_t input_byte_counter;
-	/**< Input byte counter */
+    /**< LW 4 */
+    uint32_t input_byte_counter;
+    /**< Input byte counter */
 
-	/**< LW 5 */
-	uint32_t output_byte_counter;
-	/**< Output byte counter */
+    /**< LW 5 */
+    uint32_t output_byte_counter;
+    /**< Output byte counter */
 
-	/**< LW 6 & 7*/
-	union {
-		uint64_t curr_chksum;
-		struct {
-			/**< LW 6 */
-			uint32_t curr_crc32;
-			/**< LW 7 */
-			uint32_t curr_adler_32;
-		};
-	};
+    /**< LW 6 & 7*/
+    union {
+        uint64_t curr_chksum;
+        struct {
+            /**< LW 6 */
+            uint32_t curr_crc32;
+            /**< LW 7 */
+            uint32_t curr_adler_32;
+        };
+    };
 };
 
 struct icp_qat_fw_comp_resp {
-	/**< LWs 0-1 */
-	struct icp_qat_fw_comn_resp_hdr comn_resp;
-	/**< Common interface response format see icp_qat_fw.h */
+    /**< LWs 0-1 */
+    struct icp_qat_fw_comn_resp_hdr comn_resp;
+    /**< Common interface response format see icp_qat_fw.h */
 
-	/**< LWs 2-3 */
-	uint64_t opaque_data;
-	/**< Opaque data passed from the request to the response message */
+    /**< LWs 2-3 */
+    uint64_t opaque_data;
+    /**< Opaque data passed from the request to the response message */
 
-	/**< LWs 4-7 */
-	struct icp_qat_fw_resp_comp_pars comp_resp_pars;
-	/**< Common response params (checksums and byte counts) */
+    /**< LWs 4-7 */
+    struct icp_qat_fw_resp_comp_pars comp_resp_pars;
+    /**< Common response params (checksums and byte counts) */
 };
 
 /* RAM Bank definitions */
@@ -501,9 +501,9 @@ struct icp_qat_fw_comp_resp {
  *
  *****************************************************************************/
 enum icp_qat_fw_comp_bank_enabled {
-	ICP_QAT_FW_COMP_BANK_DISABLED = 0, /*!< BANK DISABLED */
-	ICP_QAT_FW_COMP_BANK_ENABLED = 1,  /*!< BANK ENABLED */
-	ICP_QAT_FW_COMP_BANK_DELIMITER = 2 /**< Delimiter type */
+    ICP_QAT_FW_COMP_BANK_DISABLED = 0, /*!< BANK DISABLED */
+    ICP_QAT_FW_COMP_BANK_ENABLED = 1,  /*!< BANK ENABLED */
+    ICP_QAT_FW_COMP_BANK_DELIMITER = 2 /**< Delimiter type */
 };
 
 /**
@@ -525,31 +525,31 @@ enum icp_qat_fw_comp_bank_enabled {
  * @param bank_a_enable
  *****************************************************************************/
 #define ICP_QAT_FW_COMP_RAM_FLAGS_BUILD(bank_i_enable,                         \
-					bank_h_enable,                         \
-					bank_g_enable,                         \
-					bank_f_enable,                         \
-					bank_e_enable,                         \
-					bank_d_enable,                         \
-					bank_c_enable,                         \
-					bank_b_enable,                         \
-					bank_a_enable)                         \
-	((((bank_i_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                         \
-		<< QAT_FW_COMP_BANK_I_BITPOS) |                                \
-	(((bank_h_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_H_BITPOS) |                                \
-	(((bank_g_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_G_BITPOS) |                                \
-	(((bank_f_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_F_BITPOS) |                                \
-	(((bank_e_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_E_BITPOS) |                                \
-	(((bank_d_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_D_BITPOS) |                                \
-	(((bank_c_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_C_BITPOS) |                                \
-	(((bank_b_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_B_BITPOS) |                                \
-	(((bank_a_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
-		<< QAT_FW_COMP_BANK_A_BITPOS))
+                    bank_h_enable,                         \
+                    bank_g_enable,                         \
+                    bank_f_enable,                         \
+                    bank_e_enable,                         \
+                    bank_d_enable,                         \
+                    bank_c_enable,                         \
+                    bank_b_enable,                         \
+                    bank_a_enable)                         \
+    ((((bank_i_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                         \
+        << QAT_FW_COMP_BANK_I_BITPOS) |                                \
+    (((bank_h_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_H_BITPOS) |                                \
+    (((bank_g_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_G_BITPOS) |                                \
+    (((bank_f_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_F_BITPOS) |                                \
+    (((bank_e_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_E_BITPOS) |                                \
+    (((bank_d_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_D_BITPOS) |                                \
+    (((bank_c_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_C_BITPOS) |                                \
+    (((bank_b_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_B_BITPOS) |                                \
+    (((bank_a_enable)&QAT_FW_COMP_BANK_FLAG_MASK)                          \
+        << QAT_FW_COMP_BANK_A_BITPOS))
 
 #endif

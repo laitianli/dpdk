@@ -19,64 +19,64 @@
 int
 parse_set(const char *input, uint16_t set[], unsigned int num)
 {
-	unsigned int idx;
-	const char *str = input;
-	char *end = NULL;
-	unsigned int min, max;
+    unsigned int idx;
+    const char *str = input;
+    char *end = NULL;
+    unsigned int min, max;
 
-	memset(set, 0, num * sizeof(uint16_t));
+    memset(set, 0, num * sizeof(uint16_t));
 
-	while (isblank(*str))
-		str++;
+    while (isblank(*str))
+        str++;
 
-	/* only digit or left bracket is qualify for start point */
-	if (!isdigit(*str) || *str == '\0')
-		return -1;
+    /* only digit or left bracket is qualify for start point */
+    if (!isdigit(*str) || *str == '\0')
+        return -1;
 
-	while (isblank(*str))
-		str++;
-	if (*str == '\0')
-		return -1;
+    while (isblank(*str))
+        str++;
+    if (*str == '\0')
+        return -1;
 
-	min = num;
-	do {
+    min = num;
+    do {
 
-		/* go ahead to the first digit */
-		while (isblank(*str))
-			str++;
-		if (!isdigit(*str))
-			return -1;
+        /* go ahead to the first digit */
+        while (isblank(*str))
+            str++;
+        if (!isdigit(*str))
+            return -1;
 
-		/* get the digit value */
-		errno = 0;
-		idx = strtoul(str, &end, 10);
-		if (errno || end == NULL || idx >= num)
-			return -1;
+        /* get the digit value */
+        errno = 0;
+        idx = strtoul(str, &end, 10);
+        if (errno || end == NULL || idx >= num)
+            return -1;
 
-		/* go ahead to separator '-' and ',' */
-		while (isblank(*end))
-			end++;
-		if (*end == '-') {
-			if (min == num)
-				min = idx;
-			else /* avoid continuous '-' */
-				return -1;
-		} else if ((*end == ',') || (*end == '\0')) {
-			max = idx;
+        /* go ahead to separator '-' and ',' */
+        while (isblank(*end))
+            end++;
+        if (*end == '-') {
+            if (min == num)
+                min = idx;
+            else /* avoid continuous '-' */
+                return -1;
+        } else if ((*end == ',') || (*end == '\0')) {
+            max = idx;
 
-			if (min == num)
-				min = idx;
+            if (min == num)
+                min = idx;
 
-			for (idx = RTE_MIN(min, max);
-					idx <= RTE_MAX(min, max); idx++) {
-				set[idx] = 1;
-			}
-			min = num;
-		} else
-			return -1;
+            for (idx = RTE_MIN(min, max);
+                    idx <= RTE_MAX(min, max); idx++) {
+                set[idx] = 1;
+            }
+            min = num;
+        } else
+            return -1;
 
-		str = end + 1;
-	} while (*end != '\0');
+        str = end + 1;
+    } while (*end != '\0');
 
-	return str - input;
+    return str - input;
 }

@@ -15,7 +15,7 @@
 #include <rte_memcpy.h>
 
 #define dev_printf(level, fmt, args...) \
-	RTE_LOG(level, PMD, "osdep_rte: " fmt, ## args)
+    RTE_LOG(level, PMD, "osdep_rte: " fmt, ## args)
 
 #define osdep_panic(...) rte_panic(...)
 
@@ -55,7 +55,7 @@
 
 static inline unsigned long msecs_to_timer_cycles(unsigned int m)
 {
-	return rte_get_timer_hz() * (m / 1000);
+    return rte_get_timer_hz() * (m / 1000);
 }
 
 #endif

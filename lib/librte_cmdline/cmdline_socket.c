@@ -21,45 +21,45 @@
 struct cmdline *
 cmdline_file_new(cmdline_parse_ctx_t *ctx, const char *prompt, const char *path)
 {
-	int fd;
+    int fd;
 
-	/* everything else is checked in cmdline_new() */
-	if (!path)
-		return NULL;
+    /* everything else is checked in cmdline_new() */
+    if (!path)
+        return NULL;
 
-	fd = open(path, O_RDONLY, 0);
-	if (fd < 0) {
-		dprintf("open() failed\n");
-		return NULL;
-	}
-	return cmdline_new(ctx, prompt, fd, -1);
+    fd = open(path, O_RDONLY, 0);
+    if (fd < 0) {
+        dprintf("open() failed\n");
+        return NULL;
+    }
+    return cmdline_new(ctx, prompt, fd, -1);
 }
 
 struct cmdline *
 cmdline_stdin_new(cmdline_parse_ctx_t *ctx, const char *prompt)
 {
-	struct cmdline *cl;
-	struct termios oldterm, term;
+    struct cmdline *cl;
+    struct termios oldterm, term;
 
-	tcgetattr(0, &oldterm);
-	memcpy(&term, &oldterm, sizeof(term));
-	term.c_lflag &= ~(ICANON | ECHO | ISIG);
-	tcsetattr(0, TCSANOW, &term);
-	setbuf(stdin, NULL);
+    tcgetattr(0, &oldterm);
+    memcpy(&term, &oldterm, sizeof(term));
+    term.c_lflag &= ~(ICANON | ECHO | ISIG);
+    tcsetattr(0, TCSANOW, &term);
+    setbuf(stdin, NULL);
 
-	cl = cmdline_new(ctx, prompt, 0, 1);
+    cl = cmdline_new(ctx, prompt, 0, 1);
 
-	if (cl)
-		memcpy(&cl->oldterm, &oldterm, sizeof(term));
+    if (cl)
+        memcpy(&cl->oldterm, &oldterm, sizeof(term));
 
-	return cl;
+    return cl;
 }
 
 void
 cmdline_stdin_exit(struct cmdline *cl)
 {
-	if (!cl)
-		return;
+    if (!cl)
+        return;
 
-	tcsetattr(fileno(stdin), TCSANOW, &cl->oldterm);
+    tcsetattr(fileno(stdin), TCSANOW, &cl->oldterm);
 }

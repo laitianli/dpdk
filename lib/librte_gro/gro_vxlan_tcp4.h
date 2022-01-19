@@ -11,36 +11,36 @@
 
 /* Header fields representing a VxLAN flow */
 struct vxlan_tcp4_flow_key {
-	struct tcp4_flow_key inner_key;
-	struct rte_vxlan_hdr vxlan_hdr;
+    struct tcp4_flow_key inner_key;
+    struct rte_vxlan_hdr vxlan_hdr;
 
-	struct rte_ether_addr outer_eth_saddr;
-	struct rte_ether_addr outer_eth_daddr;
+    struct rte_ether_addr outer_eth_saddr;
+    struct rte_ether_addr outer_eth_daddr;
 
-	uint32_t outer_ip_src_addr;
-	uint32_t outer_ip_dst_addr;
+    uint32_t outer_ip_src_addr;
+    uint32_t outer_ip_dst_addr;
 
-	/* Outer UDP ports */
-	uint16_t outer_src_port;
-	uint16_t outer_dst_port;
+    /* Outer UDP ports */
+    uint16_t outer_src_port;
+    uint16_t outer_dst_port;
 
 };
 
 struct gro_vxlan_tcp4_flow {
-	struct vxlan_tcp4_flow_key key;
-	/*
-	 * The index of the first packet in the flow. INVALID_ARRAY_INDEX
-	 * indicates an empty flow.
-	 */
-	uint32_t start_index;
+    struct vxlan_tcp4_flow_key key;
+    /*
+     * The index of the first packet in the flow. INVALID_ARRAY_INDEX
+     * indicates an empty flow.
+     */
+    uint32_t start_index;
 };
 
 struct gro_vxlan_tcp4_item {
-	struct gro_tcp4_item inner_item;
-	/* IPv4 ID in the outer IPv4 header */
-	uint16_t outer_ip_id;
-	/* Indicate if outer IPv4 ID can be ignored */
-	uint8_t outer_is_atomic;
+    struct gro_tcp4_item inner_item;
+    /* IPv4 ID in the outer IPv4 header */
+    uint16_t outer_ip_id;
+    /* Indicate if outer IPv4 ID can be ignored */
+    uint8_t outer_is_atomic;
 };
 
 /*
@@ -48,18 +48,18 @@ struct gro_vxlan_tcp4_item {
  * reassembly table structure
  */
 struct gro_vxlan_tcp4_tbl {
-	/* item array */
-	struct gro_vxlan_tcp4_item *items;
-	/* flow array */
-	struct gro_vxlan_tcp4_flow *flows;
-	/* current item number */
-	uint32_t item_num;
-	/* current flow number */
-	uint32_t flow_num;
-	/* the maximum item number */
-	uint32_t max_item_num;
-	/* the maximum flow number */
-	uint32_t max_flow_num;
+    /* item array */
+    struct gro_vxlan_tcp4_item *items;
+    /* flow array */
+    struct gro_vxlan_tcp4_flow *flows;
+    /* current item number */
+    uint32_t item_num;
+    /* current flow number */
+    uint32_t flow_num;
+    /* the maximum item number */
+    uint32_t max_item_num;
+    /* the maximum flow number */
+    uint32_t max_flow_num;
 };
 
 /**
@@ -78,8 +78,8 @@ struct gro_vxlan_tcp4_tbl {
  *  - Return NULL on failure.
  */
 void *gro_vxlan_tcp4_tbl_create(uint16_t socket_id,
-		uint16_t max_flow_num,
-		uint16_t max_item_per_flow);
+        uint16_t max_flow_num,
+        uint16_t max_item_per_flow);
 
 /**
  * This function destroys a VxLAN reassembly table.
@@ -116,8 +116,8 @@ void gro_vxlan_tcp4_tbl_destroy(void *tbl);
  *    space in the table.
  */
 int32_t gro_vxlan_tcp4_reassemble(struct rte_mbuf *pkt,
-		struct gro_vxlan_tcp4_tbl *tbl,
-		uint64_t start_time);
+        struct gro_vxlan_tcp4_tbl *tbl,
+        uint64_t start_time);
 
 /**
  * This function flushes timeout packets in the VxLAN reassembly table,
@@ -138,9 +138,9 @@ int32_t gro_vxlan_tcp4_reassemble(struct rte_mbuf *pkt,
  *  The number of flushed packets
  */
 uint16_t gro_vxlan_tcp4_tbl_timeout_flush(struct gro_vxlan_tcp4_tbl *tbl,
-		uint64_t flush_timestamp,
-		struct rte_mbuf **out,
-		uint16_t nb_out);
+        uint64_t flush_timestamp,
+        struct rte_mbuf **out,
+        uint16_t nb_out);
 
 /**
  * This function returns the number of the packets in a VxLAN

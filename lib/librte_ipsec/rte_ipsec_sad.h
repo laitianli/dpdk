@@ -24,42 +24,42 @@ struct rte_ipsec_sad;
 
 /** Type of key */
 enum {
-	RTE_IPSEC_SAD_SPI_ONLY = 0,
-	RTE_IPSEC_SAD_SPI_DIP,
-	RTE_IPSEC_SAD_SPI_DIP_SIP,
-	RTE_IPSEC_SAD_KEY_TYPE_MASK,
+    RTE_IPSEC_SAD_SPI_ONLY = 0,
+    RTE_IPSEC_SAD_SPI_DIP,
+    RTE_IPSEC_SAD_SPI_DIP_SIP,
+    RTE_IPSEC_SAD_KEY_TYPE_MASK,
 };
 
 struct rte_ipsec_sadv4_key {
-	uint32_t spi;
-	uint32_t dip;
-	uint32_t sip;
+    uint32_t spi;
+    uint32_t dip;
+    uint32_t sip;
 };
 
 struct rte_ipsec_sadv6_key {
-	uint32_t spi;
-	uint8_t dip[16];
-	uint8_t sip[16];
+    uint32_t spi;
+    uint8_t dip[16];
+    uint8_t sip[16];
 };
 
 union rte_ipsec_sad_key {
-	struct rte_ipsec_sadv4_key	v4;
-	struct rte_ipsec_sadv6_key	v6;
+    struct rte_ipsec_sadv4_key    v4;
+    struct rte_ipsec_sadv6_key    v6;
 };
 
 /** Flag to create SAD with ipv6 dip and sip addresses */
-#define RTE_IPSEC_SAD_FLAG_IPV6			0x1
+#define RTE_IPSEC_SAD_FLAG_IPV6            0x1
 /** Flag to support reader writer concurrency */
-#define RTE_IPSEC_SAD_FLAG_RW_CONCURRENCY	0x2
+#define RTE_IPSEC_SAD_FLAG_RW_CONCURRENCY    0x2
 
 /** IPsec SAD configuration structure */
 struct rte_ipsec_sad_conf {
-	/** CPU socket ID where rte_ipsec_sad should be allocated */
-	int		socket_id;
-	/** maximum number of SA for each type of key */
-	uint32_t	max_sa[RTE_IPSEC_SAD_KEY_TYPE_MASK];
-	/** RTE_IPSEC_SAD_FLAG_* flags */
-	uint32_t	flags;
+    /** CPU socket ID where rte_ipsec_sad should be allocated */
+    int        socket_id;
+    /** maximum number of SA for each type of key */
+    uint32_t    max_sa[RTE_IPSEC_SAD_KEY_TYPE_MASK];
+    /** RTE_IPSEC_SAD_FLAG_* flags */
+    uint32_t    flags;
 };
 
 /**
@@ -83,8 +83,8 @@ struct rte_ipsec_sad_conf {
 __rte_experimental
 int
 rte_ipsec_sad_add(struct rte_ipsec_sad *sad,
-	const union rte_ipsec_sad_key *key,
-	int key_type, void *sa);
+    const union rte_ipsec_sad_key *key,
+    int key_type, void *sa);
 
 /**
  * Delete a rule from the SAD. Could be safely called with concurrent lookups
@@ -104,8 +104,8 @@ rte_ipsec_sad_add(struct rte_ipsec_sad *sad,
 __rte_experimental
 int
 rte_ipsec_sad_del(struct rte_ipsec_sad *sad,
-	const union rte_ipsec_sad_key *key,
-	int key_type);
+    const union rte_ipsec_sad_key *key,
+    int key_type);
 /*
  * Create SAD
  *
@@ -166,8 +166,8 @@ rte_ipsec_sad_destroy(struct rte_ipsec_sad *sad);
 __rte_experimental
 int
 rte_ipsec_sad_lookup(const struct rte_ipsec_sad *sad,
-	const union rte_ipsec_sad_key *keys[],
-	void *sa[], uint32_t n);
+    const union rte_ipsec_sad_key *keys[],
+    void *sa[], uint32_t n);
 
 #ifdef __cplusplus
 }

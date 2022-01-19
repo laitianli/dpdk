@@ -38,17 +38,17 @@ extern "C" {
  * application-determined parameters to rte_gro_reassemble_burst().
  */
 struct rte_gro_param {
-	uint64_t gro_types;
-	/**< desired GRO types */
-	uint16_t max_flow_num;
-	/**< max flow number */
-	uint16_t max_item_per_flow;
-	/**< max packet number per flow */
-	uint16_t socket_id;
-	/**< socket index for allocating GRO related data structures,
-	 * like reassembly tables. When use rte_gro_reassemble_burst(),
-	 * applications don't need to set this value.
-	 */
+    uint64_t gro_types;
+    /**< desired GRO types */
+    uint16_t max_flow_num;
+    /**< max flow number */
+    uint16_t max_item_per_flow;
+    /**< max packet number per flow */
+    uint16_t socket_id;
+    /**< socket index for allocating GRO related data structures,
+     * like reassembly tables. When use rte_gro_reassemble_burst(),
+     * applications don't need to set this value.
+     */
 };
 
 /**
@@ -100,8 +100,8 @@ void rte_gro_ctx_destroy(void *ctx);
  *  the return value is equals to nb_pkts.
  */
 uint16_t rte_gro_reassemble_burst(struct rte_mbuf **pkts,
-		uint16_t nb_pkts,
-		const struct rte_gro_param *param);
+        uint16_t nb_pkts,
+        const struct rte_gro_param *param);
 
 /**
  * @warning
@@ -131,8 +131,8 @@ uint16_t rte_gro_reassemble_burst(struct rte_mbuf **pkts,
  *  The number of unprocessed packets.
  */
 uint16_t rte_gro_reassemble(struct rte_mbuf **pkts,
-		uint16_t nb_pkts,
-		void *ctx);
+        uint16_t nb_pkts,
+        void *ctx);
 
 /**
  * @warning
@@ -162,10 +162,10 @@ uint16_t rte_gro_reassemble(struct rte_mbuf **pkts,
  *  The number of flushed packets.
  */
 uint16_t rte_gro_timeout_flush(void *ctx,
-		uint64_t timeout_cycles,
-		uint64_t gro_types,
-		struct rte_mbuf **out,
-		uint16_t max_nb_out);
+        uint64_t timeout_cycles,
+        uint64_t gro_types,
+        struct rte_mbuf **out,
+        uint16_t max_nb_out);
 
 /**
  * @warning

@@ -43,30 +43,30 @@ extern "C" {
  */
 static inline struct rte_eventdev *
 rte_event_pmd_vdev_init(const char *name, size_t dev_private_size,
-		int socket_id)
+        int socket_id)
 {
 
-	struct rte_eventdev *eventdev;
+    struct rte_eventdev *eventdev;
 
-	/* Allocate device structure */
-	eventdev = rte_event_pmd_allocate(name, socket_id);
-	if (eventdev == NULL)
-		return NULL;
+    /* Allocate device structure */
+    eventdev = rte_event_pmd_allocate(name, socket_id);
+    if (eventdev == NULL)
+        return NULL;
 
-	/* Allocate private device structure */
-	if (rte_eal_process_type() == RTE_PROC_PRIMARY) {
-		eventdev->data->dev_private =
-				rte_zmalloc_socket("eventdev device private",
-						dev_private_size,
-						RTE_CACHE_LINE_SIZE,
-						socket_id);
+    /* Allocate private device structure */
+    if (rte_eal_process_type() == RTE_PROC_PRIMARY) {
+        eventdev->data->dev_private =
+                rte_zmalloc_socket("eventdev device private",
+                        dev_private_size,
+                        RTE_CACHE_LINE_SIZE,
+                        socket_id);
 
-		if (eventdev->data->dev_private == NULL)
-			rte_panic("Cannot allocate memzone for private device"
-					" data");
-	}
+        if (eventdev->data->dev_private == NULL)
+            rte_panic("Cannot allocate memzone for private device"
+                    " data");
+    }
 
-	return eventdev;
+    return eventdev;
 }
 
 /**
@@ -81,24 +81,24 @@ rte_event_pmd_vdev_init(const char *name, size_t dev_private_size,
 static inline int
 rte_event_pmd_vdev_uninit(const char *name)
 {
-	int ret;
-	struct rte_eventdev *eventdev;
+    int ret;
+    struct rte_eventdev *eventdev;
 
-	if (name == NULL)
-		return -EINVAL;
+    if (name == NULL)
+        return -EINVAL;
 
-	eventdev = rte_event_pmd_get_named_dev(name);
-	if (eventdev == NULL)
-		return -ENODEV;
+    eventdev = rte_event_pmd_get_named_dev(name);
+    if (eventdev == NULL)
+        return -ENODEV;
 
-	ret = rte_event_dev_close(eventdev->data->dev_id);
-	if (ret < 0)
-		return ret;
+    ret = rte_event_dev_close(eventdev->data->dev_id);
+    if (ret < 0)
+        return ret;
 
-	/* Free the event device */
-	rte_event_pmd_release(eventdev);
+    /* Free the event device */
+    rte_event_pmd_release(eventdev);
 
-	return 0;
+    return 0;
 }
 
 #ifdef __cplusplus

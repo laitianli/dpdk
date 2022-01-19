@@ -21,27 +21,27 @@
  * cache lines for each node to use.
  */
 struct rx_stats {
-	uint64_t rx[RTE_MAX_ETHPORTS];
+    uint64_t rx[RTE_MAX_ETHPORTS];
 } __rte_cache_aligned;
 
 struct tx_stats {
-	uint64_t tx[RTE_MAX_ETHPORTS];
-	uint64_t tx_drop[RTE_MAX_ETHPORTS];
+    uint64_t tx[RTE_MAX_ETHPORTS];
+    uint64_t tx_drop[RTE_MAX_ETHPORTS];
 } __rte_cache_aligned;
 
 struct filter_stats {
-	uint64_t drop;
-	uint64_t passed;
+    uint64_t drop;
+    uint64_t passed;
 } __rte_cache_aligned;
 
 struct shared_info {
-	uint8_t num_nodes;
-	uint16_t num_ports;
-	uint32_t num_flows;
-	uint16_t id[RTE_MAX_ETHPORTS];
-	struct rx_stats rx_stats;
-	struct tx_stats tx_stats[MAX_NODES];
-	struct filter_stats filter_stats[MAX_NODES];
+    uint8_t num_nodes;
+    uint16_t num_ports;
+    uint32_t num_flows;
+    uint16_t id[RTE_MAX_ETHPORTS];
+    struct rx_stats rx_stats;
+    struct tx_stats tx_stats[MAX_NODES];
+    struct filter_stats filter_stats[MAX_NODES];
 };
 
 /* define common names for structures shared between server and node */
@@ -55,14 +55,14 @@ struct shared_info {
 static inline const char *
 get_rx_queue_name(unsigned int id)
 {
-	/*
-	 * Buffer for return value. Size calculated by %u being replaced
-	 * by maximum 3 digits (plus an extra byte for safety)
-	 */
-	static char buffer[sizeof(MP_NODE_RXQ_NAME) + 2];
+    /*
+     * Buffer for return value. Size calculated by %u being replaced
+     * by maximum 3 digits (plus an extra byte for safety)
+     */
+    static char buffer[sizeof(MP_NODE_RXQ_NAME) + 2];
 
-	snprintf(buffer, sizeof(buffer), MP_NODE_RXQ_NAME, id);
-	return buffer;
+    snprintf(buffer, sizeof(buffer), MP_NODE_RXQ_NAME, id);
+    return buffer;
 }
 
 #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1

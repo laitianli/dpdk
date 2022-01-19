@@ -21,17 +21,17 @@ extern "C" {
 #endif
 
 /** Maximum size of hash table that can be created. */
-#define RTE_HASH_ENTRIES_MAX			(1 << 30)
+#define RTE_HASH_ENTRIES_MAX            (1 << 30)
 
 /** Maximum number of characters in hash name.*/
-#define RTE_HASH_NAMESIZE			32
+#define RTE_HASH_NAMESIZE            32
 
 /** Maximum number of keys that can be searched for using rte_hash_lookup_bulk. */
-#define RTE_HASH_LOOKUP_BULK_MAX		64
-#define RTE_HASH_LOOKUP_MULTI_MAX		RTE_HASH_LOOKUP_BULK_MAX
+#define RTE_HASH_LOOKUP_BULK_MAX        64
+#define RTE_HASH_LOOKUP_MULTI_MAX        RTE_HASH_LOOKUP_BULK_MAX
 
 /** Enable Hardware transactional memory support. */
-#define RTE_HASH_EXTRA_FLAGS_TRANS_MEM_SUPPORT	0x01
+#define RTE_HASH_EXTRA_FLAGS_TRANS_MEM_SUPPORT    0x01
 
 /** Default behavior of insertion, single writer/multi writer */
 #define RTE_HASH_EXTRA_FLAGS_MULTI_WRITER_ADD 0x02
@@ -64,7 +64,7 @@ typedef uint32_t hash_sig_t;
 
 /** Type of function that can be used for calculating the hash value. */
 typedef uint32_t (*rte_hash_function)(const void *key, uint32_t key_len,
-				      uint32_t init_val);
+                      uint32_t init_val);
 
 /** Type of function used to compare the hash key. */
 typedef int (*rte_hash_cmp_eq_t)(const void *key1, const void *key2, size_t key_len);
@@ -73,14 +73,14 @@ typedef int (*rte_hash_cmp_eq_t)(const void *key1, const void *key2, size_t key_
  * Parameters used when creating the hash table.
  */
 struct rte_hash_parameters {
-	const char *name;		/**< Name of the hash. */
-	uint32_t entries;		/**< Total hash table entries. */
-	uint32_t reserved;		/**< Unused field. Should be set to 0 */
-	uint32_t key_len;		/**< Length of hash key. */
-	rte_hash_function hash_func;	/**< Primary Hash function used to calculate hash. */
-	uint32_t hash_func_init_val;	/**< Init value used by hash_func. */
-	int socket_id;			/**< NUMA Socket ID for memory. */
-	uint8_t extra_flag;		/**< Indicate if additional parameters are present. */
+    const char *name;        /**< Name of the hash. */
+    uint32_t entries;        /**< Total hash table entries. */
+    uint32_t reserved;        /**< Unused field. Should be set to 0 */
+    uint32_t key_len;        /**< Length of hash key. */
+    rte_hash_function hash_func;    /**< Primary Hash function used to calculate hash. */
+    uint32_t hash_func_init_val;    /**< Init value used by hash_func. */
+    int socket_id;            /**< NUMA Socket ID for memory. */
+    uint8_t extra_flag;        /**< Indicate if additional parameters are present. */
 };
 
 /** @internal A hash table structure. */
@@ -218,7 +218,7 @@ rte_hash_add_key_data(const struct rte_hash *h, const void *key, void *data);
  */
 int32_t
 rte_hash_add_key_with_hash_data(const struct rte_hash *h, const void *key,
-						hash_sig_t sig, void *data);
+                        hash_sig_t sig, void *data);
 
 /**
  * Add a key to an existing hash table. This operation is not multi-thread safe
@@ -340,7 +340,7 @@ rte_hash_del_key_with_hash(const struct rte_hash *h, const void *key, hash_sig_t
  */
 int
 rte_hash_get_key_with_position(const struct rte_hash *h, const int32_t position,
-			       void **key);
+                   void **key);
 
 /**
  * @warning
@@ -369,7 +369,7 @@ rte_hash_get_key_with_position(const struct rte_hash *h, const int32_t position,
 __rte_experimental
 int
 rte_hash_free_key_with_position(const struct rte_hash *h,
-				const int32_t position);
+                const int32_t position);
 
 /**
  * Find a key-value pair in the hash table.
@@ -417,7 +417,7 @@ rte_hash_lookup_data(const struct rte_hash *h, const void *key, void **data);
  */
 int
 rte_hash_lookup_with_hash_data(const struct rte_hash *h, const void *key,
-					hash_sig_t sig, void **data);
+                    hash_sig_t sig, void **data);
 
 /**
  * Find a key in the hash table.
@@ -460,7 +460,7 @@ rte_hash_lookup(const struct rte_hash *h, const void *key);
  */
 int32_t
 rte_hash_lookup_with_hash(const struct rte_hash *h,
-				const void *key, hash_sig_t sig);
+                const void *key, hash_sig_t sig);
 
 /**
  * Calc a hash value by key.
@@ -497,7 +497,7 @@ rte_hash_hash(const struct rte_hash *h, const void *key);
  */
 int
 rte_hash_lookup_bulk_data(const struct rte_hash *h, const void **keys,
-		      uint32_t num_keys, uint64_t *hit_mask, void *data[]);
+              uint32_t num_keys, uint64_t *hit_mask, void *data[]);
 
 /**
  * Find multiple keys in the hash table.
@@ -522,7 +522,7 @@ rte_hash_lookup_bulk_data(const struct rte_hash *h, const void **keys,
  */
 int
 rte_hash_lookup_bulk(const struct rte_hash *h, const void **keys,
-		      uint32_t num_keys, int32_t *positions);
+              uint32_t num_keys, int32_t *positions);
 
 /**
  * Iterate through the hash table, returning key-value pairs.

@@ -12,10 +12,10 @@
  **/
 STATIC void fm10k_fifo_init(struct fm10k_mbx_fifo *fifo, u32 *buffer, u16 size)
 {
-	fifo->buffer = buffer;
-	fifo->size = size;
-	fifo->head = 0;
-	fifo->tail = 0;
+    fifo->buffer = buffer;
+    fifo->size = size;
+    fifo->head = 0;
+    fifo->tail = 0;
 }
 
 /**
@@ -26,7 +26,7 @@ STATIC void fm10k_fifo_init(struct fm10k_mbx_fifo *fifo, u32 *buffer, u16 size)
  **/
 STATIC u16 fm10k_fifo_used(struct fm10k_mbx_fifo *fifo)
 {
-	return fifo->tail - fifo->head;
+    return fifo->tail - fifo->head;
 }
 
 /**
@@ -37,7 +37,7 @@ STATIC u16 fm10k_fifo_used(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC u16 fm10k_fifo_unused(struct fm10k_mbx_fifo *fifo)
 {
-	return fifo->size + fifo->head - fifo->tail;
+    return fifo->size + fifo->head - fifo->tail;
 }
 
 /**
@@ -48,7 +48,7 @@ STATIC u16 fm10k_fifo_unused(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC bool fm10k_fifo_empty(struct fm10k_mbx_fifo *fifo)
 {
-	return fifo->head == fifo->tail;
+    return fifo->head == fifo->tail;
 }
 
 /**
@@ -60,7 +60,7 @@ STATIC bool fm10k_fifo_empty(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC u16 fm10k_fifo_head_offset(struct fm10k_mbx_fifo *fifo, u16 offset)
 {
-	return (fifo->head + offset) & (fifo->size - 1);
+    return (fifo->head + offset) & (fifo->size - 1);
 }
 
 /**
@@ -72,7 +72,7 @@ STATIC u16 fm10k_fifo_head_offset(struct fm10k_mbx_fifo *fifo, u16 offset)
  **/
 STATIC u16 fm10k_fifo_tail_offset(struct fm10k_mbx_fifo *fifo, u16 offset)
 {
-	return (fifo->tail + offset) & (fifo->size - 1);
+    return (fifo->tail + offset) & (fifo->size - 1);
 }
 
 /**
@@ -83,14 +83,14 @@ STATIC u16 fm10k_fifo_tail_offset(struct fm10k_mbx_fifo *fifo, u16 offset)
  **/
 STATIC u16 fm10k_fifo_head_len(struct fm10k_mbx_fifo *fifo)
 {
-	u32 *head = fifo->buffer + fm10k_fifo_head_offset(fifo, 0);
+    u32 *head = fifo->buffer + fm10k_fifo_head_offset(fifo, 0);
 
-	/* verify there is at least 1 DWORD in the fifo so *head is valid */
-	if (fm10k_fifo_empty(fifo))
-		return 0;
+    /* verify there is at least 1 DWORD in the fifo so *head is valid */
+    if (fm10k_fifo_empty(fifo))
+        return 0;
 
-	/* retieve the message length */
-	return FM10K_TLV_DWORD_LEN(*head);
+    /* retieve the message length */
+    return FM10K_TLV_DWORD_LEN(*head);
 }
 
 /**
@@ -101,12 +101,12 @@ STATIC u16 fm10k_fifo_head_len(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC u16 fm10k_fifo_head_drop(struct fm10k_mbx_fifo *fifo)
 {
-	u16 len = fm10k_fifo_head_len(fifo);
+    u16 len = fm10k_fifo_head_len(fifo);
 
-	/* update head so it is at the start of next frame */
-	fifo->head += len;
+    /* update head so it is at the start of next frame */
+    fifo->head += len;
 
-	return len;
+    return len;
 }
 
 /**
@@ -118,7 +118,7 @@ STATIC u16 fm10k_fifo_head_drop(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC void fm10k_fifo_drop_all(struct fm10k_mbx_fifo *fifo)
 {
-	fifo->head = fifo->tail;
+    fifo->head = fifo->tail;
 }
 
 /**
@@ -132,13 +132,13 @@ STATIC void fm10k_fifo_drop_all(struct fm10k_mbx_fifo *fifo)
  **/
 STATIC u16 fm10k_mbx_index_len(struct fm10k_mbx_info *mbx, u16 head, u16 tail)
 {
-	u16 len = tail - head;
+    u16 len = tail - head;
 
-	/* we wrapped so subtract 2, one for index 0, one for all 1s index */
-	if (len > tail)
-		len -= 2;
+    /* we wrapped so subtract 2, one for index 0, one for all 1s index */
+    if (len > tail)
+        len -= 2;
 
-	return len & ((mbx->mbmem_len << 1) - 1);
+    return len & ((mbx->mbmem_len << 1) - 1);
 }
 
 /**
@@ -151,10 +151,10 @@ STATIC u16 fm10k_mbx_index_len(struct fm10k_mbx_info *mbx, u16 head, u16 tail)
  **/
 STATIC u16 fm10k_mbx_tail_add(struct fm10k_mbx_info *mbx, u16 offset)
 {
-	u16 tail = (mbx->tail + offset + 1) & ((mbx->mbmem_len << 1) - 1);
+    u16 tail = (mbx->tail + offset + 1) & ((mbx->mbmem_len << 1) - 1);
 
-	/* add/sub 1 because we cannot have offset 0 or all 1s */
-	return (tail > mbx->tail) ? --tail : ++tail;
+    /* add/sub 1 because we cannot have offset 0 or all 1s */
+    return (tail > mbx->tail) ? --tail : ++tail;
 }
 
 /**
@@ -167,10 +167,10 @@ STATIC u16 fm10k_mbx_tail_add(struct fm10k_mbx_info *mbx, u16 offset)
  **/
 STATIC u16 fm10k_mbx_tail_sub(struct fm10k_mbx_info *mbx, u16 offset)
 {
-	u16 tail = (mbx->tail - offset - 1) & ((mbx->mbmem_len << 1) - 1);
+    u16 tail = (mbx->tail - offset - 1) & ((mbx->mbmem_len << 1) - 1);
 
-	/* sub/add 1 because we cannot have offset 0 or all 1s */
-	return (tail < mbx->tail) ? ++tail : --tail;
+    /* sub/add 1 because we cannot have offset 0 or all 1s */
+    return (tail < mbx->tail) ? ++tail : --tail;
 }
 
 /**
@@ -183,10 +183,10 @@ STATIC u16 fm10k_mbx_tail_sub(struct fm10k_mbx_info *mbx, u16 offset)
  **/
 STATIC u16 fm10k_mbx_head_add(struct fm10k_mbx_info *mbx, u16 offset)
 {
-	u16 head = (mbx->head + offset + 1) & ((mbx->mbmem_len << 1) - 1);
+    u16 head = (mbx->head + offset + 1) & ((mbx->mbmem_len << 1) - 1);
 
-	/* add/sub 1 because we cannot have offset 0 or all 1s */
-	return (head > mbx->head) ? --head : ++head;
+    /* add/sub 1 because we cannot have offset 0 or all 1s */
+    return (head > mbx->head) ? --head : ++head;
 }
 
 /**
@@ -199,10 +199,10 @@ STATIC u16 fm10k_mbx_head_add(struct fm10k_mbx_info *mbx, u16 offset)
  **/
 STATIC u16 fm10k_mbx_head_sub(struct fm10k_mbx_info *mbx, u16 offset)
 {
-	u16 head = (mbx->head - offset - 1) & ((mbx->mbmem_len << 1) - 1);
+    u16 head = (mbx->head - offset - 1) & ((mbx->mbmem_len << 1) - 1);
 
-	/* sub/add 1 because we cannot have offset 0 or all 1s */
-	return (head < mbx->head) ? ++head : --head;
+    /* sub/add 1 because we cannot have offset 0 or all 1s */
+    return (head < mbx->head) ? ++head : --head;
 }
 
 /**
@@ -214,13 +214,13 @@ STATIC u16 fm10k_mbx_head_sub(struct fm10k_mbx_info *mbx, u16 offset)
  **/
 STATIC u16 fm10k_mbx_pushed_tail_len(struct fm10k_mbx_info *mbx)
 {
-	u32 *tail = mbx->rx.buffer + fm10k_fifo_tail_offset(&mbx->rx, 0);
+    u32 *tail = mbx->rx.buffer + fm10k_fifo_tail_offset(&mbx->rx, 0);
 
-	/* pushed tail is only valid if pushed is set */
-	if (!mbx->pushed)
-		return 0;
+    /* pushed tail is only valid if pushed is set */
+    if (!mbx->pushed)
+        return 0;
 
-	return FM10K_TLV_DWORD_LEN(*tail);
+    return FM10K_TLV_DWORD_LEN(*tail);
 }
 
 /**
@@ -235,22 +235,22 @@ STATIC u16 fm10k_mbx_pushed_tail_len(struct fm10k_mbx_info *mbx)
  *  the tail you can use tail_offset to adjust the pointer.
  **/
 STATIC void fm10k_fifo_write_copy(struct fm10k_mbx_fifo *fifo,
-				  const u32 *msg, u16 tail_offset, u16 len)
+                  const u32 *msg, u16 tail_offset, u16 len)
 {
-	u16 end = fm10k_fifo_tail_offset(fifo, tail_offset);
-	u32 *tail = fifo->buffer + end;
+    u16 end = fm10k_fifo_tail_offset(fifo, tail_offset);
+    u32 *tail = fifo->buffer + end;
 
-	/* track when we should cross the end of the FIFO */
-	end = fifo->size - end;
+    /* track when we should cross the end of the FIFO */
+    end = fifo->size - end;
 
-	/* copy end of message before start of message */
-	if (end < len)
-		memcpy(fifo->buffer, msg + end, (len - end) << 2);
-	else
-		end = len;
+    /* copy end of message before start of message */
+    if (end < len)
+        memcpy(fifo->buffer, msg + end, (len - end) << 2);
+    else
+        end = len;
 
-	/* Copy remaining message into Tx FIFO */
-	memcpy(tail, msg, end << 2);
+    /* Copy remaining message into Tx FIFO */
+    memcpy(tail, msg, end << 2);
 }
 
 /**
@@ -264,28 +264,28 @@ STATIC void fm10k_fifo_write_copy(struct fm10k_mbx_fifo *fifo,
  **/
 STATIC s32 fm10k_fifo_enqueue(struct fm10k_mbx_fifo *fifo, const u32 *msg)
 {
-	u16 len = FM10K_TLV_DWORD_LEN(*msg);
+    u16 len = FM10K_TLV_DWORD_LEN(*msg);
 
-	DEBUGFUNC("fm10k_fifo_enqueue");
+    DEBUGFUNC("fm10k_fifo_enqueue");
 
-	/* verify parameters */
-	if (len > fifo->size)
-		return FM10K_MBX_ERR_SIZE;
+    /* verify parameters */
+    if (len > fifo->size)
+        return FM10K_MBX_ERR_SIZE;
 
-	/* verify there is room for the message */
-	if (len > fm10k_fifo_unused(fifo))
-		return FM10K_MBX_ERR_NO_SPACE;
+    /* verify there is room for the message */
+    if (len > fm10k_fifo_unused(fifo))
+        return FM10K_MBX_ERR_NO_SPACE;
 
-	/* Copy message into FIFO */
-	fm10k_fifo_write_copy(fifo, msg, 0, len);
+    /* Copy message into FIFO */
+    fm10k_fifo_write_copy(fifo, msg, 0, len);
 
-	/* memory barrier to guarantee FIFO is written before tail update */
-	FM10K_WMB();
+    /* memory barrier to guarantee FIFO is written before tail update */
+    FM10K_WMB();
 
-	/* Update Tx FIFO tail */
-	fifo->tail += len;
+    /* Update Tx FIFO tail */
+    fifo->tail += len;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -298,28 +298,28 @@ STATIC s32 fm10k_fifo_enqueue(struct fm10k_mbx_fifo *fifo, const u32 *msg)
  **/
 STATIC u16 fm10k_mbx_validate_msg_size(struct fm10k_mbx_info *mbx, u16 len)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->rx;
-	u16 total_len = 0, msg_len;
-	u32 *msg;
+    struct fm10k_mbx_fifo *fifo = &mbx->rx;
+    u16 total_len = 0, msg_len;
+    u32 *msg;
 
-	DEBUGFUNC("fm10k_mbx_validate_msg_size");
+    DEBUGFUNC("fm10k_mbx_validate_msg_size");
 
-	/* length should include previous amounts pushed */
-	len += mbx->pushed;
+    /* length should include previous amounts pushed */
+    len += mbx->pushed;
 
-	/* offset in message is based off of current message size */
-	do {
-		msg = fifo->buffer + fm10k_fifo_tail_offset(fifo, total_len);
-		msg_len = FM10K_TLV_DWORD_LEN(*msg);
-		total_len += msg_len;
-	} while (total_len < len);
+    /* offset in message is based off of current message size */
+    do {
+        msg = fifo->buffer + fm10k_fifo_tail_offset(fifo, total_len);
+        msg_len = FM10K_TLV_DWORD_LEN(*msg);
+        total_len += msg_len;
+    } while (total_len < len);
 
-	/* message extends out of pushed section, but fits in FIFO */
-	if ((len < total_len) && (msg_len <= mbx->max_size))
-		return 0;
+    /* message extends out of pushed section, but fits in FIFO */
+    if ((len < total_len) && (msg_len <= mbx->max_size))
+        return 0;
 
-	/* return length of invalid section */
-	return (len < total_len) ? len : (len - total_len);
+    /* return length of invalid section */
+    return (len < total_len) ? len : (len - total_len);
 }
 
 /**
@@ -332,46 +332,46 @@ STATIC u16 fm10k_mbx_validate_msg_size(struct fm10k_mbx_info *mbx, u16 len)
  *  tail and len determines the length to copy.
  **/
 STATIC void fm10k_mbx_write_copy(struct fm10k_hw *hw,
-				 struct fm10k_mbx_info *mbx)
+                 struct fm10k_mbx_info *mbx)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->tx;
-	u32 mbmem = mbx->mbmem_reg;
-	u32 *head = fifo->buffer;
-	u16 end, len, tail, mask;
+    struct fm10k_mbx_fifo *fifo = &mbx->tx;
+    u32 mbmem = mbx->mbmem_reg;
+    u32 *head = fifo->buffer;
+    u16 end, len, tail, mask;
 
-	DEBUGFUNC("fm10k_mbx_write_copy");
+    DEBUGFUNC("fm10k_mbx_write_copy");
 
-	if (!mbx->tail_len)
-		return;
+    if (!mbx->tail_len)
+        return;
 
-	/* determine data length and mbmem tail index */
-	mask = mbx->mbmem_len - 1;
-	len = mbx->tail_len;
-	tail = fm10k_mbx_tail_sub(mbx, len);
-	if (tail > mask)
-		tail++;
+    /* determine data length and mbmem tail index */
+    mask = mbx->mbmem_len - 1;
+    len = mbx->tail_len;
+    tail = fm10k_mbx_tail_sub(mbx, len);
+    if (tail > mask)
+        tail++;
 
-	/* determine offset in the ring */
-	end = fm10k_fifo_head_offset(fifo, mbx->pulled);
-	head += end;
+    /* determine offset in the ring */
+    end = fm10k_fifo_head_offset(fifo, mbx->pulled);
+    head += end;
 
-	/* memory barrier to guarantee data is ready to be read */
-	FM10K_RMB();
+    /* memory barrier to guarantee data is ready to be read */
+    FM10K_RMB();
 
-	/* Copy message from Tx FIFO */
-	for (end = fifo->size - end; len; head = fifo->buffer) {
-		do {
-			/* adjust tail to match offset for FIFO */
-			tail &= mask;
-			if (!tail)
-				tail++;
+    /* Copy message from Tx FIFO */
+    for (end = fifo->size - end; len; head = fifo->buffer) {
+        do {
+            /* adjust tail to match offset for FIFO */
+            tail &= mask;
+            if (!tail)
+                tail++;
 
-			mbx->tx_mbmem_pulled++;
+            mbx->tx_mbmem_pulled++;
 
-			/* write message to hardware FIFO */
-			FM10K_WRITE_MBX(hw, mbmem + tail++, *(head++));
-		} while (--len && --end);
-	}
+            /* write message to hardware FIFO */
+            FM10K_WRITE_MBX(hw, mbmem + tail++, *(head++));
+        } while (--len && --end);
+    }
 }
 
 /**
@@ -386,35 +386,35 @@ STATIC void fm10k_mbx_write_copy(struct fm10k_hw *hw,
  *  associated with the mailbox.
  **/
 STATIC void fm10k_mbx_pull_head(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx, u16 head)
+                struct fm10k_mbx_info *mbx, u16 head)
 {
-	u16 mbmem_len, len, ack = fm10k_mbx_index_len(mbx, head, mbx->tail);
-	struct fm10k_mbx_fifo *fifo = &mbx->tx;
+    u16 mbmem_len, len, ack = fm10k_mbx_index_len(mbx, head, mbx->tail);
+    struct fm10k_mbx_fifo *fifo = &mbx->tx;
 
-	/* update number of bytes pulled and update bytes in transit */
-	mbx->pulled += mbx->tail_len - ack;
+    /* update number of bytes pulled and update bytes in transit */
+    mbx->pulled += mbx->tail_len - ack;
 
-	/* determine length of data to pull, reserve space for mbmem header */
-	mbmem_len = mbx->mbmem_len - 1;
-	len = fm10k_fifo_used(fifo) - mbx->pulled;
-	if (len > mbmem_len)
-		len = mbmem_len;
+    /* determine length of data to pull, reserve space for mbmem header */
+    mbmem_len = mbx->mbmem_len - 1;
+    len = fm10k_fifo_used(fifo) - mbx->pulled;
+    if (len > mbmem_len)
+        len = mbmem_len;
 
-	/* update tail and record number of bytes in transit */
-	mbx->tail = fm10k_mbx_tail_add(mbx, len - ack);
-	mbx->tail_len = len;
+    /* update tail and record number of bytes in transit */
+    mbx->tail = fm10k_mbx_tail_add(mbx, len - ack);
+    mbx->tail_len = len;
 
-	/* drop pulled messages from the FIFO */
-	for (len = fm10k_fifo_head_len(fifo);
-	     len && (mbx->pulled >= len);
-	     len = fm10k_fifo_head_len(fifo)) {
-		mbx->pulled -= fm10k_fifo_head_drop(fifo);
-		mbx->tx_messages++;
-		mbx->tx_dwords += len;
-	}
+    /* drop pulled messages from the FIFO */
+    for (len = fm10k_fifo_head_len(fifo);
+         len && (mbx->pulled >= len);
+         len = fm10k_fifo_head_len(fifo)) {
+        mbx->pulled -= fm10k_fifo_head_drop(fifo);
+        mbx->tx_messages++;
+        mbx->tx_dwords += len;
+    }
 
-	/* Copy message out from the Tx FIFO */
-	fm10k_mbx_write_copy(hw, mbx);
+    /* Copy message out from the Tx FIFO */
+    fm10k_mbx_write_copy(hw, mbx);
 }
 
 /**
@@ -427,42 +427,42 @@ STATIC void fm10k_mbx_pull_head(struct fm10k_hw *hw,
  *  head and len determines the length to copy.
  **/
 STATIC void fm10k_mbx_read_copy(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx)
+                struct fm10k_mbx_info *mbx)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->rx;
-	u32 mbmem = mbx->mbmem_reg ^ mbx->mbmem_len;
-	u32 *tail = fifo->buffer;
-	u16 end, len, head;
+    struct fm10k_mbx_fifo *fifo = &mbx->rx;
+    u32 mbmem = mbx->mbmem_reg ^ mbx->mbmem_len;
+    u32 *tail = fifo->buffer;
+    u16 end, len, head;
 
-	DEBUGFUNC("fm10k_mbx_read_copy");
+    DEBUGFUNC("fm10k_mbx_read_copy");
 
-	/* determine data length and mbmem head index */
-	len = mbx->head_len;
-	head = fm10k_mbx_head_sub(mbx, len);
-	if (head >= mbx->mbmem_len)
-		head++;
+    /* determine data length and mbmem head index */
+    len = mbx->head_len;
+    head = fm10k_mbx_head_sub(mbx, len);
+    if (head >= mbx->mbmem_len)
+        head++;
 
-	/* determine offset in the ring */
-	end = fm10k_fifo_tail_offset(fifo, mbx->pushed);
-	tail += end;
+    /* determine offset in the ring */
+    end = fm10k_fifo_tail_offset(fifo, mbx->pushed);
+    tail += end;
 
-	/* Copy message into Rx FIFO */
-	for (end = fifo->size - end; len; tail = fifo->buffer) {
-		do {
-			/* adjust head to match offset for FIFO */
-			head &= mbx->mbmem_len - 1;
-			if (!head)
-				head++;
+    /* Copy message into Rx FIFO */
+    for (end = fifo->size - end; len; tail = fifo->buffer) {
+        do {
+            /* adjust head to match offset for FIFO */
+            head &= mbx->mbmem_len - 1;
+            if (!head)
+                head++;
 
-			mbx->rx_mbmem_pushed++;
+            mbx->rx_mbmem_pushed++;
 
-			/* read message from hardware FIFO */
-			*(tail++) = FM10K_READ_MBX(hw, mbmem + head++);
-		} while (--len && --end);
-	}
+            /* read message from hardware FIFO */
+            *(tail++) = FM10K_READ_MBX(hw, mbmem + head++);
+        } while (--len && --end);
+    }
 
-	/* memory barrier to guarantee FIFO is written before tail update */
-	FM10K_WMB();
+    /* memory barrier to guarantee FIFO is written before tail update */
+    FM10K_WMB();
 }
 
 /**
@@ -477,84 +477,84 @@ STATIC void fm10k_mbx_read_copy(struct fm10k_hw *hw,
  *  dequeued on success and a negative value on error.
  **/
 STATIC s32 fm10k_mbx_push_tail(struct fm10k_hw *hw,
-			       struct fm10k_mbx_info *mbx,
-			       u16 tail)
+                   struct fm10k_mbx_info *mbx,
+                   u16 tail)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->rx;
-	u16 len, seq = fm10k_mbx_index_len(mbx, mbx->head, tail);
+    struct fm10k_mbx_fifo *fifo = &mbx->rx;
+    u16 len, seq = fm10k_mbx_index_len(mbx, mbx->head, tail);
 
-	DEBUGFUNC("fm10k_mbx_push_tail");
+    DEBUGFUNC("fm10k_mbx_push_tail");
 
-	/* determine length of data to push */
-	len = fm10k_fifo_unused(fifo) - mbx->pushed;
-	if (len > seq)
-		len = seq;
+    /* determine length of data to push */
+    len = fm10k_fifo_unused(fifo) - mbx->pushed;
+    if (len > seq)
+        len = seq;
 
-	/* update head and record bytes received */
-	mbx->head = fm10k_mbx_head_add(mbx, len);
-	mbx->head_len = len;
+    /* update head and record bytes received */
+    mbx->head = fm10k_mbx_head_add(mbx, len);
+    mbx->head_len = len;
 
-	/* nothing to do if there is no data */
-	if (!len)
-		return FM10K_SUCCESS;
+    /* nothing to do if there is no data */
+    if (!len)
+        return FM10K_SUCCESS;
 
-	/* Copy msg into Rx FIFO */
-	fm10k_mbx_read_copy(hw, mbx);
+    /* Copy msg into Rx FIFO */
+    fm10k_mbx_read_copy(hw, mbx);
 
-	/* determine if there are any invalid lengths in message */
-	if (fm10k_mbx_validate_msg_size(mbx, len))
-		return FM10K_MBX_ERR_SIZE;
+    /* determine if there are any invalid lengths in message */
+    if (fm10k_mbx_validate_msg_size(mbx, len))
+        return FM10K_MBX_ERR_SIZE;
 
-	/* Update pushed */
-	mbx->pushed += len;
+    /* Update pushed */
+    mbx->pushed += len;
 
-	/* flush any completed messages */
-	for (len = fm10k_mbx_pushed_tail_len(mbx);
-	     len && (mbx->pushed >= len);
-	     len = fm10k_mbx_pushed_tail_len(mbx)) {
-		fifo->tail += len;
-		mbx->pushed -= len;
-		mbx->rx_messages++;
-		mbx->rx_dwords += len;
-	}
+    /* flush any completed messages */
+    for (len = fm10k_mbx_pushed_tail_len(mbx);
+         len && (mbx->pushed >= len);
+         len = fm10k_mbx_pushed_tail_len(mbx)) {
+        fifo->tail += len;
+        mbx->pushed -= len;
+        mbx->rx_messages++;
+        mbx->rx_dwords += len;
+    }
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /* pre-generated data for generating the CRC based on the poly 0xAC9A. */
 static const u16 fm10k_crc_16b_table[256] = {
-	0x0000, 0x7956, 0xF2AC, 0x8BFA, 0xBC6D, 0xC53B, 0x4EC1, 0x3797,
-	0x21EF, 0x58B9, 0xD343, 0xAA15, 0x9D82, 0xE4D4, 0x6F2E, 0x1678,
-	0x43DE, 0x3A88, 0xB172, 0xC824, 0xFFB3, 0x86E5, 0x0D1F, 0x7449,
-	0x6231, 0x1B67, 0x909D, 0xE9CB, 0xDE5C, 0xA70A, 0x2CF0, 0x55A6,
-	0x87BC, 0xFEEA, 0x7510, 0x0C46, 0x3BD1, 0x4287, 0xC97D, 0xB02B,
-	0xA653, 0xDF05, 0x54FF, 0x2DA9, 0x1A3E, 0x6368, 0xE892, 0x91C4,
-	0xC462, 0xBD34, 0x36CE, 0x4F98, 0x780F, 0x0159, 0x8AA3, 0xF3F5,
-	0xE58D, 0x9CDB, 0x1721, 0x6E77, 0x59E0, 0x20B6, 0xAB4C, 0xD21A,
-	0x564D, 0x2F1B, 0xA4E1, 0xDDB7, 0xEA20, 0x9376, 0x188C, 0x61DA,
-	0x77A2, 0x0EF4, 0x850E, 0xFC58, 0xCBCF, 0xB299, 0x3963, 0x4035,
-	0x1593, 0x6CC5, 0xE73F, 0x9E69, 0xA9FE, 0xD0A8, 0x5B52, 0x2204,
-	0x347C, 0x4D2A, 0xC6D0, 0xBF86, 0x8811, 0xF147, 0x7ABD, 0x03EB,
-	0xD1F1, 0xA8A7, 0x235D, 0x5A0B, 0x6D9C, 0x14CA, 0x9F30, 0xE666,
-	0xF01E, 0x8948, 0x02B2, 0x7BE4, 0x4C73, 0x3525, 0xBEDF, 0xC789,
-	0x922F, 0xEB79, 0x6083, 0x19D5, 0x2E42, 0x5714, 0xDCEE, 0xA5B8,
-	0xB3C0, 0xCA96, 0x416C, 0x383A, 0x0FAD, 0x76FB, 0xFD01, 0x8457,
-	0xAC9A, 0xD5CC, 0x5E36, 0x2760, 0x10F7, 0x69A1, 0xE25B, 0x9B0D,
-	0x8D75, 0xF423, 0x7FD9, 0x068F, 0x3118, 0x484E, 0xC3B4, 0xBAE2,
-	0xEF44, 0x9612, 0x1DE8, 0x64BE, 0x5329, 0x2A7F, 0xA185, 0xD8D3,
-	0xCEAB, 0xB7FD, 0x3C07, 0x4551, 0x72C6, 0x0B90, 0x806A, 0xF93C,
-	0x2B26, 0x5270, 0xD98A, 0xA0DC, 0x974B, 0xEE1D, 0x65E7, 0x1CB1,
-	0x0AC9, 0x739F, 0xF865, 0x8133, 0xB6A4, 0xCFF2, 0x4408, 0x3D5E,
-	0x68F8, 0x11AE, 0x9A54, 0xE302, 0xD495, 0xADC3, 0x2639, 0x5F6F,
-	0x4917, 0x3041, 0xBBBB, 0xC2ED, 0xF57A, 0x8C2C, 0x07D6, 0x7E80,
-	0xFAD7, 0x8381, 0x087B, 0x712D, 0x46BA, 0x3FEC, 0xB416, 0xCD40,
-	0xDB38, 0xA26E, 0x2994, 0x50C2, 0x6755, 0x1E03, 0x95F9, 0xECAF,
-	0xB909, 0xC05F, 0x4BA5, 0x32F3, 0x0564, 0x7C32, 0xF7C8, 0x8E9E,
-	0x98E6, 0xE1B0, 0x6A4A, 0x131C, 0x248B, 0x5DDD, 0xD627, 0xAF71,
-	0x7D6B, 0x043D, 0x8FC7, 0xF691, 0xC106, 0xB850, 0x33AA, 0x4AFC,
-	0x5C84, 0x25D2, 0xAE28, 0xD77E, 0xE0E9, 0x99BF, 0x1245, 0x6B13,
-	0x3EB5, 0x47E3, 0xCC19, 0xB54F, 0x82D8, 0xFB8E, 0x7074, 0x0922,
-	0x1F5A, 0x660C, 0xEDF6, 0x94A0, 0xA337, 0xDA61, 0x519B, 0x28CD };
+    0x0000, 0x7956, 0xF2AC, 0x8BFA, 0xBC6D, 0xC53B, 0x4EC1, 0x3797,
+    0x21EF, 0x58B9, 0xD343, 0xAA15, 0x9D82, 0xE4D4, 0x6F2E, 0x1678,
+    0x43DE, 0x3A88, 0xB172, 0xC824, 0xFFB3, 0x86E5, 0x0D1F, 0x7449,
+    0x6231, 0x1B67, 0x909D, 0xE9CB, 0xDE5C, 0xA70A, 0x2CF0, 0x55A6,
+    0x87BC, 0xFEEA, 0x7510, 0x0C46, 0x3BD1, 0x4287, 0xC97D, 0xB02B,
+    0xA653, 0xDF05, 0x54FF, 0x2DA9, 0x1A3E, 0x6368, 0xE892, 0x91C4,
+    0xC462, 0xBD34, 0x36CE, 0x4F98, 0x780F, 0x0159, 0x8AA3, 0xF3F5,
+    0xE58D, 0x9CDB, 0x1721, 0x6E77, 0x59E0, 0x20B6, 0xAB4C, 0xD21A,
+    0x564D, 0x2F1B, 0xA4E1, 0xDDB7, 0xEA20, 0x9376, 0x188C, 0x61DA,
+    0x77A2, 0x0EF4, 0x850E, 0xFC58, 0xCBCF, 0xB299, 0x3963, 0x4035,
+    0x1593, 0x6CC5, 0xE73F, 0x9E69, 0xA9FE, 0xD0A8, 0x5B52, 0x2204,
+    0x347C, 0x4D2A, 0xC6D0, 0xBF86, 0x8811, 0xF147, 0x7ABD, 0x03EB,
+    0xD1F1, 0xA8A7, 0x235D, 0x5A0B, 0x6D9C, 0x14CA, 0x9F30, 0xE666,
+    0xF01E, 0x8948, 0x02B2, 0x7BE4, 0x4C73, 0x3525, 0xBEDF, 0xC789,
+    0x922F, 0xEB79, 0x6083, 0x19D5, 0x2E42, 0x5714, 0xDCEE, 0xA5B8,
+    0xB3C0, 0xCA96, 0x416C, 0x383A, 0x0FAD, 0x76FB, 0xFD01, 0x8457,
+    0xAC9A, 0xD5CC, 0x5E36, 0x2760, 0x10F7, 0x69A1, 0xE25B, 0x9B0D,
+    0x8D75, 0xF423, 0x7FD9, 0x068F, 0x3118, 0x484E, 0xC3B4, 0xBAE2,
+    0xEF44, 0x9612, 0x1DE8, 0x64BE, 0x5329, 0x2A7F, 0xA185, 0xD8D3,
+    0xCEAB, 0xB7FD, 0x3C07, 0x4551, 0x72C6, 0x0B90, 0x806A, 0xF93C,
+    0x2B26, 0x5270, 0xD98A, 0xA0DC, 0x974B, 0xEE1D, 0x65E7, 0x1CB1,
+    0x0AC9, 0x739F, 0xF865, 0x8133, 0xB6A4, 0xCFF2, 0x4408, 0x3D5E,
+    0x68F8, 0x11AE, 0x9A54, 0xE302, 0xD495, 0xADC3, 0x2639, 0x5F6F,
+    0x4917, 0x3041, 0xBBBB, 0xC2ED, 0xF57A, 0x8C2C, 0x07D6, 0x7E80,
+    0xFAD7, 0x8381, 0x087B, 0x712D, 0x46BA, 0x3FEC, 0xB416, 0xCD40,
+    0xDB38, 0xA26E, 0x2994, 0x50C2, 0x6755, 0x1E03, 0x95F9, 0xECAF,
+    0xB909, 0xC05F, 0x4BA5, 0x32F3, 0x0564, 0x7C32, 0xF7C8, 0x8E9E,
+    0x98E6, 0xE1B0, 0x6A4A, 0x131C, 0x248B, 0x5DDD, 0xD627, 0xAF71,
+    0x7D6B, 0x043D, 0x8FC7, 0xF691, 0xC106, 0xB850, 0x33AA, 0x4AFC,
+    0x5C84, 0x25D2, 0xAE28, 0xD77E, 0xE0E9, 0x99BF, 0x1245, 0x6B13,
+    0x3EB5, 0x47E3, 0xCC19, 0xB54F, 0x82D8, 0xFB8E, 0x7074, 0x0922,
+    0x1F5A, 0x660C, 0xEDF6, 0x94A0, 0xA337, 0xDA61, 0x519B, 0x28CD };
 
 /**
  *  fm10k_crc_16b - Generate a 16 bit CRC for a region of 16 bit data
@@ -569,21 +569,21 @@ static const u16 fm10k_crc_16b_table[256] = {
  */
 STATIC u16 fm10k_crc_16b(const u32 *data, u16 seed, u16 len)
 {
-	u32 result = seed;
+    u32 result = seed;
 
-	while (len--) {
-		result ^= *(data++);
-		result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
-		result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
+    while (len--) {
+        result ^= *(data++);
+        result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
+        result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
 
-		if (!(len--))
-			break;
+        if (!(len--))
+            break;
 
-		result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
-		result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
-	}
+        result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
+        result = (result >> 8) ^ fm10k_crc_16b_table[result & 0xFF];
+    }
 
-	return (u16)result;
+    return (u16)result;
 }
 
 /**
@@ -596,22 +596,22 @@ STATIC u16 fm10k_crc_16b(const u32 *data, u16 seed, u16 len)
  *  This function generates a CRC for some region of the FIFO
  **/
 STATIC u16 fm10k_fifo_crc(struct fm10k_mbx_fifo *fifo, u16 offset,
-			  u16 len, u16 seed)
+              u16 len, u16 seed)
 {
-	u32 *data = fifo->buffer + offset;
+    u32 *data = fifo->buffer + offset;
 
-	/* track when we should cross the end of the FIFO */
-	offset = fifo->size - offset;
+    /* track when we should cross the end of the FIFO */
+    offset = fifo->size - offset;
 
-	/* if we are in 2 blocks process the end of the FIFO first */
-	if (offset < len) {
-		seed = fm10k_crc_16b(data, seed, offset * 2);
-		data = fifo->buffer;
-		len -= offset;
-	}
+    /* if we are in 2 blocks process the end of the FIFO first */
+    if (offset < len) {
+        seed = fm10k_crc_16b(data, seed, offset * 2);
+        data = fifo->buffer;
+        len -= offset;
+    }
 
-	/* process any remaining bits */
-	return fm10k_crc_16b(data, seed, len * 2);
+    /* process any remaining bits */
+    return fm10k_crc_16b(data, seed, len * 2);
 }
 
 /**
@@ -626,13 +626,13 @@ STATIC u16 fm10k_fifo_crc(struct fm10k_mbx_fifo *fifo, u16 offset,
  **/
 STATIC void fm10k_mbx_update_local_crc(struct fm10k_mbx_info *mbx, u16 head)
 {
-	u16 len = mbx->tail_len - fm10k_mbx_index_len(mbx, head, mbx->tail);
+    u16 len = mbx->tail_len - fm10k_mbx_index_len(mbx, head, mbx->tail);
 
-	/* determine the offset for the start of the region to be pulled */
-	head = fm10k_fifo_head_offset(&mbx->tx, mbx->pulled);
+    /* determine the offset for the start of the region to be pulled */
+    head = fm10k_fifo_head_offset(&mbx->tx, mbx->pulled);
 
-	/* update local CRC to include all of the pulled data */
-	mbx->local = fm10k_fifo_crc(&mbx->tx, head, len, mbx->local);
+    /* update local CRC to include all of the pulled data */
+    mbx->local = fm10k_fifo_crc(&mbx->tx, head, len, mbx->local);
 }
 
 /**
@@ -647,20 +647,20 @@ STATIC void fm10k_mbx_update_local_crc(struct fm10k_mbx_info *mbx, u16 head)
  */
 STATIC s32 fm10k_mbx_verify_remote_crc(struct fm10k_mbx_info *mbx)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->rx;
-	u16 len = mbx->head_len;
-	u16 offset = fm10k_fifo_tail_offset(fifo, mbx->pushed) - len;
-	u16 crc;
+    struct fm10k_mbx_fifo *fifo = &mbx->rx;
+    u16 len = mbx->head_len;
+    u16 offset = fm10k_fifo_tail_offset(fifo, mbx->pushed) - len;
+    u16 crc;
 
-	/* update the remote CRC if new data has been received */
-	if (len)
-		mbx->remote = fm10k_fifo_crc(fifo, offset, len, mbx->remote);
+    /* update the remote CRC if new data has been received */
+    if (len)
+        mbx->remote = fm10k_fifo_crc(fifo, offset, len, mbx->remote);
 
-	/* process the full header as we have to validate the CRC */
-	crc = fm10k_crc_16b(&mbx->mbx_hdr, mbx->remote, 1);
+    /* process the full header as we have to validate the CRC */
+    crc = fm10k_crc_16b(&mbx->mbx_hdr, mbx->remote, 1);
 
-	/* notify other end if we have a problem */
-	return crc ? FM10K_MBX_ERR_CRC : FM10K_SUCCESS;
+    /* notify other end if we have a problem */
+    return crc ? FM10K_MBX_ERR_CRC : FM10K_SUCCESS;
 }
 
 /**
@@ -671,9 +671,9 @@ STATIC s32 fm10k_mbx_verify_remote_crc(struct fm10k_mbx_info *mbx)
  **/
 STATIC bool fm10k_mbx_rx_ready(struct fm10k_mbx_info *mbx)
 {
-	u16 msg_size = fm10k_fifo_head_len(&mbx->rx);
+    u16 msg_size = fm10k_fifo_head_len(&mbx->rx);
 
-	return msg_size && (fm10k_fifo_used(&mbx->rx) >= msg_size);
+    return msg_size && (fm10k_fifo_used(&mbx->rx) >= msg_size);
 }
 
 /**
@@ -685,9 +685,9 @@ STATIC bool fm10k_mbx_rx_ready(struct fm10k_mbx_info *mbx)
  **/
 STATIC bool fm10k_mbx_tx_ready(struct fm10k_mbx_info *mbx, u16 len)
 {
-	u16 fifo_unused = fm10k_fifo_unused(&mbx->tx);
+    u16 fifo_unused = fm10k_fifo_unused(&mbx->tx);
 
-	return (mbx->state == FM10K_STATE_OPEN) && (fifo_unused >= len);
+    return (mbx->state == FM10K_STATE_OPEN) && (fifo_unused >= len);
 }
 
 /**
@@ -698,7 +698,7 @@ STATIC bool fm10k_mbx_tx_ready(struct fm10k_mbx_info *mbx, u16 len)
  **/
 STATIC bool fm10k_mbx_tx_complete(struct fm10k_mbx_info *mbx)
 {
-	return fm10k_fifo_empty(&mbx->tx);
+    return fm10k_fifo_empty(&mbx->tx);
 }
 
 /**
@@ -710,30 +710,30 @@ STATIC bool fm10k_mbx_tx_complete(struct fm10k_mbx_info *mbx)
  *  It will return the number of messages processed when called.
  **/
 STATIC u16 fm10k_mbx_dequeue_rx(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx)
+                struct fm10k_mbx_info *mbx)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->rx;
-	s32 err;
-	u16 cnt;
+    struct fm10k_mbx_fifo *fifo = &mbx->rx;
+    s32 err;
+    u16 cnt;
 
-	/* parse Rx messages out of the Rx FIFO to empty it */
-	for (cnt = 0; !fm10k_fifo_empty(fifo); cnt++) {
-		err = fm10k_tlv_msg_parse(hw, fifo->buffer + fifo->head,
-					  mbx, mbx->msg_data);
-		if (err < 0)
-			mbx->rx_parse_err++;
+    /* parse Rx messages out of the Rx FIFO to empty it */
+    for (cnt = 0; !fm10k_fifo_empty(fifo); cnt++) {
+        err = fm10k_tlv_msg_parse(hw, fifo->buffer + fifo->head,
+                      mbx, mbx->msg_data);
+        if (err < 0)
+            mbx->rx_parse_err++;
 
-		fm10k_fifo_head_drop(fifo);
-	}
+        fm10k_fifo_head_drop(fifo);
+    }
 
-	/* shift remaining bytes back to start of FIFO */
-	memmove(fifo->buffer, fifo->buffer + fifo->tail, mbx->pushed << 2);
+    /* shift remaining bytes back to start of FIFO */
+    memmove(fifo->buffer, fifo->buffer + fifo->tail, mbx->pushed << 2);
 
-	/* shift head and tail based on the memory we moved */
-	fifo->tail -= fifo->head;
-	fifo->head = 0;
+    /* shift head and tail based on the memory we moved */
+    fifo->tail -= fifo->head;
+    fifo->head = 0;
 
-	return cnt;
+    return cnt;
 }
 
 /**
@@ -747,44 +747,44 @@ STATIC u16 fm10k_mbx_dequeue_rx(struct fm10k_hw *hw,
  *  of the FIFO.  It will return 0 on success, or a negative value on error.
  **/
 STATIC s32 fm10k_mbx_enqueue_tx(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx, const u32 *msg)
+                struct fm10k_mbx_info *mbx, const u32 *msg)
 {
-	u32 countdown = mbx->timeout;
-	s32 err;
+    u32 countdown = mbx->timeout;
+    s32 err;
 
-	switch (mbx->state) {
-	case FM10K_STATE_CLOSED:
-	case FM10K_STATE_DISCONNECT:
-		return FM10K_MBX_ERR_NO_MBX;
-	default:
-		break;
-	}
+    switch (mbx->state) {
+    case FM10K_STATE_CLOSED:
+    case FM10K_STATE_DISCONNECT:
+        return FM10K_MBX_ERR_NO_MBX;
+    default:
+        break;
+    }
 
-	/* enqueue the message on the Tx FIFO */
-	err = fm10k_fifo_enqueue(&mbx->tx, msg);
+    /* enqueue the message on the Tx FIFO */
+    err = fm10k_fifo_enqueue(&mbx->tx, msg);
 
-	/* if it failed give the FIFO a chance to drain */
-	while (err && countdown) {
-		countdown--;
-		usec_delay(mbx->usec_delay);
-		mbx->ops.process(hw, mbx);
-		err = fm10k_fifo_enqueue(&mbx->tx, msg);
-	}
+    /* if it failed give the FIFO a chance to drain */
+    while (err && countdown) {
+        countdown--;
+        usec_delay(mbx->usec_delay);
+        mbx->ops.process(hw, mbx);
+        err = fm10k_fifo_enqueue(&mbx->tx, msg);
+    }
 
-	/* if we failed treat the error */
-	if (err) {
-		mbx->timeout = 0;
-		mbx->tx_busy++;
-	}
+    /* if we failed treat the error */
+    if (err) {
+        mbx->timeout = 0;
+        mbx->tx_busy++;
+    }
 
-	/* begin processing message, ignore errors as this is just meant
-	 * to start the mailbox flow so we are not concerned if there
-	 * is a bad error, or the mailbox is already busy with a request
-	 */
-	if (!mbx->tail_len)
-		mbx->ops.process(hw, mbx);
+    /* begin processing message, ignore errors as this is just meant
+     * to start the mailbox flow so we are not concerned if there
+     * is a bad error, or the mailbox is already busy with a request
+     */
+    if (!mbx->tail_len)
+        mbx->ops.process(hw, mbx);
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -796,24 +796,24 @@ STATIC s32 fm10k_mbx_enqueue_tx(struct fm10k_hw *hw,
  **/
 STATIC s32 fm10k_mbx_read(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
 {
-	DEBUGFUNC("fm10k_mbx_read");
+    DEBUGFUNC("fm10k_mbx_read");
 
-	/* only allow one reader in here at a time */
-	if (mbx->mbx_hdr)
-		return FM10K_MBX_ERR_BUSY;
+    /* only allow one reader in here at a time */
+    if (mbx->mbx_hdr)
+        return FM10K_MBX_ERR_BUSY;
 
-	/* read to capture initial interrupt bits */
-	if (FM10K_READ_MBX(hw, mbx->mbx_reg) & FM10K_MBX_REQ_INTERRUPT)
-		mbx->mbx_lock = FM10K_MBX_ACK;
+    /* read to capture initial interrupt bits */
+    if (FM10K_READ_MBX(hw, mbx->mbx_reg) & FM10K_MBX_REQ_INTERRUPT)
+        mbx->mbx_lock = FM10K_MBX_ACK;
 
-	/* write back interrupt bits to clear */
-	FM10K_WRITE_MBX(hw, mbx->mbx_reg,
-			FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT);
+    /* write back interrupt bits to clear */
+    FM10K_WRITE_MBX(hw, mbx->mbx_reg,
+            FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT);
 
-	/* read remote header */
-	mbx->mbx_hdr = FM10K_READ_MBX(hw, mbx->mbmem_reg ^ mbx->mbmem_len);
+    /* read remote header */
+    mbx->mbx_hdr = FM10K_READ_MBX(hw, mbx->mbmem_reg ^ mbx->mbmem_len);
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -825,20 +825,20 @@ STATIC s32 fm10k_mbx_read(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_write(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
 {
-	u32 mbmem = mbx->mbmem_reg;
+    u32 mbmem = mbx->mbmem_reg;
 
-	DEBUGFUNC("fm10k_mbx_write");
+    DEBUGFUNC("fm10k_mbx_write");
 
-	/* write new msg header to notify recipient of change */
-	FM10K_WRITE_MBX(hw, mbmem, mbx->mbx_hdr);
+    /* write new msg header to notify recipient of change */
+    FM10K_WRITE_MBX(hw, mbmem, mbx->mbx_hdr);
 
-	/* write mailbox to send interrupt */
-	if (mbx->mbx_lock)
-		FM10K_WRITE_MBX(hw, mbx->mbx_reg, mbx->mbx_lock);
+    /* write mailbox to send interrupt */
+    if (mbx->mbx_lock)
+        FM10K_WRITE_MBX(hw, mbx->mbx_reg, mbx->mbx_lock);
 
-	/* we no longer are using the header so free it */
-	mbx->mbx_hdr = 0;
-	mbx->mbx_lock = 0;
+    /* we no longer are using the header so free it */
+    mbx->mbx_hdr = 0;
+    mbx->mbx_lock = 0;
 }
 
 /**
@@ -849,11 +849,11 @@ STATIC void fm10k_mbx_write(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_create_connect_hdr(struct fm10k_mbx_info *mbx)
 {
-	mbx->mbx_lock |= FM10K_MBX_REQ;
+    mbx->mbx_lock |= FM10K_MBX_REQ;
 
-	mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_CONNECT, TYPE) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->rx.size - 1, CONNECT_SIZE);
+    mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_CONNECT, TYPE) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->rx.size - 1, CONNECT_SIZE);
 }
 
 /**
@@ -864,22 +864,22 @@ STATIC void fm10k_mbx_create_connect_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_create_data_hdr(struct fm10k_mbx_info *mbx)
 {
-	u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DATA, TYPE) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->tail, TAIL) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
-	struct fm10k_mbx_fifo *fifo = &mbx->tx;
-	u16 crc;
+    u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DATA, TYPE) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->tail, TAIL) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
+    struct fm10k_mbx_fifo *fifo = &mbx->tx;
+    u16 crc;
 
-	if (mbx->tail_len)
-		mbx->mbx_lock |= FM10K_MBX_REQ;
+    if (mbx->tail_len)
+        mbx->mbx_lock |= FM10K_MBX_REQ;
 
-	/* generate CRC for data in flight and header */
-	crc = fm10k_fifo_crc(fifo, fm10k_fifo_head_offset(fifo, mbx->pulled),
-			     mbx->tail_len, mbx->local);
-	crc = fm10k_crc_16b(&hdr, crc, 1);
+    /* generate CRC for data in flight and header */
+    crc = fm10k_fifo_crc(fifo, fm10k_fifo_head_offset(fifo, mbx->pulled),
+                 mbx->tail_len, mbx->local);
+    crc = fm10k_crc_16b(&hdr, crc, 1);
 
-	/* load header to memory to be written */
-	mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
+    /* load header to memory to be written */
+    mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
 }
 
 /**
@@ -890,15 +890,15 @@ STATIC void fm10k_mbx_create_data_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_create_disconnect_hdr(struct fm10k_mbx_info *mbx)
 {
-	u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DISCONNECT, TYPE) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->tail, TAIL) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
-	u16 crc = fm10k_crc_16b(&hdr, mbx->local, 1);
+    u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DISCONNECT, TYPE) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->tail, TAIL) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
+    u16 crc = fm10k_crc_16b(&hdr, mbx->local, 1);
 
-	mbx->mbx_lock |= FM10K_MBX_ACK;
+    mbx->mbx_lock |= FM10K_MBX_ACK;
 
-	/* load header to memory to be written */
-	mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
+    /* load header to memory to be written */
+    mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
 }
 
 /**
@@ -911,15 +911,15 @@ STATIC void fm10k_mbx_create_disconnect_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_create_fake_disconnect_hdr(struct fm10k_mbx_info *mbx)
 {
-	u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DISCONNECT, TYPE) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->head, TAIL) |
-		  FM10K_MSG_HDR_FIELD_SET(mbx->tail, HEAD);
-	u16 crc = fm10k_crc_16b(&hdr, mbx->local, 1);
+    u32 hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_DISCONNECT, TYPE) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->head, TAIL) |
+          FM10K_MSG_HDR_FIELD_SET(mbx->tail, HEAD);
+    u16 crc = fm10k_crc_16b(&hdr, mbx->local, 1);
 
-	mbx->mbx_lock |= FM10K_MBX_ACK;
+    mbx->mbx_lock |= FM10K_MBX_ACK;
 
-	/* load header to memory to be written */
-	mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
+    /* load header to memory to be written */
+    mbx->mbx_hdr = hdr | FM10K_MSG_HDR_FIELD_SET(crc, CRC);
 }
 
 /**
@@ -933,24 +933,24 @@ STATIC void fm10k_mbx_create_fake_disconnect_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_create_error_msg(struct fm10k_mbx_info *mbx, s32 err)
 {
-	/* only generate an error message for these types */
-	switch (err) {
-	case FM10K_MBX_ERR_TAIL:
-	case FM10K_MBX_ERR_HEAD:
-	case FM10K_MBX_ERR_TYPE:
-	case FM10K_MBX_ERR_SIZE:
-	case FM10K_MBX_ERR_RSVD0:
-	case FM10K_MBX_ERR_CRC:
-		break;
-	default:
-		return;
-	}
+    /* only generate an error message for these types */
+    switch (err) {
+    case FM10K_MBX_ERR_TAIL:
+    case FM10K_MBX_ERR_HEAD:
+    case FM10K_MBX_ERR_TYPE:
+    case FM10K_MBX_ERR_SIZE:
+    case FM10K_MBX_ERR_RSVD0:
+    case FM10K_MBX_ERR_CRC:
+        break;
+    default:
+        return;
+    }
 
-	mbx->mbx_lock |= FM10K_MBX_REQ;
+    mbx->mbx_lock |= FM10K_MBX_REQ;
 
-	mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_ERROR, TYPE) |
-		       FM10K_MSG_HDR_FIELD_SET(err, ERR_NO) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
+    mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(FM10K_MSG_ERROR, TYPE) |
+               FM10K_MSG_HDR_FIELD_SET(err, ERR_NO) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->head, HEAD);
 }
 
 /**
@@ -963,60 +963,60 @@ STATIC void fm10k_mbx_create_error_msg(struct fm10k_mbx_info *mbx, s32 err)
  **/
 STATIC s32 fm10k_mbx_validate_msg_hdr(struct fm10k_mbx_info *mbx)
 {
-	u16 type, rsvd0, head, tail, size;
-	const u32 *hdr = &mbx->mbx_hdr;
+    u16 type, rsvd0, head, tail, size;
+    const u32 *hdr = &mbx->mbx_hdr;
 
-	DEBUGFUNC("fm10k_mbx_validate_msg_hdr");
+    DEBUGFUNC("fm10k_mbx_validate_msg_hdr");
 
-	type = FM10K_MSG_HDR_FIELD_GET(*hdr, TYPE);
-	rsvd0 = FM10K_MSG_HDR_FIELD_GET(*hdr, RSVD0);
-	tail = FM10K_MSG_HDR_FIELD_GET(*hdr, TAIL);
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
-	size = FM10K_MSG_HDR_FIELD_GET(*hdr, CONNECT_SIZE);
+    type = FM10K_MSG_HDR_FIELD_GET(*hdr, TYPE);
+    rsvd0 = FM10K_MSG_HDR_FIELD_GET(*hdr, RSVD0);
+    tail = FM10K_MSG_HDR_FIELD_GET(*hdr, TAIL);
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
+    size = FM10K_MSG_HDR_FIELD_GET(*hdr, CONNECT_SIZE);
 
-	if (rsvd0)
-		return FM10K_MBX_ERR_RSVD0;
+    if (rsvd0)
+        return FM10K_MBX_ERR_RSVD0;
 
-	switch (type) {
-	case FM10K_MSG_DISCONNECT:
-		/* validate that all data has been received */
-		if (tail != mbx->head)
-			return FM10K_MBX_ERR_TAIL;
+    switch (type) {
+    case FM10K_MSG_DISCONNECT:
+        /* validate that all data has been received */
+        if (tail != mbx->head)
+            return FM10K_MBX_ERR_TAIL;
 
-		/* fall through */
-	case FM10K_MSG_DATA:
-		/* validate that head is moving correctly */
-		if (!head || (head == FM10K_MSG_HDR_MASK(HEAD)))
-			return FM10K_MBX_ERR_HEAD;
-		if (fm10k_mbx_index_len(mbx, head, mbx->tail) > mbx->tail_len)
-			return FM10K_MBX_ERR_HEAD;
+        /* fall through */
+    case FM10K_MSG_DATA:
+        /* validate that head is moving correctly */
+        if (!head || (head == FM10K_MSG_HDR_MASK(HEAD)))
+            return FM10K_MBX_ERR_HEAD;
+        if (fm10k_mbx_index_len(mbx, head, mbx->tail) > mbx->tail_len)
+            return FM10K_MBX_ERR_HEAD;
 
-		/* validate that tail is moving correctly */
-		if (!tail || (tail == FM10K_MSG_HDR_MASK(TAIL)))
-			return FM10K_MBX_ERR_TAIL;
-		if (fm10k_mbx_index_len(mbx, mbx->head, tail) < mbx->mbmem_len)
-			break;
+        /* validate that tail is moving correctly */
+        if (!tail || (tail == FM10K_MSG_HDR_MASK(TAIL)))
+            return FM10K_MBX_ERR_TAIL;
+        if (fm10k_mbx_index_len(mbx, mbx->head, tail) < mbx->mbmem_len)
+            break;
 
-		return FM10K_MBX_ERR_TAIL;
-	case FM10K_MSG_CONNECT:
-		/* validate size is in range and is power of 2 mask */
-		if ((size < FM10K_VFMBX_MSG_MTU) || (size & (size + 1)))
-			return FM10K_MBX_ERR_SIZE;
+        return FM10K_MBX_ERR_TAIL;
+    case FM10K_MSG_CONNECT:
+        /* validate size is in range and is power of 2 mask */
+        if ((size < FM10K_VFMBX_MSG_MTU) || (size & (size + 1)))
+            return FM10K_MBX_ERR_SIZE;
 
-		/* fall through */
-	case FM10K_MSG_ERROR:
-		if (!head || (head == FM10K_MSG_HDR_MASK(HEAD)))
-			return FM10K_MBX_ERR_HEAD;
-		/* neither create nor error include a tail offset */
-		if (tail)
-			return FM10K_MBX_ERR_TAIL;
+        /* fall through */
+    case FM10K_MSG_ERROR:
+        if (!head || (head == FM10K_MSG_HDR_MASK(HEAD)))
+            return FM10K_MBX_ERR_HEAD;
+        /* neither create nor error include a tail offset */
+        if (tail)
+            return FM10K_MBX_ERR_TAIL;
 
-		break;
-	default:
-		return FM10K_MBX_ERR_TYPE;
-	}
+        break;
+    default:
+        return FM10K_MBX_ERR_TYPE;
+    }
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1031,35 +1031,35 @@ STATIC s32 fm10k_mbx_validate_msg_hdr(struct fm10k_mbx_info *mbx)
  *  on error.
  **/
 STATIC s32 fm10k_mbx_create_reply(struct fm10k_hw *hw,
-				  struct fm10k_mbx_info *mbx, u16 head)
+                  struct fm10k_mbx_info *mbx, u16 head)
 {
-	switch (mbx->state) {
-	case FM10K_STATE_OPEN:
-	case FM10K_STATE_DISCONNECT:
-		/* update our checksum for the outgoing data */
-		fm10k_mbx_update_local_crc(mbx, head);
+    switch (mbx->state) {
+    case FM10K_STATE_OPEN:
+    case FM10K_STATE_DISCONNECT:
+        /* update our checksum for the outgoing data */
+        fm10k_mbx_update_local_crc(mbx, head);
 
-		/* as long as other end recognizes us keep sending data */
-		fm10k_mbx_pull_head(hw, mbx, head);
+        /* as long as other end recognizes us keep sending data */
+        fm10k_mbx_pull_head(hw, mbx, head);
 
-		/* generate new header based on data */
-		if (mbx->tail_len || (mbx->state == FM10K_STATE_OPEN))
-			fm10k_mbx_create_data_hdr(mbx);
-		else
-			fm10k_mbx_create_disconnect_hdr(mbx);
-		break;
-	case FM10K_STATE_CONNECT:
-		/* send disconnect even if we aren't connected */
-		fm10k_mbx_create_connect_hdr(mbx);
-		break;
-	case FM10K_STATE_CLOSED:
-		/* generate new header based on data */
-		fm10k_mbx_create_disconnect_hdr(mbx);
-	default:
-		break;
-	}
+        /* generate new header based on data */
+        if (mbx->tail_len || (mbx->state == FM10K_STATE_OPEN))
+            fm10k_mbx_create_data_hdr(mbx);
+        else
+            fm10k_mbx_create_disconnect_hdr(mbx);
+        break;
+    case FM10K_STATE_CONNECT:
+        /* send disconnect even if we aren't connected */
+        fm10k_mbx_create_connect_hdr(mbx);
+        break;
+    case FM10K_STATE_CLOSED:
+        /* generate new header based on data */
+        fm10k_mbx_create_disconnect_hdr(mbx);
+    default:
+        break;
+    }
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1072,33 +1072,33 @@ STATIC s32 fm10k_mbx_create_reply(struct fm10k_hw *hw,
  **/
 STATIC void fm10k_mbx_reset_work(struct fm10k_mbx_info *mbx)
 {
-	u16 len, head, ack;
+    u16 len, head, ack;
 
-	/* reset our outgoing max size back to Rx limits */
-	mbx->max_size = mbx->rx.size - 1;
+    /* reset our outgoing max size back to Rx limits */
+    mbx->max_size = mbx->rx.size - 1;
 
-	/* update mbx->pulled to account for tail_len and ack */
-	head = FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, HEAD);
-	ack = fm10k_mbx_index_len(mbx, head, mbx->tail);
-	mbx->pulled += mbx->tail_len - ack;
+    /* update mbx->pulled to account for tail_len and ack */
+    head = FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, HEAD);
+    ack = fm10k_mbx_index_len(mbx, head, mbx->tail);
+    mbx->pulled += mbx->tail_len - ack;
 
-	/* now drop any messages which have started or finished transmitting */
-	while (fm10k_fifo_head_len(&mbx->tx) && mbx->pulled) {
-		len = fm10k_fifo_head_drop(&mbx->tx);
-		mbx->tx_dropped++;
-		if (mbx->pulled >= len)
-			mbx->pulled -= len;
-		else
-			mbx->pulled = 0;
-	}
+    /* now drop any messages which have started or finished transmitting */
+    while (fm10k_fifo_head_len(&mbx->tx) && mbx->pulled) {
+        len = fm10k_fifo_head_drop(&mbx->tx);
+        mbx->tx_dropped++;
+        if (mbx->pulled >= len)
+            mbx->pulled -= len;
+        else
+            mbx->pulled = 0;
+    }
 
-	/* just do a quick resysnc to start of message */
-	mbx->pushed = 0;
-	mbx->pulled = 0;
-	mbx->tail_len = 0;
-	mbx->head_len = 0;
-	mbx->rx.tail = 0;
-	mbx->rx.head = 0;
+    /* just do a quick resysnc to start of message */
+    mbx->pushed = 0;
+    mbx->pulled = 0;
+    mbx->tail_len = 0;
+    mbx->head_len = 0;
+    mbx->rx.tail = 0;
+    mbx->rx.head = 0;
 }
 
 /**
@@ -1114,19 +1114,19 @@ STATIC void fm10k_mbx_reset_work(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_mbx_update_max_size(struct fm10k_mbx_info *mbx, u16 size)
 {
-	u16 len;
+    u16 len;
 
-	DEBUGFUNC("fm10k_mbx_update_max_size");
+    DEBUGFUNC("fm10k_mbx_update_max_size");
 
-	mbx->max_size = size;
+    mbx->max_size = size;
 
-	/* flush any oversized messages from the queue */
-	for (len = fm10k_fifo_head_len(&mbx->tx);
-	     len > size;
-	     len = fm10k_fifo_head_len(&mbx->tx)) {
-		fm10k_fifo_head_drop(&mbx->tx);
-		mbx->tx_dropped++;
-	}
+    /* flush any oversized messages from the queue */
+    for (len = fm10k_fifo_head_len(&mbx->tx);
+         len > size;
+         len = fm10k_fifo_head_len(&mbx->tx)) {
+        fm10k_fifo_head_drop(&mbx->tx);
+        mbx->tx_dropped++;
+    }
 }
 
 /**
@@ -1138,18 +1138,18 @@ STATIC void fm10k_mbx_update_max_size(struct fm10k_mbx_info *mbx, u16 size)
  **/
 STATIC void fm10k_mbx_connect_reset(struct fm10k_mbx_info *mbx)
 {
-	/* just do a quick resysnc to start of frame */
-	fm10k_mbx_reset_work(mbx);
+    /* just do a quick resysnc to start of frame */
+    fm10k_mbx_reset_work(mbx);
 
-	/* reset CRC seeds */
-	mbx->local = FM10K_MBX_CRC_SEED;
-	mbx->remote = FM10K_MBX_CRC_SEED;
+    /* reset CRC seeds */
+    mbx->local = FM10K_MBX_CRC_SEED;
+    mbx->remote = FM10K_MBX_CRC_SEED;
 
-	/* we cannot exit connect until the size is good */
-	if (mbx->state == FM10K_STATE_OPEN)
-		mbx->state = FM10K_STATE_CONNECT;
-	else
-		mbx->state = FM10K_STATE_CLOSED;
+    /* we cannot exit connect until the size is good */
+    if (mbx->state == FM10K_STATE_OPEN)
+        mbx->state = FM10K_STATE_CONNECT;
+    else
+        mbx->state = FM10K_STATE_CLOSED;
 }
 
 /**
@@ -1162,41 +1162,41 @@ STATIC void fm10k_mbx_connect_reset(struct fm10k_mbx_info *mbx)
  *  data DWORDs on success, or will return a negative value on failure.
  **/
 STATIC s32 fm10k_mbx_process_connect(struct fm10k_hw *hw,
-				     struct fm10k_mbx_info *mbx)
+                     struct fm10k_mbx_info *mbx)
 {
-	const enum fm10k_mbx_state state = mbx->state;
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 size, head;
+    const enum fm10k_mbx_state state = mbx->state;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 size, head;
 
-	/* we will need to pull all of the fields for verification */
-	size = FM10K_MSG_HDR_FIELD_GET(*hdr, CONNECT_SIZE);
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
+    /* we will need to pull all of the fields for verification */
+    size = FM10K_MSG_HDR_FIELD_GET(*hdr, CONNECT_SIZE);
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
 
-	switch (state) {
-	case FM10K_STATE_DISCONNECT:
-	case FM10K_STATE_OPEN:
-		/* reset any in-progress work */
-		fm10k_mbx_connect_reset(mbx);
-		break;
-	case FM10K_STATE_CONNECT:
-		/* we cannot exit connect until the size is good */
-		if (size > mbx->rx.size) {
-			mbx->max_size = mbx->rx.size - 1;
-		} else {
-			/* record the remote system requesting connection */
-			mbx->state = FM10K_STATE_OPEN;
+    switch (state) {
+    case FM10K_STATE_DISCONNECT:
+    case FM10K_STATE_OPEN:
+        /* reset any in-progress work */
+        fm10k_mbx_connect_reset(mbx);
+        break;
+    case FM10K_STATE_CONNECT:
+        /* we cannot exit connect until the size is good */
+        if (size > mbx->rx.size) {
+            mbx->max_size = mbx->rx.size - 1;
+        } else {
+            /* record the remote system requesting connection */
+            mbx->state = FM10K_STATE_OPEN;
 
-			fm10k_mbx_update_max_size(mbx, size);
-		}
-		break;
-	default:
-		break;
-	}
+            fm10k_mbx_update_max_size(mbx, size);
+        }
+        break;
+    default:
+        break;
+    }
 
-	/* align our tail index to remote head index */
-	mbx->tail = head;
+    /* align our tail index to remote head index */
+    mbx->tail = head;
 
-	return fm10k_mbx_create_reply(hw, mbx, head);
+    return fm10k_mbx_create_reply(hw, mbx, head);
 }
 
 /**
@@ -1209,38 +1209,38 @@ STATIC s32 fm10k_mbx_process_connect(struct fm10k_hw *hw,
  *  data DWORDs on success, or will return a negative value on failure.
  **/
 STATIC s32 fm10k_mbx_process_data(struct fm10k_hw *hw,
-				  struct fm10k_mbx_info *mbx)
+                  struct fm10k_mbx_info *mbx)
 {
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 head, tail;
-	s32 err;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 head, tail;
+    s32 err;
 
-	DEBUGFUNC("fm10k_mbx_process_data");
+    DEBUGFUNC("fm10k_mbx_process_data");
 
-	/* we will need to pull all of the fields for verification */
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
-	tail = FM10K_MSG_HDR_FIELD_GET(*hdr, TAIL);
+    /* we will need to pull all of the fields for verification */
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
+    tail = FM10K_MSG_HDR_FIELD_GET(*hdr, TAIL);
 
-	/* if we are in connect just update our data and go */
-	if (mbx->state == FM10K_STATE_CONNECT) {
-		mbx->tail = head;
-		mbx->state = FM10K_STATE_OPEN;
-	}
+    /* if we are in connect just update our data and go */
+    if (mbx->state == FM10K_STATE_CONNECT) {
+        mbx->tail = head;
+        mbx->state = FM10K_STATE_OPEN;
+    }
 
-	/* abort on message size errors */
-	err = fm10k_mbx_push_tail(hw, mbx, tail);
-	if (err < 0)
-		return err;
+    /* abort on message size errors */
+    err = fm10k_mbx_push_tail(hw, mbx, tail);
+    if (err < 0)
+        return err;
 
-	/* verify the checksum on the incoming data */
-	err = fm10k_mbx_verify_remote_crc(mbx);
-	if (err)
-		return err;
+    /* verify the checksum on the incoming data */
+    err = fm10k_mbx_verify_remote_crc(mbx);
+    if (err)
+        return err;
 
-	/* process messages if we have received any */
-	fm10k_mbx_dequeue_rx(hw, mbx);
+    /* process messages if we have received any */
+    fm10k_mbx_dequeue_rx(hw, mbx);
 
-	return fm10k_mbx_create_reply(hw, mbx, head);
+    return fm10k_mbx_create_reply(hw, mbx, head);
 }
 
 /**
@@ -1253,47 +1253,47 @@ STATIC s32 fm10k_mbx_process_data(struct fm10k_hw *hw,
  *  data DWORDs on success, or will return a negative value on failure.
  **/
 STATIC s32 fm10k_mbx_process_disconnect(struct fm10k_hw *hw,
-					struct fm10k_mbx_info *mbx)
+                    struct fm10k_mbx_info *mbx)
 {
-	const enum fm10k_mbx_state state = mbx->state;
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 head;
-	s32 err;
+    const enum fm10k_mbx_state state = mbx->state;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 head;
+    s32 err;
 
-	/* we will need to pull the header field for verification */
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
+    /* we will need to pull the header field for verification */
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
 
-	/* We should not be receiving disconnect if Rx is incomplete */
-	if (mbx->pushed)
-		return FM10K_MBX_ERR_TAIL;
+    /* We should not be receiving disconnect if Rx is incomplete */
+    if (mbx->pushed)
+        return FM10K_MBX_ERR_TAIL;
 
-	/* we have already verified mbx->head == tail so we know this is 0 */
-	mbx->head_len = 0;
+    /* we have already verified mbx->head == tail so we know this is 0 */
+    mbx->head_len = 0;
 
-	/* verify the checksum on the incoming header is correct */
-	err = fm10k_mbx_verify_remote_crc(mbx);
-	if (err)
-		return err;
+    /* verify the checksum on the incoming header is correct */
+    err = fm10k_mbx_verify_remote_crc(mbx);
+    if (err)
+        return err;
 
-	switch (state) {
-	case FM10K_STATE_DISCONNECT:
-	case FM10K_STATE_OPEN:
-		/* state doesn't change if we still have work to do */
-		if (!fm10k_mbx_tx_complete(mbx))
-			break;
+    switch (state) {
+    case FM10K_STATE_DISCONNECT:
+    case FM10K_STATE_OPEN:
+        /* state doesn't change if we still have work to do */
+        if (!fm10k_mbx_tx_complete(mbx))
+            break;
 
-		/* verify the head indicates we completed all transmits */
-		if (head != mbx->tail)
-			return FM10K_MBX_ERR_HEAD;
+        /* verify the head indicates we completed all transmits */
+        if (head != mbx->tail)
+            return FM10K_MBX_ERR_HEAD;
 
-		/* reset any in-progress work */
-		fm10k_mbx_connect_reset(mbx);
-		break;
-	default:
-		break;
-	}
+        /* reset any in-progress work */
+        fm10k_mbx_connect_reset(mbx);
+        break;
+    default:
+        break;
+    }
 
-	return fm10k_mbx_create_reply(hw, mbx, head);
+    return fm10k_mbx_create_reply(hw, mbx, head);
 }
 
 /**
@@ -1306,41 +1306,41 @@ STATIC s32 fm10k_mbx_process_disconnect(struct fm10k_hw *hw,
  *  data DWORDs on success, or will return a negative value on failure.
  **/
 STATIC s32 fm10k_mbx_process_error(struct fm10k_hw *hw,
-				   struct fm10k_mbx_info *mbx)
+                   struct fm10k_mbx_info *mbx)
 {
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 head;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 head;
 
-	/* we will need to pull all of the fields for verification */
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
+    /* we will need to pull all of the fields for verification */
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, HEAD);
 
-	switch (mbx->state) {
-	case FM10K_STATE_OPEN:
-	case FM10K_STATE_DISCONNECT:
-		/* flush any uncompleted work */
-		fm10k_mbx_reset_work(mbx);
+    switch (mbx->state) {
+    case FM10K_STATE_OPEN:
+    case FM10K_STATE_DISCONNECT:
+        /* flush any uncompleted work */
+        fm10k_mbx_reset_work(mbx);
 
-		/* reset CRC seeds */
-		mbx->local = FM10K_MBX_CRC_SEED;
-		mbx->remote = FM10K_MBX_CRC_SEED;
+        /* reset CRC seeds */
+        mbx->local = FM10K_MBX_CRC_SEED;
+        mbx->remote = FM10K_MBX_CRC_SEED;
 
-		/* reset tail index and size to prepare for reconnect */
-		mbx->tail = head;
+        /* reset tail index and size to prepare for reconnect */
+        mbx->tail = head;
 
-		/* if open then reset max_size and go back to connect */
-		if (mbx->state == FM10K_STATE_OPEN) {
-			mbx->state = FM10K_STATE_CONNECT;
-			break;
-		}
+        /* if open then reset max_size and go back to connect */
+        if (mbx->state == FM10K_STATE_OPEN) {
+            mbx->state = FM10K_STATE_CONNECT;
+            break;
+        }
 
-		/* send a connect message to get data flowing again */
-		fm10k_mbx_create_connect_hdr(mbx);
-		return FM10K_SUCCESS;
-	default:
-		break;
-	}
+        /* send a connect message to get data flowing again */
+        fm10k_mbx_create_connect_hdr(mbx);
+        return FM10K_SUCCESS;
+    default:
+        break;
+    }
 
-	return fm10k_mbx_create_reply(hw, mbx, mbx->tail);
+    return fm10k_mbx_create_reply(hw, mbx, mbx->tail);
 }
 
 /**
@@ -1353,53 +1353,53 @@ STATIC s32 fm10k_mbx_process_error(struct fm10k_hw *hw,
  *  transmitted excluding header on success or a negative value on error.
  **/
 STATIC s32 fm10k_mbx_process(struct fm10k_hw *hw,
-			     struct fm10k_mbx_info *mbx)
+                 struct fm10k_mbx_info *mbx)
 {
-	s32 err;
+    s32 err;
 
-	DEBUGFUNC("fm10k_mbx_process");
+    DEBUGFUNC("fm10k_mbx_process");
 
-	/* we do not read mailbox if closed */
-	if (mbx->state == FM10K_STATE_CLOSED)
-		return FM10K_SUCCESS;
+    /* we do not read mailbox if closed */
+    if (mbx->state == FM10K_STATE_CLOSED)
+        return FM10K_SUCCESS;
 
-	/* copy data from mailbox */
-	err = fm10k_mbx_read(hw, mbx);
-	if (err)
-		return err;
+    /* copy data from mailbox */
+    err = fm10k_mbx_read(hw, mbx);
+    if (err)
+        return err;
 
-	/* validate type, source, and destination */
-	err = fm10k_mbx_validate_msg_hdr(mbx);
-	if (err < 0)
-		goto msg_err;
+    /* validate type, source, and destination */
+    err = fm10k_mbx_validate_msg_hdr(mbx);
+    if (err < 0)
+        goto msg_err;
 
-	switch (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, TYPE)) {
-	case FM10K_MSG_CONNECT:
-		err = fm10k_mbx_process_connect(hw, mbx);
-		break;
-	case FM10K_MSG_DATA:
-		err = fm10k_mbx_process_data(hw, mbx);
-		break;
-	case FM10K_MSG_DISCONNECT:
-		err = fm10k_mbx_process_disconnect(hw, mbx);
-		break;
-	case FM10K_MSG_ERROR:
-		err = fm10k_mbx_process_error(hw, mbx);
-		break;
-	default:
-		err = FM10K_MBX_ERR_TYPE;
-		break;
-	}
+    switch (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, TYPE)) {
+    case FM10K_MSG_CONNECT:
+        err = fm10k_mbx_process_connect(hw, mbx);
+        break;
+    case FM10K_MSG_DATA:
+        err = fm10k_mbx_process_data(hw, mbx);
+        break;
+    case FM10K_MSG_DISCONNECT:
+        err = fm10k_mbx_process_disconnect(hw, mbx);
+        break;
+    case FM10K_MSG_ERROR:
+        err = fm10k_mbx_process_error(hw, mbx);
+        break;
+    default:
+        err = FM10K_MBX_ERR_TYPE;
+        break;
+    }
 
 msg_err:
-	/* notify partner of errors on our end */
-	if (err < 0)
-		fm10k_mbx_create_error_msg(mbx, err);
+    /* notify partner of errors on our end */
+    if (err < 0)
+        fm10k_mbx_create_error_msg(mbx, err);
 
-	/* copy data from mailbox */
-	fm10k_mbx_write(hw, mbx);
+    /* copy data from mailbox */
+    fm10k_mbx_write(hw, mbx);
 
-	return err;
+    return err;
 }
 
 /**
@@ -1416,31 +1416,31 @@ msg_err:
  *  are not guaranteed to complete and may be dropped.
  **/
 STATIC void fm10k_mbx_disconnect(struct fm10k_hw *hw,
-				 struct fm10k_mbx_info *mbx)
+                 struct fm10k_mbx_info *mbx)
 {
-	int timeout = mbx->timeout ? FM10K_MBX_DISCONNECT_TIMEOUT : 0;
+    int timeout = mbx->timeout ? FM10K_MBX_DISCONNECT_TIMEOUT : 0;
 
-	DEBUGFUNC("fm10k_mbx_disconnect");
+    DEBUGFUNC("fm10k_mbx_disconnect");
 
-	/* Place mbx in ready to disconnect state */
-	mbx->state = FM10K_STATE_DISCONNECT;
+    /* Place mbx in ready to disconnect state */
+    mbx->state = FM10K_STATE_DISCONNECT;
 
-	/* trigger interrupt to start shutdown process */
-	FM10K_WRITE_MBX(hw, mbx->mbx_reg, FM10K_MBX_REQ |
-					  FM10K_MBX_INTERRUPT_DISABLE);
-	do {
-		usec_delay(FM10K_MBX_POLL_DELAY);
-		mbx->ops.process(hw, mbx);
-		timeout -= FM10K_MBX_POLL_DELAY;
-	} while ((timeout > 0) && (mbx->state != FM10K_STATE_CLOSED));
+    /* trigger interrupt to start shutdown process */
+    FM10K_WRITE_MBX(hw, mbx->mbx_reg, FM10K_MBX_REQ |
+                      FM10K_MBX_INTERRUPT_DISABLE);
+    do {
+        usec_delay(FM10K_MBX_POLL_DELAY);
+        mbx->ops.process(hw, mbx);
+        timeout -= FM10K_MBX_POLL_DELAY;
+    } while ((timeout > 0) && (mbx->state != FM10K_STATE_CLOSED));
 
-	/* in case we didn't close, just force the mailbox into shutdown and
-	 * drop all left over messages in the FIFO.
-	 */
-	fm10k_mbx_connect_reset(mbx);
-	fm10k_fifo_drop_all(&mbx->tx);
+    /* in case we didn't close, just force the mailbox into shutdown and
+     * drop all left over messages in the FIFO.
+     */
+    fm10k_mbx_connect_reset(mbx);
+    fm10k_fifo_drop_all(&mbx->tx);
 
-	FM10K_WRITE_MBX(hw, mbx->mbmem_reg, 0);
+    FM10K_WRITE_MBX(hw, mbx->mbmem_reg, 0);
 }
 
 /**
@@ -1458,37 +1458,37 @@ STATIC void fm10k_mbx_disconnect(struct fm10k_hw *hw,
  **/
 STATIC s32 fm10k_mbx_connect(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
 {
-	DEBUGFUNC("fm10k_mbx_connect");
+    DEBUGFUNC("fm10k_mbx_connect");
 
-	/* we cannot connect an uninitialized mailbox */
-	if (!mbx->rx.buffer)
-		return FM10K_MBX_ERR_NO_SPACE;
+    /* we cannot connect an uninitialized mailbox */
+    if (!mbx->rx.buffer)
+        return FM10K_MBX_ERR_NO_SPACE;
 
-	/* we cannot connect an already connected mailbox */
-	if (mbx->state != FM10K_STATE_CLOSED)
-		return FM10K_MBX_ERR_BUSY;
+    /* we cannot connect an already connected mailbox */
+    if (mbx->state != FM10K_STATE_CLOSED)
+        return FM10K_MBX_ERR_BUSY;
 
-	/* mailbox timeout can now become active */
-	mbx->timeout = FM10K_MBX_INIT_TIMEOUT;
+    /* mailbox timeout can now become active */
+    mbx->timeout = FM10K_MBX_INIT_TIMEOUT;
 
-	/* Place mbx in ready to connect state */
-	mbx->state = FM10K_STATE_CONNECT;
+    /* Place mbx in ready to connect state */
+    mbx->state = FM10K_STATE_CONNECT;
 
-	fm10k_mbx_reset_work(mbx);
+    fm10k_mbx_reset_work(mbx);
 
-	/* initialize header of remote mailbox */
-	fm10k_mbx_create_fake_disconnect_hdr(mbx);
-	FM10K_WRITE_MBX(hw, mbx->mbmem_reg ^ mbx->mbmem_len, mbx->mbx_hdr);
+    /* initialize header of remote mailbox */
+    fm10k_mbx_create_fake_disconnect_hdr(mbx);
+    FM10K_WRITE_MBX(hw, mbx->mbmem_reg ^ mbx->mbmem_len, mbx->mbx_hdr);
 
-	/* enable interrupt and notify other party of new message */
-	mbx->mbx_lock = FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT |
-			FM10K_MBX_INTERRUPT_ENABLE;
+    /* enable interrupt and notify other party of new message */
+    mbx->mbx_lock = FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT |
+            FM10K_MBX_INTERRUPT_ENABLE;
 
-	/* generate and load connect header into mailbox */
-	fm10k_mbx_create_connect_hdr(mbx);
-	fm10k_mbx_write(hw, mbx);
+    /* generate and load connect header into mailbox */
+    fm10k_mbx_create_connect_hdr(mbx);
+    fm10k_mbx_write(hw, mbx);
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1501,51 +1501,51 @@ STATIC s32 fm10k_mbx_connect(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
  **/
 STATIC s32 fm10k_mbx_validate_handlers(const struct fm10k_msg_data *msg_data)
 {
-	const struct fm10k_tlv_attr *attr;
-	unsigned int id;
+    const struct fm10k_tlv_attr *attr;
+    unsigned int id;
 
-	DEBUGFUNC("fm10k_mbx_validate_handlers");
+    DEBUGFUNC("fm10k_mbx_validate_handlers");
 
-	/* Allow NULL mailboxes that transmit but don't receive */
-	if (!msg_data)
-		return FM10K_SUCCESS;
+    /* Allow NULL mailboxes that transmit but don't receive */
+    if (!msg_data)
+        return FM10K_SUCCESS;
 
-	while (msg_data->id != FM10K_TLV_ERROR) {
-		/* all messages should have a function handler */
-		if (!msg_data->func)
-			return FM10K_ERR_PARAM;
+    while (msg_data->id != FM10K_TLV_ERROR) {
+        /* all messages should have a function handler */
+        if (!msg_data->func)
+            return FM10K_ERR_PARAM;
 
-		/* parser is optional */
-		attr = msg_data->attr;
-		if (attr) {
-			while (attr->id != FM10K_TLV_ERROR) {
-				id = attr->id;
-				attr++;
-				/* ID should always be increasing */
-				if (id >= attr->id)
-					return FM10K_ERR_PARAM;
-				/* ID should fit in results array */
-				if (id >= FM10K_TLV_RESULTS_MAX)
-					return FM10K_ERR_PARAM;
-			}
+        /* parser is optional */
+        attr = msg_data->attr;
+        if (attr) {
+            while (attr->id != FM10K_TLV_ERROR) {
+                id = attr->id;
+                attr++;
+                /* ID should always be increasing */
+                if (id >= attr->id)
+                    return FM10K_ERR_PARAM;
+                /* ID should fit in results array */
+                if (id >= FM10K_TLV_RESULTS_MAX)
+                    return FM10K_ERR_PARAM;
+            }
 
-			/* verify terminator is in the list */
-			if (attr->id != FM10K_TLV_ERROR)
-				return FM10K_ERR_PARAM;
-		}
+            /* verify terminator is in the list */
+            if (attr->id != FM10K_TLV_ERROR)
+                return FM10K_ERR_PARAM;
+        }
 
-		id = msg_data->id;
-		msg_data++;
-		/* ID should always be increasing */
-		if (id >= msg_data->id)
-			return FM10K_ERR_PARAM;
-	}
+        id = msg_data->id;
+        msg_data++;
+        /* ID should always be increasing */
+        if (id >= msg_data->id)
+            return FM10K_ERR_PARAM;
+    }
 
-	/* verify terminator is in the list */
-	if ((msg_data->id != FM10K_TLV_ERROR) || !msg_data->func)
-		return FM10K_ERR_PARAM;
+    /* verify terminator is in the list */
+    if ((msg_data->id != FM10K_TLV_ERROR) || !msg_data->func)
+        return FM10K_ERR_PARAM;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1556,18 +1556,18 @@ STATIC s32 fm10k_mbx_validate_handlers(const struct fm10k_msg_data *msg_data)
  *  This function associates a set of message handling ops with a mailbox.
  **/
 STATIC s32 fm10k_mbx_register_handlers(struct fm10k_mbx_info *mbx,
-				       const struct fm10k_msg_data *msg_data)
+                       const struct fm10k_msg_data *msg_data)
 {
-	DEBUGFUNC("fm10k_mbx_register_handlers");
+    DEBUGFUNC("fm10k_mbx_register_handlers");
 
-	/* validate layout of handlers before assigning them */
-	if (fm10k_mbx_validate_handlers(msg_data))
-		return FM10K_ERR_PARAM;
+    /* validate layout of handlers before assigning them */
+    if (fm10k_mbx_validate_handlers(msg_data))
+        return FM10K_ERR_PARAM;
 
-	/* initialize the message handlers */
-	mbx->msg_data = msg_data;
+    /* initialize the message handlers */
+    mbx->msg_data = msg_data;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1585,72 +1585,72 @@ STATIC s32 fm10k_mbx_register_handlers(struct fm10k_mbx_info *mbx,
  *  error.
  **/
 s32 fm10k_pfvf_mbx_init(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx,
-			const struct fm10k_msg_data *msg_data, u8 id)
+            const struct fm10k_msg_data *msg_data, u8 id)
 {
-	DEBUGFUNC("fm10k_pfvf_mbx_init");
+    DEBUGFUNC("fm10k_pfvf_mbx_init");
 
-	/* initialize registers */
-	switch (hw->mac.type) {
-	case fm10k_mac_vf:
-		mbx->mbx_reg = FM10K_VFMBX;
-		mbx->mbmem_reg = FM10K_VFMBMEM(FM10K_VFMBMEM_VF_XOR);
-		break;
-	case fm10k_mac_pf:
-		/* there are only 64 VF <-> PF mailboxes */
-		if (id < 64) {
-			mbx->mbx_reg = FM10K_MBX(id);
-			mbx->mbmem_reg = FM10K_MBMEM_VF(id, 0);
-			break;
-		}
-		/* fallthough */
-	default:
-		return FM10K_MBX_ERR_NO_MBX;
-	}
+    /* initialize registers */
+    switch (hw->mac.type) {
+    case fm10k_mac_vf:
+        mbx->mbx_reg = FM10K_VFMBX;
+        mbx->mbmem_reg = FM10K_VFMBMEM(FM10K_VFMBMEM_VF_XOR);
+        break;
+    case fm10k_mac_pf:
+        /* there are only 64 VF <-> PF mailboxes */
+        if (id < 64) {
+            mbx->mbx_reg = FM10K_MBX(id);
+            mbx->mbmem_reg = FM10K_MBMEM_VF(id, 0);
+            break;
+        }
+        /* fallthough */
+    default:
+        return FM10K_MBX_ERR_NO_MBX;
+    }
 
-	/* start out in closed state */
-	mbx->state = FM10K_STATE_CLOSED;
+    /* start out in closed state */
+    mbx->state = FM10K_STATE_CLOSED;
 
-	/* validate layout of handlers before assigning them */
-	if (fm10k_mbx_validate_handlers(msg_data))
-		return FM10K_ERR_PARAM;
+    /* validate layout of handlers before assigning them */
+    if (fm10k_mbx_validate_handlers(msg_data))
+        return FM10K_ERR_PARAM;
 
-	/* initialize the message handlers */
-	mbx->msg_data = msg_data;
+    /* initialize the message handlers */
+    mbx->msg_data = msg_data;
 
-	/* start mailbox as timed out and let the reset_hw call
-	 * set the timeout value to begin communications
-	 */
-	mbx->timeout = 0;
-	mbx->usec_delay = FM10K_MBX_INIT_DELAY;
+    /* start mailbox as timed out and let the reset_hw call
+     * set the timeout value to begin communications
+     */
+    mbx->timeout = 0;
+    mbx->usec_delay = FM10K_MBX_INIT_DELAY;
 
-	/* initialize tail and head */
-	mbx->tail = 1;
-	mbx->head = 1;
+    /* initialize tail and head */
+    mbx->tail = 1;
+    mbx->head = 1;
 
-	/* initialize CRC seeds */
-	mbx->local = FM10K_MBX_CRC_SEED;
-	mbx->remote = FM10K_MBX_CRC_SEED;
+    /* initialize CRC seeds */
+    mbx->local = FM10K_MBX_CRC_SEED;
+    mbx->remote = FM10K_MBX_CRC_SEED;
 
-	/* Split buffer for use by Tx/Rx FIFOs */
-	mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
-	mbx->mbmem_len = FM10K_VFMBMEM_VF_XOR;
+    /* Split buffer for use by Tx/Rx FIFOs */
+    mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
+    mbx->mbmem_len = FM10K_VFMBMEM_VF_XOR;
 
-	/* initialize the FIFOs, sizes are in 4 byte increments */
-	fm10k_fifo_init(&mbx->tx, mbx->buffer, FM10K_MBX_TX_BUFFER_SIZE);
-	fm10k_fifo_init(&mbx->rx, &mbx->buffer[FM10K_MBX_TX_BUFFER_SIZE],
-			FM10K_MBX_RX_BUFFER_SIZE);
+    /* initialize the FIFOs, sizes are in 4 byte increments */
+    fm10k_fifo_init(&mbx->tx, mbx->buffer, FM10K_MBX_TX_BUFFER_SIZE);
+    fm10k_fifo_init(&mbx->rx, &mbx->buffer[FM10K_MBX_TX_BUFFER_SIZE],
+            FM10K_MBX_RX_BUFFER_SIZE);
 
-	/* initialize function pointers */
-	mbx->ops.connect = fm10k_mbx_connect;
-	mbx->ops.disconnect = fm10k_mbx_disconnect;
-	mbx->ops.rx_ready = fm10k_mbx_rx_ready;
-	mbx->ops.tx_ready = fm10k_mbx_tx_ready;
-	mbx->ops.tx_complete = fm10k_mbx_tx_complete;
-	mbx->ops.enqueue_tx = fm10k_mbx_enqueue_tx;
-	mbx->ops.process = fm10k_mbx_process;
-	mbx->ops.register_handlers = fm10k_mbx_register_handlers;
+    /* initialize function pointers */
+    mbx->ops.connect = fm10k_mbx_connect;
+    mbx->ops.disconnect = fm10k_mbx_disconnect;
+    mbx->ops.rx_ready = fm10k_mbx_rx_ready;
+    mbx->ops.tx_ready = fm10k_mbx_tx_ready;
+    mbx->ops.tx_complete = fm10k_mbx_tx_complete;
+    mbx->ops.enqueue_tx = fm10k_mbx_enqueue_tx;
+    mbx->ops.process = fm10k_mbx_process;
+    mbx->ops.register_handlers = fm10k_mbx_register_handlers;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1661,12 +1661,12 @@ s32 fm10k_pfvf_mbx_init(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx,
  **/
 STATIC void fm10k_sm_mbx_create_data_hdr(struct fm10k_mbx_info *mbx)
 {
-	if (mbx->tail_len)
-		mbx->mbx_lock |= FM10K_MBX_REQ;
+    if (mbx->tail_len)
+        mbx->mbx_lock |= FM10K_MBX_REQ;
 
-	mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(mbx->tail, SM_TAIL) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->remote, SM_VER) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->head, SM_HEAD);
+    mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(mbx->tail, SM_TAIL) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->remote, SM_VER) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->head, SM_HEAD);
 }
 
 /**
@@ -1678,13 +1678,13 @@ STATIC void fm10k_sm_mbx_create_data_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_sm_mbx_create_connect_hdr(struct fm10k_mbx_info *mbx, u8 err)
 {
-	if (mbx->local)
-		mbx->mbx_lock |= FM10K_MBX_REQ;
+    if (mbx->local)
+        mbx->mbx_lock |= FM10K_MBX_REQ;
 
-	mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(mbx->tail, SM_TAIL) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->remote, SM_VER) |
-		       FM10K_MSG_HDR_FIELD_SET(mbx->head, SM_HEAD) |
-		       FM10K_MSG_HDR_FIELD_SET(err, SM_ERR);
+    mbx->mbx_hdr = FM10K_MSG_HDR_FIELD_SET(mbx->tail, SM_TAIL) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->remote, SM_VER) |
+               FM10K_MSG_HDR_FIELD_SET(mbx->head, SM_HEAD) |
+               FM10K_MSG_HDR_FIELD_SET(err, SM_ERR);
 }
 
 /**
@@ -1695,19 +1695,19 @@ STATIC void fm10k_sm_mbx_create_connect_hdr(struct fm10k_mbx_info *mbx, u8 err)
  **/
 STATIC void fm10k_sm_mbx_connect_reset(struct fm10k_mbx_info *mbx)
 {
-	/* flush any uncompleted work */
-	fm10k_mbx_reset_work(mbx);
+    /* flush any uncompleted work */
+    fm10k_mbx_reset_work(mbx);
 
-	/* set local version to max and remote version to 0 */
-	mbx->local = FM10K_SM_MBX_VERSION;
-	mbx->remote = 0;
+    /* set local version to max and remote version to 0 */
+    mbx->local = FM10K_SM_MBX_VERSION;
+    mbx->remote = 0;
 
-	/* initialize tail and head */
-	mbx->tail = 1;
-	mbx->head = 1;
+    /* initialize tail and head */
+    mbx->tail = 1;
+    mbx->head = 1;
 
-	/* reset state back to connect */
-	mbx->state = FM10K_STATE_CONNECT;
+    /* reset state back to connect */
+    mbx->state = FM10K_STATE_CONNECT;
 }
 
 /**
@@ -1724,35 +1724,35 @@ STATIC void fm10k_sm_mbx_connect_reset(struct fm10k_mbx_info *mbx)
  **/
 STATIC s32 fm10k_sm_mbx_connect(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
 {
-	DEBUGFUNC("fm10k_sm_mbx_connect");
+    DEBUGFUNC("fm10k_sm_mbx_connect");
 
-	/* we cannot connect an uninitialized mailbox */
-	if (!mbx->rx.buffer)
-		return FM10K_MBX_ERR_NO_SPACE;
+    /* we cannot connect an uninitialized mailbox */
+    if (!mbx->rx.buffer)
+        return FM10K_MBX_ERR_NO_SPACE;
 
-	/* we cannot connect an already connected mailbox */
-	if (mbx->state != FM10K_STATE_CLOSED)
-		return FM10K_MBX_ERR_BUSY;
+    /* we cannot connect an already connected mailbox */
+    if (mbx->state != FM10K_STATE_CLOSED)
+        return FM10K_MBX_ERR_BUSY;
 
-	/* mailbox timeout can now become active */
-	mbx->timeout = FM10K_MBX_INIT_TIMEOUT;
+    /* mailbox timeout can now become active */
+    mbx->timeout = FM10K_MBX_INIT_TIMEOUT;
 
-	/* Place mbx in ready to connect state */
-	mbx->state = FM10K_STATE_CONNECT;
-	mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
+    /* Place mbx in ready to connect state */
+    mbx->state = FM10K_STATE_CONNECT;
+    mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
 
-	/* reset interface back to connect */
-	fm10k_sm_mbx_connect_reset(mbx);
+    /* reset interface back to connect */
+    fm10k_sm_mbx_connect_reset(mbx);
 
-	/* enable interrupt and notify other party of new message */
-	mbx->mbx_lock = FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT |
-			FM10K_MBX_INTERRUPT_ENABLE;
+    /* enable interrupt and notify other party of new message */
+    mbx->mbx_lock = FM10K_MBX_REQ_INTERRUPT | FM10K_MBX_ACK_INTERRUPT |
+            FM10K_MBX_INTERRUPT_ENABLE;
 
-	/* generate and load connect header into mailbox */
-	fm10k_sm_mbx_create_connect_hdr(mbx, 0);
-	fm10k_mbx_write(hw, mbx);
+    /* generate and load connect header into mailbox */
+    fm10k_sm_mbx_create_connect_hdr(mbx, 0);
+    fm10k_mbx_write(hw, mbx);
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1769,31 +1769,31 @@ STATIC s32 fm10k_sm_mbx_connect(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx)
  *  are not guaranteed to complete and may be dropped.
  **/
 STATIC void fm10k_sm_mbx_disconnect(struct fm10k_hw *hw,
-				    struct fm10k_mbx_info *mbx)
+                    struct fm10k_mbx_info *mbx)
 {
-	int timeout = mbx->timeout ? FM10K_MBX_DISCONNECT_TIMEOUT : 0;
+    int timeout = mbx->timeout ? FM10K_MBX_DISCONNECT_TIMEOUT : 0;
 
-	DEBUGFUNC("fm10k_sm_mbx_disconnect");
+    DEBUGFUNC("fm10k_sm_mbx_disconnect");
 
-	/* Place mbx in ready to disconnect state */
-	mbx->state = FM10K_STATE_DISCONNECT;
+    /* Place mbx in ready to disconnect state */
+    mbx->state = FM10K_STATE_DISCONNECT;
 
-	/* trigger interrupt to start shutdown process */
-	FM10K_WRITE_REG(hw, mbx->mbx_reg, FM10K_MBX_REQ |
-					  FM10K_MBX_INTERRUPT_DISABLE);
-	do {
-		usec_delay(FM10K_MBX_POLL_DELAY);
-		mbx->ops.process(hw, mbx);
-		timeout -= FM10K_MBX_POLL_DELAY;
-	} while ((timeout > 0) && (mbx->state != FM10K_STATE_CLOSED));
+    /* trigger interrupt to start shutdown process */
+    FM10K_WRITE_REG(hw, mbx->mbx_reg, FM10K_MBX_REQ |
+                      FM10K_MBX_INTERRUPT_DISABLE);
+    do {
+        usec_delay(FM10K_MBX_POLL_DELAY);
+        mbx->ops.process(hw, mbx);
+        timeout -= FM10K_MBX_POLL_DELAY;
+    } while ((timeout > 0) && (mbx->state != FM10K_STATE_CLOSED));
 
-	/* in case we didn't close just force the mailbox into shutdown */
-	mbx->state = FM10K_STATE_CLOSED;
-	mbx->remote = 0;
-	fm10k_mbx_reset_work(mbx);
-	fm10k_fifo_drop_all(&mbx->tx);
+    /* in case we didn't close just force the mailbox into shutdown */
+    mbx->state = FM10K_STATE_CLOSED;
+    mbx->remote = 0;
+    fm10k_mbx_reset_work(mbx);
+    fm10k_fifo_drop_all(&mbx->tx);
 
-	FM10K_WRITE_REG(hw, mbx->mbmem_reg, 0);
+    FM10K_WRITE_REG(hw, mbx->mbmem_reg, 0);
 }
 
 /**
@@ -1806,37 +1806,37 @@ STATIC void fm10k_sm_mbx_disconnect(struct fm10k_hw *hw,
  **/
 STATIC s32 fm10k_sm_mbx_validate_fifo_hdr(struct fm10k_mbx_info *mbx)
 {
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 tail, head, ver;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 tail, head, ver;
 
-	DEBUGFUNC("fm10k_sm_mbx_validate_fifo_hdr");
+    DEBUGFUNC("fm10k_sm_mbx_validate_fifo_hdr");
 
-	tail = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_TAIL);
-	ver = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_VER);
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_HEAD);
+    tail = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_TAIL);
+    ver = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_VER);
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_HEAD);
 
-	switch (ver) {
-	case 0:
-		break;
-	case FM10K_SM_MBX_VERSION:
-		if (!head || head > FM10K_SM_MBX_FIFO_LEN)
-			return FM10K_MBX_ERR_HEAD;
-		if (!tail || tail > FM10K_SM_MBX_FIFO_LEN)
-			return FM10K_MBX_ERR_TAIL;
-		if (mbx->tail < head)
-			head += mbx->mbmem_len - 1;
-		if (tail < mbx->head)
-			tail += mbx->mbmem_len - 1;
-		if (fm10k_mbx_index_len(mbx, head, mbx->tail) > mbx->tail_len)
-			return FM10K_MBX_ERR_HEAD;
-		if (fm10k_mbx_index_len(mbx, mbx->head, tail) < mbx->mbmem_len)
-			break;
-		return FM10K_MBX_ERR_TAIL;
-	default:
-		return FM10K_MBX_ERR_SRC;
-	}
+    switch (ver) {
+    case 0:
+        break;
+    case FM10K_SM_MBX_VERSION:
+        if (!head || head > FM10K_SM_MBX_FIFO_LEN)
+            return FM10K_MBX_ERR_HEAD;
+        if (!tail || tail > FM10K_SM_MBX_FIFO_LEN)
+            return FM10K_MBX_ERR_TAIL;
+        if (mbx->tail < head)
+            head += mbx->mbmem_len - 1;
+        if (tail < mbx->head)
+            tail += mbx->mbmem_len - 1;
+        if (fm10k_mbx_index_len(mbx, head, mbx->tail) > mbx->tail_len)
+            return FM10K_MBX_ERR_HEAD;
+        if (fm10k_mbx_index_len(mbx, mbx->head, tail) < mbx->mbmem_len)
+            break;
+        return FM10K_MBX_ERR_TAIL;
+    default:
+        return FM10K_MBX_ERR_SRC;
+    }
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -1850,30 +1850,30 @@ STATIC s32 fm10k_sm_mbx_validate_fifo_hdr(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_sm_mbx_process_error(struct fm10k_mbx_info *mbx)
 {
-	const enum fm10k_mbx_state state = mbx->state;
+    const enum fm10k_mbx_state state = mbx->state;
 
-	switch (state) {
-	case FM10K_STATE_DISCONNECT:
-		/* if there is an error just disconnect */
-		mbx->remote = 0;
-		break;
-	case FM10K_STATE_OPEN:
-		/* flush any uncompleted work */
-		fm10k_sm_mbx_connect_reset(mbx);
-		break;
-	case FM10K_STATE_CONNECT:
-		/* try connnecting at lower version */
-		if (mbx->remote) {
-			while (mbx->local > 1)
-				mbx->local--;
-			mbx->remote = 0;
-		}
-		break;
-	default:
-		break;
-	}
+    switch (state) {
+    case FM10K_STATE_DISCONNECT:
+        /* if there is an error just disconnect */
+        mbx->remote = 0;
+        break;
+    case FM10K_STATE_OPEN:
+        /* flush any uncompleted work */
+        fm10k_sm_mbx_connect_reset(mbx);
+        break;
+    case FM10K_STATE_CONNECT:
+        /* try connnecting at lower version */
+        if (mbx->remote) {
+            while (mbx->local > 1)
+                mbx->local--;
+            mbx->remote = 0;
+        }
+        break;
+    default:
+        break;
+    }
 
-	fm10k_sm_mbx_create_connect_hdr(mbx, 0);
+    fm10k_sm_mbx_create_connect_hdr(mbx, 0);
 }
 
 /**
@@ -1886,21 +1886,21 @@ STATIC void fm10k_sm_mbx_process_error(struct fm10k_mbx_info *mbx)
  **/
 STATIC void fm10k_sm_mbx_create_error_msg(struct fm10k_mbx_info *mbx, s32 err)
 {
-	/* only generate an error message for these types */
-	switch (err) {
-	case FM10K_MBX_ERR_TAIL:
-	case FM10K_MBX_ERR_HEAD:
-	case FM10K_MBX_ERR_SRC:
-	case FM10K_MBX_ERR_SIZE:
-	case FM10K_MBX_ERR_RSVD0:
-		break;
-	default:
-		return;
-	}
+    /* only generate an error message for these types */
+    switch (err) {
+    case FM10K_MBX_ERR_TAIL:
+    case FM10K_MBX_ERR_HEAD:
+    case FM10K_MBX_ERR_SRC:
+    case FM10K_MBX_ERR_SIZE:
+    case FM10K_MBX_ERR_RSVD0:
+        break;
+    default:
+        return;
+    }
 
-	/* process it as though we received an error, and send error reply */
-	fm10k_sm_mbx_process_error(mbx);
-	fm10k_sm_mbx_create_connect_hdr(mbx, 1);
+    /* process it as though we received an error, and send error reply */
+    fm10k_sm_mbx_process_error(mbx);
+    fm10k_sm_mbx_create_connect_hdr(mbx, 1);
 }
 
 /**
@@ -1913,36 +1913,36 @@ STATIC void fm10k_sm_mbx_create_error_msg(struct fm10k_mbx_info *mbx, s32 err)
  *  FIFO and place it in the Rx mailbox FIFO for processing by software.
  **/
 STATIC s32 fm10k_sm_mbx_receive(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx,
-				u16 tail)
+                struct fm10k_mbx_info *mbx,
+                u16 tail)
 {
-	/* reduce length by 1 to convert to a mask */
-	u16 mbmem_len = mbx->mbmem_len - 1;
-	s32 err;
+    /* reduce length by 1 to convert to a mask */
+    u16 mbmem_len = mbx->mbmem_len - 1;
+    s32 err;
 
-	DEBUGFUNC("fm10k_sm_mbx_receive");
+    DEBUGFUNC("fm10k_sm_mbx_receive");
 
-	/* push tail in front of head */
-	if (tail < mbx->head)
-		tail += mbmem_len;
+    /* push tail in front of head */
+    if (tail < mbx->head)
+        tail += mbmem_len;
 
-	/* copy data to the Rx FIFO */
-	err = fm10k_mbx_push_tail(hw, mbx, tail);
-	if (err < 0)
-		return err;
+    /* copy data to the Rx FIFO */
+    err = fm10k_mbx_push_tail(hw, mbx, tail);
+    if (err < 0)
+        return err;
 
-	/* process messages if we have received any */
-	fm10k_mbx_dequeue_rx(hw, mbx);
+    /* process messages if we have received any */
+    fm10k_mbx_dequeue_rx(hw, mbx);
 
-	/* guarantee head aligns with the end of the last message */
-	mbx->head = fm10k_mbx_head_sub(mbx, mbx->pushed);
-	mbx->pushed = 0;
+    /* guarantee head aligns with the end of the last message */
+    mbx->head = fm10k_mbx_head_sub(mbx, mbx->pushed);
+    mbx->pushed = 0;
 
-	/* clear any extra bits left over since index adds 1 extra bit */
-	if (mbx->head > mbmem_len)
-		mbx->head -= mbmem_len;
+    /* clear any extra bits left over since index adds 1 extra bit */
+    if (mbx->head > mbmem_len)
+        mbx->head -= mbmem_len;
 
-	return err;
+    return err;
 }
 
 /**
@@ -1955,38 +1955,38 @@ STATIC s32 fm10k_sm_mbx_receive(struct fm10k_hw *hw,
  *  it in the Tx switch manager mailbox FIFO for processing by hardware.
  **/
 STATIC void fm10k_sm_mbx_transmit(struct fm10k_hw *hw,
-				  struct fm10k_mbx_info *mbx, u16 head)
+                  struct fm10k_mbx_info *mbx, u16 head)
 {
-	struct fm10k_mbx_fifo *fifo = &mbx->tx;
-	/* reduce length by 1 to convert to a mask */
-	u16 mbmem_len = mbx->mbmem_len - 1;
-	u16 tail_len, len = 0;
-	u32 *msg;
+    struct fm10k_mbx_fifo *fifo = &mbx->tx;
+    /* reduce length by 1 to convert to a mask */
+    u16 mbmem_len = mbx->mbmem_len - 1;
+    u16 tail_len, len = 0;
+    u32 *msg;
 
-	DEBUGFUNC("fm10k_sm_mbx_transmit");
+    DEBUGFUNC("fm10k_sm_mbx_transmit");
 
-	/* push head behind tail */
-	if (mbx->tail < head)
-		head += mbmem_len;
+    /* push head behind tail */
+    if (mbx->tail < head)
+        head += mbmem_len;
 
-	fm10k_mbx_pull_head(hw, mbx, head);
+    fm10k_mbx_pull_head(hw, mbx, head);
 
-	/* determine msg aligned offset for end of buffer */
-	do {
-		msg = fifo->buffer + fm10k_fifo_head_offset(fifo, len);
-		tail_len = len;
-		len += FM10K_TLV_DWORD_LEN(*msg);
-	} while ((len <= mbx->tail_len) && (len < mbmem_len));
+    /* determine msg aligned offset for end of buffer */
+    do {
+        msg = fifo->buffer + fm10k_fifo_head_offset(fifo, len);
+        tail_len = len;
+        len += FM10K_TLV_DWORD_LEN(*msg);
+    } while ((len <= mbx->tail_len) && (len < mbmem_len));
 
-	/* guarantee we stop on a message boundary */
-	if (mbx->tail_len > tail_len) {
-		mbx->tail = fm10k_mbx_tail_sub(mbx, mbx->tail_len - tail_len);
-		mbx->tail_len = tail_len;
-	}
+    /* guarantee we stop on a message boundary */
+    if (mbx->tail_len > tail_len) {
+        mbx->tail = fm10k_mbx_tail_sub(mbx, mbx->tail_len - tail_len);
+        mbx->tail_len = tail_len;
+    }
 
-	/* clear any extra bits left over since index adds 1 extra bit */
-	if (mbx->tail > mbmem_len)
-		mbx->tail -= mbmem_len;
+    /* clear any extra bits left over since index adds 1 extra bit */
+    if (mbx->tail > mbmem_len)
+        mbx->tail -= mbmem_len;
 }
 
 /**
@@ -2001,29 +2001,29 @@ STATIC void fm10k_sm_mbx_transmit(struct fm10k_hw *hw,
  *  on error.
  **/
 STATIC void fm10k_sm_mbx_create_reply(struct fm10k_hw *hw,
-				      struct fm10k_mbx_info *mbx, u16 head)
+                      struct fm10k_mbx_info *mbx, u16 head)
 {
-	switch (mbx->state) {
-	case FM10K_STATE_OPEN:
-	case FM10K_STATE_DISCONNECT:
-		/* flush out Tx data */
-		fm10k_sm_mbx_transmit(hw, mbx, head);
+    switch (mbx->state) {
+    case FM10K_STATE_OPEN:
+    case FM10K_STATE_DISCONNECT:
+        /* flush out Tx data */
+        fm10k_sm_mbx_transmit(hw, mbx, head);
 
-		/* generate new header based on data */
-		if (mbx->tail_len || (mbx->state == FM10K_STATE_OPEN)) {
-			fm10k_sm_mbx_create_data_hdr(mbx);
-		} else {
-			mbx->remote = 0;
-			fm10k_sm_mbx_create_connect_hdr(mbx, 0);
-		}
-		break;
-	case FM10K_STATE_CONNECT:
-	case FM10K_STATE_CLOSED:
-		fm10k_sm_mbx_create_connect_hdr(mbx, 0);
-		break;
-	default:
-		break;
-	}
+        /* generate new header based on data */
+        if (mbx->tail_len || (mbx->state == FM10K_STATE_OPEN)) {
+            fm10k_sm_mbx_create_data_hdr(mbx);
+        } else {
+            mbx->remote = 0;
+            fm10k_sm_mbx_create_connect_hdr(mbx, 0);
+        }
+        break;
+    case FM10K_STATE_CONNECT:
+    case FM10K_STATE_CLOSED:
+        fm10k_sm_mbx_create_connect_hdr(mbx, 0);
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -2038,33 +2038,33 @@ STATIC void fm10k_sm_mbx_create_reply(struct fm10k_hw *hw,
  *  resetting would also be a means of dealing with errors.
  **/
 STATIC s32 fm10k_sm_mbx_process_reset(struct fm10k_hw *hw,
-				      struct fm10k_mbx_info *mbx)
+                      struct fm10k_mbx_info *mbx)
 {
-	s32 err = FM10K_SUCCESS;
-	const enum fm10k_mbx_state state = mbx->state;
+    s32 err = FM10K_SUCCESS;
+    const enum fm10k_mbx_state state = mbx->state;
 
-	switch (state) {
-	case FM10K_STATE_DISCONNECT:
-		/* drop remote connections and disconnect */
-		mbx->state = FM10K_STATE_CLOSED;
-		mbx->remote = 0;
-		mbx->local = 0;
-		break;
-	case FM10K_STATE_OPEN:
-		/* flush any incomplete work */
-		fm10k_sm_mbx_connect_reset(mbx);
-		err = FM10K_ERR_RESET_REQUESTED;
-		break;
-	case FM10K_STATE_CONNECT:
-		/* Update remote value to match local value */
-		mbx->remote = mbx->local;
-	default:
-		break;
-	}
+    switch (state) {
+    case FM10K_STATE_DISCONNECT:
+        /* drop remote connections and disconnect */
+        mbx->state = FM10K_STATE_CLOSED;
+        mbx->remote = 0;
+        mbx->local = 0;
+        break;
+    case FM10K_STATE_OPEN:
+        /* flush any incomplete work */
+        fm10k_sm_mbx_connect_reset(mbx);
+        err = FM10K_ERR_RESET_REQUESTED;
+        break;
+    case FM10K_STATE_CONNECT:
+        /* Update remote value to match local value */
+        mbx->remote = mbx->local;
+    default:
+        break;
+    }
 
-	fm10k_sm_mbx_create_reply(hw, mbx, mbx->tail);
+    fm10k_sm_mbx_create_reply(hw, mbx, mbx->tail);
 
-	return err;
+    return err;
 }
 
 /**
@@ -2076,39 +2076,39 @@ STATIC s32 fm10k_sm_mbx_process_reset(struct fm10k_hw *hw,
  *  mailbox is active.
  **/
 STATIC s32 fm10k_sm_mbx_process_version_1(struct fm10k_hw *hw,
-					  struct fm10k_mbx_info *mbx)
+                      struct fm10k_mbx_info *mbx)
 {
-	const u32 *hdr = &mbx->mbx_hdr;
-	u16 head, tail;
-	s32 len;
+    const u32 *hdr = &mbx->mbx_hdr;
+    u16 head, tail;
+    s32 len;
 
-	/* pull all fields needed for verification */
-	tail = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_TAIL);
-	head = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_HEAD);
+    /* pull all fields needed for verification */
+    tail = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_TAIL);
+    head = FM10K_MSG_HDR_FIELD_GET(*hdr, SM_HEAD);
 
-	/* if we are in connect and wanting version 1 then start up and go */
-	if (mbx->state == FM10K_STATE_CONNECT) {
-		if (!mbx->remote)
-			goto send_reply;
-		if (mbx->remote != 1)
-			return FM10K_MBX_ERR_SRC;
+    /* if we are in connect and wanting version 1 then start up and go */
+    if (mbx->state == FM10K_STATE_CONNECT) {
+        if (!mbx->remote)
+            goto send_reply;
+        if (mbx->remote != 1)
+            return FM10K_MBX_ERR_SRC;
 
-		mbx->state = FM10K_STATE_OPEN;
-	}
+        mbx->state = FM10K_STATE_OPEN;
+    }
 
-	do {
-		/* abort on message size errors */
-		len = fm10k_sm_mbx_receive(hw, mbx, tail);
-		if (len < 0)
-			return len;
+    do {
+        /* abort on message size errors */
+        len = fm10k_sm_mbx_receive(hw, mbx, tail);
+        if (len < 0)
+            return len;
 
-		/* continue until we have flushed the Rx FIFO */
-	} while (len);
+        /* continue until we have flushed the Rx FIFO */
+    } while (len);
 
 send_reply:
-	fm10k_sm_mbx_create_reply(hw, mbx, head);
+    fm10k_sm_mbx_create_reply(hw, mbx, head);
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }
 
 /**
@@ -2121,47 +2121,47 @@ send_reply:
  *  transmitted excluding header on success or a negative value on error.
  **/
 STATIC s32 fm10k_sm_mbx_process(struct fm10k_hw *hw,
-				struct fm10k_mbx_info *mbx)
+                struct fm10k_mbx_info *mbx)
 {
-	s32 err;
+    s32 err;
 
-	DEBUGFUNC("fm10k_sm_mbx_process");
+    DEBUGFUNC("fm10k_sm_mbx_process");
 
-	/* we do not read mailbox if closed */
-	if (mbx->state == FM10K_STATE_CLOSED)
-		return FM10K_SUCCESS;
+    /* we do not read mailbox if closed */
+    if (mbx->state == FM10K_STATE_CLOSED)
+        return FM10K_SUCCESS;
 
-	/* retrieve data from switch manager */
-	err = fm10k_mbx_read(hw, mbx);
-	if (err)
-		return err;
+    /* retrieve data from switch manager */
+    err = fm10k_mbx_read(hw, mbx);
+    if (err)
+        return err;
 
-	err = fm10k_sm_mbx_validate_fifo_hdr(mbx);
-	if (err < 0)
-		goto fifo_err;
+    err = fm10k_sm_mbx_validate_fifo_hdr(mbx);
+    if (err < 0)
+        goto fifo_err;
 
-	if (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, SM_ERR)) {
-		fm10k_sm_mbx_process_error(mbx);
-		goto fifo_err;
-	}
+    if (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, SM_ERR)) {
+        fm10k_sm_mbx_process_error(mbx);
+        goto fifo_err;
+    }
 
-	switch (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, SM_VER)) {
-	case 0:
-		err = fm10k_sm_mbx_process_reset(hw, mbx);
-		break;
-	case FM10K_SM_MBX_VERSION:
-		err = fm10k_sm_mbx_process_version_1(hw, mbx);
-		break;
-	}
+    switch (FM10K_MSG_HDR_FIELD_GET(mbx->mbx_hdr, SM_VER)) {
+    case 0:
+        err = fm10k_sm_mbx_process_reset(hw, mbx);
+        break;
+    case FM10K_SM_MBX_VERSION:
+        err = fm10k_sm_mbx_process_version_1(hw, mbx);
+        break;
+    }
 
 fifo_err:
-	if (err < 0)
-		fm10k_sm_mbx_create_error_msg(mbx, err);
+    if (err < 0)
+        fm10k_sm_mbx_create_error_msg(mbx, err);
 
-	/* report data to switch manager */
-	fm10k_mbx_write(hw, mbx);
+    /* report data to switch manager */
+    fm10k_mbx_write(hw, mbx);
 
-	return err;
+    return err;
 }
 
 /**
@@ -2178,48 +2178,48 @@ fifo_err:
  *  error.
  **/
 s32 fm10k_sm_mbx_init(struct fm10k_hw *hw, struct fm10k_mbx_info *mbx,
-		      const struct fm10k_msg_data *msg_data)
+              const struct fm10k_msg_data *msg_data)
 {
-	DEBUGFUNC("fm10k_sm_mbx_init");
-	UNREFERENCED_1PARAMETER(hw);
+    DEBUGFUNC("fm10k_sm_mbx_init");
+    UNREFERENCED_1PARAMETER(hw);
 
-	mbx->mbx_reg = FM10K_GMBX;
-	mbx->mbmem_reg = FM10K_MBMEM_PF(0);
+    mbx->mbx_reg = FM10K_GMBX;
+    mbx->mbmem_reg = FM10K_MBMEM_PF(0);
 
-	/* start out in closed state */
-	mbx->state = FM10K_STATE_CLOSED;
+    /* start out in closed state */
+    mbx->state = FM10K_STATE_CLOSED;
 
-	/* validate layout of handlers before assigning them */
-	if (fm10k_mbx_validate_handlers(msg_data))
-		return FM10K_ERR_PARAM;
+    /* validate layout of handlers before assigning them */
+    if (fm10k_mbx_validate_handlers(msg_data))
+        return FM10K_ERR_PARAM;
 
-	/* initialize the message handlers */
-	mbx->msg_data = msg_data;
+    /* initialize the message handlers */
+    mbx->msg_data = msg_data;
 
-	/* start mailbox as timed out and let the reset_hw call
-	 * set the timeout value to begin communications
-	 */
-	mbx->timeout = 0;
-	mbx->usec_delay = FM10K_MBX_INIT_DELAY;
+    /* start mailbox as timed out and let the reset_hw call
+     * set the timeout value to begin communications
+     */
+    mbx->timeout = 0;
+    mbx->usec_delay = FM10K_MBX_INIT_DELAY;
 
-	/* Split buffer for use by Tx/Rx FIFOs */
-	mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
-	mbx->mbmem_len = FM10K_MBMEM_PF_XOR;
+    /* Split buffer for use by Tx/Rx FIFOs */
+    mbx->max_size = FM10K_MBX_MSG_MAX_SIZE;
+    mbx->mbmem_len = FM10K_MBMEM_PF_XOR;
 
-	/* initialize the FIFOs, sizes are in 4 byte increments */
-	fm10k_fifo_init(&mbx->tx, mbx->buffer, FM10K_MBX_TX_BUFFER_SIZE);
-	fm10k_fifo_init(&mbx->rx, &mbx->buffer[FM10K_MBX_TX_BUFFER_SIZE],
-			FM10K_MBX_RX_BUFFER_SIZE);
+    /* initialize the FIFOs, sizes are in 4 byte increments */
+    fm10k_fifo_init(&mbx->tx, mbx->buffer, FM10K_MBX_TX_BUFFER_SIZE);
+    fm10k_fifo_init(&mbx->rx, &mbx->buffer[FM10K_MBX_TX_BUFFER_SIZE],
+            FM10K_MBX_RX_BUFFER_SIZE);
 
-	/* initialize function pointers */
-	mbx->ops.connect = fm10k_sm_mbx_connect;
-	mbx->ops.disconnect = fm10k_sm_mbx_disconnect;
-	mbx->ops.rx_ready = fm10k_mbx_rx_ready;
-	mbx->ops.tx_ready = fm10k_mbx_tx_ready;
-	mbx->ops.tx_complete = fm10k_mbx_tx_complete;
-	mbx->ops.enqueue_tx = fm10k_mbx_enqueue_tx;
-	mbx->ops.process = fm10k_sm_mbx_process;
-	mbx->ops.register_handlers = fm10k_mbx_register_handlers;
+    /* initialize function pointers */
+    mbx->ops.connect = fm10k_sm_mbx_connect;
+    mbx->ops.disconnect = fm10k_sm_mbx_disconnect;
+    mbx->ops.rx_ready = fm10k_mbx_rx_ready;
+    mbx->ops.tx_ready = fm10k_mbx_tx_ready;
+    mbx->ops.tx_complete = fm10k_mbx_tx_complete;
+    mbx->ops.enqueue_tx = fm10k_mbx_enqueue_tx;
+    mbx->ops.process = fm10k_sm_mbx_process;
+    mbx->ops.register_handlers = fm10k_mbx_register_handlers;
 
-	return FM10K_SUCCESS;
+    return FM10K_SUCCESS;
 }

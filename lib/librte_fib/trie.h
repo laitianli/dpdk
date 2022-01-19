@@ -26,7 +26,7 @@ rte_trie_get_lookup_fn(struct rte_fib6_conf *fib_conf);
 
 int
 trie_modify(struct rte_fib6 *fib, const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE],
-	uint8_t depth, uint64_t next_hop, int op);
+    uint8_t depth, uint64_t next_hop, int op);
 
 
 #ifdef __cplusplus

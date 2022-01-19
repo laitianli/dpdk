@@ -16,9 +16,9 @@
  */
 
 struct aesctr_cnt_blk {
-	uint32_t nonce;
-	uint64_t iv;
-	uint32_t cnt;
+    uint32_t nonce;
+    uint64_t iv;
+    uint32_t cnt;
 } __attribute__((packed));
 
  /*
@@ -27,44 +27,44 @@ struct aesctr_cnt_blk {
   */
 
 struct aead_gcm_iv {
-	uint32_t salt;
-	uint64_t iv;
-	uint32_t cnt;
+    uint32_t salt;
+    uint64_t iv;
+    uint32_t cnt;
 } __attribute__((packed));
 
 struct aead_gcm_aad {
-	uint32_t spi;
-	/*
-	 * RFC 4106, section 5:
-	 * Two formats of the AAD are defined:
-	 * one for 32-bit sequence numbers, and one for 64-bit ESN.
-	 */
-	union {
-		uint32_t u32[2];
-		uint64_t u64;
-	} sqn;
-	uint32_t align0; /* align to 16B boundary */
+    uint32_t spi;
+    /*
+     * RFC 4106, section 5:
+     * Two formats of the AAD are defined:
+     * one for 32-bit sequence numbers, and one for 64-bit ESN.
+     */
+    union {
+        uint32_t u32[2];
+        uint64_t u64;
+    } sqn;
+    uint32_t align0; /* align to 16B boundary */
 } __attribute__((packed));
 
 struct gcm_esph_iv {
-	struct rte_esp_hdr esph;
-	uint64_t iv;
+    struct rte_esp_hdr esph;
+    uint64_t iv;
 } __attribute__((packed));
 
 static inline void
 aes_ctr_cnt_blk_fill(struct aesctr_cnt_blk *ctr, uint64_t iv, uint32_t nonce)
 {
-	ctr->nonce = nonce;
-	ctr->iv = iv;
-	ctr->cnt = rte_cpu_to_be_32(1);
+    ctr->nonce = nonce;
+    ctr->iv = iv;
+    ctr->cnt = rte_cpu_to_be_32(1);
 }
 
 static inline void
 aead_gcm_iv_fill(struct aead_gcm_iv *gcm, uint64_t iv, uint32_t salt)
 {
-	gcm->salt = salt;
-	gcm->iv = iv;
-	gcm->cnt = rte_cpu_to_be_32(1);
+    gcm->salt = salt;
+    gcm->iv = iv;
+    gcm->cnt = rte_cpu_to_be_32(1);
 }
 
 /*
@@ -74,23 +74,23 @@ aead_gcm_iv_fill(struct aead_gcm_iv *gcm, uint64_t iv, uint32_t salt)
  */
 static inline void
 aead_gcm_aad_fill(struct aead_gcm_aad *aad, rte_be32_t spi, rte_be64_t sqn,
-	int esn)
+    int esn)
 {
-	aad->spi = spi;
-	if (esn)
-		aad->sqn.u64 = sqn;
-	else {
-		aad->sqn.u32[0] = sqn_low32(sqn);
-		aad->sqn.u32[1] = 0;
-	}
-	aad->align0 = 0;
+    aad->spi = spi;
+    if (esn)
+        aad->sqn.u64 = sqn;
+    else {
+        aad->sqn.u32[0] = sqn_low32(sqn);
+        aad->sqn.u32[1] = 0;
+    }
+    aad->align0 = 0;
 }
 
 static inline void
 gen_iv(uint64_t iv[IPSEC_MAX_IV_QWORD], rte_be64_t sqn)
 {
-	iv[0] = sqn;
-	iv[1] = 0;
+    iv[0] = sqn;
+    iv[1] = 0;
 }
 
 /*
@@ -99,23 +99,23 @@ gen_iv(uint64_t iv[IPSEC_MAX_IV_QWORD], rte_be64_t sqn)
  */
 static inline void
 copy_iv(uint64_t dst[IPSEC_MAX_IV_QWORD],
-	const uint64_t src[IPSEC_MAX_IV_QWORD], uint32_t len)
+    const uint64_t src[IPSEC_MAX_IV_QWORD], uint32_t len)
 {
-	RTE_BUILD_BUG_ON(IPSEC_MAX_IV_SIZE != 2 * sizeof(uint64_t));
+    RTE_BUILD_BUG_ON(IPSEC_MAX_IV_SIZE != 2 * sizeof(uint64_t));
 
-	switch (len) {
-	case IPSEC_MAX_IV_SIZE:
-		dst[1] = src[1];
-		/* fallthrough */
-	case sizeof(uint64_t):
-		dst[0] = src[0];
-		/* fallthrough */
-	case 0:
-		break;
-	default:
-		/* should never happen */
-		RTE_ASSERT(NULL);
-	}
+    switch (len) {
+    case IPSEC_MAX_IV_SIZE:
+        dst[1] = src[1];
+        /* fallthrough */
+    case sizeof(uint64_t):
+        dst[0] = src[0];
+        /* fallthrough */
+    case 0:
+        break;
+    default:
+        /* should never happen */
+        RTE_ASSERT(NULL);
+    }
 }
 
 /*
@@ -132,17 +132,17 @@ copy_iv(uint64_t dst[IPSEC_MAX_IV_QWORD],
 static inline void
 insert_sqh(uint32_t sqh, void *picv, uint32_t icv_len)
 {
-	uint32_t *icv;
-	int32_t i;
+    uint32_t *icv;
+    int32_t i;
 
-	RTE_ASSERT(icv_len % sizeof(uint32_t) == 0);
+    RTE_ASSERT(icv_len % sizeof(uint32_t) == 0);
 
-	icv = picv;
-	icv_len = icv_len / sizeof(uint32_t);
-	for (i = icv_len; i-- != 0; icv[i] = icv[i - 1])
-		;
+    icv = picv;
+    icv_len = icv_len / sizeof(uint32_t);
+    for (i = icv_len; i-- != 0; icv[i] = icv[i - 1])
+        ;
 
-	icv[i] = sqh;
+    icv[i] = sqh;
 }
 
 /*
@@ -152,14 +152,14 @@ insert_sqh(uint32_t sqh, void *picv, uint32_t icv_len)
 static inline void
 remove_sqh(void *picv, uint32_t icv_len)
 {
-	uint32_t i, *icv;
+    uint32_t i, *icv;
 
-	RTE_ASSERT(icv_len % sizeof(uint32_t) == 0);
+    RTE_ASSERT(icv_len % sizeof(uint32_t) == 0);
 
-	icv = picv;
-	icv_len = icv_len / sizeof(uint32_t);
-	for (i = 0; i != icv_len; i++)
-		icv[i] = icv[i + 1];
+    icv = picv;
+    icv_len = icv_len / sizeof(uint32_t);
+    for (i = 0; i != icv_len; i++)
+        icv[i] = icv[i + 1];
 }
 
 /*
@@ -167,16 +167,16 @@ remove_sqh(void *picv, uint32_t icv_len)
  */
 static inline void
 lksd_none_cop_prepare(struct rte_crypto_op *cop,
-	struct rte_cryptodev_sym_session *cs, struct rte_mbuf *mb)
+    struct rte_cryptodev_sym_session *cs, struct rte_mbuf *mb)
 {
-	struct rte_crypto_sym_op *sop;
+    struct rte_crypto_sym_op *sop;
 
-	sop = cop->sym;
-	cop->type = RTE_CRYPTO_OP_TYPE_SYMMETRIC;
-	cop->status = RTE_CRYPTO_OP_STATUS_NOT_PROCESSED;
-	cop->sess_type = RTE_CRYPTO_OP_WITH_SESSION;
-	sop->m_src = mb;
-	__rte_crypto_sym_op_attach_sym_session(sop, cs);
+    sop = cop->sym;
+    cop->type = RTE_CRYPTO_OP_TYPE_SYMMETRIC;
+    cop->status = RTE_CRYPTO_OP_STATUS_NOT_PROCESSED;
+    cop->sess_type = RTE_CRYPTO_OP_WITH_SESSION;
+    sop->m_src = mb;
+    __rte_crypto_sym_op_attach_sym_session(sop, cs);
 }
 
 #endif /* _CRYPTO_H_ */

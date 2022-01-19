@@ -23,31 +23,31 @@ typedef void *ark_pkt_gen_t;
  * structs will never be instantiated in ram memory
  */
 struct ark_pkt_gen_regs {
-	uint32_t r0;
-	volatile uint32_t pkt_start_stop;
-	volatile uint32_t pkt_ctrl;
-	uint32_t pkt_payload;
-	uint32_t pkt_spacing;
-	uint32_t pkt_size_min;
-	uint32_t pkt_size_max;
-	uint32_t pkt_size_incr;
-	volatile uint32_t num_pkts;
-	volatile uint32_t pkts_sent;
-	uint32_t src_mac_addr_l;
-	uint32_t src_mac_addr_h;
-	uint32_t dst_mac_addr_l;
-	uint32_t dst_mac_addr_h;
-	uint32_t eth_type;
-	uint32_t hdr_dw[7];
-	uint32_t start_offset;
-	uint32_t bytes_per_cycle;
+    uint32_t r0;
+    volatile uint32_t pkt_start_stop;
+    volatile uint32_t pkt_ctrl;
+    uint32_t pkt_payload;
+    uint32_t pkt_spacing;
+    uint32_t pkt_size_min;
+    uint32_t pkt_size_max;
+    uint32_t pkt_size_incr;
+    volatile uint32_t num_pkts;
+    volatile uint32_t pkts_sent;
+    uint32_t src_mac_addr_l;
+    uint32_t src_mac_addr_h;
+    uint32_t dst_mac_addr_l;
+    uint32_t dst_mac_addr_h;
+    uint32_t eth_type;
+    uint32_t hdr_dw[7];
+    uint32_t start_offset;
+    uint32_t bytes_per_cycle;
 } __attribute__ ((packed));
 
 struct ark_pkt_gen_inst {
-	struct rte_eth_dev_info *dev_info;
-	struct ark_pkt_gen_regs *regs;
-	int l2_mode;
-	int ordinal;
+    struct rte_eth_dev_info *dev_info;
+    struct ark_pkt_gen_regs *regs;
+    int l2_mode;
+    int ordinal;
 };
 
 /*  packet generator functions */

@@ -58,7 +58,7 @@ rte_strsplit(char *string, int stringlen,
 static inline size_t
 rte_strlcpy(char *dst, const char *src, size_t size)
 {
-	return (size_t)snprintf(dst, size, "%s", src);
+    return (size_t)snprintf(dst, size, "%s", src);
 }
 
 /**
@@ -69,10 +69,10 @@ rte_strlcpy(char *dst, const char *src, size_t size)
 static inline size_t
 rte_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t l = strnlen(dst, size);
-	if (l < size)
-		return l + rte_strlcpy(&dst[l], src, size - l);
-	return l + strlen(src);
+    size_t l = strnlen(dst, size);
+    if (l < size)
+        return l + rte_strlcpy(&dst[l], src, size - l);
+    return l + strlen(src);
 }
 
 /* pull in a strlcpy function */

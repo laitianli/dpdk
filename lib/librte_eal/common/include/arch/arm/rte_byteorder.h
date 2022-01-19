@@ -22,18 +22,18 @@ extern "C" {
 
 static inline uint16_t rte_arch_bswap16(uint16_t _x)
 {
-	uint16_t x = _x;
+    uint16_t x = _x;
 
-	asm volatile ("rev16 %w0,%w1"
-		      : "=r" (x)
-		      : "r" (x)
-		      );
-	return x;
+    asm volatile ("rev16 %w0,%w1"
+              : "=r" (x)
+              : "r" (x)
+              );
+    return x;
 }
 
 #define rte_bswap16(x) ((uint16_t)(__builtin_constant_p(x) ? \
-				   rte_constant_bswap16(x) : \
-				   rte_arch_bswap16(x)))
+                   rte_constant_bswap16(x) : \
+                   rte_arch_bswap16(x)))
 #endif
 
 /* ARM architecture is bi-endian (both big and little). */

@@ -11,18 +11,18 @@
  */
 static int clip6_get_mbox(const struct rte_eth_dev *dev, const u32 *lip)
 {
-	struct adapter *adap = ethdev2adap(dev);
-	struct fw_clip_cmd c;
-	u64 hi = ((u64)lip[1]) << 32 | lip[0];
-	u64 lo = ((u64)lip[3]) << 32 | lip[2];
+    struct adapter *adap = ethdev2adap(dev);
+    struct fw_clip_cmd c;
+    u64 hi = ((u64)lip[1]) << 32 | lip[0];
+    u64 lo = ((u64)lip[3]) << 32 | lip[2];
 
-	memset(&c, 0, sizeof(c));
-	c.op_to_write = cpu_to_be32(V_FW_CMD_OP(FW_CLIP_CMD) |
-				    F_FW_CMD_REQUEST | F_FW_CMD_WRITE);
-	c.alloc_to_len16 = cpu_to_be32(F_FW_CLIP_CMD_ALLOC | FW_LEN16(c));
-	c.ip_hi = hi;
-	c.ip_lo = lo;
-	return t4_wr_mbox_meat(adap, adap->mbox, &c, sizeof(c), &c, false);
+    memset(&c, 0, sizeof(c));
+    c.op_to_write = cpu_to_be32(V_FW_CMD_OP(FW_CLIP_CMD) |
+                    F_FW_CMD_REQUEST | F_FW_CMD_WRITE);
+    c.alloc_to_len16 = cpu_to_be32(F_FW_CLIP_CMD_ALLOC | FW_LEN16(c));
+    c.ip_hi = hi;
+    c.ip_lo = lo;
+    return t4_wr_mbox_meat(adap, adap->mbox, &c, sizeof(c), &c, false);
 }
 
 /**
@@ -30,18 +30,18 @@ static int clip6_get_mbox(const struct rte_eth_dev *dev, const u32 *lip)
  */
 static int clip6_release_mbox(const struct rte_eth_dev *dev, const u32 *lip)
 {
-	struct adapter *adap = ethdev2adap(dev);
-	struct fw_clip_cmd c;
-	u64 hi = ((u64)lip[1]) << 32 | lip[0];
-	u64 lo = ((u64)lip[3]) << 32 | lip[2];
+    struct adapter *adap = ethdev2adap(dev);
+    struct fw_clip_cmd c;
+    u64 hi = ((u64)lip[1]) << 32 | lip[0];
+    u64 lo = ((u64)lip[3]) << 32 | lip[2];
 
-	memset(&c, 0, sizeof(c));
-	c.op_to_write = cpu_to_be32(V_FW_CMD_OP(FW_CLIP_CMD) |
-				    F_FW_CMD_REQUEST | F_FW_CMD_READ);
-	c.alloc_to_len16 = cpu_to_be32(F_FW_CLIP_CMD_FREE | FW_LEN16(c));
-	c.ip_hi = hi;
-	c.ip_lo = lo;
-	return t4_wr_mbox_meat(adap, adap->mbox, &c, sizeof(c), &c, false);
+    memset(&c, 0, sizeof(c));
+    c.op_to_write = cpu_to_be32(V_FW_CMD_OP(FW_CLIP_CMD) |
+                    F_FW_CMD_REQUEST | F_FW_CMD_READ);
+    c.alloc_to_len16 = cpu_to_be32(F_FW_CLIP_CMD_FREE | FW_LEN16(c));
+    c.ip_hi = hi;
+    c.ip_lo = lo;
+    return t4_wr_mbox_meat(adap, adap->mbox, &c, sizeof(c), &c, false);
 }
 
 /**
@@ -52,15 +52,15 @@ static int clip6_release_mbox(const struct rte_eth_dev *dev, const u32 *lip)
  */
 void cxgbe_clip_release(struct rte_eth_dev *dev, struct clip_entry *ce)
 {
-	int ret;
+    int ret;
 
-	t4_os_lock(&ce->lock);
-	if (rte_atomic32_dec_and_test(&ce->refcnt)) {
-		ret = clip6_release_mbox(dev, ce->addr);
-		if (ret)
-			dev_debug(adap, "CLIP FW DEL CMD failed: %d", ret);
-	}
-	t4_os_unlock(&ce->lock);
+    t4_os_lock(&ce->lock);
+    if (rte_atomic32_dec_and_test(&ce->refcnt)) {
+        ret = clip6_release_mbox(dev, ce->addr);
+        if (ret)
+            dev_debug(adap, "CLIP FW DEL CMD failed: %d", ret);
+    }
+    t4_os_unlock(&ce->lock);
 }
 
 /**
@@ -72,69 +72,69 @@ void cxgbe_clip_release(struct rte_eth_dev *dev, struct clip_entry *ce)
  * Finds/Allocates an CLIP entry to be used for a filter rule.
  */
 static struct clip_entry *find_or_alloc_clipe(struct clip_tbl *c,
-					      const u32 *lip)
+                          const u32 *lip)
 {
-	struct clip_entry *end, *e;
-	struct clip_entry *first_free = NULL;
-	unsigned int clipt_size = c->clipt_size;
+    struct clip_entry *end, *e;
+    struct clip_entry *first_free = NULL;
+    unsigned int clipt_size = c->clipt_size;
 
-	for (e = &c->cl_list[0], end = &c->cl_list[clipt_size]; e != end; ++e) {
-		if (rte_atomic32_read(&e->refcnt) == 0) {
-			if (!first_free)
-				first_free = e;
-		} else {
-			if (memcmp(lip, e->addr, sizeof(e->addr)) == 0)
-				goto exists;
-		}
-	}
+    for (e = &c->cl_list[0], end = &c->cl_list[clipt_size]; e != end; ++e) {
+        if (rte_atomic32_read(&e->refcnt) == 0) {
+            if (!first_free)
+                first_free = e;
+        } else {
+            if (memcmp(lip, e->addr, sizeof(e->addr)) == 0)
+                goto exists;
+        }
+    }
 
-	if (first_free) {
-		e = first_free;
-		goto exists;
-	}
+    if (first_free) {
+        e = first_free;
+        goto exists;
+    }
 
-	return NULL;
+    return NULL;
 
 exists:
-	return e;
+    return e;
 }
 
 static struct clip_entry *t4_clip_alloc(struct rte_eth_dev *dev,
-					u32 *lip, u8 v6)
+                    u32 *lip, u8 v6)
 {
-	struct adapter *adap = ethdev2adap(dev);
-	struct clip_tbl *ctbl = adap->clipt;
-	struct clip_entry *ce;
-	int ret = 0;
+    struct adapter *adap = ethdev2adap(dev);
+    struct clip_tbl *ctbl = adap->clipt;
+    struct clip_entry *ce;
+    int ret = 0;
 
-	if (!ctbl)
-		return NULL;
+    if (!ctbl)
+        return NULL;
 
-	t4_os_write_lock(&ctbl->lock);
-	ce = find_or_alloc_clipe(ctbl, lip);
-	if (ce) {
-		t4_os_lock(&ce->lock);
-		if (!rte_atomic32_read(&ce->refcnt)) {
-			rte_memcpy(ce->addr, lip, sizeof(ce->addr));
-			if (v6) {
-				ce->type = FILTER_TYPE_IPV6;
-				rte_atomic32_set(&ce->refcnt, 1);
-				ret = clip6_get_mbox(dev, lip);
-				if (ret)
-					dev_debug(adap,
-						  "CLIP FW ADD CMD failed: %d",
-						  ret);
-			} else {
-				ce->type = FILTER_TYPE_IPV4;
-			}
-		} else {
-			rte_atomic32_inc(&ce->refcnt);
-		}
-		t4_os_unlock(&ce->lock);
-	}
-	t4_os_write_unlock(&ctbl->lock);
+    t4_os_write_lock(&ctbl->lock);
+    ce = find_or_alloc_clipe(ctbl, lip);
+    if (ce) {
+        t4_os_lock(&ce->lock);
+        if (!rte_atomic32_read(&ce->refcnt)) {
+            rte_memcpy(ce->addr, lip, sizeof(ce->addr));
+            if (v6) {
+                ce->type = FILTER_TYPE_IPV6;
+                rte_atomic32_set(&ce->refcnt, 1);
+                ret = clip6_get_mbox(dev, lip);
+                if (ret)
+                    dev_debug(adap,
+                          "CLIP FW ADD CMD failed: %d",
+                          ret);
+            } else {
+                ce->type = FILTER_TYPE_IPV4;
+            }
+        } else {
+            rte_atomic32_inc(&ce->refcnt);
+        }
+        t4_os_unlock(&ce->lock);
+    }
+    t4_os_write_unlock(&ctbl->lock);
 
-	return ret ? NULL : ce;
+    return ret ? NULL : ce;
 }
 
 /**
@@ -147,40 +147,40 @@ static struct clip_entry *t4_clip_alloc(struct rte_eth_dev *dev,
  */
 struct clip_entry *cxgbe_clip_alloc(struct rte_eth_dev *dev, u32 *lip)
 {
-	return t4_clip_alloc(dev, lip, FILTER_TYPE_IPV6);
+    return t4_clip_alloc(dev, lip, FILTER_TYPE_IPV6);
 }
 
 /**
  * Initialize CLIP Table
  */
 struct clip_tbl *t4_init_clip_tbl(unsigned int clipt_start,
-				  unsigned int clipt_end)
+                  unsigned int clipt_end)
 {
-	unsigned int clipt_size;
-	struct clip_tbl *ctbl;
-	unsigned int i;
+    unsigned int clipt_size;
+    struct clip_tbl *ctbl;
+    unsigned int i;
 
-	if (clipt_start >= clipt_end)
-		return NULL;
+    if (clipt_start >= clipt_end)
+        return NULL;
 
-	clipt_size = clipt_end - clipt_start + 1;
+    clipt_size = clipt_end - clipt_start + 1;
 
-	ctbl = t4_os_alloc(sizeof(*ctbl) +
-			   clipt_size * sizeof(struct clip_entry));
-	if (!ctbl)
-		return NULL;
+    ctbl = t4_os_alloc(sizeof(*ctbl) +
+               clipt_size * sizeof(struct clip_entry));
+    if (!ctbl)
+        return NULL;
 
-	ctbl->clipt_start = clipt_start;
-	ctbl->clipt_size = clipt_size;
+    ctbl->clipt_start = clipt_start;
+    ctbl->clipt_size = clipt_size;
 
-	t4_os_rwlock_init(&ctbl->lock);
+    t4_os_rwlock_init(&ctbl->lock);
 
-	for (i = 0; i < ctbl->clipt_size; i++) {
-		t4_os_lock_init(&ctbl->cl_list[i].lock);
-		rte_atomic32_set(&ctbl->cl_list[i].refcnt, 0);
-	}
+    for (i = 0; i < ctbl->clipt_size; i++) {
+        t4_os_lock_init(&ctbl->cl_list[i].lock);
+        rte_atomic32_set(&ctbl->cl_list[i].refcnt, 0);
+    }
 
-	return ctbl;
+    return ctbl;
 }
 
 /**
@@ -188,6 +188,6 @@ struct clip_tbl *t4_init_clip_tbl(unsigned int clipt_start,
  */
 void t4_cleanup_clip_tbl(struct adapter *adap)
 {
-	if (adap->clipt)
-		t4_os_free(adap->clipt);
+    if (adap->clipt)
+        t4_os_free(adap->clipt);
 }

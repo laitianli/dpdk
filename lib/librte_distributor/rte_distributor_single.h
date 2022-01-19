@@ -40,7 +40,7 @@ struct rte_mbuf;
  */
 struct rte_distributor_single *
 rte_distributor_create_single(const char *name, unsigned int socket_id,
-		unsigned int num_workers);
+        unsigned int num_workers);
 
 /*  *** APIS to be called on the distributor lcore ***  */
 /*
@@ -75,7 +75,7 @@ rte_distributor_create_single(const char *name, unsigned int socket_id,
  */
 int
 rte_distributor_process_single(struct rte_distributor_single *d,
-		struct rte_mbuf **mbufs, unsigned int num_mbufs);
+        struct rte_mbuf **mbufs, unsigned int num_mbufs);
 
 /**
  * Get a set of mbufs that have been returned to the distributor by workers
@@ -93,7 +93,7 @@ rte_distributor_process_single(struct rte_distributor_single *d,
  */
 int
 rte_distributor_returned_pkts_single(struct rte_distributor_single *d,
-		struct rte_mbuf **mbufs, unsigned int max_mbufs);
+        struct rte_mbuf **mbufs, unsigned int max_mbufs);
 
 /**
  * Flush the distributor component, so that there are no in-flight or
@@ -149,7 +149,7 @@ rte_distributor_clear_returns_single(struct rte_distributor_single *d);
  */
 struct rte_mbuf *
 rte_distributor_get_pkt_single(struct rte_distributor_single *d,
-		unsigned int worker_id, struct rte_mbuf *oldpkt);
+        unsigned int worker_id, struct rte_mbuf *oldpkt);
 
 /**
  * API called by a worker to return a completed packet without requesting a
@@ -165,7 +165,7 @@ rte_distributor_get_pkt_single(struct rte_distributor_single *d,
  */
 int
 rte_distributor_return_pkt_single(struct rte_distributor_single *d,
-		unsigned int worker_id, struct rte_mbuf *mbuf);
+        unsigned int worker_id, struct rte_mbuf *mbuf);
 
 /**
  * API called by a worker to request a new packet to process.
@@ -189,7 +189,7 @@ rte_distributor_return_pkt_single(struct rte_distributor_single *d,
  */
 void
 rte_distributor_request_pkt_single(struct rte_distributor_single *d,
-		unsigned int worker_id, struct rte_mbuf *oldpkt);
+        unsigned int worker_id, struct rte_mbuf *oldpkt);
 
 /**
  * API called by a worker to check for a new packet that was previously
@@ -209,7 +209,7 @@ rte_distributor_request_pkt_single(struct rte_distributor_single *d,
  */
 struct rte_mbuf *
 rte_distributor_poll_pkt_single(struct rte_distributor_single *d,
-		unsigned int worker_id);
+        unsigned int worker_id);
 
 #ifdef __cplusplus
 }

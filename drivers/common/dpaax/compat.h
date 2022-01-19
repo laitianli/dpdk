@@ -51,21 +51,21 @@
 
 /* Required compiler attributes */
 #ifndef __maybe_unused
-#define __maybe_unused	__rte_unused
+#define __maybe_unused    __rte_unused
 #endif
 #ifndef __always_unused
-#define __always_unused	__rte_unused
+#define __always_unused    __rte_unused
 #endif
 #ifndef __packed
-#define __packed	__rte_packed
+#define __packed    __rte_packed
 #endif
 #ifndef noinline
-#define noinline	__attribute__((noinline))
+#define noinline    __attribute__((noinline))
 #endif
 #define L1_CACHE_BYTES 64
 #define ____cacheline_aligned __attribute__((aligned(L1_CACHE_BYTES)))
 #define __stringify_1(x) #x
-#define __stringify(x)	__stringify_1(x)
+#define __stringify(x)    __stringify_1(x)
 
 #ifdef ARRAY_SIZE
 #undef ARRAY_SIZE
@@ -74,25 +74,25 @@
 
 /* Debugging */
 #define prflush(fmt, args...) \
-	do { \
-		printf(fmt, ##args); \
-		fflush(stdout); \
-	} while (0)
+    do { \
+        printf(fmt, ##args); \
+        fflush(stdout); \
+    } while (0)
 #ifndef pr_crit
-#define pr_crit(fmt, args...)	 prflush("CRIT:" fmt, ##args)
+#define pr_crit(fmt, args...)     prflush("CRIT:" fmt, ##args)
 #endif
 #ifndef pr_err
-#define pr_err(fmt, args...)	 prflush("ERR:" fmt, ##args)
+#define pr_err(fmt, args...)     prflush("ERR:" fmt, ##args)
 #endif
 #ifndef pr_warn
-#define pr_warn(fmt, args...)	 prflush("WARN:" fmt, ##args)
+#define pr_warn(fmt, args...)     prflush("WARN:" fmt, ##args)
 #endif
 #ifndef pr_info
-#define pr_info(fmt, args...)	 prflush(fmt, ##args)
+#define pr_info(fmt, args...)     prflush(fmt, ##args)
 #endif
 #ifndef pr_debug
 #ifdef RTE_LIBRTE_DPAA_DEBUG_BUS
-#define pr_debug(fmt, args...)	printf(fmt, ##args)
+#define pr_debug(fmt, args...)    printf(fmt, ##args)
 #else
 #define pr_debug(fmt, args...) {}
 #endif
@@ -101,47 +101,47 @@
 #define DPAA_BUG_ON(x) RTE_ASSERT(x)
 
 /* Required types */
-typedef uint8_t		u8;
-typedef uint16_t	u16;
-typedef uint32_t	u32;
-typedef uint64_t	u64;
-typedef uint64_t	dma_addr_t;
-typedef cpu_set_t	cpumask_t;
-typedef uint32_t	phandle;
-typedef uint32_t	gfp_t;
-typedef uint32_t	irqreturn_t;
+typedef uint8_t        u8;
+typedef uint16_t    u16;
+typedef uint32_t    u32;
+typedef uint64_t    u64;
+typedef uint64_t    dma_addr_t;
+typedef cpu_set_t    cpumask_t;
+typedef uint32_t    phandle;
+typedef uint32_t    gfp_t;
+typedef uint32_t    irqreturn_t;
 
 #define ETHER_ADDR_LEN 6
 
-#define IRQ_HANDLED	0
-#define request_irq	qbman_request_irq
-#define free_irq	qbman_free_irq
+#define IRQ_HANDLED    0
+#define request_irq    qbman_request_irq
+#define free_irq    qbman_free_irq
 
 #define __iomem
-#define GFP_KERNEL	0
-#define __raw_readb(p)	(*(const volatile unsigned char *)(p))
-#define __raw_readl(p)	(*(const volatile unsigned int *)(p))
+#define GFP_KERNEL    0
+#define __raw_readb(p)    (*(const volatile unsigned char *)(p))
+#define __raw_readl(p)    (*(const volatile unsigned int *)(p))
 #define __raw_writel(v, p) {*(volatile unsigned int *)(p) = (v); }
 
 /* to be used as an upper-limit only */
-#define NR_CPUS			64
+#define NR_CPUS            64
 
 /* Waitqueue stuff */
-typedef struct { }		wait_queue_head_t;
+typedef struct { }        wait_queue_head_t;
 #define DECLARE_WAIT_QUEUE_HEAD(x) int dummy_##x __always_unused
-#define wake_up(x)		do { } while (0)
+#define wake_up(x)        do { } while (0)
 
 /* I/O operations */
 static inline u32 in_be32(volatile void *__p)
 {
-	volatile u32 *p = __p;
-	return rte_be_to_cpu_32(*p);
+    volatile u32 *p = __p;
+    return rte_be_to_cpu_32(*p);
 }
 
 static inline void out_be32(volatile void *__p, u32 val)
 {
-	volatile u32 *p = __p;
-	*p = rte_cpu_to_be_32(val);
+    volatile u32 *p = __p;
+    *p = rte_cpu_to_be_32(val);
 }
 
 #define hwsync() rte_rmb()
@@ -158,26 +158,26 @@ static inline void out_be32(volatile void *__p, u32 val)
 #define dccivac(p) { asm volatile("dc civac, %0" : : "r"(p) : "memory"); }
 
 #define dcbit_ro(p) \
-	do { \
-		dccivac(p);						\
-		asm volatile("prfm pldl1keep, [%0, #64]" : : "r" (p));	\
-	} while (0)
+    do { \
+        dccivac(p);                        \
+        asm volatile("prfm pldl1keep, [%0, #64]" : : "r" (p));    \
+    } while (0)
 
 #elif defined(RTE_ARCH_ARM)
 #define dcbz(p) memset((p), 0, 32)
 #define dcbz_64(p) memset((p), 0, 64)
-#define dcbf(p)	RTE_SET_USED(p)
+#define dcbf(p)    RTE_SET_USED(p)
 #define dcbf_64(p) dcbf(p)
-#define dccivac(p)	RTE_SET_USED(p)
-#define dcbit_ro(p)	RTE_SET_USED(p)
+#define dccivac(p)    RTE_SET_USED(p)
+#define dcbit_ro(p)    RTE_SET_USED(p)
 
 #else
-#define dcbz(p)	RTE_SET_USED(p)
+#define dcbz(p)    RTE_SET_USED(p)
 #define dcbz_64(p) dcbz(p)
-#define dcbf(p)	RTE_SET_USED(p)
+#define dcbf(p)    RTE_SET_USED(p)
 #define dcbf_64(p) dcbf(p)
-#define dccivac(p)	RTE_SET_USED(p)
-#define dcbit_ro(p)	RTE_SET_USED(p)
+#define dccivac(p)    RTE_SET_USED(p)
+#define dcbit_ro(p)    RTE_SET_USED(p)
 #endif
 
 #define barrier() { asm volatile ("" : : : "memory"); }
@@ -186,16 +186,16 @@ static inline void out_be32(volatile void *__p, u32 val)
 #if defined(RTE_ARCH_ARM64)
 static inline uint64_t mfatb(void)
 {
-	uint64_t ret, ret_new, timeout = 200;
+    uint64_t ret, ret_new, timeout = 200;
 
-	asm volatile ("mrs %0, cntvct_el0" : "=r" (ret));
-	asm volatile ("mrs %0, cntvct_el0" : "=r" (ret_new));
-	while (ret != ret_new && timeout--) {
-		ret = ret_new;
-		asm volatile ("mrs %0, cntvct_el0" : "=r" (ret_new));
-	}
-	DPAA_BUG_ON(!timeout && (ret != ret_new));
-	return ret * 64;
+    asm volatile ("mrs %0, cntvct_el0" : "=r" (ret));
+    asm volatile ("mrs %0, cntvct_el0" : "=r" (ret_new));
+    while (ret != ret_new && timeout--) {
+        ret = ret_new;
+        asm volatile ("mrs %0, cntvct_el0" : "=r" (ret_new));
+    }
+    DPAA_BUG_ON(!timeout && (ret != ret_new));
+    return ret * 64;
 }
 #else
 
@@ -206,10 +206,10 @@ static inline uint64_t mfatb(void)
 /* Spin for a few cycles without bothering the bus */
 static inline void cpu_spin(int cycles)
 {
-	uint64_t now = mfatb();
+    uint64_t now = mfatb();
 
-	while (mfatb() < (now + cycles))
-		;
+    while (mfatb() < (now + cycles))
+        ;
 }
 
 /* Qman/Bman API inlines and macros; */
@@ -229,12 +229,12 @@ static inline void cpu_spin(int cycles)
 static inline uint64_t
 __bswap_48(uint64_t x)
 {
-	return  ((x & 0x0000000000ffULL) << 40) |
-		((x & 0x00000000ff00ULL) << 24) |
-		((x & 0x000000ff0000ULL) <<  8) |
-		((x & 0x0000ff000000ULL) >>  8) |
-		((x & 0x00ff00000000ULL) >> 24) |
-		((x & 0xff0000000000ULL) >> 40);
+    return  ((x & 0x0000000000ffULL) << 40) |
+        ((x & 0x00000000ff00ULL) << 24) |
+        ((x & 0x000000ff0000ULL) <<  8) |
+        ((x & 0x0000ff000000ULL) >>  8) |
+        ((x & 0x00ff00000000ULL) >> 24) |
+        ((x & 0xff0000000000ULL) >> 40);
 }
 
 /*
@@ -243,11 +243,11 @@ __bswap_48(uint64_t x)
 static inline uint64_t
 __bswap_40(uint64_t x)
 {
-	return  ((x & 0x00000000ffULL) << 32) |
-		((x & 0x000000ff00ULL) << 16) |
-		((x & 0x0000ff0000ULL)) |
-		((x & 0x00ff000000ULL) >> 16) |
-		((x & 0xff00000000ULL) >> 32);
+    return  ((x & 0x00000000ffULL) << 32) |
+        ((x & 0x000000ff00ULL) << 16) |
+        ((x & 0x0000ff0000ULL)) |
+        ((x & 0x00ff000000ULL) >> 16) |
+        ((x & 0xff00000000ULL) >> 32);
 }
 
 /*
@@ -256,9 +256,9 @@ __bswap_40(uint64_t x)
 static inline uint32_t
 __bswap_24(uint32_t x)
 {
-	return  ((x & 0x0000ffULL) << 16) |
-		((x & 0x00ff00ULL)) |
-		((x & 0xff0000ULL) >> 16);
+    return  ((x & 0x0000ffULL) << 16) |
+        ((x & 0x00ff00ULL)) |
+        ((x & 0xff0000ULL) >> 16);
 }
 
 #define be64_to_cpu(x) rte_be_to_cpu_64(x)
@@ -302,37 +302,37 @@ __bswap_24(uint32_t x)
 #ifdef CONFIG_TRY_BETTER_MEMCPY
 static inline void copy_words(void *dest, const void *src, size_t sz)
 {
-	u32 *__dest = dest;
-	const u32 *__src = src;
-	size_t __sz = sz >> 2;
+    u32 *__dest = dest;
+    const u32 *__src = src;
+    size_t __sz = sz >> 2;
 
-	DPAA_BUG_ON((unsigned long)dest & 0x3);
-	DPAA_BUG_ON((unsigned long)src & 0x3);
-	DPAA_BUG_ON(sz & 0x3);
-	while (__sz--)
-		*(__dest++) = *(__src++);
+    DPAA_BUG_ON((unsigned long)dest & 0x3);
+    DPAA_BUG_ON((unsigned long)src & 0x3);
+    DPAA_BUG_ON(sz & 0x3);
+    while (__sz--)
+        *(__dest++) = *(__src++);
 }
 
 static inline void copy_shorts(void *dest, const void *src, size_t sz)
 {
-	u16 *__dest = dest;
-	const u16 *__src = src;
-	size_t __sz = sz >> 1;
+    u16 *__dest = dest;
+    const u16 *__src = src;
+    size_t __sz = sz >> 1;
 
-	DPAA_BUG_ON((unsigned long)dest & 0x1);
-	DPAA_BUG_ON((unsigned long)src & 0x1);
-	DPAA_BUG_ON(sz & 0x1);
-	while (__sz--)
-		*(__dest++) = *(__src++);
+    DPAA_BUG_ON((unsigned long)dest & 0x1);
+    DPAA_BUG_ON((unsigned long)src & 0x1);
+    DPAA_BUG_ON(sz & 0x1);
+    while (__sz--)
+        *(__dest++) = *(__src++);
 }
 
 static inline void copy_bytes(void *dest, const void *src, size_t sz)
 {
-	u8 *__dest = dest;
-	const u8 *__src = src;
+    u8 *__dest = dest;
+    const u8 *__src = src;
 
-	while (sz--)
-		*(__dest++) = *(__src++);
+    while (sz--)
+        *(__dest++) = *(__src++);
 }
 #else
 #define copy_words memcpy
@@ -341,38 +341,38 @@ static inline void copy_bytes(void *dest, const void *src, size_t sz)
 #endif
 
 /* Allocator stuff */
-#define kmalloc(sz, t)	rte_malloc(NULL, sz, 0)
-#define vmalloc(sz)	rte_malloc(NULL, sz, 0)
-#define kfree(p)	{ if (p) rte_free(p); }
+#define kmalloc(sz, t)    rte_malloc(NULL, sz, 0)
+#define vmalloc(sz)    rte_malloc(NULL, sz, 0)
+#define kfree(p)    { if (p) rte_free(p); }
 static inline void *kzalloc(size_t sz, gfp_t __foo __rte_unused)
 {
-	void *ptr = rte_malloc(NULL, sz, 0);
+    void *ptr = rte_malloc(NULL, sz, 0);
 
-	if (ptr)
-		memset(ptr, 0, sz);
-	return ptr;
+    if (ptr)
+        memset(ptr, 0, sz);
+    return ptr;
 }
 
 static inline unsigned long get_zeroed_page(gfp_t __foo __rte_unused)
 {
-	void *p;
+    void *p;
 
-	if (posix_memalign(&p, 4096, 4096))
-		return 0;
-	memset(p, 0, 4096);
-	return (unsigned long)p;
+    if (posix_memalign(&p, 4096, 4096))
+        return 0;
+    memset(p, 0, 4096);
+    return (unsigned long)p;
 }
 
 /* Spinlock stuff */
-#define spinlock_t		rte_spinlock_t
-#define __SPIN_LOCK_UNLOCKED(x)	RTE_SPINLOCK_INITIALIZER
-#define DEFINE_SPINLOCK(x)	spinlock_t x = __SPIN_LOCK_UNLOCKED(x)
-#define spin_lock_init(x)	rte_spinlock_init(x)
+#define spinlock_t        rte_spinlock_t
+#define __SPIN_LOCK_UNLOCKED(x)    RTE_SPINLOCK_INITIALIZER
+#define DEFINE_SPINLOCK(x)    spinlock_t x = __SPIN_LOCK_UNLOCKED(x)
+#define spin_lock_init(x)    rte_spinlock_init(x)
 #define spin_lock_destroy(x)
-#define spin_lock(x)		rte_spinlock_lock(x)
-#define spin_unlock(x)		rte_spinlock_unlock(x)
-#define spin_lock_irq(x)	spin_lock(x)
-#define spin_unlock_irq(x)	spin_unlock(x)
+#define spin_lock(x)        rte_spinlock_lock(x)
+#define spin_unlock(x)        rte_spinlock_unlock(x)
+#define spin_lock_irq(x)    spin_lock(x)
+#define spin_unlock_irq(x)    spin_unlock(x)
 #define spin_lock_irqsave(x, f) spin_lock_irq(x)
 #define spin_unlock_irqrestore(x, f) spin_unlock_irq(x)
 

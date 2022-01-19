@@ -31,7 +31,7 @@ extern "C" {
  * cnt is -1 when write lock is held, and > 0 when read locks are held.
  */
 typedef struct {
-	volatile int32_t cnt; /**< -1 when W lock held, > 0 when R locks held. */
+    volatile int32_t cnt; /**< -1 when W lock held, > 0 when R locks held. */
 } rte_rwlock_t;
 
 /**
@@ -48,7 +48,7 @@ typedef struct {
 static inline void
 rte_rwlock_init(rte_rwlock_t *rwl)
 {
-	rwl->cnt = 0;
+    rwl->cnt = 0;
 }
 
 /**
@@ -60,19 +60,19 @@ rte_rwlock_init(rte_rwlock_t *rwl)
 static inline void
 rte_rwlock_read_lock(rte_rwlock_t *rwl)
 {
-	int32_t x;
-	int success = 0;
+    int32_t x;
+    int success = 0;
 
-	while (success == 0) {
-		x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
-		/* write lock is held */
-		if (x < 0) {
-			rte_pause();
-			continue;
-		}
-		success = __atomic_compare_exchange_n(&rwl->cnt, &x, x + 1, 1,
-					__ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
-	}
+    while (success == 0) {
+        x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
+        /* write lock is held */
+        if (x < 0) {
+            rte_pause();
+            continue;
+        }
+        success = __atomic_compare_exchange_n(&rwl->cnt, &x, x + 1, 1,
+                    __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+    }
 }
 
 /**
@@ -92,19 +92,19 @@ __rte_experimental
 static inline int
 rte_rwlock_read_trylock(rte_rwlock_t *rwl)
 {
-	int32_t x;
-	int success = 0;
+    int32_t x;
+    int success = 0;
 
-	while (success == 0) {
-		x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
-		/* write lock is held */
-		if (x < 0)
-			return -EBUSY;
-		success = __atomic_compare_exchange_n(&rwl->cnt, &x, x + 1, 1,
-					__ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
-	}
+    while (success == 0) {
+        x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
+        /* write lock is held */
+        if (x < 0)
+            return -EBUSY;
+        success = __atomic_compare_exchange_n(&rwl->cnt, &x, x + 1, 1,
+                    __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+    }
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -116,7 +116,7 @@ rte_rwlock_read_trylock(rte_rwlock_t *rwl)
 static inline void
 rte_rwlock_read_unlock(rte_rwlock_t *rwl)
 {
-	__atomic_fetch_sub(&rwl->cnt, 1, __ATOMIC_RELEASE);
+    __atomic_fetch_sub(&rwl->cnt, 1, __ATOMIC_RELEASE);
 }
 
 /**
@@ -136,14 +136,14 @@ __rte_experimental
 static inline int
 rte_rwlock_write_trylock(rte_rwlock_t *rwl)
 {
-	int32_t x;
+    int32_t x;
 
-	x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
-	if (x != 0 || __atomic_compare_exchange_n(&rwl->cnt, &x, -1, 1,
-			      __ATOMIC_ACQUIRE, __ATOMIC_RELAXED) == 0)
-		return -EBUSY;
+    x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
+    if (x != 0 || __atomic_compare_exchange_n(&rwl->cnt, &x, -1, 1,
+                  __ATOMIC_ACQUIRE, __ATOMIC_RELAXED) == 0)
+        return -EBUSY;
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -155,19 +155,19 @@ rte_rwlock_write_trylock(rte_rwlock_t *rwl)
 static inline void
 rte_rwlock_write_lock(rte_rwlock_t *rwl)
 {
-	int32_t x;
-	int success = 0;
+    int32_t x;
+    int success = 0;
 
-	while (success == 0) {
-		x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
-		/* a lock is held */
-		if (x != 0) {
-			rte_pause();
-			continue;
-		}
-		success = __atomic_compare_exchange_n(&rwl->cnt, &x, -1, 1,
-					__ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
-	}
+    while (success == 0) {
+        x = __atomic_load_n(&rwl->cnt, __ATOMIC_RELAXED);
+        /* a lock is held */
+        if (x != 0) {
+            rte_pause();
+            continue;
+        }
+        success = __atomic_compare_exchange_n(&rwl->cnt, &x, -1, 1,
+                    __ATOMIC_ACQUIRE, __ATOMIC_RELAXED);
+    }
 }
 
 /**
@@ -179,7 +179,7 @@ rte_rwlock_write_lock(rte_rwlock_t *rwl)
 static inline void
 rte_rwlock_write_unlock(rte_rwlock_t *rwl)
 {
-	__atomic_store_n(&rwl->cnt, 0, __ATOMIC_RELEASE);
+    __atomic_store_n(&rwl->cnt, 0, __ATOMIC_RELEASE);
 }
 
 /**

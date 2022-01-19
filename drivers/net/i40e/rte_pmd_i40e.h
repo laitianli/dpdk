@@ -20,82 +20,82 @@
  * Response sent back to i40e driver from user app after callback
  */
 enum rte_pmd_i40e_mb_event_rsp {
-	RTE_PMD_I40E_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
-	RTE_PMD_I40E_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
-	RTE_PMD_I40E_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
-	RTE_PMD_I40E_MB_EVENT_MAX       /**< max value of this enum */
+    RTE_PMD_I40E_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
+    RTE_PMD_I40E_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
+    RTE_PMD_I40E_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
+    RTE_PMD_I40E_MB_EVENT_MAX       /**< max value of this enum */
 };
 
 /**
  * Data sent to the user application when the callback is executed.
  */
 struct rte_pmd_i40e_mb_event_param {
-	uint16_t vfid;     /**< Virtual Function number */
-	uint16_t msg_type; /**< VF to PF message type, see virtchnl_ops */
-	uint16_t retval;   /**< return value */
-	void *msg;         /**< pointer to message */
-	uint16_t msglen;   /**< length of the message */
+    uint16_t vfid;     /**< Virtual Function number */
+    uint16_t msg_type; /**< VF to PF message type, see virtchnl_ops */
+    uint16_t retval;   /**< return value */
+    void *msg;         /**< pointer to message */
+    uint16_t msglen;   /**< length of the message */
 };
 
 /**
  * Option of package processing.
  */
 enum rte_pmd_i40e_package_op {
-	RTE_PMD_I40E_PKG_OP_UNDEFINED = 0,
-	RTE_PMD_I40E_PKG_OP_WR_ADD,   /**< load package and add to info list */
-	RTE_PMD_I40E_PKG_OP_WR_DEL, /**< load package and delete from info list */
-	RTE_PMD_I40E_PKG_OP_WR_ONLY, /**< load package without modifying info list */
-	RTE_PMD_I40E_PKG_OP_MAX = 32
+    RTE_PMD_I40E_PKG_OP_UNDEFINED = 0,
+    RTE_PMD_I40E_PKG_OP_WR_ADD,   /**< load package and add to info list */
+    RTE_PMD_I40E_PKG_OP_WR_DEL, /**< load package and delete from info list */
+    RTE_PMD_I40E_PKG_OP_WR_ONLY, /**< load package without modifying info list */
+    RTE_PMD_I40E_PKG_OP_MAX = 32
 };
 
 /**
  * Types of package information.
  */
 enum rte_pmd_i40e_package_info {
-	RTE_PMD_I40E_PKG_INFO_UNDEFINED = 0,
-	RTE_PMD_I40E_PKG_INFO_GLOBAL_HEADER,
-	RTE_PMD_I40E_PKG_INFO_GLOBAL_NOTES_SIZE,
-	RTE_PMD_I40E_PKG_INFO_GLOBAL_NOTES,
-	RTE_PMD_I40E_PKG_INFO_GLOBAL_MAX = 1024,
-	RTE_PMD_I40E_PKG_INFO_HEADER,
-	RTE_PMD_I40E_PKG_INFO_DEVID_NUM,
-	RTE_PMD_I40E_PKG_INFO_DEVID_LIST,
-	RTE_PMD_I40E_PKG_INFO_PROTOCOL_NUM,
-	RTE_PMD_I40E_PKG_INFO_PROTOCOL_LIST,
-	RTE_PMD_I40E_PKG_INFO_PCTYPE_NUM,
-	RTE_PMD_I40E_PKG_INFO_PCTYPE_LIST,
-	RTE_PMD_I40E_PKG_INFO_PTYPE_NUM,
-	RTE_PMD_I40E_PKG_INFO_PTYPE_LIST,
-	RTE_PMD_I40E_PKG_INFO_MAX = (int)0xFFFFFFFF
+    RTE_PMD_I40E_PKG_INFO_UNDEFINED = 0,
+    RTE_PMD_I40E_PKG_INFO_GLOBAL_HEADER,
+    RTE_PMD_I40E_PKG_INFO_GLOBAL_NOTES_SIZE,
+    RTE_PMD_I40E_PKG_INFO_GLOBAL_NOTES,
+    RTE_PMD_I40E_PKG_INFO_GLOBAL_MAX = 1024,
+    RTE_PMD_I40E_PKG_INFO_HEADER,
+    RTE_PMD_I40E_PKG_INFO_DEVID_NUM,
+    RTE_PMD_I40E_PKG_INFO_DEVID_LIST,
+    RTE_PMD_I40E_PKG_INFO_PROTOCOL_NUM,
+    RTE_PMD_I40E_PKG_INFO_PROTOCOL_LIST,
+    RTE_PMD_I40E_PKG_INFO_PCTYPE_NUM,
+    RTE_PMD_I40E_PKG_INFO_PCTYPE_LIST,
+    RTE_PMD_I40E_PKG_INFO_PTYPE_NUM,
+    RTE_PMD_I40E_PKG_INFO_PTYPE_LIST,
+    RTE_PMD_I40E_PKG_INFO_MAX = (int)0xFFFFFFFF
 };
 
 /**
  *  Option types of queue region.
  */
 enum rte_pmd_i40e_queue_region_op {
-	RTE_PMD_I40E_RSS_QUEUE_REGION_UNDEFINED,
-	/** add queue region set */
-	RTE_PMD_I40E_RSS_QUEUE_REGION_SET,
-	/** add PF region pctype set */
-	RTE_PMD_I40E_RSS_QUEUE_REGION_FLOWTYPE_SET,
-	/** add queue region user priority set */
-	RTE_PMD_I40E_RSS_QUEUE_REGION_USER_PRIORITY_SET,
-	/**
-	 * ALL configuration about queue region from up layer
-	 * at first will only keep in DPDK software stored in driver,
-	 * only after " FLUSH_ON ", it commit all configuration to HW.
-	 * Because PMD had to set hardware configuration at a time, so
-	 * it will record all up layer command at first.
-	 */
-	RTE_PMD_I40E_RSS_QUEUE_REGION_ALL_FLUSH_ON,
-	/**
-	 * "FLUSH_OFF " is just clean all configuration about queue
-	 * region just now, and restore all to DPDK i40e driver default
-	 * config when start up.
-	 */
-	RTE_PMD_I40E_RSS_QUEUE_REGION_ALL_FLUSH_OFF,
-	RTE_PMD_I40E_RSS_QUEUE_REGION_INFO_GET,
-	RTE_PMD_I40E_RSS_QUEUE_REGION_OP_MAX
+    RTE_PMD_I40E_RSS_QUEUE_REGION_UNDEFINED,
+    /** add queue region set */
+    RTE_PMD_I40E_RSS_QUEUE_REGION_SET,
+    /** add PF region pctype set */
+    RTE_PMD_I40E_RSS_QUEUE_REGION_FLOWTYPE_SET,
+    /** add queue region user priority set */
+    RTE_PMD_I40E_RSS_QUEUE_REGION_USER_PRIORITY_SET,
+    /**
+     * ALL configuration about queue region from up layer
+     * at first will only keep in DPDK software stored in driver,
+     * only after " FLUSH_ON ", it commit all configuration to HW.
+     * Because PMD had to set hardware configuration at a time, so
+     * it will record all up layer command at first.
+     */
+    RTE_PMD_I40E_RSS_QUEUE_REGION_ALL_FLUSH_ON,
+    /**
+     * "FLUSH_OFF " is just clean all configuration about queue
+     * region just now, and restore all to DPDK i40e driver default
+     * config when start up.
+     */
+    RTE_PMD_I40E_RSS_QUEUE_REGION_ALL_FLUSH_OFF,
+    RTE_PMD_I40E_RSS_QUEUE_REGION_INFO_GET,
+    RTE_PMD_I40E_RSS_QUEUE_REGION_OP_MAX
 };
 
 #define RTE_PMD_I40E_DDP_NAME_SIZE     32
@@ -108,29 +108,29 @@ enum rte_pmd_i40e_queue_region_op {
  * Version in "major.minor.update.draft" format.
  */
 struct rte_pmd_i40e_ddp_version {
-	uint8_t major;
-	uint8_t minor;
-	uint8_t update;
-	uint8_t draft;
+    uint8_t major;
+    uint8_t minor;
+    uint8_t update;
+    uint8_t draft;
 };
 
 /**
  * Device ID for dynamic device personalization.
  */
 struct rte_pmd_i40e_ddp_device_id {
-	uint32_t vendor_dev_id;
-	uint32_t sub_vendor_dev_id;
+    uint32_t vendor_dev_id;
+    uint32_t sub_vendor_dev_id;
 };
 
 /**
  * Profile information in profile info list.
  */
 struct rte_pmd_i40e_profile_info {
-	uint32_t track_id;
-	struct rte_pmd_i40e_ddp_version version;
-	uint8_t owner;
-	uint8_t reserved[7];
-	uint8_t name[RTE_PMD_I40E_DDP_NAME_SIZE];
+    uint32_t track_id;
+    struct rte_pmd_i40e_ddp_version version;
+    uint8_t owner;
+    uint8_t reserved[7];
+    uint8_t name[RTE_PMD_I40E_DDP_NAME_SIZE];
 };
 
 #define RTE_PMD_I40E_DDP_OWNER_UNKNOWN 0xFF
@@ -139,8 +139,8 @@ struct rte_pmd_i40e_profile_info {
  * Profile information list returned from HW.
  */
 struct rte_pmd_i40e_profile_list {
-	uint32_t p_count;
-	struct rte_pmd_i40e_profile_info p_info[1];
+    uint32_t p_count;
+    struct rte_pmd_i40e_profile_info p_info[1];
 };
 
 #define RTE_PMD_I40E_PROTO_NUM 6
@@ -150,16 +150,16 @@ struct rte_pmd_i40e_profile_list {
  * Protocols information stored in profile
  */
 struct rte_pmd_i40e_proto_info {
-	uint8_t proto_id;
-	char name[RTE_PMD_I40E_DDP_NAME_SIZE];
+    uint8_t proto_id;
+    char name[RTE_PMD_I40E_DDP_NAME_SIZE];
 };
 
 /**
  * Packet classification/ packet type information stored in profile
  */
 struct rte_pmd_i40e_ptype_info {
-	uint8_t ptype_id;
-	uint8_t protocols[RTE_PMD_I40E_PROTO_NUM];
+    uint8_t ptype_id;
+    uint8_t protocols[RTE_PMD_I40E_PROTO_NUM];
 };
 
 /**
@@ -170,65 +170,65 @@ struct rte_pmd_i40e_ptype_info {
 #define RTE_PMD_I40E_PTYPE_USER_DEFINE_MASK 0x80000000
 
 struct rte_pmd_i40e_ptype_mapping {
-	uint16_t hw_ptype; /**< hardware defined packet type*/
-	uint32_t sw_ptype; /**< software defined packet type */
+    uint16_t hw_ptype; /**< hardware defined packet type*/
+    uint32_t sw_ptype; /**< software defined packet type */
 };
 
 /**
  * Queue region related information.
  */
 struct rte_pmd_i40e_queue_region_conf {
-	/** the region id for this configuration */
-	uint8_t region_id;
-	/** the pctype or hardware flowtype of packet,
-	 * the specific index for each type has been defined
-	 * in file i40e_type.h as enum i40e_filter_pctype.
-	 */
-	uint8_t hw_flowtype;
-	/** the start queue index for this region */
-	uint8_t queue_start_index;
-	/** the total queue number of this queue region */
-	uint8_t queue_num;
-	/** the packet's user priority for this region */
-	uint8_t user_priority;
+    /** the region id for this configuration */
+    uint8_t region_id;
+    /** the pctype or hardware flowtype of packet,
+     * the specific index for each type has been defined
+     * in file i40e_type.h as enum i40e_filter_pctype.
+     */
+    uint8_t hw_flowtype;
+    /** the start queue index for this region */
+    uint8_t queue_start_index;
+    /** the total queue number of this queue region */
+    uint8_t queue_num;
+    /** the packet's user priority for this region */
+    uint8_t user_priority;
 };
 
 /* queue region info */
 struct rte_pmd_i40e_queue_region_info {
-	/** the region id for this configuration */
-	uint8_t region_id;
-	/** the start queue index for this region */
-	uint8_t queue_start_index;
-	/** the total queue number of this queue region */
-	uint8_t queue_num;
-	/** the total number of user priority for this region */
-	uint8_t user_priority_num;
-	/** the packet's user priority for this region */
-	uint8_t user_priority[RTE_PMD_I40E_MAX_USER_PRIORITY];
-	/** the total number of flowtype for this region */
-	uint8_t flowtype_num;
-	/**
-	 * the pctype or hardware flowtype of packet,
-	 * the specific index for each type has been defined
-	 * in file i40e_type.h as enum i40e_filter_pctype.
-	 */
-	uint8_t hw_flowtype[RTE_PMD_I40E_PCTYPE_MAX];
+    /** the region id for this configuration */
+    uint8_t region_id;
+    /** the start queue index for this region */
+    uint8_t queue_start_index;
+    /** the total queue number of this queue region */
+    uint8_t queue_num;
+    /** the total number of user priority for this region */
+    uint8_t user_priority_num;
+    /** the packet's user priority for this region */
+    uint8_t user_priority[RTE_PMD_I40E_MAX_USER_PRIORITY];
+    /** the total number of flowtype for this region */
+    uint8_t flowtype_num;
+    /**
+     * the pctype or hardware flowtype of packet,
+     * the specific index for each type has been defined
+     * in file i40e_type.h as enum i40e_filter_pctype.
+     */
+    uint8_t hw_flowtype[RTE_PMD_I40E_PCTYPE_MAX];
 };
 
 struct rte_pmd_i40e_queue_regions {
-	/** the total number of queue region for this port */
-	uint16_t queue_region_number;
-	struct rte_pmd_i40e_queue_region_info
-		region[RTE_PMD_I40E_REGION_MAX_NUM];
+    /** the total number of queue region for this port */
+    uint16_t queue_region_number;
+    struct rte_pmd_i40e_queue_region_info
+        region[RTE_PMD_I40E_REGION_MAX_NUM];
 };
 
 /**
  * Behavior will be taken if raw packet template is matched.
  */
 enum rte_pmd_i40e_pkt_template_behavior {
-	RTE_PMD_I40E_PKT_TEMPLATE_ACCEPT,
-	RTE_PMD_I40E_PKT_TEMPLATE_REJECT,
-	RTE_PMD_I40E_PKT_TEMPLATE_PASSTHRU,
+    RTE_PMD_I40E_PKT_TEMPLATE_ACCEPT,
+    RTE_PMD_I40E_PKT_TEMPLATE_REJECT,
+    RTE_PMD_I40E_PKT_TEMPLATE_PASSTHRU,
 };
 
 /**
@@ -236,44 +236,44 @@ enum rte_pmd_i40e_pkt_template_behavior {
  * It defines what will be reported if raw packet template is matched.
  */
 enum rte_pmd_i40e_pkt_template_status {
-	/** report nothing */
-	RTE_PMD_I40E_PKT_TEMPLATE_NO_REPORT_STATUS,
-	/** only report FD ID */
-	RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID,
-	/** report FD ID and 4 flex bytes */
-	RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID_FLEX_4,
-	/** report 8 flex bytes */
-	RTE_PMD_I40E_PKT_TEMPLATE_REPORT_FLEX_8,
+    /** report nothing */
+    RTE_PMD_I40E_PKT_TEMPLATE_NO_REPORT_STATUS,
+    /** only report FD ID */
+    RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID,
+    /** report FD ID and 4 flex bytes */
+    RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID_FLEX_4,
+    /** report 8 flex bytes */
+    RTE_PMD_I40E_PKT_TEMPLATE_REPORT_FLEX_8,
 };
 
 /**
  * A structure used to define an action when raw packet template is matched.
  */
 struct rte_pmd_i40e_pkt_template_action {
-	/** queue assigned to if raw packet template match */
-	uint16_t rx_queue;
-	/** behavior will be taken */
-	enum rte_pmd_i40e_pkt_template_behavior behavior;
-	/** status report option */
-	enum rte_pmd_i40e_pkt_template_status report_status;
-	/**
-	 * If report_status is RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID_FLEX_4 or
-	 * RTE_PMD_I40E_PKT_TEMPLATE_REPORT_FLEX_8, flex_off specifies
-	 * where the reported flex bytes start from in flexible payload.
-	 */
-	uint8_t flex_off;
+    /** queue assigned to if raw packet template match */
+    uint16_t rx_queue;
+    /** behavior will be taken */
+    enum rte_pmd_i40e_pkt_template_behavior behavior;
+    /** status report option */
+    enum rte_pmd_i40e_pkt_template_status report_status;
+    /**
+     * If report_status is RTE_PMD_I40E_PKT_TEMPLATE_REPORT_ID_FLEX_4 or
+     * RTE_PMD_I40E_PKT_TEMPLATE_REPORT_FLEX_8, flex_off specifies
+     * where the reported flex bytes start from in flexible payload.
+     */
+    uint8_t flex_off;
 };
 
 /**
  * A structure used to define the input for raw packet template.
  */
 struct rte_pmd_i40e_pkt_template_input {
-	/** the pctype used for raw packet template */
-	uint16_t pctype;
-	/** the buffer containing raw packet template */
-	void *packet;
-	/** the length of buffer with raw packet template */
-	uint32_t length;
+    /** the pctype used for raw packet template */
+    uint16_t pctype;
+    /** the buffer containing raw packet template */
+    void *packet;
+    /** the length of buffer with raw packet template */
+    uint32_t length;
 };
 
 /**
@@ -281,29 +281,29 @@ struct rte_pmd_i40e_pkt_template_input {
  * for raw packet template.
  */
 struct rte_pmd_i40e_pkt_template_conf {
-	/** the input for raw packet template. */
-	struct rte_pmd_i40e_pkt_template_input input;
-	/** the action to be taken when raw packet template is matched */
-	struct rte_pmd_i40e_pkt_template_action action;
-	/** ID, an unique software index for the raw packet template filter */
-	uint32_t soft_id;
+    /** the input for raw packet template. */
+    struct rte_pmd_i40e_pkt_template_input input;
+    /** the action to be taken when raw packet template is matched */
+    struct rte_pmd_i40e_pkt_template_action action;
+    /** ID, an unique software index for the raw packet template filter */
+    uint32_t soft_id;
 };
 
 enum rte_pmd_i40e_inset_type {
-	INSET_NONE = 0,
-	INSET_HASH,
-	INSET_FDIR,
-	INSET_FDIR_FLX,
+    INSET_NONE = 0,
+    INSET_HASH,
+    INSET_FDIR,
+    INSET_FDIR_FLX,
 };
 
 struct  rte_pmd_i40e_inset_mask {
-	uint8_t field_idx;
-	uint16_t mask;
+    uint8_t field_idx;
+    uint16_t mask;
 };
 
 struct rte_pmd_i40e_inset {
-	uint64_t inset;
-	struct rte_pmd_i40e_inset_mask mask[2];
+    uint64_t inset;
+    struct rte_pmd_i40e_inset_mask mask[2];
 };
 
 /**
@@ -322,9 +322,9 @@ struct rte_pmd_i40e_inset {
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_i40e_flow_add_del_packet_template(
-			uint16_t port,
-			const struct rte_pmd_i40e_pkt_template_conf *conf,
-			uint8_t add);
+            uint16_t port,
+            const struct rte_pmd_i40e_pkt_template_conf *conf,
+            uint8_t add);
 
 /**
  * Notify VF when PF link status changes.
@@ -356,8 +356,8 @@ int rte_pmd_i40e_ping_vfs(uint16_t port, uint16_t vf);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_mac_anti_spoof(uint16_t port,
-				       uint16_t vf_id,
-				       uint8_t on);
+                       uint16_t vf_id,
+                       uint8_t on);
 
 /**
  * Enable/Disable VF VLAN anti spoofing.
@@ -375,8 +375,8 @@ int rte_pmd_i40e_set_vf_mac_anti_spoof(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_vlan_anti_spoof(uint16_t port,
-					uint16_t vf_id,
-					uint8_t on);
+                    uint16_t vf_id,
+                    uint8_t on);
 
 /**
  * Enable/Disable TX loopback on all the PF and VFs.
@@ -392,7 +392,7 @@ int rte_pmd_i40e_set_vf_vlan_anti_spoof(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_tx_loopback(uint16_t port,
-				 uint8_t on);
+                 uint8_t on);
 
 /**
  * Enable/Disable VF unicast promiscuous mode.
@@ -410,8 +410,8 @@ int rte_pmd_i40e_set_tx_loopback(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_unicast_promisc(uint16_t port,
-					uint16_t vf_id,
-					uint8_t on);
+                    uint16_t vf_id,
+                    uint8_t on);
 
 /**
  * Enable/Disable VF multicast promiscuous mode.
@@ -429,8 +429,8 @@ int rte_pmd_i40e_set_vf_unicast_promisc(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_multicast_promisc(uint16_t port,
-					  uint16_t vf_id,
-					  uint8_t on);
+                      uint16_t vf_id,
+                      uint8_t on);
 
 /**
  * Set the VF MAC address.
@@ -453,7 +453,7 @@ int rte_pmd_i40e_set_vf_multicast_promisc(uint16_t port,
  *   - (-EINVAL) if *vf* or *mac_addr* is invalid.
  */
 int rte_pmd_i40e_set_vf_mac_addr(uint16_t port, uint16_t vf_id,
-				 struct rte_ether_addr *mac_addr);
+                 struct rte_ether_addr *mac_addr);
 
 /**
  * Remove the VF MAC address.
@@ -471,7 +471,7 @@ int rte_pmd_i40e_set_vf_mac_addr(uint16_t port, uint16_t vf_id,
  */
 int
 rte_pmd_i40e_remove_vf_mac_addr(uint16_t port, uint16_t vf_id,
-	struct rte_ether_addr *mac_addr);
+    struct rte_ether_addr *mac_addr);
 
 /**
  * Enable/Disable vf vlan strip for all queues in a pool
@@ -509,7 +509,7 @@ rte_pmd_i40e_set_vf_vlan_stripq(uint16_t port, uint16_t vf, uint8_t on);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_vlan_insert(uint16_t port, uint16_t vf_id,
-				    uint16_t vlan_id);
+                    uint16_t vlan_id);
 
 /**
  * Enable/Disable vf broadcast mode
@@ -528,7 +528,7 @@ int rte_pmd_i40e_set_vf_vlan_insert(uint16_t port, uint16_t vf_id,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_set_vf_broadcast(uint16_t port, uint16_t vf_id,
-				  uint8_t on);
+                  uint8_t on);
 
 /**
  * Enable/Disable vf vlan tag
@@ -568,7 +568,7 @@ int rte_pmd_i40e_set_vf_vlan_tag(uint16_t port, uint16_t vf_id, uint8_t on);
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_i40e_set_vf_vlan_filter(uint16_t port, uint16_t vlan_id,
-				    uint64_t vf_mask, uint8_t on);
+                    uint64_t vf_mask, uint8_t on);
 
 /**
  * Get VF's statistics
@@ -593,8 +593,8 @@ int rte_pmd_i40e_set_vf_vlan_filter(uint16_t port, uint16_t vlan_id,
  */
 
 int rte_pmd_i40e_get_vf_stats(uint16_t port,
-			      uint16_t vf_id,
-			      struct rte_eth_stats *stats);
+                  uint16_t vf_id,
+                  struct rte_eth_stats *stats);
 
 /**
  * Clear VF's statistics
@@ -609,7 +609,7 @@ int rte_pmd_i40e_get_vf_stats(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_reset_vf_stats(uint16_t port,
-				uint16_t vf_id);
+                uint16_t vf_id);
 
 /**
  * Set VF's max bandwidth.
@@ -634,8 +634,8 @@ int rte_pmd_i40e_reset_vf_stats(uint16_t port,
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_i40e_set_vf_max_bw(uint16_t port,
-			       uint16_t vf_id,
-			       uint32_t bw);
+                   uint16_t vf_id,
+                   uint32_t bw);
 
 /**
  * Set all the TCs' bandwidth weight on a specific VF.
@@ -659,9 +659,9 @@ int rte_pmd_i40e_set_vf_max_bw(uint16_t port,
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_i40e_set_vf_tc_bw_alloc(uint16_t port,
-				    uint16_t vf_id,
-				    uint8_t tc_num,
-				    uint8_t *bw_weight);
+                    uint16_t vf_id,
+                    uint8_t tc_num,
+                    uint8_t *bw_weight);
 
 /**
  * Set a specific TC's max bandwidth on a specific VF.
@@ -684,9 +684,9 @@ int rte_pmd_i40e_set_vf_tc_bw_alloc(uint16_t port,
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_i40e_set_vf_tc_max_bw(uint16_t port,
-				  uint16_t vf_id,
-				  uint8_t tc_no,
-				  uint32_t bw);
+                  uint16_t vf_id,
+                  uint8_t tc_no,
+                  uint32_t bw);
 
 /**
  * Set some TCs to strict priority mode on a physical port.
@@ -723,8 +723,8 @@ int rte_pmd_i40e_set_tc_strict_prio(uint16_t port, uint8_t tc_map);
  *   - (-ENOTSUP) if operation not supported.
  */
 int rte_pmd_i40e_process_ddp_package(uint16_t port, uint8_t *buff,
-				     uint32_t size,
-				     enum rte_pmd_i40e_package_op op);
+                     uint32_t size,
+                     enum rte_pmd_i40e_package_op op);
 
 /**
  * rte_pmd_i40e_get_ddp_info - Get profile's info
@@ -744,8 +744,8 @@ int rte_pmd_i40e_process_ddp_package(uint16_t port, uint8_t *buff,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_i40e_get_ddp_info(uint8_t *pkg, uint32_t pkg_size,
-				     uint8_t *info, uint32_t size,
-				     enum rte_pmd_i40e_package_info type);
+                     uint8_t *info, uint32_t size,
+                     enum rte_pmd_i40e_package_info type);
 
 /**
  * rte_pmd_i40e_get_ddp_list - Get loaded profile list
@@ -775,15 +775,15 @@ int rte_pmd_i40e_get_ddp_list(uint16_t port, uint8_t *buff, uint32_t size);
  * @param exclusive
  *    the flag indicate different ptype mapping update method.
  *    -(0) only overwrite referred PTYPE mapping,
- *	keep other PTYPEs mapping unchanged.
+ *    keep other PTYPEs mapping unchanged.
  *    -(!0) overwrite referred PTYPE mapping,
- *	set other PTYPEs maps to PTYPE_UNKNOWN.
+ *    set other PTYPEs maps to PTYPE_UNKNOWN.
  */
 int rte_pmd_i40e_ptype_mapping_update(
-			uint16_t port,
-			struct rte_pmd_i40e_ptype_mapping *mapping_items,
-			uint16_t count,
-			uint8_t exclusive);
+            uint16_t port,
+            struct rte_pmd_i40e_ptype_mapping *mapping_items,
+            uint16_t count,
+            uint8_t exclusive);
 
 /**
  * Reset hardware defined ptype to software defined ptype
@@ -811,11 +811,11 @@ int rte_pmd_i40e_ptype_mapping_reset(uint16_t port);
  *    -(!0) only return mapping items which packet_type != RTE_PTYPE_UNKNOWN.
  */
 int rte_pmd_i40e_ptype_mapping_get(
-			uint16_t port,
-			struct rte_pmd_i40e_ptype_mapping *mapping_items,
-			uint16_t size,
-			uint16_t *count,
-			uint8_t valid_only);
+            uint16_t port,
+            struct rte_pmd_i40e_ptype_mapping *mapping_items,
+            uint16_t size,
+            uint16_t *count,
+            uint8_t valid_only);
 
 /**
  * Replace a specific or a group of software defined ptypes
@@ -832,9 +832,9 @@ int rte_pmd_i40e_ptype_mapping_get(
  *    the new packet type to overwrite
  */
 int rte_pmd_i40e_ptype_mapping_replace(uint16_t port,
-				       uint32_t target,
-				       uint8_t mask,
-				       uint32_t pkt_type);
+                       uint32_t target,
+                       uint8_t mask,
+                       uint32_t pkt_type);
 
 /**
  * Add a VF MAC address.
@@ -854,14 +854,14 @@ int rte_pmd_i40e_ptype_mapping_replace(uint16_t port,
  *   - (-EINVAL) if *vf* or *mac_addr* is invalid.
  */
 int rte_pmd_i40e_add_vf_mac_addr(uint16_t port, uint16_t vf_id,
-				 struct rte_ether_addr *mac_addr);
+                 struct rte_ether_addr *mac_addr);
 
-#define RTE_PMD_I40E_PCTYPE_MAX		64
-#define RTE_PMD_I40E_FLOW_TYPE_MAX	64
+#define RTE_PMD_I40E_PCTYPE_MAX        64
+#define RTE_PMD_I40E_FLOW_TYPE_MAX    64
 
 struct rte_pmd_i40e_flow_type_mapping {
-	uint16_t flow_type; /**< software defined flow type*/
-	uint64_t pctype;    /**< hardware defined pctype */
+    uint16_t flow_type; /**< software defined flow type*/
+    uint64_t pctype;    /**< hardware defined pctype */
 };
 
 /**
@@ -877,15 +877,15 @@ struct rte_pmd_i40e_flow_type_mapping {
  * @param exclusive
  *    the flag indicate different pctype mapping update method.
  *    -(0) only overwrite referred PCTYPE mapping,
- *	keep other PCTYPEs mapping unchanged.
+ *    keep other PCTYPEs mapping unchanged.
  *    -(!0) overwrite referred PCTYPE mapping,
- *	set other PCTYPEs maps to PCTYPE_INVALID.
+ *    set other PCTYPEs maps to PCTYPE_INVALID.
  */
 int rte_pmd_i40e_flow_type_mapping_update(
-			uint16_t port,
-			struct rte_pmd_i40e_flow_type_mapping *mapping_items,
-			uint16_t count,
-			uint8_t exclusive);
+            uint16_t port,
+            struct rte_pmd_i40e_flow_type_mapping *mapping_items,
+            uint16_t count,
+            uint8_t exclusive);
 
 /**
  * Get software defined flow type to hardware defined pctype
@@ -899,8 +899,8 @@ int rte_pmd_i40e_flow_type_mapping_update(
  *    RTE_PMD_I40E_FLOW_TYPE_MAX items
  */
 int rte_pmd_i40e_flow_type_mapping_get(
-			uint16_t port,
-			struct rte_pmd_i40e_flow_type_mapping *mapping_items);
+            uint16_t port,
+            struct rte_pmd_i40e_flow_type_mapping *mapping_items);
 
 /**
  * Reset hardware defined pctype to software defined flow type
@@ -924,7 +924,7 @@ int rte_pmd_i40e_flow_type_mapping_reset(uint16_t port);
  *    -ENOTSUP: i40e not supported for this port.
  */
 int rte_pmd_i40e_query_vfid_by_mac(uint16_t port,
-					const struct rte_ether_addr *vf_mac);
+                    const struct rte_ether_addr *vf_mac);
 
 /**
  * Do RSS queue region configuration for that port as
@@ -938,10 +938,10 @@ int rte_pmd_i40e_query_vfid_by_mac(uint16_t port,
  *    Queue region operation type specific data
  */
 int rte_pmd_i40e_rss_queue_region_conf(uint16_t port_id,
-			enum rte_pmd_i40e_queue_region_op op_type, void *arg);
+            enum rte_pmd_i40e_queue_region_op op_type, void *arg);
 
 int rte_pmd_i40e_cfg_hash_inset(uint16_t port,
-				uint64_t pctype, uint64_t inset);
+                uint64_t pctype, uint64_t inset);
 
 /**
  * Get input set
@@ -961,8 +961,8 @@ int rte_pmd_i40e_cfg_hash_inset(uint16_t port,
  *   - (-ENOTSUP) if operation not supported.
  */
 int rte_pmd_i40e_inset_get(uint16_t port, uint8_t pctype,
-			   struct rte_pmd_i40e_inset *inset,
-			   enum rte_pmd_i40e_inset_type inset_type);
+               struct rte_pmd_i40e_inset *inset,
+               enum rte_pmd_i40e_inset_type inset_type);
 
 /**
  * Set input set
@@ -982,8 +982,8 @@ int rte_pmd_i40e_inset_get(uint16_t port, uint8_t pctype,
  *   - (-ENOTSUP) if operation not supported.
  */
 int rte_pmd_i40e_inset_set(uint16_t port, uint8_t pctype,
-			   struct rte_pmd_i40e_inset *inset,
-			   enum rte_pmd_i40e_inset_type inset_type);
+               struct rte_pmd_i40e_inset *inset,
+               enum rte_pmd_i40e_inset_type inset_type);
 
 /**
  * Get bit value for some field index
@@ -999,16 +999,16 @@ int rte_pmd_i40e_inset_set(uint16_t port, uint8_t pctype,
 static inline int
 rte_pmd_i40e_inset_field_get(uint64_t inset, uint8_t field_idx)
 {
-	uint8_t bit_idx;
+    uint8_t bit_idx;
 
-	if (field_idx > 63)
-		return 0;
+    if (field_idx > 63)
+        return 0;
 
-	bit_idx = 63 - field_idx;
-	if (inset & (1ULL << bit_idx))
-		return 1;
+    bit_idx = 63 - field_idx;
+    if (inset & (1ULL << bit_idx))
+        return 1;
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -1025,15 +1025,15 @@ rte_pmd_i40e_inset_field_get(uint64_t inset, uint8_t field_idx)
 static inline int
 rte_pmd_i40e_inset_field_set(uint64_t *inset, uint8_t field_idx)
 {
-	uint8_t bit_idx;
+    uint8_t bit_idx;
 
-	if (field_idx > 63)
-		return -1;
+    if (field_idx > 63)
+        return -1;
 
-	bit_idx = 63 - field_idx;
-	*inset = *inset | (1ULL << bit_idx);
+    bit_idx = 63 - field_idx;
+    *inset = *inset | (1ULL << bit_idx);
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -1050,15 +1050,15 @@ rte_pmd_i40e_inset_field_set(uint64_t *inset, uint8_t field_idx)
 static inline int
 rte_pmd_i40e_inset_field_clear(uint64_t *inset, uint8_t field_idx)
 {
-	uint8_t bit_idx;
+    uint8_t bit_idx;
 
-	if (field_idx > 63)
-		return -1;
+    if (field_idx > 63)
+        return -1;
 
-	bit_idx = 63 - field_idx;
-	*inset = *inset & ~(1ULL << bit_idx);
+    bit_idx = 63 - field_idx;
+    *inset = *inset & ~(1ULL << bit_idx);
 
-	return 0;
+    return 0;
 }
 
 /**

@@ -44,8 +44,8 @@ extern "C" {
 
 /** Define GCC_VERSION **/
 #ifdef RTE_TOOLCHAIN_GCC
-#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 +	\
-		__GNUC_PATCHLEVEL__)
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 +    \
+        __GNUC_PATCHLEVEL__)
 #endif
 
 #ifdef RTE_ARCH_STRICT_ALIGN
@@ -69,7 +69,7 @@ typedef uint16_t unaligned_uint16_t;
 #define __rte_packed __attribute__((__packed__))
 
 /******* Macro to mark functions and fields scheduled for removal *****/
-#define __rte_deprecated	__attribute__((__deprecated__))
+#define __rte_deprecated    __attribute__((__deprecated__))
 
 /**
  * Mark a function or variable to a weak reference.
@@ -95,7 +95,7 @@ typedef uint16_t unaligned_uint16_t;
 #define RTE_PRIORITY_LAST 65535
 
 #define RTE_PRIO(prio) \
-	RTE_PRIORITY_ ## prio
+    RTE_PRIORITY_ ## prio
 
 /**
  * Run function before main() with high priority.
@@ -120,7 +120,7 @@ static void __attribute__((constructor(RTE_PRIO(prio)), used)) func(void)
  *   Constructor function.
  */
 #define RTE_INIT(func) \
-	RTE_INIT_PRIO(func, LAST)
+    RTE_INIT_PRIO(func, LAST)
 
 /**
  * Run after main() with low priority.
@@ -145,7 +145,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  *   Destructor function name.
  */
 #define RTE_FINI(func) \
-	RTE_FINI_PRIO(func, LAST)
+    RTE_FINI_PRIO(func, LAST)
 
 /**
  * Force a function to be inlined
@@ -180,7 +180,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * Workaround to cast a const field of a structure to non-const type.
  */
 #define RTE_CAST_FIELD(var, field, type) \
-	(*(type *)((uintptr_t)(var) + offsetof(typeof(*(var)), field)))
+    (*(type *)((uintptr_t)(var) + offsetof(typeof(*(var)), field)))
 
 /*********** Macros/static functions for doing alignment ********/
 
@@ -192,7 +192,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * must be a power-of-two value.
  */
 #define RTE_PTR_ALIGN_FLOOR(ptr, align) \
-	((typeof(ptr))RTE_ALIGN_FLOOR((uintptr_t)ptr, align))
+    ((typeof(ptr))RTE_ALIGN_FLOOR((uintptr_t)ptr, align))
 
 /**
  * Macro to align a value to a given power-of-two. The resultant value
@@ -201,7 +201,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * power-of-two value.
  */
 #define RTE_ALIGN_FLOOR(val, align) \
-	(typeof(val))((val) & (~((typeof(val))((align) - 1))))
+    (typeof(val))((val) & (~((typeof(val))((align) - 1))))
 
 /**
  * Macro to align a pointer to a given power-of-two. The resultant
@@ -210,7 +210,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * must be a power-of-two value.
  */
 #define RTE_PTR_ALIGN_CEIL(ptr, align) \
-	RTE_PTR_ALIGN_FLOOR((typeof(ptr))RTE_PTR_ADD(ptr, (align) - 1), align)
+    RTE_PTR_ALIGN_FLOOR((typeof(ptr))RTE_PTR_ADD(ptr, (align) - 1), align)
 
 /**
  * Macro to align a value to a given power-of-two. The resultant value
@@ -219,7 +219,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * value.
  */
 #define RTE_ALIGN_CEIL(val, align) \
-	RTE_ALIGN_FLOOR(((val) + ((typeof(val)) (align) - 1)), align)
+    RTE_ALIGN_FLOOR(((val) + ((typeof(val)) (align) - 1)), align)
 
 /**
  * Macro to align a pointer to a given power-of-two. The resultant
@@ -245,7 +245,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * than the first parameter.
  */
 #define RTE_ALIGN_MUL_CEIL(v, mul) \
-	(((v + (typeof(v))(mul) - 1) / ((typeof(v))(mul))) * (typeof(v))(mul))
+    (((v + (typeof(v))(mul) - 1) / ((typeof(v))(mul))) * (typeof(v))(mul))
 
 /**
  * Macro to align a value to the multiple of given value. The resultant
@@ -253,19 +253,19 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
  * than the first parameter.
  */
 #define RTE_ALIGN_MUL_FLOOR(v, mul) \
-	((v / ((typeof(v))(mul))) * (typeof(v))(mul))
+    ((v / ((typeof(v))(mul))) * (typeof(v))(mul))
 
 /**
  * Macro to align value to the nearest multiple of the given value.
  * The resultant value might be greater than or less than the first parameter
  * whichever difference is the lowest.
  */
-#define RTE_ALIGN_MUL_NEAR(v, mul)				\
-	({							\
-		typeof(v) ceil = RTE_ALIGN_MUL_CEIL(v, mul);	\
-		typeof(v) floor = RTE_ALIGN_MUL_FLOOR(v, mul);	\
-		(ceil - v) > (v - floor) ? floor : ceil;	\
-	})
+#define RTE_ALIGN_MUL_NEAR(v, mul)                \
+    ({                            \
+        typeof(v) ceil = RTE_ALIGN_MUL_CEIL(v, mul);    \
+        typeof(v) floor = RTE_ALIGN_MUL_FLOOR(v, mul);    \
+        (ceil - v) > (v - floor) ? floor : ceil;    \
+    })
 
 /**
  * Checks if a pointer is aligned to a given power-of-two value
@@ -281,7 +281,7 @@ static void __attribute__((destructor(RTE_PRIO(prio)), used)) func(void)
 static inline int
 rte_is_aligned(void *ptr, unsigned align)
 {
-	return RTE_PTR_ALIGN(ptr, align) == ptr;
+    return RTE_PTR_ALIGN(ptr, align) == ptr;
 }
 
 /*********** Macros for compile type checks ********/
@@ -298,8 +298,8 @@ rte_is_aligned(void *ptr, unsigned align)
 
 /** Return the first cache-aligned value greater or equal to size. */
 #define RTE_CACHE_LINE_ROUNDUP(size) \
-	(RTE_CACHE_LINE_SIZE * ((size + RTE_CACHE_LINE_SIZE - 1) / \
-	RTE_CACHE_LINE_SIZE))
+    (RTE_CACHE_LINE_SIZE * ((size + RTE_CACHE_LINE_SIZE - 1) / \
+    RTE_CACHE_LINE_SIZE))
 
 /** Cache line size in terms of log2 */
 #if RTE_CACHE_LINE_SIZE == 64
@@ -349,13 +349,13 @@ typedef uint64_t rte_iova_t;
 static inline uint32_t
 rte_combine32ms1b(register uint32_t x)
 {
-	x |= x >> 1;
-	x |= x >> 2;
-	x |= x >> 4;
-	x |= x >> 8;
-	x |= x >> 16;
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
 
-	return x;
+    return x;
 }
 
 /**
@@ -371,14 +371,14 @@ rte_combine32ms1b(register uint32_t x)
 static inline uint64_t
 rte_combine64ms1b(register uint64_t v)
 {
-	v |= v >> 1;
-	v |= v >> 2;
-	v |= v >> 4;
-	v |= v >> 8;
-	v |= v >> 16;
-	v |= v >> 32;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v |= v >> 32;
 
-	return v;
+    return v;
 }
 
 /*********** Macros to work with powers of 2 ********/
@@ -397,7 +397,7 @@ rte_combine64ms1b(register uint64_t v)
 static inline int
 rte_is_power_of_2(uint32_t n)
 {
-	return n && !(n & (n - 1));
+    return n && !(n & (n - 1));
 }
 /* 返回x的下一个是2幂的值，如: x=14,返回16 */
 /**
@@ -412,10 +412,10 @@ rte_is_power_of_2(uint32_t n)
 static inline uint32_t
 rte_align32pow2(uint32_t x)
 {
-	x--;
-	x = rte_combine32ms1b(x);
+    x--;
+    x = rte_combine32ms1b(x);
 
-	return x + 1;
+    return x + 1;
 }
 
 /**
@@ -430,9 +430,9 @@ rte_align32pow2(uint32_t x)
 static inline uint32_t
 rte_align32prevpow2(uint32_t x)
 {
-	x = rte_combine32ms1b(x);
+    x = rte_combine32ms1b(x);
 
-	return x - (x >> 1);
+    return x - (x >> 1);
 }
 
 /**
@@ -447,10 +447,10 @@ rte_align32prevpow2(uint32_t x)
 static inline uint64_t
 rte_align64pow2(uint64_t v)
 {
-	v--;
-	v = rte_combine64ms1b(v);
+    v--;
+    v = rte_combine64ms1b(v);
 
-	return v + 1;
+    return v + 1;
 }
 
 /**
@@ -465,9 +465,9 @@ rte_align64pow2(uint64_t v)
 static inline uint64_t
 rte_align64prevpow2(uint64_t v)
 {
-	v = rte_combine64ms1b(v);
+    v = rte_combine64ms1b(v);
 
-	return v - (v >> 1);
+    return v - (v >> 1);
 }
 
 /*********** Macros for calculating min and max **********/
@@ -476,21 +476,21 @@ rte_align64prevpow2(uint64_t v)
  * Macro to return the minimum of two numbers
  */
 #define RTE_MIN(a, b) \
-	__extension__ ({ \
-		typeof (a) _a = (a); \
-		typeof (b) _b = (b); \
-		_a < _b ? _a : _b; \
-	})
+    __extension__ ({ \
+        typeof (a) _a = (a); \
+        typeof (b) _b = (b); \
+        _a < _b ? _a : _b; \
+    })
 
 /**
  * Macro to return the maximum of two numbers
  */
 #define RTE_MAX(a, b) \
-	__extension__ ({ \
-		typeof (a) _a = (a); \
-		typeof (b) _b = (b); \
-		_a > _b ? _a : _b; \
-	})
+    __extension__ ({ \
+        typeof (a) _a = (a); \
+        typeof (b) _b = (b); \
+        _a > _b ? _a : _b; \
+    })
 
 /*********** Other general functions / macros ********/
 /* 返回v低位第一个为1的位数 */
@@ -508,7 +508,7 @@ rte_align64prevpow2(uint64_t v)
 static inline uint32_t
 rte_bsf32(uint32_t v)
 {
-	return (uint32_t)__builtin_ctz(v);
+    return (uint32_t)__builtin_ctz(v);
 }
 
 /**
@@ -528,11 +528,11 @@ rte_bsf32(uint32_t v)
 static inline int
 rte_bsf32_safe(uint64_t v, uint32_t *pos)
 {
-	if (v == 0)
-		return 0;
+    if (v == 0)
+        return 0;
 
-	*pos = rte_bsf32(v);
-	return 1;
+    *pos = rte_bsf32(v);
+    return 1;
 }
 /* 计算log2,如：log2(16)=4 */
 /**
@@ -546,10 +546,10 @@ rte_bsf32_safe(uint64_t v, uint32_t *pos)
 static inline uint32_t
 rte_log2_u32(uint32_t v)
 {
-	if (v == 0)
-		return 0;
-	v = rte_align32pow2(v);
-	return rte_bsf32(v);
+    if (v == 0)
+        return 0;
+    v = rte_align32pow2(v);
+    return rte_bsf32(v);
 }
 
 
@@ -567,7 +567,7 @@ rte_log2_u32(uint32_t v)
 static inline int
 rte_fls_u32(uint32_t x)
 {
-	return (x == 0) ? 0 : 32 - __builtin_clz(x);
+    return (x == 0) ? 0 : 32 - __builtin_clz(x);
 }
 
 /**
@@ -584,7 +584,7 @@ rte_fls_u32(uint32_t x)
 static inline int
 rte_bsf64(uint64_t v)
 {
-	return (uint32_t)__builtin_ctzll(v);
+    return (uint32_t)__builtin_ctzll(v);
 }
 
 /**
@@ -604,11 +604,11 @@ rte_bsf64(uint64_t v)
 static inline int
 rte_bsf64_safe(uint64_t v, uint32_t *pos)
 {
-	if (v == 0)
-		return 0;
+    if (v == 0)
+        return 0;
 
-	*pos = rte_bsf64(v);
-	return 1;
+    *pos = rte_bsf64(v);
+    return 1;
 }
 
 /**
@@ -626,7 +626,7 @@ rte_bsf64_safe(uint64_t v, uint32_t *pos)
 static inline int
 rte_fls_u64(uint64_t x)
 {
-	return (x == 0) ? 0 : 64 - __builtin_clzll(x);
+    return (x == 0) ? 0 : 64 - __builtin_clzll(x);
 }
 
 /**
@@ -640,11 +640,11 @@ rte_fls_u64(uint64_t x)
 static inline uint32_t
 rte_log2_u64(uint64_t v)
 {
-	if (v == 0)
-		return 0;
-	v = rte_align64pow2(v);
-	/* we checked for v being 0 already, so no undefined behavior */
-	return rte_bsf64(v);
+    if (v == 0)
+        return 0;
+    v = rte_align64pow2(v);
+    /* we checked for v being 0 already, so no undefined behavior */
+    return rte_bsf64(v);
 }
 
 #ifndef offsetof
@@ -667,12 +667,12 @@ rte_log2_u64(uint64_t v)
  *  struct wrapper *w = container_of(x, struct wrapper, c);
  */
 #ifndef container_of
-#define container_of(ptr, type, member)	__extension__ ({		\
-			const typeof(((type *)0)->member) *_ptr = (ptr); \
-			__attribute__((unused)) type *_target_ptr =	\
-				(type *)(ptr);				\
-			(type *)(((uintptr_t)_ptr) - offsetof(type, member)); \
-		})
+#define container_of(ptr, type, member)    __extension__ ({        \
+            const typeof(((type *)0)->member) *_ptr = (ptr); \
+            __attribute__((unused)) type *_target_ptr =    \
+                (type *)(ptr);                \
+            (type *)(((uintptr_t)_ptr) - offsetof(type, member)); \
+        })
 #endif
 
 /**
@@ -701,11 +701,11 @@ rte_log2_u64(uint64_t v)
 #define RTE_FMT_TAIL(fmt, ...) __VA_ARGS__
 
 /** Mask value of type "tp" for the first "ln" bit set. */
-#define	RTE_LEN2MASK(ln, tp)	\
-	((tp)((uint64_t)-1 >> (sizeof(uint64_t) * CHAR_BIT - (ln))))
+#define    RTE_LEN2MASK(ln, tp)    \
+    ((tp)((uint64_t)-1 >> (sizeof(uint64_t) * CHAR_BIT - (ln))))
 
 /** Number of elements in the array. */
-#define	RTE_DIM(a)	(sizeof (a) / sizeof ((a)[0]))
+#define    RTE_DIM(a)    (sizeof (a) / sizeof ((a)[0]))
 
 /* 将大小为字符串转成数值类型 */
 /**
@@ -725,30 +725,30 @@ rte_log2_u64(uint64_t v)
 static inline uint64_t
 rte_str_to_size(const char *str)
 {
-	char *endptr;
-	unsigned long long size;
+    char *endptr;
+    unsigned long long size;
 
-	while (isspace((int)*str))
-		str++;
-	if (*str == '-')
-		return 0;
+    while (isspace((int)*str))
+        str++;
+    if (*str == '-')
+        return 0;
 
-	errno = 0;
-	size = strtoull(str, &endptr, 0);
-	if (errno)
-		return 0;
+    errno = 0;
+    size = strtoull(str, &endptr, 0);
+    if (errno)
+        return 0;
 
-	if (*endptr == ' ')
-		endptr++; /* allow 1 space gap */
+    if (*endptr == ' ')
+        endptr++; /* allow 1 space gap */
 
-	switch (*endptr){
-	case 'G': case 'g': size *= 1024; /* fall-through */
-	case 'M': case 'm': size *= 1024; /* fall-through */
-	case 'K': case 'k': size *= 1024; /* fall-through */
-	default:
-		break;
-	}
-	return size;
+    switch (*endptr){
+    case 'G': case 'g': size *= 1024; /* fall-through */
+    case 'M': case 'm': size *= 1024; /* fall-through */
+    case 'K': case 'k': size *= 1024; /* fall-through */
+    default:
+        break;
+    }
+    return size;
 }
 
 /**
@@ -766,8 +766,8 @@ rte_str_to_size(const char *str)
  */
 void
 rte_exit(int exit_code, const char *format, ...)
-	__attribute__((noreturn))
-	__attribute__((format(printf, 2, 3)));
+    __attribute__((noreturn))
+    __attribute__((format(printf, 2, 3)));
 
 #ifdef __cplusplus
 }

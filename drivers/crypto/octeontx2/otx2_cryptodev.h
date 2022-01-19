@@ -10,25 +10,25 @@
 #include "otx2_dev.h"
 
 /* Marvell OCTEON TX2 Crypto PMD device name */
-#define CRYPTODEV_NAME_OCTEONTX2_PMD	crypto_octeontx2
+#define CRYPTODEV_NAME_OCTEONTX2_PMD    crypto_octeontx2
 
-#define OTX2_CPT_MAX_LFS		64
-#define OTX2_CPT_MAX_QUEUES_PER_VF	64
+#define OTX2_CPT_MAX_LFS        64
+#define OTX2_CPT_MAX_QUEUES_PER_VF    64
 
 /**
  * Device private data
  */
 struct otx2_cpt_vf {
-	struct otx2_dev otx2_dev;
-	/**< Base class */
-	uint16_t max_queues;
-	/**< Max queues supported */
-	uint8_t nb_queues;
-	/**< Number of crypto queues attached */
-	uint16_t lf_msixoff[OTX2_CPT_MAX_LFS];
-	/**< MSI-X offsets */
-	uint8_t err_intr_registered:1;
-	/**< Are error interrupts registered? */
+    struct otx2_dev otx2_dev;
+    /**< Base class */
+    uint16_t max_queues;
+    /**< Max queues supported */
+    uint8_t nb_queues;
+    /**< Number of crypto queues attached */
+    uint16_t lf_msixoff[OTX2_CPT_MAX_LFS];
+    /**< MSI-X offsets */
+    uint8_t err_intr_registered:1;
+    /**< Are error interrupts registered? */
 };
 
 #define CPT_LOGTYPE otx2_cpt_logtype

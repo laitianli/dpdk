@@ -48,7 +48,7 @@ pci_name_set(struct rte_pci_device *dev);
  * object embedded within.
  *
  * @param pci_dev
- *	PCI device to add
+ *    PCI device to add
  * @return void
  */
 void rte_pci_add_device(struct rte_pci_device *pci_dev);
@@ -59,13 +59,13 @@ void rte_pci_add_device(struct rte_pci_device *pci_dev);
  * inserted.
  *
  * @param exist_pci_dev
- *	Existing PCI device in PCI Bus
+ *    Existing PCI device in PCI Bus
  * @param new_pci_dev
- *	PCI device to be added before exist_pci_dev
+ *    PCI device to be added before exist_pci_dev
  * @return void
  */
 void rte_pci_insert_device(struct rte_pci_device *exist_pci_dev,
-		struct rte_pci_device *new_pci_dev);
+        struct rte_pci_device *new_pci_dev);
 
 /**
  * Update a pci device object by asking the kernel for the latest information.
@@ -73,7 +73,7 @@ void rte_pci_insert_device(struct rte_pci_device *exist_pci_dev,
  * This function is private to EAL.
  *
  * @param addr
- *	The PCI Bus-Device-Function address to look for
+ *    The PCI Bus-Device-Function address to look for
  * @return
  *   - 0 on success.
  *   - negative on error.
@@ -111,7 +111,7 @@ void pci_uio_unmap_resource(struct rte_pci_device *dev);
  *   0 on success, negative on error
  */
 int pci_uio_alloc_resource(struct rte_pci_device *dev,
-		struct mapped_pci_resource **uio_res);
+        struct mapped_pci_resource **uio_res);
 
 /**
  * Free uio resource for PCI device
@@ -124,7 +124,7 @@ int pci_uio_alloc_resource(struct rte_pci_device *dev,
  *   Pointer to uio resource.
  */
 void pci_uio_free_resource(struct rte_pci_device *dev,
-		struct mapped_pci_resource *uio_res);
+        struct mapped_pci_resource *uio_res);
 
 /**
  * Remap the PCI resource of a PCI device in anonymous virtual memory.
@@ -155,7 +155,7 @@ pci_uio_remap_resource(struct rte_pci_device *dev);
  *   0 on success, negative on error
  */
 int pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
-		struct mapped_pci_resource *uio_res, int map_idx);
+        struct mapped_pci_resource *uio_res, int map_idx);
 
 /*
  * Match the PCI Driver and Device using the ID Table
@@ -170,7 +170,7 @@ int pci_uio_map_resource_by_index(struct rte_pci_device *dev, int res_idx,
  */
 int
 rte_pci_match(const struct rte_pci_driver *pci_drv,
-	      const struct rte_pci_device *pci_dev);
+          const struct rte_pci_device *pci_dev);
 
 /**
  * OS specific callbacks for rte_pci_get_iommu_class
@@ -181,7 +181,7 @@ pci_device_iommu_support_va(const struct rte_pci_device *dev);
 
 enum rte_iova_mode
 pci_device_iova_mode(const struct rte_pci_driver *pci_drv,
-		     const struct rte_pci_device *pci_dev);
+             const struct rte_pci_device *pci_dev);
 
 /**
  * Get iommu class of PCI devices on the bus.
@@ -213,7 +213,7 @@ rte_pci_get_iommu_class(void);
  */
 void *
 rte_pci_dev_iterate(const void *start,
-		    const char *str,
-		    const struct rte_dev_iterator *it);
+            const char *str,
+            const struct rte_dev_iterator *it);
 
 #endif /* _PCI_PRIVATE_H_ */

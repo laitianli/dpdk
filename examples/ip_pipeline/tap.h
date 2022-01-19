@@ -10,9 +10,9 @@
 #include "common.h"
 
 struct tap {
-	TAILQ_ENTRY(tap) node;
-	char name[NAME_SIZE];
-	int fd;
+    TAILQ_ENTRY(tap) node;
+    char name[NAME_SIZE];
+    int fd;
 };
 
 TAILQ_HEAD(tap_list, tap);

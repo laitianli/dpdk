@@ -13,16 +13,16 @@ extern "C" {
 
 /** CRC types */
 enum rte_net_crc_type {
-	RTE_NET_CRC16_CCITT = 0,
-	RTE_NET_CRC32_ETH,
-	RTE_NET_CRC_REQS
+    RTE_NET_CRC16_CCITT = 0,
+    RTE_NET_CRC32_ETH,
+    RTE_NET_CRC_REQS
 };
 
 /** CRC compute algorithm */
 enum rte_net_crc_alg {
-	RTE_NET_CRC_SCALAR = 0,
-	RTE_NET_CRC_SSE42,
-	RTE_NET_CRC_NEON,
+    RTE_NET_CRC_SCALAR = 0,
+    RTE_NET_CRC_SSE42,
+    RTE_NET_CRC_NEON,
 };
 
 /**
@@ -54,8 +54,8 @@ rte_net_crc_set_alg(enum rte_net_crc_alg alg);
  */
 uint32_t
 rte_net_crc_calc(const void *data,
-	uint32_t data_len,
-	enum rte_net_crc_type type);
+    uint32_t data_len,
+    enum rte_net_crc_type type);
 
 #ifdef __cplusplus
 }

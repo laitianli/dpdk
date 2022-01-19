@@ -56,8 +56,8 @@ extern "C" {
  * Timer type: Periodic or single (one-shot).
  */
 enum rte_timer_type {
-	SINGLE,
-	PERIODICAL
+    SINGLE,
+    PERIODICAL
 };
 
 /**
@@ -65,12 +65,12 @@ enum rte_timer_type {
  * config) and an owner (the id of the lcore that owns the timer).
  */
 union rte_timer_status {
-	RTE_STD_C11
-	struct {
-		uint16_t state;  /**< Stop, pending, running, config. */
-		int16_t owner;   /**< The lcore that owns the timer. */
-	};
-	uint32_t u32;            /**< To atomic-set status + owner. */
+    RTE_STD_C11
+    struct {
+        uint16_t state;  /**< Stop, pending, running, config. */
+        int16_t owner;   /**< The lcore that owns the timer. */
+    };
+    uint32_t u32;            /**< To atomic-set status + owner. */
 };
 
 #ifdef RTE_LIBRTE_TIMER_DEBUG
@@ -78,10 +78,10 @@ union rte_timer_status {
  * A structure that stores the timer statistics (per-lcore).
  */
 struct rte_timer_debug_stats {
-	uint64_t reset;   /**< Number of success calls to rte_timer_reset(). */
-	uint64_t stop;    /**< Number of success calls to rte_timer_stop(). */
-	uint64_t manage;  /**< Number of calls to rte_timer_manage(). */
-	uint64_t pending; /**< Number of pending/running timers. */
+    uint64_t reset;   /**< Number of success calls to rte_timer_reset(). */
+    uint64_t stop;    /**< Number of success calls to rte_timer_stop(). */
+    uint64_t manage;  /**< Number of calls to rte_timer_manage(). */
+    uint64_t pending; /**< Number of pending/running timers. */
 };
 #endif
 
@@ -99,12 +99,12 @@ typedef void (*rte_timer_cb_t)(struct rte_timer *, void *);
  */
 struct rte_timer
 {
-	uint64_t expire;       /**< Time when timer expire. */
-	struct rte_timer *sl_next[MAX_SKIPLIST_DEPTH];
-	volatile union rte_timer_status status; /**< Status of timer. */
-	uint64_t period;       /**< Period of timer (0 if not periodic). */
-	rte_timer_cb_t f;      /**< Callback function. */
-	void *arg;             /**< Argument to callback function. */
+    uint64_t expire;       /**< Time when timer expire. */
+    struct rte_timer *sl_next[MAX_SKIPLIST_DEPTH];
+    volatile union rte_timer_status status; /**< Status of timer. */
+    uint64_t period;       /**< Period of timer (0 if not periodic). */
+    rte_timer_cb_t f;      /**< Callback function. */
+    void *arg;             /**< Argument to callback function. */
 };
 
 
@@ -113,23 +113,23 @@ struct rte_timer
  * A C++ static initializer for a timer structure.
  */
 #define RTE_TIMER_INITIALIZER {             \
-	0,                                      \
-	{NULL},                                 \
-	{{RTE_TIMER_STOP, RTE_TIMER_NO_OWNER}}, \
-	0,                                      \
-	NULL,                                   \
-	NULL,                                   \
-	}
+    0,                                      \
+    {NULL},                                 \
+    {{RTE_TIMER_STOP, RTE_TIMER_NO_OWNER}}, \
+    0,                                      \
+    NULL,                                   \
+    NULL,                                   \
+    }
 #else
 /**
  * A static initializer for a timer structure.
  */
 #define RTE_TIMER_INITIALIZER {                      \
-		.status = {{                         \
-			.state = RTE_TIMER_STOP,     \
-			.owner = RTE_TIMER_NO_OWNER, \
-		}},                                  \
-	}
+        .status = {{                         \
+            .state = RTE_TIMER_STOP,     \
+            .owner = RTE_TIMER_NO_OWNER, \
+        }},                                  \
+    }
 #endif
 
 /**
@@ -246,8 +246,8 @@ void rte_timer_init(struct rte_timer *tim);
  *   - (-1): Timer is in the RUNNING or CONFIG state.
  */
 int rte_timer_reset(struct rte_timer *tim, uint64_t ticks,
-		    enum rte_timer_type type, unsigned tim_lcore,
-		    rte_timer_cb_t fct, void *arg);
+            enum rte_timer_type type, unsigned tim_lcore,
+            rte_timer_cb_t fct, void *arg);
 
 /**
  * Loop until rte_timer_reset() succeeds.
@@ -277,8 +277,8 @@ int rte_timer_reset(struct rte_timer *tim, uint64_t ticks,
  */
 void
 rte_timer_reset_sync(struct rte_timer *tim, uint64_t ticks,
-		     enum rte_timer_type type, unsigned tim_lcore,
-		     rte_timer_cb_t fct, void *arg);
+             enum rte_timer_type type, unsigned tim_lcore,
+             rte_timer_cb_t fct, void *arg);
 
 /**
  * Stop a timer.
@@ -400,8 +400,8 @@ int rte_timer_dump_stats(FILE *f);
 __rte_experimental
 int
 rte_timer_alt_reset(uint32_t timer_data_id, struct rte_timer *tim,
-		    uint64_t ticks, enum rte_timer_type type,
-		    unsigned int tim_lcore, rte_timer_cb_t fct, void *arg);
+            uint64_t ticks, enum rte_timer_type type,
+            unsigned int tim_lcore, rte_timer_cb_t fct, void *arg);
 
 /**
  * @warning
@@ -463,7 +463,7 @@ typedef void (*rte_timer_alt_manage_cb_t)(struct rte_timer *tim);
 __rte_experimental
 int
 rte_timer_alt_manage(uint32_t timer_data_id, unsigned int *poll_lcores,
-		     int n_poll_lcores, rte_timer_alt_manage_cb_t f);
+             int n_poll_lcores, rte_timer_alt_manage_cb_t f);
 
 /**
  * Callback function type for rte_timer_stop_all().
@@ -496,7 +496,7 @@ typedef void (*rte_timer_stop_all_cb_t)(struct rte_timer *tim, void *arg);
 __rte_experimental
 int
 rte_timer_stop_all(uint32_t timer_data_id, unsigned int *walk_lcores,
-		   int nb_walk_lcores, rte_timer_stop_all_cb_t f, void *f_arg);
+           int nb_walk_lcores, rte_timer_stop_all_cb_t f, void *f_arg);
 
 /**
  * @warning

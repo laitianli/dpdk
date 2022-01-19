@@ -39,42 +39,42 @@
 
 /* Error Codes */
 enum virtchnl_status_code {
-	VIRTCHNL_STATUS_SUCCESS				= 0,
-	VIRTCHNL_ERR_PARAM				= -5,
-	VIRTCHNL_STATUS_ERR_OPCODE_MISMATCH		= -38,
-	VIRTCHNL_STATUS_ERR_CQP_COMPL_ERROR		= -39,
-	VIRTCHNL_STATUS_ERR_INVALID_VF_ID		= -40,
-	VIRTCHNL_STATUS_NOT_SUPPORTED			= -64,
+    VIRTCHNL_STATUS_SUCCESS                = 0,
+    VIRTCHNL_ERR_PARAM                = -5,
+    VIRTCHNL_STATUS_ERR_OPCODE_MISMATCH        = -38,
+    VIRTCHNL_STATUS_ERR_CQP_COMPL_ERROR        = -39,
+    VIRTCHNL_STATUS_ERR_INVALID_VF_ID        = -40,
+    VIRTCHNL_STATUS_NOT_SUPPORTED            = -64,
 };
 
-#define VIRTCHNL_LINK_SPEED_100MB_SHIFT		0x1
-#define VIRTCHNL_LINK_SPEED_1000MB_SHIFT	0x2
-#define VIRTCHNL_LINK_SPEED_10GB_SHIFT		0x3
-#define VIRTCHNL_LINK_SPEED_40GB_SHIFT		0x4
-#define VIRTCHNL_LINK_SPEED_20GB_SHIFT		0x5
-#define VIRTCHNL_LINK_SPEED_25GB_SHIFT		0x6
+#define VIRTCHNL_LINK_SPEED_100MB_SHIFT        0x1
+#define VIRTCHNL_LINK_SPEED_1000MB_SHIFT    0x2
+#define VIRTCHNL_LINK_SPEED_10GB_SHIFT        0x3
+#define VIRTCHNL_LINK_SPEED_40GB_SHIFT        0x4
+#define VIRTCHNL_LINK_SPEED_20GB_SHIFT        0x5
+#define VIRTCHNL_LINK_SPEED_25GB_SHIFT        0x6
 
 enum virtchnl_link_speed {
-	VIRTCHNL_LINK_SPEED_UNKNOWN	= 0,
-	VIRTCHNL_LINK_SPEED_100MB	= BIT(VIRTCHNL_LINK_SPEED_100MB_SHIFT),
-	VIRTCHNL_LINK_SPEED_1GB		= BIT(VIRTCHNL_LINK_SPEED_1000MB_SHIFT),
-	VIRTCHNL_LINK_SPEED_10GB	= BIT(VIRTCHNL_LINK_SPEED_10GB_SHIFT),
-	VIRTCHNL_LINK_SPEED_40GB	= BIT(VIRTCHNL_LINK_SPEED_40GB_SHIFT),
-	VIRTCHNL_LINK_SPEED_20GB	= BIT(VIRTCHNL_LINK_SPEED_20GB_SHIFT),
-	VIRTCHNL_LINK_SPEED_25GB	= BIT(VIRTCHNL_LINK_SPEED_25GB_SHIFT),
+    VIRTCHNL_LINK_SPEED_UNKNOWN    = 0,
+    VIRTCHNL_LINK_SPEED_100MB    = BIT(VIRTCHNL_LINK_SPEED_100MB_SHIFT),
+    VIRTCHNL_LINK_SPEED_1GB        = BIT(VIRTCHNL_LINK_SPEED_1000MB_SHIFT),
+    VIRTCHNL_LINK_SPEED_10GB    = BIT(VIRTCHNL_LINK_SPEED_10GB_SHIFT),
+    VIRTCHNL_LINK_SPEED_40GB    = BIT(VIRTCHNL_LINK_SPEED_40GB_SHIFT),
+    VIRTCHNL_LINK_SPEED_20GB    = BIT(VIRTCHNL_LINK_SPEED_20GB_SHIFT),
+    VIRTCHNL_LINK_SPEED_25GB    = BIT(VIRTCHNL_LINK_SPEED_25GB_SHIFT),
 };
 
 /* for hsplit_0 field of Rx HMC context */
 /* deprecated with IAVF 1.0 */
 enum virtchnl_rx_hsplit {
-	VIRTCHNL_RX_HSPLIT_NO_SPLIT      = 0,
-	VIRTCHNL_RX_HSPLIT_SPLIT_L2      = 1,
-	VIRTCHNL_RX_HSPLIT_SPLIT_IP      = 2,
-	VIRTCHNL_RX_HSPLIT_SPLIT_TCP_UDP = 4,
-	VIRTCHNL_RX_HSPLIT_SPLIT_SCTP    = 8,
+    VIRTCHNL_RX_HSPLIT_NO_SPLIT      = 0,
+    VIRTCHNL_RX_HSPLIT_SPLIT_L2      = 1,
+    VIRTCHNL_RX_HSPLIT_SPLIT_IP      = 2,
+    VIRTCHNL_RX_HSPLIT_SPLIT_TCP_UDP = 4,
+    VIRTCHNL_RX_HSPLIT_SPLIT_SCTP    = 8,
 };
 
-#define VIRTCHNL_ETH_LENGTH_OF_ADDRESS	6
+#define VIRTCHNL_ETH_LENGTH_OF_ADDRESS    6
 /* END GENERIC DEFINES */
 
 /* Opcodes for VF-PF communication. These are placed in the v_opcode field
@@ -87,39 +87,39 @@ enum virtchnl_ops {
  * Use of "advanced opcode" features must be negotiated as part of capabilities
  * exchange and are not considered part of base mode feature set.
  */
-	VIRTCHNL_OP_UNKNOWN = 0,
-	VIRTCHNL_OP_VERSION = 1, /* must ALWAYS be 1 */
-	VIRTCHNL_OP_RESET_VF = 2,
-	VIRTCHNL_OP_GET_VF_RESOURCES = 3,
-	VIRTCHNL_OP_CONFIG_TX_QUEUE = 4,
-	VIRTCHNL_OP_CONFIG_RX_QUEUE = 5,
-	VIRTCHNL_OP_CONFIG_VSI_QUEUES = 6,
-	VIRTCHNL_OP_CONFIG_IRQ_MAP = 7,
-	VIRTCHNL_OP_ENABLE_QUEUES = 8,
-	VIRTCHNL_OP_DISABLE_QUEUES = 9,
-	VIRTCHNL_OP_ADD_ETH_ADDR = 10,
-	VIRTCHNL_OP_DEL_ETH_ADDR = 11,
-	VIRTCHNL_OP_ADD_VLAN = 12,
-	VIRTCHNL_OP_DEL_VLAN = 13,
-	VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE = 14,
-	VIRTCHNL_OP_GET_STATS = 15,
-	VIRTCHNL_OP_RSVD = 16,
-	VIRTCHNL_OP_EVENT = 17, /* must ALWAYS be 17 */
+    VIRTCHNL_OP_UNKNOWN = 0,
+    VIRTCHNL_OP_VERSION = 1, /* must ALWAYS be 1 */
+    VIRTCHNL_OP_RESET_VF = 2,
+    VIRTCHNL_OP_GET_VF_RESOURCES = 3,
+    VIRTCHNL_OP_CONFIG_TX_QUEUE = 4,
+    VIRTCHNL_OP_CONFIG_RX_QUEUE = 5,
+    VIRTCHNL_OP_CONFIG_VSI_QUEUES = 6,
+    VIRTCHNL_OP_CONFIG_IRQ_MAP = 7,
+    VIRTCHNL_OP_ENABLE_QUEUES = 8,
+    VIRTCHNL_OP_DISABLE_QUEUES = 9,
+    VIRTCHNL_OP_ADD_ETH_ADDR = 10,
+    VIRTCHNL_OP_DEL_ETH_ADDR = 11,
+    VIRTCHNL_OP_ADD_VLAN = 12,
+    VIRTCHNL_OP_DEL_VLAN = 13,
+    VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE = 14,
+    VIRTCHNL_OP_GET_STATS = 15,
+    VIRTCHNL_OP_RSVD = 16,
+    VIRTCHNL_OP_EVENT = 17, /* must ALWAYS be 17 */
 #ifdef VIRTCHNL_SOL_VF_SUPPORT
-	VIRTCHNL_OP_GET_ADDNL_SOL_CONFIG = 19,
+    VIRTCHNL_OP_GET_ADDNL_SOL_CONFIG = 19,
 #endif
 #ifdef VIRTCHNL_IWARP
-	VIRTCHNL_OP_IWARP = 20, /* advanced opcode */
-	VIRTCHNL_OP_CONFIG_IWARP_IRQ_MAP = 21, /* advanced opcode */
-	VIRTCHNL_OP_RELEASE_IWARP_IRQ_MAP = 22, /* advanced opcode */
+    VIRTCHNL_OP_IWARP = 20, /* advanced opcode */
+    VIRTCHNL_OP_CONFIG_IWARP_IRQ_MAP = 21, /* advanced opcode */
+    VIRTCHNL_OP_RELEASE_IWARP_IRQ_MAP = 22, /* advanced opcode */
 #endif
-	VIRTCHNL_OP_CONFIG_RSS_KEY = 23,
-	VIRTCHNL_OP_CONFIG_RSS_LUT = 24,
-	VIRTCHNL_OP_GET_RSS_HENA_CAPS = 25,
-	VIRTCHNL_OP_SET_RSS_HENA = 26,
-	VIRTCHNL_OP_ENABLE_VLAN_STRIPPING = 27,
-	VIRTCHNL_OP_DISABLE_VLAN_STRIPPING = 28,
-	VIRTCHNL_OP_REQUEST_QUEUES = 29,
+    VIRTCHNL_OP_CONFIG_RSS_KEY = 23,
+    VIRTCHNL_OP_CONFIG_RSS_LUT = 24,
+    VIRTCHNL_OP_GET_RSS_HENA_CAPS = 25,
+    VIRTCHNL_OP_SET_RSS_HENA = 26,
+    VIRTCHNL_OP_ENABLE_VLAN_STRIPPING = 27,
+    VIRTCHNL_OP_DISABLE_VLAN_STRIPPING = 28,
+    VIRTCHNL_OP_REQUEST_QUEUES = 29,
 
 };
 
@@ -129,17 +129,17 @@ enum virtchnl_ops {
  * never used.
  */
 #define VIRTCHNL_CHECK_STRUCT_LEN(n, X) enum virtchnl_static_assert_enum_##X \
-	{virtchnl_static_assert_##X = (n) / ((sizeof(struct X) == (n)) ? 1 : 0)}
+    {virtchnl_static_assert_##X = (n) / ((sizeof(struct X) == (n)) ? 1 : 0)}
 
 /* Virtual channel message descriptor. This overlays the admin queue
  * descriptor. All other data is passed in external buffers.
  */
 
 struct virtchnl_msg {
-	u8 pad[8];			 /* AQ flags/opcode/len/retval fields */
-	enum virtchnl_ops v_opcode; /* avoid confusion with desc->opcode */
-	enum virtchnl_status_code v_retval;  /* ditto for desc->retval */
-	u32 vfid;			 /* used by PF when sending to VF */
+    u8 pad[8];             /* AQ flags/opcode/len/retval fields */
+    enum virtchnl_ops v_opcode; /* avoid confusion with desc->opcode */
+    enum virtchnl_status_code v_retval;  /* ditto for desc->retval */
+    u32 vfid;             /* used by PF when sending to VF */
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(20, virtchnl_msg);
@@ -158,13 +158,13 @@ VIRTCHNL_CHECK_STRUCT_LEN(20, virtchnl_msg);
  * changes in the API. The PF must always respond to this message without
  * error regardless of version mismatch.
  */
-#define VIRTCHNL_VERSION_MAJOR		1
-#define VIRTCHNL_VERSION_MINOR		1
-#define VIRTCHNL_VERSION_MINOR_NO_VF_CAPS	0
+#define VIRTCHNL_VERSION_MAJOR        1
+#define VIRTCHNL_VERSION_MINOR        1
+#define VIRTCHNL_VERSION_MINOR_NO_VF_CAPS    0
 
 struct virtchnl_version_info {
-	u32 major;
-	u32 minor;
+    u32 major;
+    u32 minor;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(8, virtchnl_version_info);
@@ -189,8 +189,8 @@ VIRTCHNL_CHECK_STRUCT_LEN(8, virtchnl_version_info);
  * as needed.
  */
 enum virtchnl_vsi_type {
-	VIRTCHNL_VSI_TYPE_INVALID = 0,
-	VIRTCHNL_VSI_SRIOV = 6,
+    VIRTCHNL_VSI_TYPE_INVALID = 0,
+    VIRTCHNL_VSI_SRIOV = 6,
 };
 
 /* VIRTCHNL_OP_GET_VF_RESOURCES
@@ -202,11 +202,11 @@ enum virtchnl_vsi_type {
  */
 
 struct virtchnl_vsi_resource {
-	u16 vsi_id;
-	u16 num_queue_pairs;
-	enum virtchnl_vsi_type vsi_type;
-	u16 qset_handle;
-	u8 default_mac_addr[VIRTCHNL_ETH_LENGTH_OF_ADDRESS];
+    u16 vsi_id;
+    u16 num_queue_pairs;
+    enum virtchnl_vsi_type vsi_type;
+    u16 qset_handle;
+    u8 default_mac_addr[VIRTCHNL_ETH_LENGTH_OF_ADDRESS];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_vsi_resource);
@@ -215,38 +215,38 @@ VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_vsi_resource);
  * VIRTCHNL_VF_OFFLOAD_L2 flag is inclusive of base mode L2 offloads including
  * TX/RX Checksum offloading and TSO for non-tunnelled packets.
  */
-#define VIRTCHNL_VF_OFFLOAD_L2			0x00000001
-#define VIRTCHNL_VF_OFFLOAD_IWARP		0x00000002
-#define VIRTCHNL_VF_OFFLOAD_RSVD		0x00000004
-#define VIRTCHNL_VF_OFFLOAD_RSS_AQ		0x00000008
-#define VIRTCHNL_VF_OFFLOAD_RSS_REG		0x00000010
-#define VIRTCHNL_VF_OFFLOAD_WB_ON_ITR		0x00000020
-#define VIRTCHNL_VF_OFFLOAD_REQ_QUEUES		0x00000040
-#define VIRTCHNL_VF_OFFLOAD_VLAN		0x00010000
-#define VIRTCHNL_VF_OFFLOAD_RX_POLLING		0x00020000
-#define VIRTCHNL_VF_OFFLOAD_RSS_PCTYPE_V2	0x00040000
-#define VIRTCHNL_VF_OFFLOAD_RSS_PF		0X00080000
-#define VIRTCHNL_VF_OFFLOAD_ENCAP		0X00100000
-#define VIRTCHNL_VF_OFFLOAD_ENCAP_CSUM		0X00200000
-#define VIRTCHNL_VF_OFFLOAD_RX_ENCAP_CSUM	0X00400000
+#define VIRTCHNL_VF_OFFLOAD_L2            0x00000001
+#define VIRTCHNL_VF_OFFLOAD_IWARP        0x00000002
+#define VIRTCHNL_VF_OFFLOAD_RSVD        0x00000004
+#define VIRTCHNL_VF_OFFLOAD_RSS_AQ        0x00000008
+#define VIRTCHNL_VF_OFFLOAD_RSS_REG        0x00000010
+#define VIRTCHNL_VF_OFFLOAD_WB_ON_ITR        0x00000020
+#define VIRTCHNL_VF_OFFLOAD_REQ_QUEUES        0x00000040
+#define VIRTCHNL_VF_OFFLOAD_VLAN        0x00010000
+#define VIRTCHNL_VF_OFFLOAD_RX_POLLING        0x00020000
+#define VIRTCHNL_VF_OFFLOAD_RSS_PCTYPE_V2    0x00040000
+#define VIRTCHNL_VF_OFFLOAD_RSS_PF        0X00080000
+#define VIRTCHNL_VF_OFFLOAD_ENCAP        0X00100000
+#define VIRTCHNL_VF_OFFLOAD_ENCAP_CSUM        0X00200000
+#define VIRTCHNL_VF_OFFLOAD_RX_ENCAP_CSUM    0X00400000
 /* Define below the capability flags that are not offloads */
 #define VIRTCHNL_VF_CAP_ADV_LINK_SPEED          0x00000080
 
 #define VF_BASE_MODE_OFFLOADS (VIRTCHNL_VF_OFFLOAD_L2 | \
-			       VIRTCHNL_VF_OFFLOAD_VLAN | \
-			       VIRTCHNL_VF_OFFLOAD_RSS_PF)
+                   VIRTCHNL_VF_OFFLOAD_VLAN | \
+                   VIRTCHNL_VF_OFFLOAD_RSS_PF)
 
 struct virtchnl_vf_resource {
-	u16 num_vsis;
-	u16 num_queue_pairs;
-	u16 max_vectors;
-	u16 max_mtu;
+    u16 num_vsis;
+    u16 num_queue_pairs;
+    u16 max_vectors;
+    u16 max_mtu;
 
-	u32 vf_cap_flags;
-	u32 rss_key_size;
-	u32 rss_lut_size;
+    u32 vf_cap_flags;
+    u32 rss_key_size;
+    u32 rss_lut_size;
 
-	struct virtchnl_vsi_resource vsi_res[1];
+    struct virtchnl_vsi_resource vsi_res[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(36, virtchnl_vf_resource);
@@ -259,12 +259,12 @@ VIRTCHNL_CHECK_STRUCT_LEN(36, virtchnl_vf_resource);
 
 /* Tx queue config info */
 struct virtchnl_txq_info {
-	u16 vsi_id;
-	u16 queue_id;
-	u16 ring_len;		/* number of descriptors, multiple of 8 */
-	u16 headwb_enabled; /* deprecated with IAVF 1.0 */
-	u64 dma_ring_addr;
-	u64 dma_headwb_addr; /* deprecated with IAVF 1.0 */
+    u16 vsi_id;
+    u16 queue_id;
+    u16 ring_len;        /* number of descriptors, multiple of 8 */
+    u16 headwb_enabled; /* deprecated with IAVF 1.0 */
+    u64 dma_ring_addr;
+    u64 dma_headwb_addr; /* deprecated with IAVF 1.0 */
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(24, virtchnl_txq_info);
@@ -277,17 +277,17 @@ VIRTCHNL_CHECK_STRUCT_LEN(24, virtchnl_txq_info);
 
 /* Rx queue config info */
 struct virtchnl_rxq_info {
-	u16 vsi_id;
-	u16 queue_id;
-	u32 ring_len;		/* number of descriptors, multiple of 32 */
-	u16 hdr_size;
-	u16 splithdr_enabled; /* deprecated with IAVF 1.0 */
-	u32 databuffer_size;
-	u32 max_pkt_size;
-	u32 pad1;
-	u64 dma_ring_addr;
-	enum virtchnl_rx_hsplit rx_split_pos; /* deprecated with IAVF 1.0 */
-	u32 pad2;
+    u16 vsi_id;
+    u16 queue_id;
+    u32 ring_len;        /* number of descriptors, multiple of 32 */
+    u16 hdr_size;
+    u16 splithdr_enabled; /* deprecated with IAVF 1.0 */
+    u32 databuffer_size;
+    u32 max_pkt_size;
+    u32 pad1;
+    u64 dma_ring_addr;
+    enum virtchnl_rx_hsplit rx_split_pos; /* deprecated with IAVF 1.0 */
+    u32 pad2;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(40, virtchnl_rxq_info);
@@ -300,18 +300,18 @@ VIRTCHNL_CHECK_STRUCT_LEN(40, virtchnl_rxq_info);
  * associated with the VSI, an error is returned and no queues are configured.
  */
 struct virtchnl_queue_pair_info {
-	/* NOTE: vsi_id and queue_id should be identical for both queues. */
-	struct virtchnl_txq_info txq;
-	struct virtchnl_rxq_info rxq;
+    /* NOTE: vsi_id and queue_id should be identical for both queues. */
+    struct virtchnl_txq_info txq;
+    struct virtchnl_rxq_info rxq;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(64, virtchnl_queue_pair_info);
 
 struct virtchnl_vsi_queue_config_info {
-	u16 vsi_id;
-	u16 num_queue_pairs;
-	u32 pad;
-	struct virtchnl_queue_pair_info qpair[1];
+    u16 vsi_id;
+    u16 num_queue_pairs;
+    u32 pad;
+    struct virtchnl_queue_pair_info qpair[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(72, virtchnl_vsi_queue_config_info);
@@ -328,7 +328,7 @@ VIRTCHNL_CHECK_STRUCT_LEN(72, virtchnl_vsi_queue_config_info);
 
 /* VF resource request */
 struct virtchnl_vf_res_request {
-	u16 num_queue_pairs;
+    u16 num_queue_pairs;
 };
 
 /* VIRTCHNL_OP_CONFIG_IRQ_MAP
@@ -339,19 +339,19 @@ struct virtchnl_vf_res_request {
  * PF configures interrupt mapping and returns status.
  */
 struct virtchnl_vector_map {
-	u16 vsi_id;
-	u16 vector_id;
-	u16 rxq_map;
-	u16 txq_map;
-	u16 rxitr_idx;
-	u16 txitr_idx;
+    u16 vsi_id;
+    u16 vector_id;
+    u16 rxq_map;
+    u16 txq_map;
+    u16 rxitr_idx;
+    u16 txitr_idx;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_vector_map);
 
 struct virtchnl_irq_map_info {
-	u16 num_vectors;
-	struct virtchnl_vector_map vecmap[1];
+    u16 num_vectors;
+    struct virtchnl_vector_map vecmap[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(14, virtchnl_irq_map_info);
@@ -365,10 +365,10 @@ VIRTCHNL_CHECK_STRUCT_LEN(14, virtchnl_irq_map_info);
  * PF performs requested action and returns status.
  */
 struct virtchnl_queue_select {
-	u16 vsi_id;
-	u16 pad;
-	u32 rx_queues;
-	u32 tx_queues;
+    u16 vsi_id;
+    u16 pad;
+    u32 rx_queues;
+    u32 tx_queues;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_queue_select);
@@ -386,16 +386,16 @@ VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_queue_select);
  */
 
 struct virtchnl_ether_addr {
-	u8 addr[VIRTCHNL_ETH_LENGTH_OF_ADDRESS];
-	u8 pad[2];
+    u8 addr[VIRTCHNL_ETH_LENGTH_OF_ADDRESS];
+    u8 pad[2];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(8, virtchnl_ether_addr);
 
 struct virtchnl_ether_addr_list {
-	u16 vsi_id;
-	u16 num_elements;
-	struct virtchnl_ether_addr list[1];
+    u16 vsi_id;
+    u16 num_elements;
+    struct virtchnl_ether_addr list[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_ether_addr_list);
@@ -412,8 +412,8 @@ VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_ether_addr_list);
  * running under a Solaris PF.
  */
 struct virtchnl_addnl_solaris_config {
-	u16 default_mtu;
-	struct virtchnl_ether_addr_list al;
+    u16 default_mtu;
+    struct virtchnl_ether_addr_list al;
 };
 
 #endif
@@ -432,9 +432,9 @@ struct virtchnl_addnl_solaris_config {
  */
 
 struct virtchnl_vlan_filter_list {
-	u16 vsi_id;
-	u16 num_elements;
-	u16 vlan_id[1];
+    u16 vsi_id;
+    u16 num_elements;
+    u16 vlan_id[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(6, virtchnl_vlan_filter_list);
@@ -445,14 +445,14 @@ VIRTCHNL_CHECK_STRUCT_LEN(6, virtchnl_vlan_filter_list);
  * Note: we assume that broadcast accept mode is always enabled.
  */
 struct virtchnl_promisc_info {
-	u16 vsi_id;
-	u16 flags;
+    u16 vsi_id;
+    u16 flags;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(4, virtchnl_promisc_info);
 
-#define FLAG_VF_UNICAST_PROMISC	0x00000001
-#define FLAG_VF_MULTICAST_PROMISC	0x00000002
+#define FLAG_VF_UNICAST_PROMISC    0x00000001
+#define FLAG_VF_MULTICAST_PROMISC    0x00000002
 
 /* VIRTCHNL_OP_GET_STATS
  * VF sends this message to request stats for the selected VSI. VF uses
@@ -463,18 +463,18 @@ VIRTCHNL_CHECK_STRUCT_LEN(4, virtchnl_promisc_info);
  */
 
 struct virtchnl_eth_stats {
-	u64 rx_bytes;			/* received bytes */
-	u64 rx_unicast;			/* received unicast pkts */
-	u64 rx_multicast;		/* received multicast pkts */
-	u64 rx_broadcast;		/* received broadcast pkts */
-	u64 rx_discards;
-	u64 rx_unknown_protocol;
-	u64 tx_bytes;			/* transmitted bytes*/
-	u64 tx_unicast;			/* transmitted unicast pkts */
-	u64 tx_multicast;		/* transmitted multicast pkts */
-	u64 tx_broadcast;		/* transmitted broadcast pkts */
-	u64 tx_discards;
-	u64 tx_errors;
+    u64 rx_bytes;            /* received bytes */
+    u64 rx_unicast;            /* received unicast pkts */
+    u64 rx_multicast;        /* received multicast pkts */
+    u64 rx_broadcast;        /* received broadcast pkts */
+    u64 rx_discards;
+    u64 rx_unknown_protocol;
+    u64 tx_bytes;            /* transmitted bytes*/
+    u64 tx_unicast;            /* transmitted unicast pkts */
+    u64 tx_multicast;        /* transmitted multicast pkts */
+    u64 tx_broadcast;        /* transmitted broadcast pkts */
+    u64 tx_discards;
+    u64 tx_errors;
 };
 
 /* VIRTCHNL_OP_CONFIG_RSS_KEY
@@ -487,17 +487,17 @@ struct virtchnl_eth_stats {
  * RSS is effectively disabled until set up by the VF.
  */
 struct virtchnl_rss_key {
-	u16 vsi_id;
-	u16 key_len;
-	u8 key[1];         /* RSS hash key, packed bytes */
+    u16 vsi_id;
+    u16 key_len;
+    u8 key[1];         /* RSS hash key, packed bytes */
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(6, virtchnl_rss_key);
 
 struct virtchnl_rss_lut {
-	u16 vsi_id;
-	u16 lut_entries;
-	u8 lut[1];        /* RSS lookup table */
+    u16 vsi_id;
+    u16 lut_entries;
+    u8 lut[1];        /* RSS lookup table */
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(6, virtchnl_rss_lut);
@@ -510,7 +510,7 @@ VIRTCHNL_CHECK_STRUCT_LEN(6, virtchnl_rss_lut);
  * traffic types that are hashed by the hardware.
  */
 struct virtchnl_rss_hena {
-	u64 hena;
+    u64 hena;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(8, virtchnl_rss_hena);
@@ -521,40 +521,40 @@ VIRTCHNL_CHECK_STRUCT_LEN(8, virtchnl_rss_hena);
  * messages in response to this one.
  */
 enum virtchnl_event_codes {
-	VIRTCHNL_EVENT_UNKNOWN = 0,
-	VIRTCHNL_EVENT_LINK_CHANGE,
-	VIRTCHNL_EVENT_RESET_IMPENDING,
-	VIRTCHNL_EVENT_PF_DRIVER_CLOSE,
+    VIRTCHNL_EVENT_UNKNOWN = 0,
+    VIRTCHNL_EVENT_LINK_CHANGE,
+    VIRTCHNL_EVENT_RESET_IMPENDING,
+    VIRTCHNL_EVENT_PF_DRIVER_CLOSE,
 };
 
-#define PF_EVENT_SEVERITY_INFO		0
-#define PF_EVENT_SEVERITY_ATTENTION	1
-#define PF_EVENT_SEVERITY_ACTION_REQUIRED	2
-#define PF_EVENT_SEVERITY_CERTAIN_DOOM	255
+#define PF_EVENT_SEVERITY_INFO        0
+#define PF_EVENT_SEVERITY_ATTENTION    1
+#define PF_EVENT_SEVERITY_ACTION_REQUIRED    2
+#define PF_EVENT_SEVERITY_CERTAIN_DOOM    255
 
 struct virtchnl_pf_event {
-	enum virtchnl_event_codes event;
-	union {
-		/* If the PF driver does not support the new speed reporting
-		 * capabilities then use link_event else use link_event_adv to
-		 * get the speed and link information. The ability to understand
-		 * new speeds is indicated by setting the capability flag
-		 * VIRTCHNL_VF_CAP_ADV_LINK_SPEED in vf_cap_flags parameter
-		 * in virtchnl_vf_resource struct and can be used to determine
-		 * which link event struct to use below.
-		 */
-		struct {
-			enum virtchnl_link_speed link_speed;
-			u8 link_status;
-		} link_event;
-		struct {
-			/* link_speed provided in Mbps */
-			u32 link_speed;
-			u8 link_status;
-		} link_event_adv;
-	} event_data;
+    enum virtchnl_event_codes event;
+    union {
+        /* If the PF driver does not support the new speed reporting
+         * capabilities then use link_event else use link_event_adv to
+         * get the speed and link information. The ability to understand
+         * new speeds is indicated by setting the capability flag
+         * VIRTCHNL_VF_CAP_ADV_LINK_SPEED in vf_cap_flags parameter
+         * in virtchnl_vf_resource struct and can be used to determine
+         * which link event struct to use below.
+         */
+        struct {
+            enum virtchnl_link_speed link_speed;
+            u8 link_status;
+        } link_event;
+        struct {
+            /* link_speed provided in Mbps */
+            u32 link_speed;
+            u8 link_status;
+        } link_event_adv;
+    } event_data;
 
-	int severity;
+    int severity;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_pf_event);
@@ -581,17 +581,17 @@ VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_pf_event);
 #define QUEUE_INVALID_IDX  0xFFFF
 
 struct virtchnl_iwarp_qv_info {
-	u32 v_idx; /* msix_vector */
-	u16 ceq_idx;
-	u16 aeq_idx;
-	u8 itr_idx;
+    u32 v_idx; /* msix_vector */
+    u16 ceq_idx;
+    u16 aeq_idx;
+    u8 itr_idx;
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(12, virtchnl_iwarp_qv_info);
 
 struct virtchnl_iwarp_qvlist_info {
-	u32 num_vectors;
-	struct virtchnl_iwarp_qv_info qv_info[1];
+    u32 num_vectors;
+    struct virtchnl_iwarp_qv_info qv_info[1];
 };
 
 VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_iwarp_qvlist_info);
@@ -610,9 +610,9 @@ VIRTCHNL_CHECK_STRUCT_LEN(16, virtchnl_iwarp_qvlist_info);
  * will result in 3.
  */
 enum virtchnl_vfr_states {
-	VIRTCHNL_VFR_INPROGRESS = 0,
-	VIRTCHNL_VFR_COMPLETED,
-	VIRTCHNL_VFR_VFACTIVE,
+    VIRTCHNL_VFR_INPROGRESS = 0,
+    VIRTCHNL_VFR_COMPLETED,
+    VIRTCHNL_VFR_VFACTIVE,
 };
 
 /**
@@ -626,148 +626,148 @@ enum virtchnl_vfr_states {
  */
 static inline int
 virtchnl_vc_validate_vf_msg(struct virtchnl_version_info *ver, u32 v_opcode,
-			    u8 *msg, u16 msglen)
+                u8 *msg, u16 msglen)
 {
-	bool err_msg_format = false;
-	int valid_len = 0;
+    bool err_msg_format = false;
+    int valid_len = 0;
 
-	/* Validate message length. */
-	switch (v_opcode) {
-	case VIRTCHNL_OP_VERSION:
-		valid_len = sizeof(struct virtchnl_version_info);
-		break;
-	case VIRTCHNL_OP_RESET_VF:
-		break;
-	case VIRTCHNL_OP_GET_VF_RESOURCES:
-		if (VF_IS_V11(ver))
-			valid_len = sizeof(u32);
-		break;
-	case VIRTCHNL_OP_CONFIG_TX_QUEUE:
-		valid_len = sizeof(struct virtchnl_txq_info);
-		break;
-	case VIRTCHNL_OP_CONFIG_RX_QUEUE:
-		valid_len = sizeof(struct virtchnl_rxq_info);
-		break;
-	case VIRTCHNL_OP_CONFIG_VSI_QUEUES:
-		valid_len = sizeof(struct virtchnl_vsi_queue_config_info);
-		if (msglen >= valid_len) {
-			struct virtchnl_vsi_queue_config_info *vqc =
-			    (struct virtchnl_vsi_queue_config_info *)msg;
-			valid_len += (vqc->num_queue_pairs *
-				      sizeof(struct
-					     virtchnl_queue_pair_info));
-			if (vqc->num_queue_pairs == 0)
-				err_msg_format = true;
-		}
-		break;
-	case VIRTCHNL_OP_CONFIG_IRQ_MAP:
-		valid_len = sizeof(struct virtchnl_irq_map_info);
-		if (msglen >= valid_len) {
-			struct virtchnl_irq_map_info *vimi =
-			    (struct virtchnl_irq_map_info *)msg;
-			valid_len += (vimi->num_vectors *
-				      sizeof(struct virtchnl_vector_map));
-			if (vimi->num_vectors == 0)
-				err_msg_format = true;
-		}
-		break;
-	case VIRTCHNL_OP_ENABLE_QUEUES:
-	case VIRTCHNL_OP_DISABLE_QUEUES:
-		valid_len = sizeof(struct virtchnl_queue_select);
-		break;
-	case VIRTCHNL_OP_ADD_ETH_ADDR:
-	case VIRTCHNL_OP_DEL_ETH_ADDR:
-		valid_len = sizeof(struct virtchnl_ether_addr_list);
-		if (msglen >= valid_len) {
-			struct virtchnl_ether_addr_list *veal =
-			    (struct virtchnl_ether_addr_list *)msg;
-			valid_len += veal->num_elements *
-			    sizeof(struct virtchnl_ether_addr);
-			if (veal->num_elements == 0)
-				err_msg_format = true;
-		}
-		break;
-	case VIRTCHNL_OP_ADD_VLAN:
-	case VIRTCHNL_OP_DEL_VLAN:
-		valid_len = sizeof(struct virtchnl_vlan_filter_list);
-		if (msglen >= valid_len) {
-			struct virtchnl_vlan_filter_list *vfl =
-			    (struct virtchnl_vlan_filter_list *)msg;
-			valid_len += vfl->num_elements * sizeof(u16);
-			if (vfl->num_elements == 0)
-				err_msg_format = true;
-		}
-		break;
-	case VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE:
-		valid_len = sizeof(struct virtchnl_promisc_info);
-		break;
-	case VIRTCHNL_OP_GET_STATS:
-		valid_len = sizeof(struct virtchnl_queue_select);
-		break;
+    /* Validate message length. */
+    switch (v_opcode) {
+    case VIRTCHNL_OP_VERSION:
+        valid_len = sizeof(struct virtchnl_version_info);
+        break;
+    case VIRTCHNL_OP_RESET_VF:
+        break;
+    case VIRTCHNL_OP_GET_VF_RESOURCES:
+        if (VF_IS_V11(ver))
+            valid_len = sizeof(u32);
+        break;
+    case VIRTCHNL_OP_CONFIG_TX_QUEUE:
+        valid_len = sizeof(struct virtchnl_txq_info);
+        break;
+    case VIRTCHNL_OP_CONFIG_RX_QUEUE:
+        valid_len = sizeof(struct virtchnl_rxq_info);
+        break;
+    case VIRTCHNL_OP_CONFIG_VSI_QUEUES:
+        valid_len = sizeof(struct virtchnl_vsi_queue_config_info);
+        if (msglen >= valid_len) {
+            struct virtchnl_vsi_queue_config_info *vqc =
+                (struct virtchnl_vsi_queue_config_info *)msg;
+            valid_len += (vqc->num_queue_pairs *
+                      sizeof(struct
+                         virtchnl_queue_pair_info));
+            if (vqc->num_queue_pairs == 0)
+                err_msg_format = true;
+        }
+        break;
+    case VIRTCHNL_OP_CONFIG_IRQ_MAP:
+        valid_len = sizeof(struct virtchnl_irq_map_info);
+        if (msglen >= valid_len) {
+            struct virtchnl_irq_map_info *vimi =
+                (struct virtchnl_irq_map_info *)msg;
+            valid_len += (vimi->num_vectors *
+                      sizeof(struct virtchnl_vector_map));
+            if (vimi->num_vectors == 0)
+                err_msg_format = true;
+        }
+        break;
+    case VIRTCHNL_OP_ENABLE_QUEUES:
+    case VIRTCHNL_OP_DISABLE_QUEUES:
+        valid_len = sizeof(struct virtchnl_queue_select);
+        break;
+    case VIRTCHNL_OP_ADD_ETH_ADDR:
+    case VIRTCHNL_OP_DEL_ETH_ADDR:
+        valid_len = sizeof(struct virtchnl_ether_addr_list);
+        if (msglen >= valid_len) {
+            struct virtchnl_ether_addr_list *veal =
+                (struct virtchnl_ether_addr_list *)msg;
+            valid_len += veal->num_elements *
+                sizeof(struct virtchnl_ether_addr);
+            if (veal->num_elements == 0)
+                err_msg_format = true;
+        }
+        break;
+    case VIRTCHNL_OP_ADD_VLAN:
+    case VIRTCHNL_OP_DEL_VLAN:
+        valid_len = sizeof(struct virtchnl_vlan_filter_list);
+        if (msglen >= valid_len) {
+            struct virtchnl_vlan_filter_list *vfl =
+                (struct virtchnl_vlan_filter_list *)msg;
+            valid_len += vfl->num_elements * sizeof(u16);
+            if (vfl->num_elements == 0)
+                err_msg_format = true;
+        }
+        break;
+    case VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE:
+        valid_len = sizeof(struct virtchnl_promisc_info);
+        break;
+    case VIRTCHNL_OP_GET_STATS:
+        valid_len = sizeof(struct virtchnl_queue_select);
+        break;
 #ifdef VIRTCHNL_IWARP
-	case VIRTCHNL_OP_IWARP:
-		/* These messages are opaque to us and will be validated in
-		 * the RDMA client code. We just need to check for nonzero
-		 * length. The firmware will enforce max length restrictions.
-		 */
-		if (msglen)
-			valid_len = msglen;
-		else
-			err_msg_format = true;
-		break;
-	case VIRTCHNL_OP_RELEASE_IWARP_IRQ_MAP:
-		break;
-	case VIRTCHNL_OP_CONFIG_IWARP_IRQ_MAP:
-		valid_len = sizeof(struct virtchnl_iwarp_qvlist_info);
-		if (msglen >= valid_len) {
-			struct virtchnl_iwarp_qvlist_info *qv =
-				(struct virtchnl_iwarp_qvlist_info *)msg;
-			if (qv->num_vectors == 0) {
-				err_msg_format = true;
-				break;
-			}
-			valid_len += ((qv->num_vectors - 1) *
-				sizeof(struct virtchnl_iwarp_qv_info));
-		}
-		break;
+    case VIRTCHNL_OP_IWARP:
+        /* These messages are opaque to us and will be validated in
+         * the RDMA client code. We just need to check for nonzero
+         * length. The firmware will enforce max length restrictions.
+         */
+        if (msglen)
+            valid_len = msglen;
+        else
+            err_msg_format = true;
+        break;
+    case VIRTCHNL_OP_RELEASE_IWARP_IRQ_MAP:
+        break;
+    case VIRTCHNL_OP_CONFIG_IWARP_IRQ_MAP:
+        valid_len = sizeof(struct virtchnl_iwarp_qvlist_info);
+        if (msglen >= valid_len) {
+            struct virtchnl_iwarp_qvlist_info *qv =
+                (struct virtchnl_iwarp_qvlist_info *)msg;
+            if (qv->num_vectors == 0) {
+                err_msg_format = true;
+                break;
+            }
+            valid_len += ((qv->num_vectors - 1) *
+                sizeof(struct virtchnl_iwarp_qv_info));
+        }
+        break;
 #endif
-	case VIRTCHNL_OP_CONFIG_RSS_KEY:
-		valid_len = sizeof(struct virtchnl_rss_key);
-		if (msglen >= valid_len) {
-			struct virtchnl_rss_key *vrk =
-				(struct virtchnl_rss_key *)msg;
-			valid_len += vrk->key_len - 1;
-		}
-		break;
-	case VIRTCHNL_OP_CONFIG_RSS_LUT:
-		valid_len = sizeof(struct virtchnl_rss_lut);
-		if (msglen >= valid_len) {
-			struct virtchnl_rss_lut *vrl =
-				(struct virtchnl_rss_lut *)msg;
-			valid_len += vrl->lut_entries - 1;
-		}
-		break;
-	case VIRTCHNL_OP_GET_RSS_HENA_CAPS:
-		break;
-	case VIRTCHNL_OP_SET_RSS_HENA:
-		valid_len = sizeof(struct virtchnl_rss_hena);
-		break;
-	case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
-	case VIRTCHNL_OP_DISABLE_VLAN_STRIPPING:
-		break;
-	case VIRTCHNL_OP_REQUEST_QUEUES:
-		valid_len = sizeof(struct virtchnl_vf_res_request);
-		break;
-	/* These are always errors coming from the VF. */
-	case VIRTCHNL_OP_EVENT:
-	case VIRTCHNL_OP_UNKNOWN:
-	default:
-		return VIRTCHNL_ERR_PARAM;
-	}
-	/* few more checks */
-	if (err_msg_format || valid_len != msglen)
-		return VIRTCHNL_STATUS_ERR_OPCODE_MISMATCH;
+    case VIRTCHNL_OP_CONFIG_RSS_KEY:
+        valid_len = sizeof(struct virtchnl_rss_key);
+        if (msglen >= valid_len) {
+            struct virtchnl_rss_key *vrk =
+                (struct virtchnl_rss_key *)msg;
+            valid_len += vrk->key_len - 1;
+        }
+        break;
+    case VIRTCHNL_OP_CONFIG_RSS_LUT:
+        valid_len = sizeof(struct virtchnl_rss_lut);
+        if (msglen >= valid_len) {
+            struct virtchnl_rss_lut *vrl =
+                (struct virtchnl_rss_lut *)msg;
+            valid_len += vrl->lut_entries - 1;
+        }
+        break;
+    case VIRTCHNL_OP_GET_RSS_HENA_CAPS:
+        break;
+    case VIRTCHNL_OP_SET_RSS_HENA:
+        valid_len = sizeof(struct virtchnl_rss_hena);
+        break;
+    case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
+    case VIRTCHNL_OP_DISABLE_VLAN_STRIPPING:
+        break;
+    case VIRTCHNL_OP_REQUEST_QUEUES:
+        valid_len = sizeof(struct virtchnl_vf_res_request);
+        break;
+    /* These are always errors coming from the VF. */
+    case VIRTCHNL_OP_EVENT:
+    case VIRTCHNL_OP_UNKNOWN:
+    default:
+        return VIRTCHNL_ERR_PARAM;
+    }
+    /* few more checks */
+    if (err_msg_format || valid_len != msglen)
+        return VIRTCHNL_STATUS_ERR_OPCODE_MISMATCH;
 
-	return 0;
+    return 0;
 }
 #endif /* _VIRTCHNL_H_ */

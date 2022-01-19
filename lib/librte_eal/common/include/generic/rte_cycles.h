@@ -22,8 +22,8 @@
 #define NS_PER_S 1000000000
 
 enum timer_source {
-	EAL_TIMER_TSC = 0,
-	EAL_TIMER_HPET
+    EAL_TIMER_TSC = 0,
+    EAL_TIMER_HPET
 };
 extern enum timer_source eal_timer_source;
 
@@ -73,12 +73,12 @@ rte_get_hpet_hz(void);
  * then the HPET functions are unavailable and should not be called.
  *
  * @param make_default
- *	If set, the hpet timer becomes the default timer whose values are
- *	returned by the rte_get_timer_hz/cycles API calls
+ *    If set, the hpet timer becomes the default timer whose values are
+ *    returned by the rte_get_timer_hz/cycles API calls
  *
  * @return
- *	0 on success,
- *	-1 on error, and the make_default parameter is ignored.
+ *    0 on success,
+ *    -1 on error, and the make_default parameter is ignored.
  */
 int rte_eal_hpet_init(int make_default);
 
@@ -94,15 +94,15 @@ static inline uint64_t
 rte_get_timer_cycles(void)
 {
 #ifdef RTE_LIBEAL_USE_HPET
-	switch(eal_timer_source) {
-	case EAL_TIMER_TSC:
+    switch(eal_timer_source) {
+    case EAL_TIMER_TSC:
 #endif
-		return rte_get_tsc_cycles();
+        return rte_get_tsc_cycles();
 #ifdef RTE_LIBEAL_USE_HPET
-	case EAL_TIMER_HPET:
-		return rte_get_hpet_cycles();
-	default: rte_panic("Invalid timer source specified\n");
-	}
+    case EAL_TIMER_HPET:
+        return rte_get_hpet_cycles();
+    default: rte_panic("Invalid timer source specified\n");
+    }
 #endif
 }
 
@@ -116,15 +116,15 @@ static inline uint64_t
 rte_get_timer_hz(void)
 {
 #ifdef RTE_LIBEAL_USE_HPET
-	switch(eal_timer_source) {
-	case EAL_TIMER_TSC:
+    switch(eal_timer_source) {
+    case EAL_TIMER_TSC:
 #endif
-		return rte_get_tsc_hz();
+        return rte_get_tsc_hz();
 #ifdef RTE_LIBEAL_USE_HPET
-	case EAL_TIMER_HPET:
-		return rte_get_hpet_hz();
-	default: rte_panic("Invalid timer source specified\n");
-	}
+    case EAL_TIMER_HPET:
+        return rte_get_hpet_hz();
+    default: rte_panic("Invalid timer source specified\n");
+    }
 #endif
 }
 /**
@@ -147,7 +147,7 @@ extern void
 static inline void
 rte_delay_ms(unsigned ms)
 {
-	rte_delay_us(ms * 1000);
+    rte_delay_us(ms * 1000);
 }
 
 /**

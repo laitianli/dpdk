@@ -120,19 +120,19 @@ extern "C" {
  * Timer adapter clock source
  */
 enum rte_event_timer_adapter_clk_src {
-	RTE_EVENT_TIMER_ADAPTER_CPU_CLK,
-	/**< Use CPU clock as the clock source. */
-	RTE_EVENT_TIMER_ADAPTER_EXT_CLK0,
-	/**< Platform dependent external clock source 0. */
-	RTE_EVENT_TIMER_ADAPTER_EXT_CLK1,
-	/**< Platform dependent external clock source 1. */
-	RTE_EVENT_TIMER_ADAPTER_EXT_CLK2,
-	/**< Platform dependent external clock source 2. */
-	RTE_EVENT_TIMER_ADAPTER_EXT_CLK3,
-	/**< Platform dependent external clock source 3. */
+    RTE_EVENT_TIMER_ADAPTER_CPU_CLK,
+    /**< Use CPU clock as the clock source. */
+    RTE_EVENT_TIMER_ADAPTER_EXT_CLK0,
+    /**< Platform dependent external clock source 0. */
+    RTE_EVENT_TIMER_ADAPTER_EXT_CLK1,
+    /**< Platform dependent external clock source 1. */
+    RTE_EVENT_TIMER_ADAPTER_EXT_CLK2,
+    /**< Platform dependent external clock source 2. */
+    RTE_EVENT_TIMER_ADAPTER_EXT_CLK3,
+    /**< Platform dependent external clock source 3. */
 };
 
-#define RTE_EVENT_TIMER_ADAPTER_F_ADJUST_RES	(1ULL << 0)
+#define RTE_EVENT_TIMER_ADAPTER_F_ADJUST_RES    (1ULL << 0)
 /**< The event timer adapter implementation may have constraints on the
  * resolution (timer_tick_ns) and maximum timer expiry timeout(max_tmo_ns)
  * based on the given timer adapter or system. If this flag is set, the
@@ -144,7 +144,7 @@ enum rte_event_timer_adapter_clk_src {
  * @see struct rte_event_timer_adapter_info::min_resolution_ns
  * @see struct rte_event_timer_adapter_info::max_tmo_ns
  */
-#define RTE_EVENT_TIMER_ADAPTER_F_SP_PUT	(1ULL << 1)
+#define RTE_EVENT_TIMER_ADAPTER_F_SP_PUT    (1ULL << 1)
 /**< ``rte_event_timer_arm_burst()`` API to be used in single producer mode.
  *
  * @see struct rte_event_timer_adapter_conf::flags
@@ -154,38 +154,38 @@ enum rte_event_timer_adapter_clk_src {
  * Timer adapter configuration structure
  */
 struct rte_event_timer_adapter_conf {
-	uint8_t event_dev_id;
-	/**< Event device identifier */
-	uint16_t timer_adapter_id;
-	/**< Event timer adapter identifier */
-	uint32_t socket_id;
-	/**< Identifier of socket from which to allocate memory for adapter */
-	enum rte_event_timer_adapter_clk_src clk_src;
-	/**< Clock source for timer adapter */
-	uint64_t timer_tick_ns;
-	/**< Timer adapter resolution in ns */
-	uint64_t max_tmo_ns;
-	/**< Maximum timer timeout(expiry) in ns */
-	uint64_t nb_timers;
-	/**< Total number of timers per adapter */
-	uint64_t flags;
-	/**< Timer adapter config flags (RTE_EVENT_TIMER_ADAPTER_F_*) */
+    uint8_t event_dev_id;
+    /**< Event device identifier */
+    uint16_t timer_adapter_id;
+    /**< Event timer adapter identifier */
+    uint32_t socket_id;
+    /**< Identifier of socket from which to allocate memory for adapter */
+    enum rte_event_timer_adapter_clk_src clk_src;
+    /**< Clock source for timer adapter */
+    uint64_t timer_tick_ns;
+    /**< Timer adapter resolution in ns */
+    uint64_t max_tmo_ns;
+    /**< Maximum timer timeout(expiry) in ns */
+    uint64_t nb_timers;
+    /**< Total number of timers per adapter */
+    uint64_t flags;
+    /**< Timer adapter config flags (RTE_EVENT_TIMER_ADAPTER_F_*) */
 };
 
 /**
  * Event timer adapter stats structure
  */
 struct rte_event_timer_adapter_stats {
-	uint64_t evtim_exp_count;
-	/**< Number of event timers that have expired. */
-	uint64_t ev_enq_count;
-	/**< Eventdev enqueue count */
-	uint64_t ev_inv_count;
-	/**< Invalid expiry event count */
-	uint64_t evtim_retry_count;
-	/**< Event timer retry count */
-	uint64_t adapter_tick_count;
-	/**< Tick count for the adapter, at its resolution */
+    uint64_t evtim_exp_count;
+    /**< Number of event timers that have expired. */
+    uint64_t ev_enq_count;
+    /**< Eventdev enqueue count */
+    uint64_t ev_inv_count;
+    /**< Invalid expiry event count */
+    uint64_t evtim_retry_count;
+    /**< Event timer retry count */
+    uint64_t adapter_tick_count;
+    /**< Tick count for the adapter, at its resolution */
 };
 
 struct rte_event_timer_adapter;
@@ -194,9 +194,9 @@ struct rte_event_timer_adapter;
  * Callback function type for producer port creation.
  */
 typedef int (*rte_event_timer_adapter_port_conf_cb_t)(uint16_t id,
-						      uint8_t event_dev_id,
-						      uint8_t *event_port_id,
-						      void *conf_arg);
+                              uint8_t event_dev_id,
+                              uint8_t *event_port_id,
+                              void *conf_arg);
 
 /**
  * Create an event timer adapter.
@@ -249,24 +249,24 @@ rte_event_timer_adapter_create(const struct rte_event_timer_adapter_conf *conf);
  */
 struct rte_event_timer_adapter *
 rte_event_timer_adapter_create_ext(
-		const struct rte_event_timer_adapter_conf *conf,
-		rte_event_timer_adapter_port_conf_cb_t conf_cb,
-		void *conf_arg);
+        const struct rte_event_timer_adapter_conf *conf,
+        rte_event_timer_adapter_port_conf_cb_t conf_cb,
+        void *conf_arg);
 
 /**
  * Timer adapter info structure.
  */
 struct rte_event_timer_adapter_info {
-	uint64_t min_resolution_ns;
-	/**< Minimum timer adapter resolution in ns */
-	uint64_t max_tmo_ns;
-	/**< Maximum timer timeout(expire) in ns */
-	struct rte_event_timer_adapter_conf conf;
-	/**< Configured timer adapter attributes */
-	uint32_t caps;
-	/**< Event timer adapter capabilities */
-	int16_t event_dev_port_id;
-	/**< Event device port ID, if applicable */
+    uint64_t min_resolution_ns;
+    /**< Minimum timer adapter resolution in ns */
+    uint64_t max_tmo_ns;
+    /**< Maximum timer timeout(expire) in ns */
+    struct rte_event_timer_adapter_conf conf;
+    /**< Configured timer adapter attributes */
+    uint32_t caps;
+    /**< Event timer adapter capabilities */
+    int16_t event_dev_port_id;
+    /**< Event device port ID, if applicable */
 };
 
 /**
@@ -291,8 +291,8 @@ struct rte_event_timer_adapter_info {
  */
 int
 rte_event_timer_adapter_get_info(
-		const struct rte_event_timer_adapter *adapter,
-		struct rte_event_timer_adapter_info *adapter_info);
+        const struct rte_event_timer_adapter *adapter,
+        struct rte_event_timer_adapter_info *adapter_info);
 
 /**
  * Start a timer adapter.
@@ -320,7 +320,7 @@ rte_event_timer_adapter_get_info(
  */
 int
 rte_event_timer_adapter_start(
-		const struct rte_event_timer_adapter *adapter);
+        const struct rte_event_timer_adapter *adapter);
 
 /**
  * Stop an event timer adapter.
@@ -396,7 +396,7 @@ rte_event_timer_adapter_free(struct rte_event_timer_adapter *adapter);
  */
 int
 rte_event_timer_adapter_service_id_get(struct rte_event_timer_adapter *adapter,
-				       uint32_t *service_id);
+                       uint32_t *service_id);
 
 /**
  * Retrieve statistics for an event timer adapter instance.
@@ -412,7 +412,7 @@ rte_event_timer_adapter_service_id_get(struct rte_event_timer_adapter *adapter,
  */
 int
 rte_event_timer_adapter_stats_get(struct rte_event_timer_adapter *adapter,
-		struct rte_event_timer_adapter_stats *stats);
+        struct rte_event_timer_adapter_stats *stats);
 
 /**
  * Reset statistics for an event timer adapter instance.
@@ -431,20 +431,20 @@ rte_event_timer_adapter_stats_reset(struct rte_event_timer_adapter *adapter);
  * Event timer state.
  */
 enum rte_event_timer_state {
-	RTE_EVENT_TIMER_NOT_ARMED	= 0,
-	/**< Event timer not armed. */
-	RTE_EVENT_TIMER_ARMED		= 1,
-	/**< Event timer successfully armed. */
-	RTE_EVENT_TIMER_CANCELED	= 2,
-	/**< Event timer successfully canceled. */
-	RTE_EVENT_TIMER_ERROR		= -1,
-	/**< Generic event timer error. */
-	RTE_EVENT_TIMER_ERROR_TOOEARLY	= -2,
-	/**< Event timer timeout tick value is too small for the adapter to
-	 * handle, given its configured resolution.
-	 */
-	RTE_EVENT_TIMER_ERROR_TOOLATE	= -3,
-	/**< Event timer timeout tick is greater than the maximum timeout.*/
+    RTE_EVENT_TIMER_NOT_ARMED    = 0,
+    /**< Event timer not armed. */
+    RTE_EVENT_TIMER_ARMED        = 1,
+    /**< Event timer successfully armed. */
+    RTE_EVENT_TIMER_CANCELED    = 2,
+    /**< Event timer successfully canceled. */
+    RTE_EVENT_TIMER_ERROR        = -1,
+    /**< Generic event timer error. */
+    RTE_EVENT_TIMER_ERROR_TOOEARLY    = -2,
+    /**< Event timer timeout tick value is too small for the adapter to
+     * handle, given its configured resolution.
+     */
+    RTE_EVENT_TIMER_ERROR_TOOLATE    = -3,
+    /**< Event timer timeout tick is greater than the maximum timeout.*/
 };
 
 /**
@@ -453,90 +453,90 @@ enum rte_event_timer_state {
  */
 RTE_STD_C11
 struct rte_event_timer {
-	struct rte_event ev;
-	/**<
-	 * Expiry event attributes.  On successful event timer timeout,
-	 * the following attributes will be used to inject the expiry event to
-	 * the eventdev:
-	 *  - event_queue_id: Targeted event queue id for expiry events.
-	 *  - event_priority: Event priority of the event expiry event in the
-	 *  event queue relative to other events.
-	 *  - sched_type: Scheduling type of the expiry event.
-	 *  - flow_id: Flow id of the expiry event.
-	 *  - op: RTE_EVENT_OP_NEW
-	 *  - event_type: RTE_EVENT_TYPE_TIMER
-	 */
-	volatile enum rte_event_timer_state state;
-	/**< State of the event timer. */
-	uint64_t timeout_ticks;
-	/**< Expiry timer ticks expressed in number of *timer_ticks_ns* from
-	 * now.
-	 * @see struct rte_event_timer_adapter_info::adapter_conf::timer_tick_ns
-	 */
-	uint64_t impl_opaque[2];
-	/**< Implementation-specific opaque data.
-	 * An event timer adapter implementation use this field to hold
-	 * implementation specific values to share between the arm and cancel
-	 * operations.  The application should not modify this field.
-	 */
-	uint8_t user_meta[0];
-	/**< Memory to store user specific metadata.
-	 * The event timer adapter implementation should not modify this area.
-	 */
+    struct rte_event ev;
+    /**<
+     * Expiry event attributes.  On successful event timer timeout,
+     * the following attributes will be used to inject the expiry event to
+     * the eventdev:
+     *  - event_queue_id: Targeted event queue id for expiry events.
+     *  - event_priority: Event priority of the event expiry event in the
+     *  event queue relative to other events.
+     *  - sched_type: Scheduling type of the expiry event.
+     *  - flow_id: Flow id of the expiry event.
+     *  - op: RTE_EVENT_OP_NEW
+     *  - event_type: RTE_EVENT_TYPE_TIMER
+     */
+    volatile enum rte_event_timer_state state;
+    /**< State of the event timer. */
+    uint64_t timeout_ticks;
+    /**< Expiry timer ticks expressed in number of *timer_ticks_ns* from
+     * now.
+     * @see struct rte_event_timer_adapter_info::adapter_conf::timer_tick_ns
+     */
+    uint64_t impl_opaque[2];
+    /**< Implementation-specific opaque data.
+     * An event timer adapter implementation use this field to hold
+     * implementation specific values to share between the arm and cancel
+     * operations.  The application should not modify this field.
+     */
+    uint8_t user_meta[0];
+    /**< Memory to store user specific metadata.
+     * The event timer adapter implementation should not modify this area.
+     */
 } __rte_cache_aligned;
 
 typedef uint16_t (*rte_event_timer_arm_burst_t)(
-		const struct rte_event_timer_adapter *adapter,
-		struct rte_event_timer **tims,
-		uint16_t nb_tims);
+        const struct rte_event_timer_adapter *adapter,
+        struct rte_event_timer **tims,
+        uint16_t nb_tims);
 /**< @internal Enable event timers to enqueue timer events upon expiry */
 typedef uint16_t (*rte_event_timer_arm_tmo_tick_burst_t)(
-		const struct rte_event_timer_adapter *adapter,
-		struct rte_event_timer **tims,
-		uint64_t timeout_tick,
-		uint16_t nb_tims);
+        const struct rte_event_timer_adapter *adapter,
+        struct rte_event_timer **tims,
+        uint64_t timeout_tick,
+        uint16_t nb_tims);
 /**< @internal Enable event timers with common expiration time */
 typedef uint16_t (*rte_event_timer_cancel_burst_t)(
-		const struct rte_event_timer_adapter *adapter,
-		struct rte_event_timer **tims,
-		uint16_t nb_tims);
+        const struct rte_event_timer_adapter *adapter,
+        struct rte_event_timer **tims,
+        uint16_t nb_tims);
 /**< @internal Prevent event timers from enqueuing timer events */
 
 /**
  * @internal Data structure associated with each event timer adapter.
  */
 struct rte_event_timer_adapter {
-	rte_event_timer_arm_burst_t arm_burst;
-	/**< Pointer to driver arm_burst function. */
-	rte_event_timer_arm_tmo_tick_burst_t arm_tmo_tick_burst;
-	/**< Pointer to driver arm_tmo_tick_burst function. */
-	rte_event_timer_cancel_burst_t cancel_burst;
-	/**< Pointer to driver cancel function. */
-	struct rte_event_timer_adapter_data *data;
-	/**< Pointer to shared adapter data */
-	const struct rte_event_timer_adapter_ops *ops;
-	/**< Functions exported by adapter driver */
+    rte_event_timer_arm_burst_t arm_burst;
+    /**< Pointer to driver arm_burst function. */
+    rte_event_timer_arm_tmo_tick_burst_t arm_tmo_tick_burst;
+    /**< Pointer to driver arm_tmo_tick_burst function. */
+    rte_event_timer_cancel_burst_t cancel_burst;
+    /**< Pointer to driver cancel function. */
+    struct rte_event_timer_adapter_data *data;
+    /**< Pointer to shared adapter data */
+    const struct rte_event_timer_adapter_ops *ops;
+    /**< Functions exported by adapter driver */
 
-	RTE_STD_C11
-	uint8_t allocated : 1;
-	/**< Flag to indicate that this adapter has been allocated */
+    RTE_STD_C11
+    uint8_t allocated : 1;
+    /**< Flag to indicate that this adapter has been allocated */
 } __rte_cache_aligned;
 
-#define ADAPTER_VALID_OR_ERR_RET(adapter, retval) do {		\
-	if (adapter == NULL || !adapter->allocated)		\
-		return retval;					\
+#define ADAPTER_VALID_OR_ERR_RET(adapter, retval) do {        \
+    if (adapter == NULL || !adapter->allocated)        \
+        return retval;                    \
 } while (0)
 
-#define FUNC_PTR_OR_ERR_RET(func, errval) do { 			\
-	if ((func) == NULL)					\
-		return errval;					\
+#define FUNC_PTR_OR_ERR_RET(func, errval) do {             \
+    if ((func) == NULL)                    \
+        return errval;                    \
 } while (0)
 
-#define FUNC_PTR_OR_NULL_RET_WITH_ERRNO(func, errval) do { 	\
-	if ((func) == NULL) {					\
-		rte_errno = errval;				\
-		return NULL;					\
-	}							\
+#define FUNC_PTR_OR_NULL_RET_WITH_ERRNO(func, errval) do {     \
+    if ((func) == NULL) {                    \
+        rte_errno = errval;                \
+        return NULL;                    \
+    }                            \
 } while (0)
 
 /**
@@ -572,14 +572,14 @@ struct rte_event_timer_adapter {
  */
 static inline uint16_t
 rte_event_timer_arm_burst(const struct rte_event_timer_adapter *adapter,
-			  struct rte_event_timer **evtims,
-			  uint16_t nb_evtims)
+              struct rte_event_timer **evtims,
+              uint16_t nb_evtims)
 {
 #ifdef RTE_LIBRTE_EVENTDEV_DEBUG
-	ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
-	FUNC_PTR_OR_ERR_RET(adapter->arm_burst, -EINVAL);
+    ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
+    FUNC_PTR_OR_ERR_RET(adapter->arm_burst, -EINVAL);
 #endif
-	return adapter->arm_burst(adapter, evtims, nb_evtims);
+    return adapter->arm_burst(adapter, evtims, nb_evtims);
 }
 
 /**
@@ -613,17 +613,17 @@ rte_event_timer_arm_burst(const struct rte_event_timer_adapter *adapter,
  */
 static inline uint16_t
 rte_event_timer_arm_tmo_tick_burst(
-			const struct rte_event_timer_adapter *adapter,
-			struct rte_event_timer **evtims,
-			const uint64_t timeout_ticks,
-			const uint16_t nb_evtims)
+            const struct rte_event_timer_adapter *adapter,
+            struct rte_event_timer **evtims,
+            const uint64_t timeout_ticks,
+            const uint16_t nb_evtims)
 {
 #ifdef RTE_LIBRTE_EVENTDEV_DEBUG
-	ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
-	FUNC_PTR_OR_ERR_RET(adapter->arm_tmo_tick_burst, -EINVAL);
+    ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
+    FUNC_PTR_OR_ERR_RET(adapter->arm_tmo_tick_burst, -EINVAL);
 #endif
-	return adapter->arm_tmo_tick_burst(adapter, evtims, timeout_ticks,
-					   nb_evtims);
+    return adapter->arm_tmo_tick_burst(adapter, evtims, timeout_ticks,
+                       nb_evtims);
 }
 
 /**
@@ -648,14 +648,14 @@ rte_event_timer_arm_tmo_tick_burst(
  */
 static inline uint16_t
 rte_event_timer_cancel_burst(const struct rte_event_timer_adapter *adapter,
-			     struct rte_event_timer **evtims,
-			     uint16_t nb_evtims)
+                 struct rte_event_timer **evtims,
+                 uint16_t nb_evtims)
 {
 #ifdef RTE_LIBRTE_EVENTDEV_DEBUG
-	ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
-	FUNC_PTR_OR_ERR_RET(adapter->cancel_burst, -EINVAL);
+    ADAPTER_VALID_OR_ERR_RET(adapter, -EINVAL);
+    FUNC_PTR_OR_ERR_RET(adapter->cancel_burst, -EINVAL);
 #endif
-	return adapter->cancel_burst(adapter, evtims, nb_evtims);
+    return adapter->cancel_burst(adapter, evtims, nb_evtims);
 }
 
 #endif /* __RTE_EVENT_TIMER_ADAPTER_H__ */

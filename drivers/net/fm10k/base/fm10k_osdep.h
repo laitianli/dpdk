@@ -61,8 +61,8 @@ typedef int        bool;
 #endif
 
 /* offsets are WORD offsets, not BYTE offsets */
-#define FM10K_WRITE_REG(hw, reg, val)		\
-	rte_write32((val), ((hw)->hw_addr + (reg)))
+#define FM10K_WRITE_REG(hw, reg, val)        \
+    rte_write32((val), ((hw)->hw_addr + (reg)))
 
 #define FM10K_READ_REG(hw, reg) rte_read32(((hw)->hw_addr + (reg)))
 
@@ -109,7 +109,7 @@ typedef int        bool;
 
 #ifndef do_div
 #define do_div(n, base) ({\
-	(n) = (n) / (base);\
+    (n) = (n) / (base);\
 })
 #endif /* do_div */
 
@@ -123,23 +123,23 @@ typedef int        bool;
 #endif
 
 #define FM10K_INTEL_VENDOR_ID       0x8086
-#define FM10K_DMA_CTRL_MINMSS_SHIFT		9
-#define FM10K_EICR_PCA_FAULT			0x00000001
-#define FM10K_EICR_THI_FAULT			0x00000004
-#define FM10K_EICR_FUM_FAULT			0x00000020
-#define FM10K_EICR_SRAMERROR			0x00000400
-#define FM10K_SRAM_IP		0x13003
-#define FM10K_RXINT_TIMER_SHIFT			8
-#define FM10K_TXINT_TIMER_SHIFT			8
-#define FM10K_RXD_PKTTYPE_MASK		0x03F0
-#define FM10K_RXD_PKTTYPE_SHIFT		4
+#define FM10K_DMA_CTRL_MINMSS_SHIFT        9
+#define FM10K_EICR_PCA_FAULT            0x00000001
+#define FM10K_EICR_THI_FAULT            0x00000004
+#define FM10K_EICR_FUM_FAULT            0x00000020
+#define FM10K_EICR_SRAMERROR            0x00000400
+#define FM10K_SRAM_IP        0x13003
+#define FM10K_RXINT_TIMER_SHIFT            8
+#define FM10K_TXINT_TIMER_SHIFT            8
+#define FM10K_RXD_PKTTYPE_MASK        0x03F0
+#define FM10K_RXD_PKTTYPE_SHIFT        4
 
-#define FM10K_RXD_STATUS_IPCS		0x0008 /* Indicates IPv4 csum */
-#define FM10K_RXD_STATUS_HBO		0x0400 /* header buffer overrun */
+#define FM10K_RXD_STATUS_IPCS        0x0008 /* Indicates IPv4 csum */
+#define FM10K_RXD_STATUS_HBO        0x0400 /* header buffer overrun */
 
 #define FM10K_TSO_MINMSS \
-	(FM10K_DMA_CTRL_MINMSS_64 >> FM10K_DMA_CTRL_MINMSS_SHIFT)
-#define FM10K_TSO_MIN_HEADERLEN			54
-#define FM10K_TSO_MAX_HEADERLEN			192
+    (FM10K_DMA_CTRL_MINMSS_64 >> FM10K_DMA_CTRL_MINMSS_SHIFT)
+#define FM10K_TSO_MIN_HEADERLEN            54
+#define FM10K_TSO_MAX_HEADERLEN            192
 
 #endif /* _FM10K_OSDEP_H_ */

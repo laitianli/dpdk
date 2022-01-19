@@ -12,14 +12,14 @@
 
 #include "rte_comp.h"
 
-#define RTE_COMPRESSDEV_NAME_MAX_LEN	(64)
+#define RTE_COMPRESSDEV_NAME_MAX_LEN    (64)
 /**< Max length of name of comp PMD */
 
 /* Logging Macros */
 extern int compressdev_logtype;
 #define COMPRESSDEV_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, compressdev_logtype, "%s(): "fmt "\n", \
-			__func__, ##args)
+    rte_log(RTE_LOG_ ## level, compressdev_logtype, "%s(): "fmt "\n", \
+            __func__, ##args)
 
 /**
  * Dequeue processed packets from queue pair of a device.
@@ -39,7 +39,7 @@ extern int compressdev_logtype;
  *   *ops* array.
  */
 typedef uint16_t (*compressdev_dequeue_pkt_burst_t)(void *qp,
-		struct rte_comp_op **ops, uint16_t nb_ops);
+        struct rte_comp_op **ops, uint16_t nb_ops);
 
 /**
  * Enqueue a burst of operations for processing.
@@ -61,27 +61,27 @@ typedef uint16_t (*compressdev_dequeue_pkt_burst_t)(void *qp,
  */
 
 typedef uint16_t (*compressdev_enqueue_pkt_burst_t)(void *qp,
-		struct rte_comp_op **ops, uint16_t nb_ops);
+        struct rte_comp_op **ops, uint16_t nb_ops);
 
 /** The data structure associated with each comp device. */
 struct rte_compressdev {
-	compressdev_dequeue_pkt_burst_t dequeue_burst;
-	/**< Pointer to PMD receive function */
-	compressdev_enqueue_pkt_burst_t enqueue_burst;
-	/**< Pointer to PMD transmit function */
+    compressdev_dequeue_pkt_burst_t dequeue_burst;
+    /**< Pointer to PMD receive function */
+    compressdev_enqueue_pkt_burst_t enqueue_burst;
+    /**< Pointer to PMD transmit function */
 
-	struct rte_compressdev_data *data;
-	/**< Pointer to device data */
-	struct rte_compressdev_ops *dev_ops;
-	/**< Functions exported by PMD */
-	uint64_t feature_flags;
-	/**< Supported features */
-	struct rte_device *device;
-	/**< Backing device */
+    struct rte_compressdev_data *data;
+    /**< Pointer to device data */
+    struct rte_compressdev_ops *dev_ops;
+    /**< Functions exported by PMD */
+    uint64_t feature_flags;
+    /**< Supported features */
+    struct rte_device *device;
+    /**< Backing device */
 
-	__extension__
-	uint8_t attached : 1;
-	/**< Flag indicating the device is attached */
+    __extension__
+    uint8_t attached : 1;
+    /**< Flag indicating the device is attached */
 } __rte_cache_aligned;
 
 /**
@@ -92,23 +92,23 @@ struct rte_compressdev {
  * different processes in a multi-process configuration.
  */
 struct rte_compressdev_data {
-	uint8_t dev_id;
-	/**< Compress device identifier */
-	uint8_t socket_id;
-	/**< Socket identifier where memory is allocated */
-	char name[RTE_COMPRESSDEV_NAME_MAX_LEN];
-	/**< Unique identifier name */
+    uint8_t dev_id;
+    /**< Compress device identifier */
+    uint8_t socket_id;
+    /**< Socket identifier where memory is allocated */
+    char name[RTE_COMPRESSDEV_NAME_MAX_LEN];
+    /**< Unique identifier name */
 
-	__extension__
-	uint8_t dev_started : 1;
-	/**< Device state: STARTED(1)/STOPPED(0) */
+    __extension__
+    uint8_t dev_started : 1;
+    /**< Device state: STARTED(1)/STOPPED(0) */
 
-	void **queue_pairs;
-	/**< Array of pointers to queue pairs. */
-	uint16_t nb_queue_pairs;
-	/**< Number of device queue pairs */
+    void **queue_pairs;
+    /**< Array of pointers to queue pairs. */
+    uint16_t nb_queue_pairs;
+    /**< Number of device queue pairs */
 
-	void *dev_private;
-	/**< PMD-specific private data */
+    void *dev_private;
+    /**< PMD-specific private data */
 } __rte_cache_aligned;
 #endif

@@ -13,44 +13,44 @@
 ark_pkt_dir_t
 ark_pktdir_init(void *base)
 {
-	struct ark_pkt_dir_inst *inst =
-		rte_malloc("ark_pkt_dir_inst",
-			   sizeof(struct ark_pkt_dir_inst),
-			   0);
-	if (inst == NULL) {
-		PMD_DRV_LOG(ERR, "Failed to malloc ark_pkt_dir_inst.\n");
-		return inst;
-	}
-	inst->regs = (struct ark_pkt_dir_regs *)base;
-	inst->regs->ctrl = 0x00110110;	/* POR state */
-	return inst;
+    struct ark_pkt_dir_inst *inst =
+        rte_malloc("ark_pkt_dir_inst",
+               sizeof(struct ark_pkt_dir_inst),
+               0);
+    if (inst == NULL) {
+        PMD_DRV_LOG(ERR, "Failed to malloc ark_pkt_dir_inst.\n");
+        return inst;
+    }
+    inst->regs = (struct ark_pkt_dir_regs *)base;
+    inst->regs->ctrl = 0x00110110;    /* POR state */
+    return inst;
 }
 
 void
 ark_pktdir_uninit(ark_pkt_dir_t handle)
 {
-	struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
+    struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
 
-	rte_free(inst);
+    rte_free(inst);
 }
 
 void
 ark_pktdir_setup(ark_pkt_dir_t handle, uint32_t v)
 {
-	struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
-	inst->regs->ctrl = v;
+    struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
+    inst->regs->ctrl = v;
 }
 
 uint32_t
 ark_pktdir_status(ark_pkt_dir_t handle)
 {
-	struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
-	return inst->regs->ctrl;
+    struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
+    return inst->regs->ctrl;
 }
 
 uint32_t
 ark_pktdir_stall_cnt(ark_pkt_dir_t handle)
 {
-	struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
-	return inst->regs->stall_cnt;
+    struct ark_pkt_dir_inst *inst = (struct ark_pkt_dir_inst *)handle;
+    return inst->regs->stall_cnt;
 }

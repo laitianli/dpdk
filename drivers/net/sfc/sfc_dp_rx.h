@@ -25,15 +25,15 @@ extern "C" {
  * the structure used on datapath.
  */
 struct sfc_dp_rxq {
-	struct sfc_dp_queue	dpq;
+    struct sfc_dp_queue    dpq;
 };
 
 /** Datapath receive queue descriptor number limitations */
 struct sfc_dp_rx_hw_limits {
-	unsigned int rxq_max_entries;
-	unsigned int rxq_min_entries;
-	unsigned int evq_max_entries;
-	unsigned int evq_min_entries;
+    unsigned int rxq_max_entries;
+    unsigned int rxq_min_entries;
+    unsigned int evq_max_entries;
+    unsigned int evq_min_entries;
 };
 
 /**
@@ -44,70 +44,70 @@ struct sfc_dp_rx_hw_limits {
  * readable.
  */
 struct sfc_dp_rx_qcreate_info {
-	/** Memory pool to allocate Rx buffer from */
-	struct rte_mempool	*refill_mb_pool;
-	/** Maximum number of pushed Rx descriptors in the queue */
-	unsigned int		max_fill_level;
-	/** Minimum number of unused Rx descriptors to do refill */
-	unsigned int		refill_threshold;
-	/**
-	 * Usable mbuf data space in accordance with alignment and
-	 * padding requirements imposed by HW.
-	 */
-	unsigned int		buf_size;
+    /** Memory pool to allocate Rx buffer from */
+    struct rte_mempool    *refill_mb_pool;
+    /** Maximum number of pushed Rx descriptors in the queue */
+    unsigned int        max_fill_level;
+    /** Minimum number of unused Rx descriptors to do refill */
+    unsigned int        refill_threshold;
+    /**
+     * Usable mbuf data space in accordance with alignment and
+     * padding requirements imposed by HW.
+     */
+    unsigned int        buf_size;
 
-	/**
-	 * Maximum number of Rx descriptors completed in one Rx event.
-	 * Just for sanity checks if datapath would like to do.
-	 */
-	unsigned int		batch_max;
+    /**
+     * Maximum number of Rx descriptors completed in one Rx event.
+     * Just for sanity checks if datapath would like to do.
+     */
+    unsigned int        batch_max;
 
-	/** Pseudo-header size */
-	unsigned int		prefix_size;
+    /** Pseudo-header size */
+    unsigned int        prefix_size;
 
-	/** Receive queue flags initializer */
-	unsigned int		flags;
-#define SFC_RXQ_FLAG_RSS_HASH	0x1
+    /** Receive queue flags initializer */
+    unsigned int        flags;
+#define SFC_RXQ_FLAG_RSS_HASH    0x1
 
-	/** Rx queue size */
-	unsigned int		rxq_entries;
-	/** DMA-mapped Rx descriptors ring */
-	void			*rxq_hw_ring;
+    /** Rx queue size */
+    unsigned int        rxq_entries;
+    /** DMA-mapped Rx descriptors ring */
+    void            *rxq_hw_ring;
 
-	/** Event queue index in hardware */
-	unsigned int		evq_hw_index;
-	/** Associated event queue size */
-	unsigned int		evq_entries;
-	/** Hardware event ring */
-	void			*evq_hw_ring;
+    /** Event queue index in hardware */
+    unsigned int        evq_hw_index;
+    /** Associated event queue size */
+    unsigned int        evq_entries;
+    /** Hardware event ring */
+    void            *evq_hw_ring;
 
-	/** The queue index in hardware (required to push right doorbell) */
-	unsigned int		hw_index;
-	/**
-	 * Virtual address of the memory-mapped BAR to push Rx refill
-	 * doorbell
-	 */
-	volatile void		*mem_bar;
-	/** VI window size shift */
-	unsigned int		vi_window_shift;
+    /** The queue index in hardware (required to push right doorbell) */
+    unsigned int        hw_index;
+    /**
+     * Virtual address of the memory-mapped BAR to push Rx refill
+     * doorbell
+     */
+    volatile void        *mem_bar;
+    /** VI window size shift */
+    unsigned int        vi_window_shift;
 };
 
 /**
  * Get Rx datapath specific device info.
  *
- * @param dev_info		Device info to be adjusted
+ * @param dev_info        Device info to be adjusted
  */
 typedef void (sfc_dp_rx_get_dev_info_t)(struct rte_eth_dev_info *dev_info);
 
 /**
  * Test if an Rx datapath supports specific mempool ops.
  *
- * @param pool			The name of the pool operations to test.
+ * @param pool            The name of the pool operations to test.
  *
  * @return Check status.
- * @retval	0		Best mempool ops choice.
- * @retval	1		Mempool ops are supported.
- * @retval	-ENOTSUP	Mempool ops not supported.
+ * @retval    0        Best mempool ops choice.
+ * @retval    1        Mempool ops are supported.
+ * @retval    -ENOTSUP    Mempool ops not supported.
  */
 typedef int (sfc_dp_rx_pool_ops_supported_t)(const char *pool);
 
@@ -115,38 +115,38 @@ typedef int (sfc_dp_rx_pool_ops_supported_t)(const char *pool);
  * Get size of receive and event queue rings by the number of Rx
  * descriptors and mempool configuration.
  *
- * @param nb_rx_desc		Number of Rx descriptors
- * @param mb_pool		mbuf pool with Rx buffers
- * @param rxq_entries		Location for number of Rx ring entries
- * @param evq_entries		Location for number of event ring entries
- * @param rxq_max_fill_level	Location for maximum Rx ring fill level
+ * @param nb_rx_desc        Number of Rx descriptors
+ * @param mb_pool        mbuf pool with Rx buffers
+ * @param rxq_entries        Location for number of Rx ring entries
+ * @param evq_entries        Location for number of event ring entries
+ * @param rxq_max_fill_level    Location for maximum Rx ring fill level
  *
  * @return 0 or positive errno.
  */
 typedef int (sfc_dp_rx_qsize_up_rings_t)(uint16_t nb_rx_desc,
-					 struct sfc_dp_rx_hw_limits *limits,
-					 struct rte_mempool *mb_pool,
-					 unsigned int *rxq_entries,
-					 unsigned int *evq_entries,
-					 unsigned int *rxq_max_fill_level);
+                     struct sfc_dp_rx_hw_limits *limits,
+                     struct rte_mempool *mb_pool,
+                     unsigned int *rxq_entries,
+                     unsigned int *evq_entries,
+                     unsigned int *rxq_max_fill_level);
 
 /**
  * Allocate and initialize datapath receive queue.
  *
- * @param port_id	The port identifier
- * @param queue_id	The queue identifier
- * @param pci_addr	PCI function address
- * @param socket_id	Socket identifier to allocate memory
- * @param info		Receive queue information
- * @param dp_rxqp	Location for generic datapath receive queue pointer
+ * @param port_id    The port identifier
+ * @param queue_id    The queue identifier
+ * @param pci_addr    PCI function address
+ * @param socket_id    Socket identifier to allocate memory
+ * @param info        Receive queue information
+ * @param dp_rxqp    Location for generic datapath receive queue pointer
  *
  * @return 0 or positive errno.
  */
 typedef int (sfc_dp_rx_qcreate_t)(uint16_t port_id, uint16_t queue_id,
-				  const struct rte_pci_addr *pci_addr,
-				  int socket_id,
-				  const struct sfc_dp_rx_qcreate_info *info,
-				  struct sfc_dp_rxq **dp_rxqp);
+                  const struct rte_pci_addr *pci_addr,
+                  int socket_id,
+                  const struct sfc_dp_rx_qcreate_info *info,
+                  struct sfc_dp_rxq **dp_rxqp);
 
 /**
  * Free resources allocated for datapath recevie queue.
@@ -159,13 +159,13 @@ typedef void (sfc_dp_rx_qdestroy_t)(struct sfc_dp_rxq *dp_rxq);
  * It handovers EvQ to the datapath.
  */
 typedef int (sfc_dp_rx_qstart_t)(struct sfc_dp_rxq *dp_rxq,
-				 unsigned int evq_read_ptr);
+                 unsigned int evq_read_ptr);
 
 /**
  * Receive queue stop function called before flush.
  */
 typedef void (sfc_dp_rx_qstop_t)(struct sfc_dp_rxq *dp_rxq,
-				 unsigned int *evq_read_ptr);
+                 unsigned int *evq_read_ptr);
 
 /**
  * Receive event handler used during queue flush only.
@@ -176,7 +176,7 @@ typedef bool (sfc_dp_rx_qrx_ev_t)(struct sfc_dp_rxq *dp_rxq, unsigned int id);
  * Packed stream receive event handler used during queue flush only.
  */
 typedef bool (sfc_dp_rx_qrx_ps_ev_t)(struct sfc_dp_rxq *dp_rxq,
-				     unsigned int id);
+                     unsigned int id);
 
 /**
  * Receive queue purge function called after queue flush.
@@ -187,14 +187,14 @@ typedef void (sfc_dp_rx_qpurge_t)(struct sfc_dp_rxq *dp_rxq);
 
 /** Get packet types recognized/classified */
 typedef const uint32_t * (sfc_dp_rx_supported_ptypes_get_t)(
-				uint32_t tunnel_encaps);
+                uint32_t tunnel_encaps);
 
 /** Get number of pending Rx descriptors */
 typedef unsigned int (sfc_dp_rx_qdesc_npending_t)(struct sfc_dp_rxq *dp_rxq);
 
 /** Check Rx descriptor status */
 typedef int (sfc_dp_rx_qdesc_status_t)(struct sfc_dp_rxq *dp_rxq,
-				       uint16_t offset);
+                       uint16_t offset);
 /** Enable Rx interrupts */
 typedef int (sfc_dp_rx_intr_enable_t)(struct sfc_dp_rxq *dp_rxq);
 
@@ -203,61 +203,61 @@ typedef int (sfc_dp_rx_intr_disable_t)(struct sfc_dp_rxq *dp_rxq);
 
 /** Receive datapath definition */
 struct sfc_dp_rx {
-	struct sfc_dp				dp;
+    struct sfc_dp                dp;
 
-	unsigned int				features;
-#define SFC_DP_RX_FEAT_MULTI_PROCESS		0x1
-#define SFC_DP_RX_FEAT_FLOW_FLAG		0x2
-#define SFC_DP_RX_FEAT_FLOW_MARK		0x4
-#define SFC_DP_RX_FEAT_INTR			0x8
-	/**
-	 * Rx offload capabilities supported by the datapath on device
-	 * level only if HW/FW supports it.
-	 */
-	uint64_t				dev_offload_capa;
-	/**
-	 * Rx offload capabilities supported by the datapath per-queue
-	 * if HW/FW supports it.
-	 */
-	uint64_t				queue_offload_capa;
-	sfc_dp_rx_get_dev_info_t		*get_dev_info;
-	sfc_dp_rx_pool_ops_supported_t		*pool_ops_supported;
-	sfc_dp_rx_qsize_up_rings_t		*qsize_up_rings;
-	sfc_dp_rx_qcreate_t			*qcreate;
-	sfc_dp_rx_qdestroy_t			*qdestroy;
-	sfc_dp_rx_qstart_t			*qstart;
-	sfc_dp_rx_qstop_t			*qstop;
-	sfc_dp_rx_qrx_ev_t			*qrx_ev;
-	sfc_dp_rx_qrx_ps_ev_t			*qrx_ps_ev;
-	sfc_dp_rx_qpurge_t			*qpurge;
-	sfc_dp_rx_supported_ptypes_get_t	*supported_ptypes_get;
-	sfc_dp_rx_qdesc_npending_t		*qdesc_npending;
-	sfc_dp_rx_qdesc_status_t		*qdesc_status;
-	sfc_dp_rx_intr_enable_t			*intr_enable;
-	sfc_dp_rx_intr_disable_t		*intr_disable;
-	eth_rx_burst_t				pkt_burst;
+    unsigned int                features;
+#define SFC_DP_RX_FEAT_MULTI_PROCESS        0x1
+#define SFC_DP_RX_FEAT_FLOW_FLAG        0x2
+#define SFC_DP_RX_FEAT_FLOW_MARK        0x4
+#define SFC_DP_RX_FEAT_INTR            0x8
+    /**
+     * Rx offload capabilities supported by the datapath on device
+     * level only if HW/FW supports it.
+     */
+    uint64_t                dev_offload_capa;
+    /**
+     * Rx offload capabilities supported by the datapath per-queue
+     * if HW/FW supports it.
+     */
+    uint64_t                queue_offload_capa;
+    sfc_dp_rx_get_dev_info_t        *get_dev_info;
+    sfc_dp_rx_pool_ops_supported_t        *pool_ops_supported;
+    sfc_dp_rx_qsize_up_rings_t        *qsize_up_rings;
+    sfc_dp_rx_qcreate_t            *qcreate;
+    sfc_dp_rx_qdestroy_t            *qdestroy;
+    sfc_dp_rx_qstart_t            *qstart;
+    sfc_dp_rx_qstop_t            *qstop;
+    sfc_dp_rx_qrx_ev_t            *qrx_ev;
+    sfc_dp_rx_qrx_ps_ev_t            *qrx_ps_ev;
+    sfc_dp_rx_qpurge_t            *qpurge;
+    sfc_dp_rx_supported_ptypes_get_t    *supported_ptypes_get;
+    sfc_dp_rx_qdesc_npending_t        *qdesc_npending;
+    sfc_dp_rx_qdesc_status_t        *qdesc_status;
+    sfc_dp_rx_intr_enable_t            *intr_enable;
+    sfc_dp_rx_intr_disable_t        *intr_disable;
+    eth_rx_burst_t                pkt_burst;
 };
 
 static inline struct sfc_dp_rx *
 sfc_dp_find_rx_by_name(struct sfc_dp_list *head, const char *name)
 {
-	struct sfc_dp *p = sfc_dp_find_by_name(head, SFC_DP_RX, name);
+    struct sfc_dp *p = sfc_dp_find_by_name(head, SFC_DP_RX, name);
 
-	return (p == NULL) ? NULL : container_of(p, struct sfc_dp_rx, dp);
+    return (p == NULL) ? NULL : container_of(p, struct sfc_dp_rx, dp);
 }
 
 static inline struct sfc_dp_rx *
 sfc_dp_find_rx_by_caps(struct sfc_dp_list *head, unsigned int avail_caps)
 {
-	struct sfc_dp *p = sfc_dp_find_by_caps(head, SFC_DP_RX, avail_caps);
+    struct sfc_dp *p = sfc_dp_find_by_caps(head, SFC_DP_RX, avail_caps);
 
-	return (p == NULL) ? NULL : container_of(p, struct sfc_dp_rx, dp);
+    return (p == NULL) ? NULL : container_of(p, struct sfc_dp_rx, dp);
 }
 
 static inline uint64_t
 sfc_dp_rx_offload_capa(const struct sfc_dp_rx *dp_rx)
 {
-	return dp_rx->dev_offload_capa | dp_rx->queue_offload_capa;
+    return dp_rx->dev_offload_capa | dp_rx->queue_offload_capa;
 }
 
 /** Get Rx datapath ops by the datapath RxQ handle */

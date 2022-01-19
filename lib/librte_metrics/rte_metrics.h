@@ -51,8 +51,8 @@ extern "C" {
  * The struct rte_metric_value references these names via their array index.
  */
 struct rte_metric_name {
-	/** String describing metric */
-	char name[RTE_METRICS_MAX_NAME_LEN];
+    /** String describing metric */
+    char name[RTE_METRICS_MAX_NAME_LEN];
 };
 
 
@@ -65,10 +65,10 @@ struct rte_metric_name {
  * rte_metrics_get_names().
  */
 struct rte_metric_value {
-	/** Numeric identifier of metric. */
-	uint16_t key;
-	/** Value for metric */
-	uint64_t value;
+    /** Numeric identifier of metric. */
+    uint16_t key;
+    /** Value for metric */
+    uint64_t value;
 };
 
 
@@ -160,8 +160,8 @@ int rte_metrics_reg_names(const char * const *names, uint16_t cnt_names);
  *   - Negative value: error.
  */
 int rte_metrics_get_names(
-	struct rte_metric_name *names,
-	uint16_t capacity);
+    struct rte_metric_name *names,
+    uint16_t capacity);
 
 /**
  * Get metric value table.
@@ -186,9 +186,9 @@ int rte_metrics_get_names(
  *   - Negative value: error.
  */
 int rte_metrics_get_values(
-	int port_id,
-	struct rte_metric_value *values,
-	uint16_t capacity);
+    int port_id,
+    struct rte_metric_value *values,
+    uint16_t capacity);
 
 /**
  * Updates a metric
@@ -205,9 +205,9 @@ int rte_metrics_get_values(
  *   - Zero on success
  */
 int rte_metrics_update_value(
-	int port_id,
-	uint16_t key,
-	const uint64_t value);
+    int port_id,
+    uint16_t key,
+    const uint64_t value);
 
 /**
  * Updates a metric set. Note that it is an error to try to
@@ -228,10 +228,10 @@ int rte_metrics_update_value(
  *   - Zero on success
  */
 int rte_metrics_update_values(
-	int port_id,
-	uint16_t key,
-	const uint64_t *values,
-	uint32_t count);
+    int port_id,
+    uint16_t key,
+    const uint64_t *values,
+    uint32_t count);
 
 #ifdef __cplusplus
 }

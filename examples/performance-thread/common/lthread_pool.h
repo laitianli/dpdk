@@ -45,27 +45,27 @@ struct qnode_cache;
  * define intermediate node
  */
 struct qnode {
-	struct qnode *next;
-	void *data;
-	struct qnode_pool *pool;
+    struct qnode *next;
+    void *data;
+    struct qnode_pool *pool;
 } __rte_cache_aligned;
 
 /*
  * a pool structure
  */
 struct qnode_pool {
-	struct qnode *head;
-	struct qnode *stub;
-	struct qnode *fast_alloc;
-	struct qnode *tail __rte_cache_aligned;
-	int pre_alloc;
-	char name[LT_MAX_NAME_SIZE];
+    struct qnode *head;
+    struct qnode *stub;
+    struct qnode *fast_alloc;
+    struct qnode *tail __rte_cache_aligned;
+    int pre_alloc;
+    char name[LT_MAX_NAME_SIZE];
 
-	DIAG_COUNT_DEFINE(rd);
-	DIAG_COUNT_DEFINE(wr);
-	DIAG_COUNT_DEFINE(available);
-	DIAG_COUNT_DEFINE(prealloc);
-	DIAG_COUNT_DEFINE(capacity);
+    DIAG_COUNT_DEFINE(rd);
+    DIAG_COUNT_DEFINE(wr);
+    DIAG_COUNT_DEFINE(available);
+    DIAG_COUNT_DEFINE(prealloc);
+    DIAG_COUNT_DEFINE(capacity);
 } __rte_cache_aligned;
 
 /*
@@ -75,37 +75,37 @@ struct qnode_pool {
 static inline struct qnode_pool *
 _qnode_pool_create(const char *name, int prealloc_size) {
 
-	struct qnode_pool *p = rte_malloc_socket(NULL,
-					sizeof(struct qnode_pool),
-					RTE_CACHE_LINE_SIZE,
-					rte_socket_id());
+    struct qnode_pool *p = rte_malloc_socket(NULL,
+                    sizeof(struct qnode_pool),
+                    RTE_CACHE_LINE_SIZE,
+                    rte_socket_id());
 
-	RTE_ASSERT(p);
+    RTE_ASSERT(p);
 
-	p->stub = rte_malloc_socket(NULL,
-				sizeof(struct qnode),
-				RTE_CACHE_LINE_SIZE,
-				rte_socket_id());
+    p->stub = rte_malloc_socket(NULL,
+                sizeof(struct qnode),
+                RTE_CACHE_LINE_SIZE,
+                rte_socket_id());
 
-	RTE_ASSERT(p->stub);
+    RTE_ASSERT(p->stub);
 
-	if (name != NULL)
-		strncpy(p->name, name, LT_MAX_NAME_SIZE);
-	p->name[sizeof(p->name)-1] = 0;
+    if (name != NULL)
+        strncpy(p->name, name, LT_MAX_NAME_SIZE);
+    p->name[sizeof(p->name)-1] = 0;
 
-	p->stub->pool = p;
-	p->stub->next = NULL;
-	p->tail = p->stub;
-	p->head = p->stub;
-	p->pre_alloc = prealloc_size;
+    p->stub->pool = p;
+    p->stub->next = NULL;
+    p->tail = p->stub;
+    p->head = p->stub;
+    p->pre_alloc = prealloc_size;
 
-	DIAG_COUNT_INIT(p, rd);
-	DIAG_COUNT_INIT(p, wr);
-	DIAG_COUNT_INIT(p, available);
-	DIAG_COUNT_INIT(p, prealloc);
-	DIAG_COUNT_INIT(p, capacity);
+    DIAG_COUNT_INIT(p, rd);
+    DIAG_COUNT_INIT(p, wr);
+    DIAG_COUNT_INIT(p, available);
+    DIAG_COUNT_INIT(p, prealloc);
+    DIAG_COUNT_INIT(p, capacity);
 
-	return p;
+    return p;
 }
 
 
@@ -115,14 +115,14 @@ _qnode_pool_create(const char *name, int prealloc_size) {
 static __rte_always_inline void
 _qnode_pool_insert(struct qnode_pool *p, struct qnode *n)
 {
-	n->next = NULL;
-	struct qnode *prev = n;
-	/* We insert at the head */
-	prev = (struct qnode *) __sync_lock_test_and_set((uint64_t *)&p->head,
-						(uint64_t) prev);
-	/* there is a window of inconsistency until prev next is set */
-	/* which is why remove must retry */
-	prev->next = (n);
+    n->next = NULL;
+    struct qnode *prev = n;
+    /* We insert at the head */
+    prev = (struct qnode *) __sync_lock_test_and_set((uint64_t *)&p->head,
+                        (uint64_t) prev);
+    /* there is a window of inconsistency until prev next is set */
+    /* which is why remove must retry */
+    prev->next = (n);
 }
 
 /*
@@ -139,37 +139,37 @@ _qnode_pool_insert(struct qnode_pool *p, struct qnode *n)
 static __rte_always_inline struct qnode *
 _pool_remove(struct qnode_pool *p)
 {
-	struct qnode *head;
-	struct qnode *tail = p->tail;
-	struct qnode *next = tail->next;
+    struct qnode *head;
+    struct qnode *tail = p->tail;
+    struct qnode *next = tail->next;
 
-	/* we remove from the tail */
-	if (tail == p->stub) {
-		if (next == NULL)
-			return NULL;
-		/* advance the tail */
-		p->tail = next;
-		tail = next;
-		next = next->next;
-	}
-	if (likely(next != NULL)) {
-		p->tail = next;
-		return tail;
-	}
+    /* we remove from the tail */
+    if (tail == p->stub) {
+        if (next == NULL)
+            return NULL;
+        /* advance the tail */
+        p->tail = next;
+        tail = next;
+        next = next->next;
+    }
+    if (likely(next != NULL)) {
+        p->tail = next;
+        return tail;
+    }
 
-	head = p->head;
-	if (tail == head)
-		return NULL;
+    head = p->head;
+    if (tail == head)
+        return NULL;
 
-	/* swing stub node */
-	_qnode_pool_insert(p, p->stub);
+    /* swing stub node */
+    _qnode_pool_insert(p, p->stub);
 
-	next = tail->next;
-	if (next) {
-		p->tail = next;
-		return tail;
-	}
-	return NULL;
+    next = tail->next;
+    if (next) {
+        p->tail = next;
+        return tail;
+    }
+    return NULL;
 }
 
 
@@ -180,17 +180,17 @@ _pool_remove(struct qnode_pool *p)
 static __rte_always_inline struct qnode *
 _qnode_pool_remove(struct qnode_pool *p)
 {
-	struct qnode *n;
+    struct qnode *n;
 
-	do {
-		n = _pool_remove(p);
-		if (likely(n != NULL))
-			return n;
+    do {
+        n = _pool_remove(p);
+        if (likely(n != NULL))
+            return n;
 
-		rte_compiler_barrier();
-	}  while ((p->head != p->tail) &&
-			(p->tail != p->stub));
-	return NULL;
+        rte_compiler_barrier();
+    }  while ((p->head != p->tail) &&
+            (p->tail != p->stub));
+    return NULL;
 }
 
 /*
@@ -200,41 +200,41 @@ _qnode_pool_remove(struct qnode_pool *p)
 static __rte_always_inline struct qnode *
 _qnode_alloc(void)
 {
-	struct qnode_pool *p = (THIS_SCHED)->qnode_pool;
-	int prealloc_size = p->pre_alloc;
-	struct qnode *n;
-	int i;
+    struct qnode_pool *p = (THIS_SCHED)->qnode_pool;
+    int prealloc_size = p->pre_alloc;
+    struct qnode *n;
+    int i;
 
-	if (likely(p->fast_alloc != NULL)) {
-		n = p->fast_alloc;
-		p->fast_alloc = NULL;
-		return n;
-	}
+    if (likely(p->fast_alloc != NULL)) {
+        n = p->fast_alloc;
+        p->fast_alloc = NULL;
+        return n;
+    }
 
-	n = _qnode_pool_remove(p);
+    n = _qnode_pool_remove(p);
 
-	if (unlikely(n == NULL)) {
-		DIAG_COUNT_INC(p, prealloc);
-		for (i = 0; i < prealloc_size; i++) {
-			n = rte_malloc_socket(NULL,
-					sizeof(struct qnode),
-					RTE_CACHE_LINE_SIZE,
-					rte_socket_id());
-			if (n == NULL)
-				return NULL;
+    if (unlikely(n == NULL)) {
+        DIAG_COUNT_INC(p, prealloc);
+        for (i = 0; i < prealloc_size; i++) {
+            n = rte_malloc_socket(NULL,
+                    sizeof(struct qnode),
+                    RTE_CACHE_LINE_SIZE,
+                    rte_socket_id());
+            if (n == NULL)
+                return NULL;
 
-			DIAG_COUNT_INC(p, available);
-			DIAG_COUNT_INC(p, capacity);
+            DIAG_COUNT_INC(p, available);
+            DIAG_COUNT_INC(p, capacity);
 
-			n->pool = p;
-			_qnode_pool_insert(p, n);
-		}
-		n = _qnode_pool_remove(p);
-	}
-	n->pool = p;
-	DIAG_COUNT_INC(p, rd);
-	DIAG_COUNT_DEC(p, available);
-	return n;
+            n->pool = p;
+            _qnode_pool_insert(p, n);
+        }
+        n = _qnode_pool_remove(p);
+    }
+    n->pool = p;
+    DIAG_COUNT_INC(p, rd);
+    DIAG_COUNT_DEC(p, available);
+    return n;
 }
 
 
@@ -245,17 +245,17 @@ _qnode_alloc(void)
 static __rte_always_inline void
 _qnode_free(struct qnode *n)
 {
-	struct qnode_pool *p = n->pool;
+    struct qnode_pool *p = n->pool;
 
 
-	if (unlikely(p->fast_alloc != NULL) ||
-			unlikely(n->pool != (THIS_SCHED)->qnode_pool)) {
-		DIAG_COUNT_INC(p, wr);
-		DIAG_COUNT_INC(p, available);
-		_qnode_pool_insert(p, n);
-		return;
-	}
-	p->fast_alloc = n;
+    if (unlikely(p->fast_alloc != NULL) ||
+            unlikely(n->pool != (THIS_SCHED)->qnode_pool)) {
+        DIAG_COUNT_INC(p, wr);
+        DIAG_COUNT_INC(p, available);
+        _qnode_pool_insert(p, n);
+        return;
+    }
+    p->fast_alloc = n;
 }
 
 /*
@@ -265,13 +265,13 @@ _qnode_free(struct qnode *n)
 static inline int
 _qnode_pool_destroy(struct qnode_pool *p)
 {
-	rte_free(p->stub);
-	rte_free(p);
-	return 0;
+    rte_free(p->stub);
+    rte_free(p);
+    return 0;
 }
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* LTHREAD_POOL_H_ */
+#endif                /* LTHREAD_POOL_H_ */

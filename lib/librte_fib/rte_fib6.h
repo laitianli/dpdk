@@ -14,7 +14,7 @@
 
 #include <rte_compat.h>
 
-#define RTE_FIB6_IPV6_ADDR_SIZE		16
+#define RTE_FIB6_IPV6_ADDR_SIZE        16
 /** Maximum depth value possible for IPv6 FIB. */
 #define RTE_FIB6_MAXDEPTH       128
 
@@ -23,43 +23,43 @@ struct rte_rib6;
 
 /** Type of FIB struct */
 enum rte_fib6_type {
-	RTE_FIB6_DUMMY,		/**< RIB6 tree based FIB */
-	RTE_FIB6_TRIE,		/**< TRIE based fib  */
-	RTE_FIB6_TYPE_MAX
+    RTE_FIB6_DUMMY,        /**< RIB6 tree based FIB */
+    RTE_FIB6_TRIE,        /**< TRIE based fib  */
+    RTE_FIB6_TYPE_MAX
 };
 
 /** Modify FIB function */
 typedef int (*rte_fib6_modify_fn_t)(struct rte_fib6 *fib,
-	const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE], uint8_t depth,
-	uint64_t next_hop, int op);
+    const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE], uint8_t depth,
+    uint64_t next_hop, int op);
 /** FIB bulk lookup function */
 typedef void (*rte_fib6_lookup_fn_t)(void *fib,
-	uint8_t ips[][RTE_FIB6_IPV6_ADDR_SIZE],
-	uint64_t *next_hops, const unsigned int n);
+    uint8_t ips[][RTE_FIB6_IPV6_ADDR_SIZE],
+    uint64_t *next_hops, const unsigned int n);
 
 enum rte_fib6_op {
-	RTE_FIB6_ADD,
-	RTE_FIB6_DEL,
+    RTE_FIB6_ADD,
+    RTE_FIB6_DEL,
 };
 
 enum rte_fib_trie_nh_sz {
-	RTE_FIB6_TRIE_2B = 1,
-	RTE_FIB6_TRIE_4B,
-	RTE_FIB6_TRIE_8B
+    RTE_FIB6_TRIE_2B = 1,
+    RTE_FIB6_TRIE_4B,
+    RTE_FIB6_TRIE_8B
 };
 
 /** FIB configuration structure */
 struct rte_fib6_conf {
-	enum rte_fib6_type type; /**< Type of FIB struct */
-	/** Default value returned on lookup if there is no route */
-	uint64_t default_nh;
-	int	max_routes;
-	union {
-		struct {
-			enum rte_fib_trie_nh_sz nh_sz;
-			uint32_t	num_tbl8;
-		} trie;
-	};
+    enum rte_fib6_type type; /**< Type of FIB struct */
+    /** Default value returned on lookup if there is no route */
+    uint64_t default_nh;
+    int    max_routes;
+    union {
+        struct {
+            enum rte_fib_trie_nh_sz nh_sz;
+            uint32_t    num_tbl8;
+        } trie;
+    };
 };
 
 /**
@@ -122,7 +122,7 @@ rte_fib6_free(struct rte_fib6 *fib);
 __rte_experimental
 int
 rte_fib6_add(struct rte_fib6 *fib, const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE],
-	uint8_t depth, uint64_t next_hop);
+    uint8_t depth, uint64_t next_hop);
 
 /**
  * Delete a rule from the FIB.
@@ -139,7 +139,7 @@ rte_fib6_add(struct rte_fib6 *fib, const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE],
 __rte_experimental
 int
 rte_fib6_delete(struct rte_fib6 *fib,
-	const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE], uint8_t depth);
+    const uint8_t ip[RTE_FIB6_IPV6_ADDR_SIZE], uint8_t depth);
 
 /**
  * Lookup multiple IP addresses in the FIB.
@@ -161,8 +161,8 @@ rte_fib6_delete(struct rte_fib6 *fib,
 __rte_experimental
 int
 rte_fib6_lookup_bulk(struct rte_fib6 *fib,
-	uint8_t ips[][RTE_FIB6_IPV6_ADDR_SIZE],
-	uint64_t *next_hops, int n);
+    uint8_t ips[][RTE_FIB6_IPV6_ADDR_SIZE],
+    uint64_t *next_hops, int n);
 
 /**
  * Get pointer to the dataplane specific struct

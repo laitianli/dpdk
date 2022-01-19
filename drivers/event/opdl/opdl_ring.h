@@ -81,7 +81,7 @@ struct opdl_stage;
  */
 struct opdl_ring *
 opdl_ring_create(const char *name, uint32_t num_slots, uint32_t slot_size,
-		uint32_t max_num_stages, int socket);
+        uint32_t max_num_stages, int socket);
 
 /**
  * Get pointer to individual slot in a opdl_ring.
@@ -190,7 +190,7 @@ opdl_ring_get_input_stage(const struct opdl_ring *t);
  */
 int
 opdl_stage_set_deps(struct opdl_stage *s, struct opdl_stage *deps[],
-		uint32_t num_deps);
+        uint32_t num_deps);
 
 /**
  * Returns the opdl_ring that a stage belongs to.
@@ -226,7 +226,7 @@ opdl_stage_get_opdl_ring(const struct opdl_stage *s);
  */
 uint32_t
 opdl_ring_input(struct opdl_ring *t, const void *entries, uint32_t num_entries,
-		bool block);
+        bool block);
 
 /**
  * Inputs a new batch of entries into a opdl stage. This function is only
@@ -252,7 +252,7 @@ opdl_ring_input(struct opdl_ring *t, const void *entries, uint32_t num_entries,
  */
 uint32_t
 opdl_ring_copy_from_burst(struct opdl_ring *t, struct opdl_stage *s,
-			const void *entries, uint32_t num_entries, bool block);
+            const void *entries, uint32_t num_entries, bool block);
 
 /**
  * Copy a batch of entries from the opdl ring. This function is only
@@ -278,7 +278,7 @@ opdl_ring_copy_from_burst(struct opdl_ring *t, struct opdl_stage *s,
  */
 uint32_t
 opdl_ring_copy_to_burst(struct opdl_ring *t, struct opdl_stage *s,
-		void *entries, uint32_t num_entries, bool block);
+        void *entries, uint32_t num_entries, bool block);
 
 /**
  * Before processing a batch of entries, a stage must first claim them to get
@@ -309,12 +309,12 @@ opdl_ring_copy_to_burst(struct opdl_ring *t, struct opdl_stage *s,
  */
 uint32_t
 opdl_stage_claim(struct opdl_stage *s, void *entries,
-		uint32_t num_entries, uint32_t *seq, bool block, bool atomic);
+        uint32_t num_entries, uint32_t *seq, bool block, bool atomic);
 
 uint32_t
 opdl_stage_deps_add(struct opdl_ring *t, struct opdl_stage *s,
-		uint32_t nb_instance, uint32_t instance_id,
-		struct opdl_stage *deps[], uint32_t num_deps);
+        uint32_t nb_instance, uint32_t instance_id,
+        struct opdl_stage *deps[], uint32_t num_deps);
 
 /**
  * A function to check how many entries are ready to be claimed.
@@ -333,7 +333,7 @@ opdl_stage_deps_add(struct opdl_ring *t, struct opdl_stage *s,
  *   Number of entries ready to be claimed.
  */
 typedef uint32_t (opdl_ring_check_entries_t)(void *entries[],
-		uint32_t num_entries, void *arg, bool block);
+        uint32_t num_entries, void *arg, bool block);
 
 /**
  * Before processing a batch of entries, a stage must first claim them to get
@@ -365,8 +365,8 @@ typedef uint32_t (opdl_ring_check_entries_t)(void *entries[],
  */
 uint32_t
 opdl_stage_claim_check(struct opdl_stage *s, void **entries,
-		uint32_t num_entries, uint32_t *seq, bool block,
-		opdl_ring_check_entries_t *check, void *arg);
+        uint32_t num_entries, uint32_t *seq, bool block,
+        opdl_ring_check_entries_t *check, void *arg);
 
 /**
  * Before processing a batch of entries, a stage must first claim them to get
@@ -401,7 +401,7 @@ opdl_stage_claim_check(struct opdl_stage *s, void **entries,
  */
 uint32_t
 opdl_stage_claim_copy(struct opdl_stage *s, void *entries,
-		uint32_t num_entries, uint32_t *seq, bool block);
+        uint32_t num_entries, uint32_t *seq, bool block);
 
 /**
  * This function must be called when a stage has finished its processing of
@@ -431,7 +431,7 @@ opdl_stage_claim_copy(struct opdl_stage *s, void *entries,
  */
 int
 opdl_stage_disclaim(struct opdl_stage *s, uint32_t num_entries,
-		bool block);
+        bool block);
 
 /**
  * This function can be called when a stage has finished its processing of
@@ -461,7 +461,7 @@ opdl_stage_disclaim(struct opdl_stage *s, uint32_t num_entries,
  */
 void
 opdl_stage_disclaim_n(struct opdl_stage *s, uint32_t num_entries,
-		bool block);
+        bool block);
 
 /**
  * Check how many entries can be input.
@@ -530,7 +530,7 @@ opdl_stage_create(struct opdl_ring *t,  bool threadsafe);
  */
 void
 opdl_stage_set_queue_id(struct opdl_stage *s,
-		uint32_t queue_id);
+        uint32_t queue_id);
 
 /**
  * Prints information on opdl_ring instance and all its stages
@@ -605,7 +605,7 @@ opdl_ring_set_stage_threadsafe(struct opdl_stage *s, bool threadsafe);
 
 bool
 opdl_ring_cas_slot(struct opdl_stage *s, const struct rte_event *ev,
-		uint32_t index, bool atomic);
+        uint32_t index, bool atomic);
 
 #ifdef __cplusplus
 }

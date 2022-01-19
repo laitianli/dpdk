@@ -18,9 +18,9 @@ extern "C" {
  * Event description.
  */
 struct rte_eth_vhost_queue_event {
-	uint16_t queue_id;
-	bool rx;
-	bool enable;
+    uint16_t queue_id;
+    bool rx;
+    bool enable;
 };
 
 /**
@@ -41,7 +41,7 @@ struct rte_eth_vhost_queue_event {
  *  - On failure, a negative value.
  */
 int rte_eth_vhost_get_queue_event(uint16_t port_id,
-		struct rte_eth_vhost_queue_event *event);
+        struct rte_eth_vhost_queue_event *event);
 
 /**
  * Get the 'vid' value associated with the specified port.

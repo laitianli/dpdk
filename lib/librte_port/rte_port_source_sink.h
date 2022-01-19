@@ -22,16 +22,16 @@ extern "C" {
 
 /** source port parameters */
 struct rte_port_source_params {
-	/** Pre-initialized buffer pool */
-	struct rte_mempool *mempool;
+    /** Pre-initialized buffer pool */
+    struct rte_mempool *mempool;
 
-	/** The full path of the pcap file to read packets from */
-	const char *file_name;
-	/** The number of bytes to be read from each packet in the
-	 *  pcap file. If this value is 0, the whole packet is read;
-	 *  if it is bigger than packet size, the generated packets
-	 *  will contain the whole packet */
-	uint32_t n_bytes_per_pkt;
+    /** The full path of the pcap file to read packets from */
+    const char *file_name;
+    /** The number of bytes to be read from each packet in the
+     *  pcap file. If this value is 0, the whole packet is read;
+     *  if it is bigger than packet size, the generated packets
+     *  will contain the whole packet */
+    uint32_t n_bytes_per_pkt;
 };
 
 /** source port operations */
@@ -39,13 +39,13 @@ extern struct rte_port_in_ops rte_port_source_ops;
 
 /** sink port parameters */
 struct rte_port_sink_params {
-	/** The full path of the pcap file to write the packets to */
-	const char *file_name;
-	/** The maximum number of packets write to the pcap file.
-	 *  If this value is 0, the "infinite" write will be carried
-	 *  out.
-	 */
-	uint32_t max_n_pkts;
+    /** The full path of the pcap file to write the packets to */
+    const char *file_name;
+    /** The maximum number of packets write to the pcap file.
+     *  If this value is 0, the "infinite" write will be carried
+     *  out.
+     */
+    uint32_t max_n_pkts;
 };
 
 /** sink port operations */

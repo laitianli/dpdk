@@ -27,9 +27,9 @@
 #endif
 
 #ifdef RTE_EXEC_ENV_FREEBSD
-#define __le16		uint16_t
-#define __le32		uint32_t
-#define __le64		uint64_t
+#define __le16        uint16_t
+#define __le32        uint32_t
+#define __le64        uint64_t
 #endif
 
 #endif /* BNX2X_OSAL_H */

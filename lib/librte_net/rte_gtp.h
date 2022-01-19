@@ -28,15 +28,15 @@ extern "C" {
  * No optional fields and next extension header.
  */
 struct rte_gtp_hdr {
-	uint8_t gtp_hdr_info; /**< GTP header info */
-	uint8_t msg_type;     /**< GTP message type */
-	uint16_t plen;        /**< Total payload length */
-	uint32_t teid;        /**< Tunnel endpoint ID */
+    uint8_t gtp_hdr_info; /**< GTP header info */
+    uint8_t msg_type;     /**< GTP message type */
+    uint16_t plen;        /**< Total payload length */
+    uint32_t teid;        /**< Tunnel endpoint ID */
 } __attribute__((__packed__));
 
 /** GTP header length */
 #define RTE_ETHER_GTP_HLEN \
-	(sizeof(struct rte_udp_hdr) + sizeof(struct rte_gtp_hdr))
+    (sizeof(struct rte_udp_hdr) + sizeof(struct rte_gtp_hdr))
 /* GTP next protocal type */
 #define RTE_GTP_TYPE_IPV4 0x40 /**< GTP next protocal type IPv4 */
 #define RTE_GTP_TYPE_IPV6 0x60 /**< GTP next protocal type IPv6 */

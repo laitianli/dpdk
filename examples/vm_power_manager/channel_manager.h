@@ -36,23 +36,23 @@ struct sockaddr_un _sockaddr_un;
 
 
 struct libvirt_vm_info {
-	const char *vm_name;
-	unsigned int pcpus[MAX_VCPUS];
-	uint8_t num_cpus;
+    const char *vm_name;
+    unsigned int pcpus[MAX_VCPUS];
+    uint8_t num_cpus;
 };
 
 struct libvirt_vm_info lvm_info[MAX_CLIENTS];
 /* Communication Channel Status */
 enum channel_status { CHANNEL_MGR_CHANNEL_DISCONNECTED = 0,
-	CHANNEL_MGR_CHANNEL_CONNECTED,
-	CHANNEL_MGR_CHANNEL_DISABLED,
-	CHANNEL_MGR_CHANNEL_PROCESSING};
+    CHANNEL_MGR_CHANNEL_CONNECTED,
+    CHANNEL_MGR_CHANNEL_DISABLED,
+    CHANNEL_MGR_CHANNEL_PROCESSING};
 
 /* Communication Channel Type */
 enum channel_type {
-	CHANNEL_TYPE_BINARY = 0,
-	CHANNEL_TYPE_INI,
-	CHANNEL_TYPE_JSON
+    CHANNEL_TYPE_BINARY = 0,
+    CHANNEL_TYPE_INI,
+    CHANNEL_TYPE_JSON
 };
 
 /* VM libvirt(qemu/KVM) connection status */
@@ -63,24 +63,24 @@ enum vm_status { CHANNEL_MGR_VM_INACTIVE = 0, CHANNEL_MGR_VM_ACTIVE};
  *  the host.
  */
 struct channel_info {
-	char channel_path[UNIX_PATH_MAX]; /**< Path to host socket */
-	volatile uint32_t status;    /**< Connection status(enum channel_status) */
-	int fd;                      /**< AF_UNIX socket fd */
-	unsigned channel_num;        /**< CHANNEL_MGR_SOCKET_PATH/<vm_name>.channel_num */
-	enum channel_type type;      /**< Binary, ini, json, etc. */
-	void *priv_info;             /**< Pointer to private info, do not modify */
+    char channel_path[UNIX_PATH_MAX]; /**< Path to host socket */
+    volatile uint32_t status;    /**< Connection status(enum channel_status) */
+    int fd;                      /**< AF_UNIX socket fd */
+    unsigned channel_num;        /**< CHANNEL_MGR_SOCKET_PATH/<vm_name>.channel_num */
+    enum channel_type type;      /**< Binary, ini, json, etc. */
+    void *priv_info;             /**< Pointer to private info, do not modify */
 };
 
 /* Represents a single VM instance used to return internal information about
  * a VM */
 struct vm_info {
-	char name[CHANNEL_MGR_MAX_NAME_LEN];          /**< VM name */
-	enum vm_status status;                        /**< libvirt status */
-	uint16_t pcpu_map[RTE_MAX_LCORE];             /**< pCPU map to vCPU */
-	unsigned num_vcpus;                           /**< number of vCPUS */
-	struct channel_info channels[RTE_MAX_LCORE];  /**< channel_info array */
-	unsigned num_channels;                        /**< Number of channels */
-	int allow_query;                              /**< is query allowed */
+    char name[CHANNEL_MGR_MAX_NAME_LEN];          /**< VM name */
+    enum vm_status status;                        /**< libvirt status */
+    uint16_t pcpu_map[RTE_MAX_LCORE];             /**< pCPU map to vCPU */
+    unsigned num_vcpus;                           /**< number of vCPUS */
+    struct channel_info channels[RTE_MAX_LCORE];  /**< channel_info array */
+    unsigned num_channels;                        /**< Number of channels */
+    int allow_query;                              /**< is query allowed */
 };
 
 /**
@@ -224,7 +224,7 @@ int add_all_channels(const char *vm_name);
  *  - 0 for error
  */
 int add_channels(const char *vm_name, unsigned *channel_list,
-		unsigned num_channels);
+        unsigned num_channels);
 
 /**
  * Set up fifos by which host applications can send command an policies
@@ -292,7 +292,7 @@ int set_channel_status_all(const char *name, enum channel_status status);
  *  - 0 for error
  */
 int set_channel_status(const char *vm_name, unsigned *channel_list,
-		unsigned len_channel_list, enum channel_status status);
+        unsigned len_channel_list, enum channel_status status);
 
 /**
  * Populates a pointer to struct vm_info associated with vm_name.

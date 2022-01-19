@@ -34,8 +34,8 @@ extern "C" {
  * write the parsed result in the destination structure.
  */
 struct cmdline_token_hdr {
-	struct cmdline_token_ops *ops;
-	unsigned int offset;
+    struct cmdline_token_ops *ops;
+    unsigned int offset;
 };
 typedef struct cmdline_token_hdr cmdline_parse_token_hdr_t;
 
@@ -59,16 +59,16 @@ typedef struct cmdline_token_hdr cmdline_parse_token_hdr_t;
  * -1 on error and 0 on success.
  */
 struct cmdline_token_ops {
-	/** parse(token ptr, buf, res pts, buf len) */
-	int (*parse)(cmdline_parse_token_hdr_t *, const char *, void *,
-		unsigned int);
-	/** return the num of possible choices for this token */
-	int (*complete_get_nb)(cmdline_parse_token_hdr_t *);
-	/** return the elt x for this token (token, idx, dstbuf, size) */
-	int (*complete_get_elt)(cmdline_parse_token_hdr_t *, int, char *,
-		unsigned int);
-	/** get help for this token (token, dstbuf, size) */
-	int (*get_help)(cmdline_parse_token_hdr_t *, char *, unsigned int);
+    /** parse(token ptr, buf, res pts, buf len) */
+    int (*parse)(cmdline_parse_token_hdr_t *, const char *, void *,
+        unsigned int);
+    /** return the num of possible choices for this token */
+    int (*complete_get_nb)(cmdline_parse_token_hdr_t *);
+    /** return the elt x for this token (token, idx, dstbuf, size) */
+    int (*complete_get_elt)(cmdline_parse_token_hdr_t *, int, char *,
+        unsigned int);
+    /** get help for this token (token, dstbuf, size) */
+    int (*get_help)(cmdline_parse_token_hdr_t *, char *, unsigned int);
 };
 
 struct cmdline;
@@ -129,11 +129,11 @@ struct cmdline;
  * @endcode
  */
 struct cmdline_inst {
-	/* f(parsed_struct, data) */
-	void (*f)(void *, struct cmdline *, void *);
-	void *data;
-	const char *help_str;
-	cmdline_parse_token_hdr_t *tokens[];
+    /* f(parsed_struct, data) */
+    void (*f)(void *, struct cmdline *, void *);
+    void *data;
+    const char *help_str;
+    cmdline_parse_token_hdr_t *tokens[];
 };
 typedef struct cmdline_inst cmdline_parse_inst_t;
 
@@ -174,7 +174,7 @@ int cmdline_parse(struct cmdline *cl, const char *buf);
  * The returned dst buf ends with \0.
  */
 int cmdline_complete(struct cmdline *cl, const char *buf, int *state,
-		     char *dst, unsigned int size);
+             char *dst, unsigned int size);
 
 
 /* return true if(!c || iscomment(c) || isblank(c) ||

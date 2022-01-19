@@ -26,16 +26,16 @@ extern "C" {
 
 __extension__
 enum rte_page_sizes {
-	RTE_PGSIZE_4K    = 1ULL << 12,
-	RTE_PGSIZE_64K   = 1ULL << 16,
-	RTE_PGSIZE_256K  = 1ULL << 18,
-	RTE_PGSIZE_2M    = 1ULL << 21,
-	RTE_PGSIZE_16M   = 1ULL << 24,
-	RTE_PGSIZE_256M  = 1ULL << 28,
-	RTE_PGSIZE_512M  = 1ULL << 29,
-	RTE_PGSIZE_1G    = 1ULL << 30,
-	RTE_PGSIZE_4G    = 1ULL << 32,
-	RTE_PGSIZE_16G   = 1ULL << 34,
+    RTE_PGSIZE_4K    = 1ULL << 12,
+    RTE_PGSIZE_64K   = 1ULL << 16,
+    RTE_PGSIZE_256K  = 1ULL << 18,
+    RTE_PGSIZE_2M    = 1ULL << 21,
+    RTE_PGSIZE_16M   = 1ULL << 24,
+    RTE_PGSIZE_256M  = 1ULL << 28,
+    RTE_PGSIZE_512M  = 1ULL << 29,
+    RTE_PGSIZE_1G    = 1ULL << 30,
+    RTE_PGSIZE_4G    = 1ULL << 32,
+    RTE_PGSIZE_16G   = 1ULL << 34,
 };
 
 #define SOCKET_ID_ANY -1                    /**< Any NUMA socket. */
@@ -46,22 +46,22 @@ enum rte_page_sizes {
 #define RTE_MEMSEG_FLAG_DO_NOT_FREE (1 << 0)
 /**< Prevent this segment from being freed back to the OS. */
 struct rte_memseg {
-	RTE_STD_C11
-	union {
-		phys_addr_t phys_addr;  /**< deprecated - Start physical address. */
-		rte_iova_t iova;        /**< Start IO address. */
-	};
-	RTE_STD_C11
-	union {
-		void *addr;         /**< Start virtual address. */
-		uint64_t addr_64;   /**< Makes sure addr is always 64 bits */
-	};
-	size_t len;               /**< Length of the segment. */
-	uint64_t hugepage_sz;       /**< The pagesize of underlying memory */
-	int32_t socket_id;          /**< NUMA socket ID. */
-	uint32_t nchannel;          /**< Number of channels. */
-	uint32_t nrank;             /**< Number of ranks. */
-	uint32_t flags;             /**< Memseg-specific flags */
+    RTE_STD_C11
+    union {
+        phys_addr_t phys_addr;  /**< deprecated - Start physical address. */
+        rte_iova_t iova;        /**< Start IO address. */
+    };
+    RTE_STD_C11
+    union {
+        void *addr;         /**< Start virtual address. */
+        uint64_t addr_64;   /**< Makes sure addr is always 64 bits */
+    };
+    size_t len;               /**< Length of the segment. */
+    uint64_t hugepage_sz;       /**< The pagesize of underlying memory */
+    int32_t socket_id;          /**< NUMA socket ID. */
+    uint32_t nchannel;          /**< Number of channels. */
+    uint32_t nrank;             /**< Number of ranks. */
+    uint32_t flags;             /**< Memseg-specific flags */
 } __rte_packed;
 
 /**
@@ -69,21 +69,21 @@ struct rte_memseg {
  * together with the array itself.
  */
 struct rte_memseg_list {
-	RTE_STD_C11
-	/* base_va变量 memseg_primary_init()->alloc_va_space() 中分配，在 alloc_seg_walk()中使用 */
-	union { /* 保证在分配大页时用到了虚拟地址是连续 */
-		void *base_va; /* 用来存放大页组的起始地址 */
-		/**< Base virtual address for this memseg list. */
-		uint64_t addr_64;
-		/**< Makes sure addr is always 64-bits */
-	};
-	uint64_t page_sz; /**< Page size for all memsegs in this list. */
-	int socket_id; /**< Socket ID for all memsegs in this list. */
-	volatile uint32_t version; /**< version number for multiprocess sync. */
-	size_t len; /**< Length of memory area covered by this memseg list. */
-	unsigned int external; /**< 1 if this list points to external memory */
-	unsigned int heap; /**< 1 if this list points to a heap */
-	struct rte_fbarray memseg_arr;
+    RTE_STD_C11
+    /* base_va变量 memseg_primary_init()->alloc_va_space() 中分配，在 alloc_seg_walk()中使用 */
+    union { /* 保证在分配大页时用到了虚拟地址是连续 */
+        void *base_va; /* 用来存放大页组的起始地址 */
+        /**< Base virtual address for this memseg list. */
+        uint64_t addr_64;
+        /**< Makes sure addr is always 64-bits */
+    };
+    uint64_t page_sz; /**< Page size for all memsegs in this list. */
+    int socket_id; /**< Socket ID for all memsegs in this list. */
+    volatile uint32_t version; /**< version number for multiprocess sync. */
+    size_t len; /**< Length of memory area covered by this memseg list. */
+    unsigned int external; /**< 1 if this list points to external memory */
+    unsigned int heap; /**< 1 if this list points to a heap */
+    struct rte_fbarray memseg_arr;
 };
 
 /**
@@ -174,7 +174,7 @@ rte_mem_virt2memseg_list(const void *virt);
  * Returning -1 will stop the walk and report error
  */
 typedef int (*rte_memseg_walk_t)(const struct rte_memseg_list *msl,
-		const struct rte_memseg *ms, void *arg);
+        const struct rte_memseg *ms, void *arg);
 
 /**
  * Memseg contig walk function prototype. This will trigger a callback on every
@@ -186,7 +186,7 @@ typedef int (*rte_memseg_walk_t)(const struct rte_memseg_list *msl,
  * Returning -1 will stop the walk and report error
  */
 typedef int (*rte_memseg_contig_walk_t)(const struct rte_memseg_list *msl,
-		const struct rte_memseg *ms, size_t len, void *arg);
+        const struct rte_memseg *ms, size_t len, void *arg);
 
 /**
  * Memseg list walk function prototype. This will trigger a callback on every
@@ -197,7 +197,7 @@ typedef int (*rte_memseg_contig_walk_t)(const struct rte_memseg_list *msl,
  * Returning -1 will stop the walk and report error
  */
 typedef int (*rte_memseg_list_walk_t)(const struct rte_memseg_list *msl,
-		void *arg);
+        void *arg);
 
 /**
  * Walk list of all memsegs.
@@ -421,7 +421,7 @@ rte_memseg_get_fd_offset(const struct rte_memseg *ms, size_t *offset);
 __rte_experimental
 int
 rte_memseg_get_fd_offset_thread_unsafe(const struct rte_memseg *ms,
-		size_t *offset);
+        size_t *offset);
 
 /**
  * @warning
@@ -463,7 +463,7 @@ rte_memseg_get_fd_offset_thread_unsafe(const struct rte_memseg *ms,
 __rte_experimental
 int
 rte_extmem_register(void *va_addr, size_t len, rte_iova_t iova_addrs[],
-		unsigned int n_pages, size_t page_sz);
+        unsigned int n_pages, size_t page_sz);
 
 /**
  * @warning
@@ -649,8 +649,8 @@ int rte_eal_using_phys_addrs(void);
  * distinguish between memory allocations and deallocations.
  */
 enum rte_mem_event {
-	RTE_MEM_EVENT_ALLOC = 0, /**< Allocation event. */
-	RTE_MEM_EVENT_FREE,      /**< Deallocation event. */
+    RTE_MEM_EVENT_ALLOC = 0, /**< Allocation event. */
+    RTE_MEM_EVENT_FREE,      /**< Deallocation event. */
 };
 #define RTE_MEM_EVENT_CALLBACK_NAME_LEN 64
 /**< maximum length of callback name */
@@ -659,7 +659,7 @@ enum rte_mem_event {
  * Function typedef used to register callbacks for memory events.
  */
 typedef void (*rte_mem_event_callback_t)(enum rte_mem_event event_type,
-		const void *addr, size_t len, void *arg);
+        const void *addr, size_t len, void *arg);
 
 /**
  * Function used to register callbacks for memory events.
@@ -689,7 +689,7 @@ typedef void (*rte_mem_event_callback_t)(enum rte_mem_event event_type,
 __rte_experimental
 int
 rte_mem_event_callback_register(const char *name, rte_mem_event_callback_t clb,
-		void *arg);
+        void *arg);
 
 /**
  * Function used to unregister callbacks for memory events.
@@ -719,7 +719,7 @@ rte_mem_event_callback_unregister(const char *name, void *arg);
  * prevent allocation from succeeding.
  */
 typedef int (*rte_mem_alloc_validator_t)(int socket_id,
-		size_t cur_limit, size_t new_len);
+        size_t cur_limit, size_t new_len);
 
 /**
  * @brief Register validator callback for memory allocations.
@@ -758,7 +758,7 @@ typedef int (*rte_mem_alloc_validator_t)(int socket_id,
 __rte_experimental
 int
 rte_mem_alloc_validator_register(const char *name,
-		rte_mem_alloc_validator_t clb, int socket_id, size_t limit);
+        rte_mem_alloc_validator_t clb, int socket_id, size_t limit);
 
 /**
  * @brief Unregister validator callback for memory allocations.

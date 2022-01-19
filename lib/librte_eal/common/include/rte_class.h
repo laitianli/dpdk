@@ -33,25 +33,25 @@ TAILQ_HEAD(rte_class_list, rte_class);
  * A structure describing a generic device class.
  */
 struct rte_class {
-	TAILQ_ENTRY(rte_class) next; /**< Next device class in linked list */
-	const char *name; /**< Name of the class */
-	rte_dev_iterate_t dev_iterate; /**< Device iterator. */
+    TAILQ_ENTRY(rte_class) next; /**< Next device class in linked list */
+    const char *name; /**< Name of the class */
+    rte_dev_iterate_t dev_iterate; /**< Device iterator. */
 };
 
 /**
  * Class comparison function.
  *
  * @param cls
- *	Class under test.
+ *    Class under test.
  *
  * @param data
- *	Data to compare against.
+ *    Data to compare against.
  *
  * @return
- *	0 if the class matches the data.
- *	!0 if the class does not match.
- *	<0 if ordering is possible and the class is lower than the data.
- *	>0 if ordering is possible and the class is greater than the data.
+ *    0 if the class matches the data.
+ *    !0 if the class does not match.
+ *    <0 if ordering is possible and the class is lower than the data.
+ *    >0 if ordering is possible and the class is greater than the data.
  */
 typedef int (*rte_class_cmp_t)(const struct rte_class *cls, const void *data);
 
@@ -66,21 +66,21 @@ typedef int (*rte_class_cmp_t)(const struct rte_class *cls, const void *data);
  * can be passed via the start parameter.
  *
  * @param start
- *	Starting point for the iteration.
+ *    Starting point for the iteration.
  *
  * @param cmp
- *	Comparison function.
+ *    Comparison function.
  *
  * @param data
- *	 Data to pass to comparison function.
+ *     Data to pass to comparison function.
  *
  * @return
- *	 A pointer to a rte_class structure or NULL in case no class matches
+ *     A pointer to a rte_class structure or NULL in case no class matches
  */
 __rte_experimental
 struct rte_class *
 rte_class_find(const struct rte_class *start, rte_class_cmp_t cmp,
-	       const void *data);
+           const void *data);
 
 /**
  * Find the registered class for a given name.
@@ -117,14 +117,14 @@ void rte_class_unregister(struct rte_class *cls);
 #define RTE_REGISTER_CLASS(nm, cls) \
 RTE_INIT_PRIO(classinitfn_ ##nm, CLASS) \
 {\
-	(cls).name = RTE_STR(nm); \
-	rte_class_register(&cls); \
+    (cls).name = RTE_STR(nm); \
+    rte_class_register(&cls); \
 }
 
 #define RTE_UNREGISTER_CLASS(nm, cls) \
 RTE_FINI_PRIO(classfinifn_ ##nm, CLASS) \
 { \
-	rte_class_unregister(&cls); \
+    rte_class_unregister(&cls); \
 }
 
 #ifdef __cplusplus

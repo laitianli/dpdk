@@ -10,7 +10,7 @@
 
 #define NFP_RESOURCE_NFP_NFFW           "nfp.nffw"
 #define NFP_RESOURCE_NFP_HWINFO         "nfp.info"
-#define NFP_RESOURCE_NSP		"nfp.sp"
+#define NFP_RESOURCE_NSP        "nfp.sp"
 
 /**
  * Opaque handle to a NFP Resource
@@ -18,7 +18,7 @@
 struct nfp_resource;
 
 struct nfp_resource *nfp_resource_acquire(struct nfp_cpp *cpp,
-					  const char *name);
+                      const char *name);
 
 /**
  * Release a NFP Resource, and free the handle

@@ -154,8 +154,8 @@ static inline void rte_cio_rmb(void);
  * Guarantees that operation reordering does not occur at compile time
  * for operations directly before and after the barrier.
  */
-#define	rte_compiler_barrier() do {		\
-	asm volatile ("" : : : "memory");	\
+#define    rte_compiler_barrier() do {        \
+    asm volatile ("" : : : "memory");    \
 } while(0)
 
 /*------------------------- 16 bit atomic operations -------------------------*/
@@ -183,7 +183,7 @@ rte_atomic16_cmpset(volatile uint16_t *dst, uint16_t exp, uint16_t src);
 static inline int
 rte_atomic16_cmpset(volatile uint16_t *dst, uint16_t exp, uint16_t src)
 {
-	return __sync_bool_compare_and_swap(dst, exp, src);
+    return __sync_bool_compare_and_swap(dst, exp, src);
 }
 #endif
 
@@ -210,9 +210,9 @@ static inline uint16_t
 rte_atomic16_exchange(volatile uint16_t *dst, uint16_t val)
 {
 #if defined(__clang__)
-	return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
 #else
-	return __atomic_exchange_2(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_2(dst, val, __ATOMIC_SEQ_CST);
 #endif
 }
 #endif
@@ -221,7 +221,7 @@ rte_atomic16_exchange(volatile uint16_t *dst, uint16_t val)
  * The atomic counter structure.
  */
 typedef struct {
-	volatile int16_t cnt; /**< An internal counter value. */
+    volatile int16_t cnt; /**< An internal counter value. */
 } rte_atomic16_t;
 
 /**
@@ -238,7 +238,7 @@ typedef struct {
 static inline void
 rte_atomic16_init(rte_atomic16_t *v)
 {
-	v->cnt = 0;
+    v->cnt = 0;
 }
 
 /**
@@ -252,7 +252,7 @@ rte_atomic16_init(rte_atomic16_t *v)
 static inline int16_t
 rte_atomic16_read(const rte_atomic16_t *v)
 {
-	return v->cnt;
+    return v->cnt;
 }
 
 /**
@@ -266,7 +266,7 @@ rte_atomic16_read(const rte_atomic16_t *v)
 static inline void
 rte_atomic16_set(rte_atomic16_t *v, int16_t new_value)
 {
-	v->cnt = new_value;
+    v->cnt = new_value;
 }
 
 /**
@@ -280,7 +280,7 @@ rte_atomic16_set(rte_atomic16_t *v, int16_t new_value)
 static inline void
 rte_atomic16_add(rte_atomic16_t *v, int16_t inc)
 {
-	__sync_fetch_and_add(&v->cnt, inc);
+    __sync_fetch_and_add(&v->cnt, inc);
 }
 
 /**
@@ -294,7 +294,7 @@ rte_atomic16_add(rte_atomic16_t *v, int16_t inc)
 static inline void
 rte_atomic16_sub(rte_atomic16_t *v, int16_t dec)
 {
-	__sync_fetch_and_sub(&v->cnt, dec);
+    __sync_fetch_and_sub(&v->cnt, dec);
 }
 
 /**
@@ -310,7 +310,7 @@ rte_atomic16_inc(rte_atomic16_t *v);
 static inline void
 rte_atomic16_inc(rte_atomic16_t *v)
 {
-	rte_atomic16_add(v, 1);
+    rte_atomic16_add(v, 1);
 }
 #endif
 
@@ -327,7 +327,7 @@ rte_atomic16_dec(rte_atomic16_t *v);
 static inline void
 rte_atomic16_dec(rte_atomic16_t *v)
 {
-	rte_atomic16_sub(v, 1);
+    rte_atomic16_sub(v, 1);
 }
 #endif
 
@@ -347,7 +347,7 @@ rte_atomic16_dec(rte_atomic16_t *v)
 static inline int16_t
 rte_atomic16_add_return(rte_atomic16_t *v, int16_t inc)
 {
-	return __sync_add_and_fetch(&v->cnt, inc);
+    return __sync_add_and_fetch(&v->cnt, inc);
 }
 
 /**
@@ -367,7 +367,7 @@ rte_atomic16_add_return(rte_atomic16_t *v, int16_t inc)
 static inline int16_t
 rte_atomic16_sub_return(rte_atomic16_t *v, int16_t dec)
 {
-	return __sync_sub_and_fetch(&v->cnt, dec);
+    return __sync_sub_and_fetch(&v->cnt, dec);
 }
 
 /**
@@ -386,7 +386,7 @@ static inline int rte_atomic16_inc_and_test(rte_atomic16_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic16_inc_and_test(rte_atomic16_t *v)
 {
-	return __sync_add_and_fetch(&v->cnt, 1) == 0;
+    return __sync_add_and_fetch(&v->cnt, 1) == 0;
 }
 #endif
 
@@ -406,7 +406,7 @@ static inline int rte_atomic16_dec_and_test(rte_atomic16_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic16_dec_and_test(rte_atomic16_t *v)
 {
-	return __sync_sub_and_fetch(&v->cnt, 1) == 0;
+    return __sync_sub_and_fetch(&v->cnt, 1) == 0;
 }
 #endif
 
@@ -426,7 +426,7 @@ static inline int rte_atomic16_test_and_set(rte_atomic16_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic16_test_and_set(rte_atomic16_t *v)
 {
-	return rte_atomic16_cmpset((volatile uint16_t *)&v->cnt, 0, 1);
+    return rte_atomic16_cmpset((volatile uint16_t *)&v->cnt, 0, 1);
 }
 #endif
 
@@ -438,7 +438,7 @@ static inline int rte_atomic16_test_and_set(rte_atomic16_t *v)
  */
 static inline void rte_atomic16_clear(rte_atomic16_t *v)
 {
-	v->cnt = 0;
+    v->cnt = 0;
 }
 
 /*------------------------- 32 bit atomic operations -------------------------*/
@@ -466,7 +466,7 @@ rte_atomic32_cmpset(volatile uint32_t *dst, uint32_t exp, uint32_t src);
 static inline int
 rte_atomic32_cmpset(volatile uint32_t *dst, uint32_t exp, uint32_t src)
 {
-	return __sync_bool_compare_and_swap(dst, exp, src);
+    return __sync_bool_compare_and_swap(dst, exp, src);
 }
 #endif
 
@@ -493,9 +493,9 @@ static inline uint32_t
 rte_atomic32_exchange(volatile uint32_t *dst, uint32_t val)
 {
 #if defined(__clang__)
-	return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
 #else
-	return __atomic_exchange_4(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_4(dst, val, __ATOMIC_SEQ_CST);
 #endif
 }
 #endif
@@ -504,7 +504,7 @@ rte_atomic32_exchange(volatile uint32_t *dst, uint32_t val)
  * The atomic counter structure.
  */
 typedef struct {
-	volatile int32_t cnt; /**< An internal counter value. */
+    volatile int32_t cnt; /**< An internal counter value. */
 } rte_atomic32_t;
 
 /**
@@ -521,7 +521,7 @@ typedef struct {
 static inline void
 rte_atomic32_init(rte_atomic32_t *v)
 {
-	v->cnt = 0;
+    v->cnt = 0;
 }
 
 /**
@@ -535,7 +535,7 @@ rte_atomic32_init(rte_atomic32_t *v)
 static inline int32_t
 rte_atomic32_read(const rte_atomic32_t *v)
 {
-	return v->cnt;
+    return v->cnt;
 }
 
 /**
@@ -549,7 +549,7 @@ rte_atomic32_read(const rte_atomic32_t *v)
 static inline void
 rte_atomic32_set(rte_atomic32_t *v, int32_t new_value)
 {
-	v->cnt = new_value;
+    v->cnt = new_value;
 }
 
 /**
@@ -563,7 +563,7 @@ rte_atomic32_set(rte_atomic32_t *v, int32_t new_value)
 static inline void
 rte_atomic32_add(rte_atomic32_t *v, int32_t inc)
 {
-	__sync_fetch_and_add(&v->cnt, inc);
+    __sync_fetch_and_add(&v->cnt, inc);
 }
 
 /**
@@ -577,7 +577,7 @@ rte_atomic32_add(rte_atomic32_t *v, int32_t inc)
 static inline void
 rte_atomic32_sub(rte_atomic32_t *v, int32_t dec)
 {
-	__sync_fetch_and_sub(&v->cnt, dec);
+    __sync_fetch_and_sub(&v->cnt, dec);
 }
 
 /**
@@ -593,7 +593,7 @@ rte_atomic32_inc(rte_atomic32_t *v);
 static inline void
 rte_atomic32_inc(rte_atomic32_t *v)
 {
-	rte_atomic32_add(v, 1);
+    rte_atomic32_add(v, 1);
 }
 #endif
 
@@ -610,7 +610,7 @@ rte_atomic32_dec(rte_atomic32_t *v);
 static inline void
 rte_atomic32_dec(rte_atomic32_t *v)
 {
-	rte_atomic32_sub(v,1);
+    rte_atomic32_sub(v,1);
 }
 #endif
 
@@ -630,7 +630,7 @@ rte_atomic32_dec(rte_atomic32_t *v)
 static inline int32_t
 rte_atomic32_add_return(rte_atomic32_t *v, int32_t inc)
 {
-	return __sync_add_and_fetch(&v->cnt, inc);
+    return __sync_add_and_fetch(&v->cnt, inc);
 }
 
 /**
@@ -650,7 +650,7 @@ rte_atomic32_add_return(rte_atomic32_t *v, int32_t inc)
 static inline int32_t
 rte_atomic32_sub_return(rte_atomic32_t *v, int32_t dec)
 {
-	return __sync_sub_and_fetch(&v->cnt, dec);
+    return __sync_sub_and_fetch(&v->cnt, dec);
 }
 
 /**
@@ -669,7 +669,7 @@ static inline int rte_atomic32_inc_and_test(rte_atomic32_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic32_inc_and_test(rte_atomic32_t *v)
 {
-	return __sync_add_and_fetch(&v->cnt, 1) == 0;
+    return __sync_add_and_fetch(&v->cnt, 1) == 0;
 }
 #endif
 
@@ -689,7 +689,7 @@ static inline int rte_atomic32_dec_and_test(rte_atomic32_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic32_dec_and_test(rte_atomic32_t *v)
 {
-	return __sync_sub_and_fetch(&v->cnt, 1) == 0;
+    return __sync_sub_and_fetch(&v->cnt, 1) == 0;
 }
 #endif
 
@@ -709,7 +709,7 @@ static inline int rte_atomic32_test_and_set(rte_atomic32_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic32_test_and_set(rte_atomic32_t *v)
 {
-	return rte_atomic32_cmpset((volatile uint32_t *)&v->cnt, 0, 1);
+    return rte_atomic32_cmpset((volatile uint32_t *)&v->cnt, 0, 1);
 }
 #endif
 
@@ -721,7 +721,7 @@ static inline int rte_atomic32_test_and_set(rte_atomic32_t *v)
  */
 static inline void rte_atomic32_clear(rte_atomic32_t *v)
 {
-	v->cnt = 0;
+    v->cnt = 0;
 }
 
 /*------------------------- 64 bit atomic operations -------------------------*/
@@ -748,7 +748,7 @@ rte_atomic64_cmpset(volatile uint64_t *dst, uint64_t exp, uint64_t src);
 static inline int
 rte_atomic64_cmpset(volatile uint64_t *dst, uint64_t exp, uint64_t src)
 {
-	return __sync_bool_compare_and_swap(dst, exp, src);
+    return __sync_bool_compare_and_swap(dst, exp, src);
 }
 #endif
 
@@ -775,9 +775,9 @@ static inline uint64_t
 rte_atomic64_exchange(volatile uint64_t *dst, uint64_t val)
 {
 #if defined(__clang__)
-	return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_n(dst, val, __ATOMIC_SEQ_CST);
 #else
-	return __atomic_exchange_8(dst, val, __ATOMIC_SEQ_CST);
+    return __atomic_exchange_8(dst, val, __ATOMIC_SEQ_CST);
 #endif
 }
 #endif
@@ -786,7 +786,7 @@ rte_atomic64_exchange(volatile uint64_t *dst, uint64_t val)
  * The atomic counter structure.
  */
 typedef struct {
-	volatile int64_t cnt;  /**< Internal counter value. */
+    volatile int64_t cnt;  /**< Internal counter value. */
 } rte_atomic64_t;
 
 /**
@@ -808,16 +808,16 @@ static inline void
 rte_atomic64_init(rte_atomic64_t *v)
 {
 #ifdef __LP64__
-	v->cnt = 0;
+    v->cnt = 0;
 #else
-	int success = 0;
-	uint64_t tmp;
+    int success = 0;
+    uint64_t tmp;
 
-	while (success == 0) {
-		tmp = v->cnt;
-		success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
-		                              tmp, 0);
-	}
+    while (success == 0) {
+        tmp = v->cnt;
+        success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
+                                      tmp, 0);
+    }
 #endif
 }
 #endif
@@ -838,18 +838,18 @@ static inline int64_t
 rte_atomic64_read(rte_atomic64_t *v)
 {
 #ifdef __LP64__
-	return v->cnt;
+    return v->cnt;
 #else
-	int success = 0;
-	uint64_t tmp;
+    int success = 0;
+    uint64_t tmp;
 
-	while (success == 0) {
-		tmp = v->cnt;
-		/* replace the value by itself */
-		success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
-		                              tmp, tmp);
-	}
-	return tmp;
+    while (success == 0) {
+        tmp = v->cnt;
+        /* replace the value by itself */
+        success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
+                                      tmp, tmp);
+    }
+    return tmp;
 #endif
 }
 #endif
@@ -870,16 +870,16 @@ static inline void
 rte_atomic64_set(rte_atomic64_t *v, int64_t new_value)
 {
 #ifdef __LP64__
-	v->cnt = new_value;
+    v->cnt = new_value;
 #else
-	int success = 0;
-	uint64_t tmp;
+    int success = 0;
+    uint64_t tmp;
 
-	while (success == 0) {
-		tmp = v->cnt;
-		success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
-		                              tmp, new_value);
-	}
+    while (success == 0) {
+        tmp = v->cnt;
+        success = rte_atomic64_cmpset((volatile uint64_t *)&v->cnt,
+                                      tmp, new_value);
+    }
 #endif
 }
 #endif
@@ -899,7 +899,7 @@ rte_atomic64_add(rte_atomic64_t *v, int64_t inc);
 static inline void
 rte_atomic64_add(rte_atomic64_t *v, int64_t inc)
 {
-	__sync_fetch_and_add(&v->cnt, inc);
+    __sync_fetch_and_add(&v->cnt, inc);
 }
 #endif
 
@@ -918,7 +918,7 @@ rte_atomic64_sub(rte_atomic64_t *v, int64_t dec);
 static inline void
 rte_atomic64_sub(rte_atomic64_t *v, int64_t dec)
 {
-	__sync_fetch_and_sub(&v->cnt, dec);
+    __sync_fetch_and_sub(&v->cnt, dec);
 }
 #endif
 
@@ -935,7 +935,7 @@ rte_atomic64_inc(rte_atomic64_t *v);
 static inline void
 rte_atomic64_inc(rte_atomic64_t *v)
 {
-	rte_atomic64_add(v, 1);
+    rte_atomic64_add(v, 1);
 }
 #endif
 
@@ -952,7 +952,7 @@ rte_atomic64_dec(rte_atomic64_t *v);
 static inline void
 rte_atomic64_dec(rte_atomic64_t *v)
 {
-	rte_atomic64_sub(v, 1);
+    rte_atomic64_sub(v, 1);
 }
 #endif
 
@@ -976,7 +976,7 @@ rte_atomic64_add_return(rte_atomic64_t *v, int64_t inc);
 static inline int64_t
 rte_atomic64_add_return(rte_atomic64_t *v, int64_t inc)
 {
-	return __sync_add_and_fetch(&v->cnt, inc);
+    return __sync_add_and_fetch(&v->cnt, inc);
 }
 #endif
 
@@ -1000,7 +1000,7 @@ rte_atomic64_sub_return(rte_atomic64_t *v, int64_t dec);
 static inline int64_t
 rte_atomic64_sub_return(rte_atomic64_t *v, int64_t dec)
 {
-	return __sync_sub_and_fetch(&v->cnt, dec);
+    return __sync_sub_and_fetch(&v->cnt, dec);
 }
 #endif
 
@@ -1020,7 +1020,7 @@ static inline int rte_atomic64_inc_and_test(rte_atomic64_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic64_inc_and_test(rte_atomic64_t *v)
 {
-	return rte_atomic64_add_return(v, 1) == 0;
+    return rte_atomic64_add_return(v, 1) == 0;
 }
 #endif
 
@@ -1040,7 +1040,7 @@ static inline int rte_atomic64_dec_and_test(rte_atomic64_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic64_dec_and_test(rte_atomic64_t *v)
 {
-	return rte_atomic64_sub_return(v, 1) == 0;
+    return rte_atomic64_sub_return(v, 1) == 0;
 }
 #endif
 
@@ -1060,7 +1060,7 @@ static inline int rte_atomic64_test_and_set(rte_atomic64_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline int rte_atomic64_test_and_set(rte_atomic64_t *v)
 {
-	return rte_atomic64_cmpset((volatile uint64_t *)&v->cnt, 0, 1);
+    return rte_atomic64_cmpset((volatile uint64_t *)&v->cnt, 0, 1);
 }
 #endif
 
@@ -1075,7 +1075,7 @@ static inline void rte_atomic64_clear(rte_atomic64_t *v);
 #ifdef RTE_FORCE_INTRINSICS
 static inline void rte_atomic64_clear(rte_atomic64_t *v)
 {
-	rte_atomic64_set(v, 0);
+    rte_atomic64_set(v, 0);
 }
 #endif
 
@@ -1086,13 +1086,13 @@ static inline void rte_atomic64_clear(rte_atomic64_t *v)
  */
 RTE_STD_C11
 typedef struct {
-	RTE_STD_C11
-	union {
-		uint64_t val[2];
+    RTE_STD_C11
+    union {
+        uint64_t val[2];
 #ifdef RTE_ARCH_64
-		__extension__ __int128 int128;
+        __extension__ __int128 int128;
 #endif
-	};
+    };
 } __rte_aligned(16) rte_int128_t;
 
 #ifdef __DOXYGEN__
@@ -1139,11 +1139,11 @@ typedef struct {
 __rte_experimental
 static inline int
 rte_atomic128_cmp_exchange(rte_int128_t *dst,
-			   rte_int128_t *exp,
-			   const rte_int128_t *src,
-			   unsigned int weak,
-			   int success,
-			   int failure);
+               rte_int128_t *exp,
+               const rte_int128_t *src,
+               unsigned int weak,
+               int success,
+               int failure);
 
 #endif /* __DOXYGEN__ */
 

@@ -42,7 +42,7 @@ int rte_pmd_ixgbe_ping_vf(uint16_t port, uint16_t vf);
  *   - (-EINVAL) if *vf* or *mac_addr* is invalid.
  */
 int rte_pmd_ixgbe_set_vf_mac_addr(uint16_t port, uint16_t vf,
-		struct rte_ether_addr *mac_addr);
+        struct rte_ether_addr *mac_addr);
 
 /**
  * Enable/Disable VF VLAN anti spoofing.
@@ -60,7 +60,7 @@ int rte_pmd_ixgbe_set_vf_mac_addr(uint16_t port, uint16_t vf,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_set_vf_vlan_anti_spoof(uint16_t port, uint16_t vf,
-					 uint8_t on);
+                     uint8_t on);
 
 /**
  * Enable/Disable VF MAC anti spoofing.
@@ -96,7 +96,7 @@ int rte_pmd_ixgbe_set_vf_mac_anti_spoof(uint16_t port, uint16_t vf, uint8_t on);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_set_vf_vlan_insert(uint16_t port, uint16_t vf,
-		uint16_t vlan_id);
+        uint16_t vlan_id);
 
 /**
  * Enable/Disable tx loopback
@@ -249,7 +249,7 @@ int rte_pmd_ixgbe_macsec_config_rxsc(uint16_t port, uint8_t *mac, uint16_t pi);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_macsec_select_txsa(uint16_t port, uint8_t idx, uint8_t an,
-		uint32_t pn, uint8_t *key);
+        uint32_t pn, uint8_t *key);
 
 /**
  * Enable Rx SA (Secure Association).
@@ -271,7 +271,7 @@ int rte_pmd_ixgbe_macsec_select_txsa(uint16_t port, uint8_t idx, uint8_t an,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_macsec_select_rxsa(uint16_t port, uint8_t idx, uint8_t an,
-		uint32_t pn, uint8_t *key);
+        uint32_t pn, uint8_t *key);
 
 /**
 * Set RX L2 Filtering mode of a VF of an Ethernet device.
@@ -297,7 +297,7 @@ int rte_pmd_ixgbe_macsec_select_rxsa(uint16_t port, uint8_t idx, uint8_t an,
 */
 int
 rte_pmd_ixgbe_set_vf_rxmode(uint16_t port, uint16_t vf, uint16_t rx_mask,
-			     uint8_t on);
+                 uint8_t on);
 
 /**
 * Enable or disable a VF traffic receive of an Ethernet device.
@@ -358,7 +358,7 @@ rte_pmd_ixgbe_set_vf_tx(uint16_t port, uint16_t vf, uint8_t on);
 */
 int
 rte_pmd_ixgbe_set_vf_vlan_filter(uint16_t port, uint16_t vlan,
-				 uint64_t vf_mask, uint8_t vlan_on);
+                 uint64_t vf_mask, uint8_t vlan_on);
 
 /**
  * Set the rate limitation for a vf on an Ethernet device.
@@ -378,7 +378,7 @@ rte_pmd_ixgbe_set_vf_vlan_filter(uint16_t port, uint16_t vlan,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_set_vf_rate_limit(uint16_t port, uint16_t vf,
-				     uint16_t tx_rate, uint64_t q_msk);
+                     uint16_t tx_rate, uint64_t q_msk);
 
 /**
  * Set all the TCs' bandwidth weight.
@@ -400,8 +400,8 @@ int rte_pmd_ixgbe_set_vf_rate_limit(uint16_t port, uint16_t vf,
  *   - (-ENOTSUP) not supported by firmware.
  */
 int rte_pmd_ixgbe_set_tc_bw_alloc(uint16_t port,
-				  uint8_t tc_num,
-				  uint8_t *bw_weight);
+                  uint8_t tc_num,
+                  uint8_t *bw_weight);
 
 
 /**
@@ -474,8 +474,8 @@ int rte_pmd_ixgbe_bypass_state_set(uint16_t port, uint32_t *new_state);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_bypass_event_show(uint16_t port,
-				    uint32_t event,
-				    uint32_t *state);
+                    uint32_t event,
+                    uint32_t *state);
 
 /**
  * Set bypass state when given event occurs.
@@ -500,8 +500,8 @@ int rte_pmd_ixgbe_bypass_event_show(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_ixgbe_bypass_event_store(uint16_t port,
-				     uint32_t event,
-				     uint32_t state);
+                     uint32_t event,
+                     uint32_t state);
 
 /**
  * Set bypass watchdog timeout count.
@@ -623,7 +623,7 @@ rte_pmd_ixgbe_mdio_unlock(uint16_t port);
 __rte_experimental
 int
 rte_pmd_ixgbe_mdio_unlocked_read(uint16_t port, uint32_t reg_addr,
-				 uint32_t dev_type, uint16_t *phy_data);
+                 uint32_t dev_type, uint16_t *phy_data);
 
 /**
  * Write data to PHY register using without MDIO lock
@@ -647,70 +647,70 @@ rte_pmd_ixgbe_mdio_unlocked_read(uint16_t port, uint32_t reg_addr,
 __rte_experimental
 int
 rte_pmd_ixgbe_mdio_unlocked_write(uint16_t port, uint32_t reg_addr,
-				  uint32_t dev_type, uint16_t phy_data);
+                  uint32_t dev_type, uint16_t phy_data);
 
 /**
  * Response sent back to ixgbe driver from user app after callback
  */
 enum rte_pmd_ixgbe_mb_event_rsp {
-	RTE_PMD_IXGBE_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
-	RTE_PMD_IXGBE_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
-	RTE_PMD_IXGBE_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
-	RTE_PMD_IXGBE_MB_EVENT_MAX       /**< max value of this enum */
+    RTE_PMD_IXGBE_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
+    RTE_PMD_IXGBE_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
+    RTE_PMD_IXGBE_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
+    RTE_PMD_IXGBE_MB_EVENT_MAX       /**< max value of this enum */
 };
 
 /**
  * Data sent to the user application when the callback is executed.
  */
 struct rte_pmd_ixgbe_mb_event_param {
-	uint16_t vfid;     /**< Virtual Function number */
-	uint16_t msg_type; /**< VF to PF message type, defined in ixgbe_mbx.h */
-	uint16_t retval;   /**< return value */
-	void *msg;         /**< pointer to message */
+    uint16_t vfid;     /**< Virtual Function number */
+    uint16_t msg_type; /**< VF to PF message type, defined in ixgbe_mbx.h */
+    uint16_t retval;   /**< return value */
+    void *msg;         /**< pointer to message */
 };
 enum {
-	RTE_PMD_IXGBE_BYPASS_MODE_NONE,
-	RTE_PMD_IXGBE_BYPASS_MODE_NORMAL,
-	RTE_PMD_IXGBE_BYPASS_MODE_BYPASS,
-	RTE_PMD_IXGBE_BYPASS_MODE_ISOLATE,
-	RTE_PMD_IXGBE_BYPASS_MODE_NUM,
+    RTE_PMD_IXGBE_BYPASS_MODE_NONE,
+    RTE_PMD_IXGBE_BYPASS_MODE_NORMAL,
+    RTE_PMD_IXGBE_BYPASS_MODE_BYPASS,
+    RTE_PMD_IXGBE_BYPASS_MODE_ISOLATE,
+    RTE_PMD_IXGBE_BYPASS_MODE_NUM,
 };
 
 #define RTE_PMD_IXGBE_BYPASS_MODE_VALID(x)        \
-	((x) > RTE_PMD_IXGBE_BYPASS_MODE_NONE &&  \
-	(x) < RTE_PMD_IXGBE_BYPASS_MODE_NUM)
+    ((x) > RTE_PMD_IXGBE_BYPASS_MODE_NONE &&  \
+    (x) < RTE_PMD_IXGBE_BYPASS_MODE_NUM)
 
 enum {
-	RTE_PMD_IXGBE_BYPASS_EVENT_NONE,
-	RTE_PMD_IXGBE_BYPASS_EVENT_START,
-	RTE_PMD_IXGBE_BYPASS_EVENT_OS_ON = RTE_PMD_IXGBE_BYPASS_EVENT_START,
-	RTE_PMD_IXGBE_BYPASS_EVENT_POWER_ON,
-	RTE_PMD_IXGBE_BYPASS_EVENT_OS_OFF,
-	RTE_PMD_IXGBE_BYPASS_EVENT_POWER_OFF,
-	RTE_PMD_IXGBE_BYPASS_EVENT_TIMEOUT,
-	RTE_PMD_IXGBE_BYPASS_EVENT_NUM
+    RTE_PMD_IXGBE_BYPASS_EVENT_NONE,
+    RTE_PMD_IXGBE_BYPASS_EVENT_START,
+    RTE_PMD_IXGBE_BYPASS_EVENT_OS_ON = RTE_PMD_IXGBE_BYPASS_EVENT_START,
+    RTE_PMD_IXGBE_BYPASS_EVENT_POWER_ON,
+    RTE_PMD_IXGBE_BYPASS_EVENT_OS_OFF,
+    RTE_PMD_IXGBE_BYPASS_EVENT_POWER_OFF,
+    RTE_PMD_IXGBE_BYPASS_EVENT_TIMEOUT,
+    RTE_PMD_IXGBE_BYPASS_EVENT_NUM
 };
 
 #define RTE_PMD_IXGBE_BYPASS_EVENT_VALID(x)       \
-	((x) > RTE_PMD_IXGBE_BYPASS_EVENT_NONE && \
-	(x) < RTE_PMD_IXGBE_BYPASS_MODE_NUM)
+    ((x) > RTE_PMD_IXGBE_BYPASS_EVENT_NONE && \
+    (x) < RTE_PMD_IXGBE_BYPASS_MODE_NUM)
 
 enum {
-	RTE_PMD_IXGBE_BYPASS_TMT_OFF,     /* timeout disabled. */
-	RTE_PMD_IXGBE_BYPASS_TMT_1_5_SEC, /* timeout for 1.5 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_2_SEC,   /* timeout for 2 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_3_SEC,   /* timeout for 3 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_4_SEC,   /* timeout for 4 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_8_SEC,   /* timeout for 8 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_16_SEC,  /* timeout for 16 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_32_SEC,  /* timeout for 32 seconds */
-	RTE_PMD_IXGBE_BYPASS_TMT_NUM
+    RTE_PMD_IXGBE_BYPASS_TMT_OFF,     /* timeout disabled. */
+    RTE_PMD_IXGBE_BYPASS_TMT_1_5_SEC, /* timeout for 1.5 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_2_SEC,   /* timeout for 2 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_3_SEC,   /* timeout for 3 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_4_SEC,   /* timeout for 4 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_8_SEC,   /* timeout for 8 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_16_SEC,  /* timeout for 16 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_32_SEC,  /* timeout for 32 seconds */
+    RTE_PMD_IXGBE_BYPASS_TMT_NUM
 };
 
 #define RTE_PMD_IXGBE_BYPASS_TMT_VALID(x)       \
-	((x) == RTE_PMD_IXGBE_BYPASS_TMT_OFF || \
-	((x) > RTE_PMD_IXGBE_BYPASS_TMT_OFF &&  \
-	(x) < RTE_PMD_IXGBE_BYPASS_TMT_NUM))
+    ((x) == RTE_PMD_IXGBE_BYPASS_TMT_OFF || \
+    ((x) > RTE_PMD_IXGBE_BYPASS_TMT_OFF &&  \
+    (x) < RTE_PMD_IXGBE_BYPASS_TMT_NUM))
 
 /**
  * @param port

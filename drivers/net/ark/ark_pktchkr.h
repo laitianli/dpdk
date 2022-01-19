@@ -24,43 +24,43 @@ typedef void *ark_pkt_chkr_t;
  * structs will never be instantiated in ram memory
  */
 struct ark_pkt_chkr_stat_regs {
-	uint32_t r0;
-	uint32_t pkt_start_stop;
-	uint32_t pkt_ctrl;
-	uint32_t pkts_rcvd;
-	uint64_t bytes_rcvd;
-	uint32_t pkts_ok;
-	uint32_t pkts_mismatch;
-	uint32_t pkts_err;
-	uint32_t first_mismatch;
-	uint32_t resync_events;
-	uint32_t pkts_missing;
-	uint32_t min_latency;
-	uint32_t max_latency;
+    uint32_t r0;
+    uint32_t pkt_start_stop;
+    uint32_t pkt_ctrl;
+    uint32_t pkts_rcvd;
+    uint64_t bytes_rcvd;
+    uint32_t pkts_ok;
+    uint32_t pkts_mismatch;
+    uint32_t pkts_err;
+    uint32_t first_mismatch;
+    uint32_t resync_events;
+    uint32_t pkts_missing;
+    uint32_t min_latency;
+    uint32_t max_latency;
 } __attribute__ ((packed));
 
 struct ark_pkt_chkr_ctl_regs {
-	uint32_t pkt_ctrl;
-	uint32_t pkt_payload;
-	uint32_t pkt_size_min;
-	uint32_t pkt_size_max;
-	uint32_t pkt_size_incr;
-	uint32_t num_pkts;
-	uint32_t pkts_sent;
-	uint32_t src_mac_addr_l;
-	uint32_t src_mac_addr_h;
-	uint32_t dst_mac_addr_l;
-	uint32_t dst_mac_addr_h;
-	uint32_t eth_type;
-	uint32_t hdr_dw[7];
+    uint32_t pkt_ctrl;
+    uint32_t pkt_payload;
+    uint32_t pkt_size_min;
+    uint32_t pkt_size_max;
+    uint32_t pkt_size_incr;
+    uint32_t num_pkts;
+    uint32_t pkts_sent;
+    uint32_t src_mac_addr_l;
+    uint32_t src_mac_addr_h;
+    uint32_t dst_mac_addr_l;
+    uint32_t dst_mac_addr_h;
+    uint32_t eth_type;
+    uint32_t hdr_dw[7];
 } __attribute__ ((packed));
 
 struct ark_pkt_chkr_inst {
-	struct rte_eth_dev_info *dev_info;
-	volatile struct ark_pkt_chkr_stat_regs *sregs;
-	volatile struct ark_pkt_chkr_ctl_regs *cregs;
-	int l2_mode;
-	int ordinal;
+    struct rte_eth_dev_info *dev_info;
+    volatile struct ark_pkt_chkr_stat_regs *sregs;
+    volatile struct ark_pkt_chkr_ctl_regs *cregs;
+    int l2_mode;
+    int ordinal;
 };
 
 /*  packet checker functions */

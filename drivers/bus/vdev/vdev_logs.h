@@ -10,7 +10,7 @@
 extern int vdev_logtype_bus;
 
 #define VDEV_LOG(level, fmt, args...) \
-	rte_log(RTE_LOG_ ## level, vdev_logtype_bus, "%s(): " fmt "\n", \
-		__func__, ##args)
+    rte_log(RTE_LOG_ ## level, vdev_logtype_bus, "%s(): " fmt "\n", \
+        __func__, ##args)
 
 #endif /* _VDEV_LOGS_H_ */

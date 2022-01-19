@@ -60,7 +60,7 @@ int rte_eth_dev_is_tx_hairpin_queue(struct rte_eth_dev *dev, uint16_t queue_id);
  * @internal
  * Returns a ethdev slot specified by the unique identifier name.
  *
- * @param	name
+ * @param    name
  *  The pointer to the Unique identifier name for each Ethernet device
  * @return
  *   - The pointer to the ethdev slot, on success. NULL on error
@@ -72,7 +72,7 @@ struct rte_eth_dev *rte_eth_dev_allocated(const char *name);
  * Allocates a new ethdev slot for an ethernet device and returns the pointer
  * to that slot for the driver to use.
  *
- * @param	name	Unique identifier name for each Ethernet device
+ * @param    name    Unique identifier name for each Ethernet device
  * @return
  *   - Slot in the rte_dev_devices array for a new device;
  */
@@ -140,7 +140,7 @@ void _rte_eth_dev_reset(struct rte_eth_dev *dev);
  *  int
  */
 int _rte_eth_dev_callback_process(struct rte_eth_dev *dev,
-		enum rte_eth_event_type event, void *ret_param);
+        enum rte_eth_event_type event, void *ret_param);
 
 /**
  * @internal
@@ -177,8 +177,8 @@ void rte_eth_dev_probing_finish(struct rte_eth_dev *dev);
  */
 const struct rte_memzone *
 rte_eth_dma_zone_reserve(const struct rte_eth_dev *eth_dev, const char *name,
-			 uint16_t queue_id, size_t size,
-			 unsigned align, int socket_id);
+             uint16_t queue_id, size_t size,
+             unsigned align, int socket_id);
 
 /**
  * @internal
@@ -197,21 +197,21 @@ rte_eth_dma_zone_reserve(const struct rte_eth_dev *eth_dev, const char *name,
  */
 static inline int
 rte_eth_linkstatus_set(struct rte_eth_dev *dev,
-		       const struct rte_eth_link *new_link)
+               const struct rte_eth_link *new_link)
 {
-	volatile uint64_t *dev_link
-		 = (volatile uint64_t *)&(dev->data->dev_link);
-	union {
-		uint64_t val64;
-		struct rte_eth_link link;
-	} orig;
+    volatile uint64_t *dev_link
+         = (volatile uint64_t *)&(dev->data->dev_link);
+    union {
+        uint64_t val64;
+        struct rte_eth_link link;
+    } orig;
 
-	RTE_BUILD_BUG_ON(sizeof(*new_link) != sizeof(uint64_t));
+    RTE_BUILD_BUG_ON(sizeof(*new_link) != sizeof(uint64_t));
 
-	orig.val64 = rte_atomic64_exchange(dev_link,
-					   *(const uint64_t *)new_link);
+    orig.val64 = rte_atomic64_exchange(dev_link,
+                       *(const uint64_t *)new_link);
 
-	return (orig.link.link_status == new_link->link_status) ? -1 : 0;
+    return (orig.link.link_status == new_link->link_status) ? -1 : 0;
 }
 
 /**
@@ -225,21 +225,21 @@ rte_eth_linkstatus_set(struct rte_eth_dev *dev,
  */
 static inline void
 rte_eth_linkstatus_get(const struct rte_eth_dev *dev,
-		       struct rte_eth_link *link)
+               struct rte_eth_link *link)
 {
-	volatile uint64_t *src = (uint64_t *)&(dev->data->dev_link);
-	uint64_t *dst = (uint64_t *)link;
+    volatile uint64_t *src = (uint64_t *)&(dev->data->dev_link);
+    uint64_t *dst = (uint64_t *)link;
 
-	RTE_BUILD_BUG_ON(sizeof(*link) != sizeof(uint64_t));
+    RTE_BUILD_BUG_ON(sizeof(*link) != sizeof(uint64_t));
 
 #ifdef __LP64__
-	/* if cpu arch has 64 bit unsigned lon then implicitly atomic */
-	*dst = *src;
+    /* if cpu arch has 64 bit unsigned lon then implicitly atomic */
+    *dst = *src;
 #else
-	/* can't use rte_atomic64_read because it returns signed int */
-	do {
-		*dst = *src;
-	} while (!rte_atomic64_cmpset(src, *dst, *dst));
+    /* can't use rte_atomic64_read because it returns signed int */
+    do {
+        *dst = *src;
+    } while (!rte_atomic64_cmpset(src, *dst, *dst));
 #endif
 }
 
@@ -285,14 +285,14 @@ rte_eth_switch_domain_free(uint16_t domain_id);
 
 /** Generic Ethernet device arguments  */
 struct rte_eth_devargs {
-	uint16_t ports[RTE_MAX_ETHPORTS];
-	/** port/s number to enable on a multi-port single function */
-	uint16_t nb_ports;
-	/** number of ports in ports field */
-	uint16_t representor_ports[RTE_MAX_ETHPORTS];
-	/** representor port/s identifier to enable on device */
-	uint16_t nb_representor_ports;
-	/** number of ports in representor port field */
+    uint16_t ports[RTE_MAX_ETHPORTS];
+    /** port/s number to enable on a multi-port single function */
+    uint16_t nb_ports;
+    /** number of ports in ports field */
+    uint16_t representor_ports[RTE_MAX_ETHPORTS];
+    /** representor port/s identifier to enable on device */
+    uint16_t nb_representor_ports;
+    /** number of ports in representor port field */
 };
 
 /**
@@ -316,7 +316,7 @@ rte_eth_devargs_parse(const char *devargs, struct rte_eth_devargs *eth_devargs);
 
 typedef int (*ethdev_init_t)(struct rte_eth_dev *ethdev, void *init_params);
 typedef int (*ethdev_bus_specific_init)(struct rte_eth_dev *ethdev,
-	void *bus_specific_init_params);
+    void *bus_specific_init_params);
 
 /**
  * @warning
@@ -345,9 +345,9 @@ typedef int (*ethdev_bus_specific_init)(struct rte_eth_dev *ethdev,
 __rte_experimental
 int
 rte_eth_dev_create(struct rte_device *device, const char *name,
-	size_t priv_data_size,
-	ethdev_bus_specific_init bus_specific_init, void *bus_init_params,
-	ethdev_init_t ethdev_init, void *init_params);
+    size_t priv_data_size,
+    ethdev_bus_specific_init bus_specific_init, void *bus_init_params,
+    ethdev_init_t ethdev_init, void *init_params);
 
 
 typedef int (*ethdev_uninit_t)(struct rte_eth_dev *ethdev);

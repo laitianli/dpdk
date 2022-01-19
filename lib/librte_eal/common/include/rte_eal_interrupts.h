@@ -25,18 +25,18 @@
  * The interrupt source type, e.g. UIO, VFIO, ALARM etc.
  */
 enum rte_intr_handle_type {
-	RTE_INTR_HANDLE_UNKNOWN = 0,  /**< generic unknown handle */
-	RTE_INTR_HANDLE_UIO,          /**< uio device handle */
-	RTE_INTR_HANDLE_UIO_INTX,     /**< uio generic handle */
-	RTE_INTR_HANDLE_VFIO_LEGACY,  /**< vfio device handle (legacy) */
-	RTE_INTR_HANDLE_VFIO_MSI,     /**< vfio device handle (MSI) */
-	RTE_INTR_HANDLE_VFIO_MSIX,    /**< vfio device handle (MSIX) */
-	RTE_INTR_HANDLE_ALARM,        /**< alarm handle */
-	RTE_INTR_HANDLE_EXT,          /**< external handler */
-	RTE_INTR_HANDLE_VDEV,         /**< virtual device */
-	RTE_INTR_HANDLE_DEV_EVENT,    /**< device event handle */
-	RTE_INTR_HANDLE_VFIO_REQ,     /**< VFIO request handle */
-	RTE_INTR_HANDLE_MAX           /**< count of elements */
+    RTE_INTR_HANDLE_UNKNOWN = 0,  /**< generic unknown handle */
+    RTE_INTR_HANDLE_UIO,          /**< uio device handle */
+    RTE_INTR_HANDLE_UIO_INTX,     /**< uio generic handle */
+    RTE_INTR_HANDLE_VFIO_LEGACY,  /**< vfio device handle (legacy) */
+    RTE_INTR_HANDLE_VFIO_MSI,     /**< vfio device handle (MSI) */
+    RTE_INTR_HANDLE_VFIO_MSIX,    /**< vfio device handle (MSIX) */
+    RTE_INTR_HANDLE_ALARM,        /**< alarm handle */
+    RTE_INTR_HANDLE_EXT,          /**< external handler */
+    RTE_INTR_HANDLE_VDEV,         /**< virtual device */
+    RTE_INTR_HANDLE_DEV_EVENT,    /**< device event handle */
+    RTE_INTR_HANDLE_VFIO_REQ,     /**< VFIO request handle */
+    RTE_INTR_HANDLE_MAX           /**< count of elements */
 };
 
 #define RTE_INTR_EVENT_ADD            1UL
@@ -45,42 +45,42 @@ enum rte_intr_handle_type {
 typedef void (*rte_intr_event_cb_t)(int fd, void *arg);
 
 struct rte_epoll_data {
-	uint32_t event;               /**< event type */
-	void *data;                   /**< User data */
-	rte_intr_event_cb_t cb_fun;   /**< IN: callback fun */
-	void *cb_arg;	              /**< IN: callback arg */
+    uint32_t event;               /**< event type */
+    void *data;                   /**< User data */
+    rte_intr_event_cb_t cb_fun;   /**< IN: callback fun */
+    void *cb_arg;                  /**< IN: callback arg */
 };
 
 enum {
-	RTE_EPOLL_INVALID = 0,
-	RTE_EPOLL_VALID,
-	RTE_EPOLL_EXEC,
+    RTE_EPOLL_INVALID = 0,
+    RTE_EPOLL_VALID,
+    RTE_EPOLL_EXEC,
 };
 
 /** interrupt epoll event obj, taken by epoll_event.ptr */
 struct rte_epoll_event {
-	volatile uint32_t status;  /**< OUT: event status */
-	int fd;                    /**< OUT: event fd */
-	int epfd;       /**< OUT: epoll instance the ev associated with */
-	struct rte_epoll_data epdata;
+    volatile uint32_t status;  /**< OUT: event status */
+    int fd;                    /**< OUT: event fd */
+    int epfd;       /**< OUT: epoll instance the ev associated with */
+    struct rte_epoll_data epdata;
 };
 
 /** Handle for interrupts. */
 struct rte_intr_handle {
-	RTE_STD_C11
-	union {
-		int vfio_dev_fd;  /**< VFIO device file descriptor */
-		int uio_cfg_fd;  /**< UIO cfg file desc for uio_pci_generic */
-	};
-	int fd;	 /**< interrupt event file descriptor */
-	enum rte_intr_handle_type type;  /**< handle type */
-	uint32_t max_intr;             /**< max interrupt requested */
-	uint32_t nb_efd;               /**< number of available efd(event fd) */
-	uint8_t efd_counter_size;      /**< size of efd counter, used for vdev */
-	int efds[RTE_MAX_RXTX_INTR_VEC_ID];  /**< intr vectors/efds mapping */
-	struct rte_epoll_event elist[RTE_MAX_RXTX_INTR_VEC_ID];
-				       /**< intr vector epoll event */
-	int *intr_vec;                 /**< intr vector number array */
+    RTE_STD_C11
+    union {
+        int vfio_dev_fd;  /**< VFIO device file descriptor */
+        int uio_cfg_fd;  /**< UIO cfg file desc for uio_pci_generic */
+    };
+    int fd;     /**< interrupt event file descriptor */
+    enum rte_intr_handle_type type;  /**< handle type */
+    uint32_t max_intr;             /**< max interrupt requested */
+    uint32_t nb_efd;               /**< number of available efd(event fd) */
+    uint8_t efd_counter_size;      /**< size of efd counter, used for vdev */
+    int efds[RTE_MAX_RXTX_INTR_VEC_ID];  /**< intr vectors/efds mapping */
+    struct rte_epoll_event elist[RTE_MAX_RXTX_INTR_VEC_ID];
+                       /**< intr vector epoll event */
+    int *intr_vec;                 /**< intr vector number array */
 };
 
 #define RTE_EPOLL_PER_THREAD        -1  /**< to hint using per thread epfd */
@@ -103,7 +103,7 @@ struct rte_intr_handle {
  */
 int
 rte_epoll_wait(int epfd, struct rte_epoll_event *events,
-	       int maxevents, int timeout);
+           int maxevents, int timeout);
 
 /**
  * It performs control operations on epoll instance referred by the epfd.
@@ -124,7 +124,7 @@ rte_epoll_wait(int epfd, struct rte_epoll_event *events,
  */
 int
 rte_epoll_ctl(int epfd, int op, int fd,
-	      struct rte_epoll_event *event);
+          struct rte_epoll_event *event);
 
 /**
  * The function returns the per thread epoll instance.
@@ -153,7 +153,7 @@ rte_intr_tls_epfd(void);
  */
 int
 rte_intr_rx_ctl(struct rte_intr_handle *intr_handle,
-		int epfd, int op, unsigned int vec, void *data);
+        int epfd, int op, unsigned int vec, void *data);
 
 /**
  * It deletes registered eventfds.

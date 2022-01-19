@@ -32,11 +32,11 @@ typedef void *regmatch_t;
  * more of the flags
  */
 static inline int regcomp(__rte_unused regex_t *preg,
-		__rte_unused const char *regex, __rte_unused int cflags)
+        __rte_unused const char *regex, __rte_unused int cflags)
 {
-	/* TODO */
-	/* This is a stub, not the expected result */
-	return REG_ESPACE;
+    /* TODO */
+    /* This is a stub, not the expected result */
+    return REG_ESPACE;
 }
 
 /**
@@ -48,12 +48,12 @@ static inline int regcomp(__rte_unused regex_t *preg,
  * is the bitwise inclusive OR of zero or more of the flags.
  */
 static inline int regexec(__rte_unused const regex_t *preg,
-		__rte_unused const char *string, __rte_unused size_t nmatch,
-		__rte_unused regmatch_t pmatch[], __rte_unused int eflags)
+        __rte_unused const char *string, __rte_unused size_t nmatch,
+        __rte_unused regmatch_t pmatch[], __rte_unused int eflags)
 {
-	/* TODO */
-	/* This is a stub, not the expected result */
-	return REG_NOMATCH;
+    /* TODO */
+    /* This is a stub, not the expected result */
+    return REG_NOMATCH;
 }
 
 /**
@@ -61,16 +61,16 @@ static inline int regexec(__rte_unused const regex_t *preg,
  * returned by regcomp() and regexec() to unspecified printable strings.
  */
 static inline size_t regerror(__rte_unused int errcode,
-		__rte_unused const regex_t *preg, char *errbuf,
-		__rte_unused size_t errbuf_size)
+        __rte_unused const regex_t *preg, char *errbuf,
+        __rte_unused size_t errbuf_size)
 {
-	/* TODO */
-	/* This is a stub, not the expected result */
-	if (errbuf) {
-		*errbuf = '\0';
-		return 1;
-	}
-	return 0;
+    /* TODO */
+    /* This is a stub, not the expected result */
+    if (errbuf) {
+        *errbuf = '\0';
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -79,8 +79,8 @@ static inline size_t regerror(__rte_unused int errcode,
  */
 static inline void regfree(__rte_unused regex_t *preg)
 {
-	/* TODO */
-	/* This is a stub, not the expected result */
+    /* TODO */
+    /* This is a stub, not the expected result */
 }
 
 #ifdef __cplusplus

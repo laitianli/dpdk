@@ -24,40 +24,40 @@
  */
 
 /* CONTROL register */
-#define X_RXPKTCPLMODE_SPLIT		1
-#define X_INGPCIEBOUNDARY_32B		0
-#define X_INGPADBOUNDARY_SHIFT		5
-#define X_INGPADBOUNDARY_32B		0
+#define X_RXPKTCPLMODE_SPLIT        1
+#define X_INGPCIEBOUNDARY_32B        0
+#define X_INGPADBOUNDARY_SHIFT        5
+#define X_INGPADBOUNDARY_32B        0
 
-#define X_T6_INGPADBOUNDARY_SHIFT	3
-#define X_T6_INGPADBOUNDARY_8B		0
+#define X_T6_INGPADBOUNDARY_SHIFT    3
+#define X_T6_INGPADBOUNDARY_8B        0
 
 /* CONTROL2 register */
-#define X_INGPACKBOUNDARY_SHIFT		5
-#define X_INGPACKBOUNDARY_16B		0
-#define X_INGPACKBOUNDARY_64B		1
+#define X_INGPACKBOUNDARY_SHIFT        5
+#define X_INGPACKBOUNDARY_16B        0
+#define X_INGPACKBOUNDARY_64B        1
 
 /* GTS register */
-#define X_TIMERREG_RESTART_COUNTER	6
-#define X_TIMERREG_UPDATE_CIDX		7
+#define X_TIMERREG_RESTART_COUNTER    6
+#define X_TIMERREG_UPDATE_CIDX        7
 
 /*
  * Egress Context field values
  */
-#define X_FETCHBURSTMIN_64B		2
-#define X_FETCHBURSTMIN_128B		3
-#define X_FETCHBURSTMAX_256B		2
-#define X_FETCHBURSTMAX_512B		3
+#define X_FETCHBURSTMIN_64B        2
+#define X_FETCHBURSTMIN_128B        3
+#define X_FETCHBURSTMAX_256B        2
+#define X_FETCHBURSTMAX_512B        3
 
-#define X_HOSTFCMODE_NONE		0
+#define X_HOSTFCMODE_NONE        0
 
 /*
  * Ingress Context field values
  */
-#define X_UPDATEDELIVERY_STATUS_PAGE	2
+#define X_UPDATEDELIVERY_STATUS_PAGE    2
 
-#define X_RSPD_TYPE_FLBUF		0
-#define X_RSPD_TYPE_CPL			1
+#define X_RSPD_TYPE_FLBUF        0
+#define X_RSPD_TYPE_CPL            1
 
 /*
  * Context field definitions.  This is by no means a complete list of SGE
@@ -70,19 +70,19 @@
 /*
  * Congestion Manager Definitions.
  */
-#define S_CONMCTXT_CNGTPMODE		19
-#define M_CONMCTXT_CNGTPMODE		0x3
-#define V_CONMCTXT_CNGTPMODE(x)		((x) << S_CONMCTXT_CNGTPMODE)
+#define S_CONMCTXT_CNGTPMODE        19
+#define M_CONMCTXT_CNGTPMODE        0x3
+#define V_CONMCTXT_CNGTPMODE(x)        ((x) << S_CONMCTXT_CNGTPMODE)
 #define G_CONMCTXT_CNGTPMODE(x)  \
-	(((x) >> S_CONMCTXT_CNGTPMODE) & M_CONMCTXT_CNGTPMODE)
-#define S_CONMCTXT_CNGCHMAP		0
-#define M_CONMCTXT_CNGCHMAP		0xffff
-#define V_CONMCTXT_CNGCHMAP(x)		((x) << S_CONMCTXT_CNGCHMAP)
+    (((x) >> S_CONMCTXT_CNGTPMODE) & M_CONMCTXT_CNGTPMODE)
+#define S_CONMCTXT_CNGCHMAP        0
+#define M_CONMCTXT_CNGCHMAP        0xffff
+#define V_CONMCTXT_CNGCHMAP(x)        ((x) << S_CONMCTXT_CNGCHMAP)
 #define G_CONMCTXT_CNGCHMAP(x)   \
-	(((x) >> S_CONMCTXT_CNGCHMAP) & M_CONMCTXT_CNGCHMAP)
+    (((x) >> S_CONMCTXT_CNGCHMAP) & M_CONMCTXT_CNGCHMAP)
 
-#define X_CONMCTXT_CNGTPMODE_QUEUE	1
-#define X_CONMCTXT_CNGTPMODE_CHANNEL	2
+#define X_CONMCTXT_CNGTPMODE_QUEUE    1
+#define X_CONMCTXT_CNGTPMODE_CHANNEL    2
 
 /*
  * T5 and later support a new BAR2-based doorbell mechanism for Egress Queues.
@@ -98,9 +98,9 @@
  * non-contiguous offset for the Going To Sleep writes in order to avoid
  * possible combining between them.
  */
-#define SGE_UDB_SIZE		128
-#define SGE_UDB_KDOORBELL	8
-#define SGE_UDB_GTS		20
+#define SGE_UDB_SIZE        128
+#define SGE_UDB_KDOORBELL    8
+#define SGE_UDB_GTS        20
 
 /*
  * CIM definitions.
@@ -110,16 +110,16 @@
 /*
  * CIM register field values.
  */
-#define X_MBOWNER_NONE			0
-#define X_MBOWNER_FW			1
-#define X_MBOWNER_PL			2
+#define X_MBOWNER_NONE            0
+#define X_MBOWNER_FW            1
+#define X_MBOWNER_PL            2
 
 /*
  * PCI-E definitions.
  * ==================
  */
-#define X_WINDOW_SHIFT			10
-#define X_PCIEOFST_SHIFT		10
+#define X_WINDOW_SHIFT            10
+#define X_PCIEOFST_SHIFT        10
 
 /*
  * TP definitions.
@@ -132,24 +132,24 @@
  * selects for a particular field being present.  These fields, when present
  * in the Compressed Filter Tuple, have the following widths in bits.
  */
-#define W_FT_FCOE			1
-#define W_FT_PORT			3
-#define W_FT_VNIC_ID			17
-#define W_FT_VLAN			17
-#define W_FT_TOS			8
-#define W_FT_PROTOCOL			8
-#define W_FT_ETHERTYPE			16
-#define W_FT_MACMATCH			9
-#define W_FT_MPSHITTYPE			3
-#define W_FT_FRAGMENTATION		1
+#define W_FT_FCOE            1
+#define W_FT_PORT            3
+#define W_FT_VNIC_ID            17
+#define W_FT_VLAN            17
+#define W_FT_TOS            8
+#define W_FT_PROTOCOL            8
+#define W_FT_ETHERTYPE            16
+#define W_FT_MACMATCH            9
+#define W_FT_MPSHITTYPE            3
+#define W_FT_FRAGMENTATION        1
 
 /*
  * Some of the Compressed Filter Tuple fields have internal structure.  These
  * bit shifts/masks describe those structures.  All shifts are relative to the
  * base position of the fields within the Compressed Filter Tuple
  */
-#define S_FT_VLAN_VLD			16
-#define V_FT_VLAN_VLD(x)		((x) << S_FT_VLAN_VLD)
-#define F_FT_VLAN_VLD			V_FT_VLAN_VLD(1U)
+#define S_FT_VLAN_VLD            16
+#define V_FT_VLAN_VLD(x)        ((x) << S_FT_VLAN_VLD)
+#define F_FT_VLAN_VLD            V_FT_VLAN_VLD(1U)
 
 #endif /* __T4_REGS_VALUES_H__ */

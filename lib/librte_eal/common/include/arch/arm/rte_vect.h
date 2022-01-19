@@ -16,16 +16,16 @@ extern "C" {
 
 typedef int32x4_t xmm_t;
 
-#define	XMM_SIZE	(sizeof(xmm_t))
-#define	XMM_MASK	(XMM_SIZE - 1)
+#define    XMM_SIZE    (sizeof(xmm_t))
+#define    XMM_MASK    (XMM_SIZE - 1)
 
 typedef union rte_xmm {
-	xmm_t    x;
-	uint8_t  u8[XMM_SIZE / sizeof(uint8_t)];
-	uint16_t u16[XMM_SIZE / sizeof(uint16_t)];
-	uint32_t u32[XMM_SIZE / sizeof(uint32_t)];
-	uint64_t u64[XMM_SIZE / sizeof(uint64_t)];
-	double   pd[XMM_SIZE / sizeof(double)];
+    xmm_t    x;
+    uint8_t  u8[XMM_SIZE / sizeof(uint8_t)];
+    uint16_t u16[XMM_SIZE / sizeof(uint16_t)];
+    uint32_t u32[XMM_SIZE / sizeof(uint32_t)];
+    uint64_t u64[XMM_SIZE / sizeof(uint64_t)];
+    double   pd[XMM_SIZE / sizeof(double)];
 } __attribute__((aligned(16))) rte_xmm_t;
 
 #ifdef RTE_ARCH_ARM
@@ -33,31 +33,31 @@ typedef union rte_xmm {
 static __inline uint8x16_t
 vqtbl1q_u8(uint8x16_t a, uint8x16_t b)
 {
-	uint8_t i, pos;
-	rte_xmm_t rte_a, rte_b, rte_ret;
+    uint8_t i, pos;
+    rte_xmm_t rte_a, rte_b, rte_ret;
 
-	vst1q_u8(rte_a.u8, a);
-	vst1q_u8(rte_b.u8, b);
+    vst1q_u8(rte_a.u8, a);
+    vst1q_u8(rte_b.u8, b);
 
-	for (i = 0; i < 16; i++) {
-		pos = rte_b.u8[i];
-		if (pos < 16)
-			rte_ret.u8[i] = rte_a.u8[pos];
-		else
-			rte_ret.u8[i] = 0;
-	}
+    for (i = 0; i < 16; i++) {
+        pos = rte_b.u8[i];
+        if (pos < 16)
+            rte_ret.u8[i] = rte_a.u8[pos];
+        else
+            rte_ret.u8[i] = 0;
+    }
 
-	return vld1q_u8(rte_ret.u8);
+    return vld1q_u8(rte_ret.u8);
 }
 
 static inline uint16_t
 vaddvq_u16(uint16x8_t a)
 {
-	uint32x4_t m = vpaddlq_u16(a);
-	uint64x2_t n = vpaddlq_u32(m);
-	uint64x1_t o = vget_low_u64(n) + vget_high_u64(n);
+    uint32x4_t m = vpaddlq_u16(a);
+    uint64x2_t n = vpaddlq_u32(m);
+    uint64x1_t o = vget_low_u64(n) + vget_high_u64(n);
 
-	return vget_lane_u32((uint32x2_t)o, 0);
+    return vget_lane_u32((uint32x2_t)o, 0);
 }
 
 #endif
@@ -65,9 +65,9 @@ vaddvq_u16(uint16x8_t a)
 #if defined(RTE_TOOLCHAIN_GCC) && (GCC_VERSION < 70000)
 static inline uint32x4_t
 vcopyq_laneq_u32(uint32x4_t a, const int lane_a,
-		 uint32x4_t b, const int lane_b)
+         uint32x4_t b, const int lane_b)
 {
-	return vsetq_lane_u32(vgetq_lane_u32(b, lane_b), a, lane_a);
+    return vsetq_lane_u32(vgetq_lane_u32(b, lane_b), a, lane_a);
 }
 #endif
 
@@ -82,7 +82,7 @@ typedef uint8_t poly128_t __attribute__((vector_size(16), aligned(16)));
 static inline uint32x4_t
 vceqzq_u32(uint32x4_t a)
 {
-	return (a == 0);
+    return (a == 0);
 }
 #endif
 
@@ -90,25 +90,25 @@ vceqzq_u32(uint32x4_t a)
 static inline uint64x2_t
 vreinterpretq_u64_p128(poly128_t x)
 {
-	return (uint64x2_t)x;
+    return (uint64x2_t)x;
 }
 
 /* NEON intrinsic vreinterpretq_p64_u64() is supported since GCC version 7 */
 static inline poly64x2_t
 vreinterpretq_p64_u64(uint64x2_t x)
 {
-	return (poly64x2_t)x;
+    return (poly64x2_t)x;
 }
 
 /* NEON intrinsic vgetq_lane_p64() is supported since GCC version 7 */
 static inline poly64_t
 vgetq_lane_p64(poly64x2_t x, const int lane)
 {
-	RTE_ASSERT(lane >= 0 && lane <= 1);
+    RTE_ASSERT(lane >= 0 && lane <= 1);
 
-	poly64_t *p = (poly64_t *)&x;
+    poly64_t *p = (poly64_t *)&x;
 
-	return p[lane];
+    return p[lane];
 }
 #endif
 #endif
@@ -122,25 +122,25 @@ vgetq_lane_p64(poly64x2_t x, const int lane)
 static inline uint8x16_t
 vextract(uint8x16_t v0, uint8x16_t v1, const int index)
 {
-	switch (index) {
-	case 0: return vextq_u8(v0, v1, 0);
-	case 1: return vextq_u8(v0, v1, 1);
-	case 2: return vextq_u8(v0, v1, 2);
-	case 3: return vextq_u8(v0, v1, 3);
-	case 4: return vextq_u8(v0, v1, 4);
-	case 5: return vextq_u8(v0, v1, 5);
-	case 6: return vextq_u8(v0, v1, 6);
-	case 7: return vextq_u8(v0, v1, 7);
-	case 8: return vextq_u8(v0, v1, 8);
-	case 9: return vextq_u8(v0, v1, 9);
-	case 10: return vextq_u8(v0, v1, 10);
-	case 11: return vextq_u8(v0, v1, 11);
-	case 12: return vextq_u8(v0, v1, 12);
-	case 13: return vextq_u8(v0, v1, 13);
-	case 14: return vextq_u8(v0, v1, 14);
-	case 15: return vextq_u8(v0, v1, 15);
-	}
-	return vdupq_n_u8(0);
+    switch (index) {
+    case 0: return vextq_u8(v0, v1, 0);
+    case 1: return vextq_u8(v0, v1, 1);
+    case 2: return vextq_u8(v0, v1, 2);
+    case 3: return vextq_u8(v0, v1, 3);
+    case 4: return vextq_u8(v0, v1, 4);
+    case 5: return vextq_u8(v0, v1, 5);
+    case 6: return vextq_u8(v0, v1, 6);
+    case 7: return vextq_u8(v0, v1, 7);
+    case 8: return vextq_u8(v0, v1, 8);
+    case 9: return vextq_u8(v0, v1, 9);
+    case 10: return vextq_u8(v0, v1, 10);
+    case 11: return vextq_u8(v0, v1, 11);
+    case 12: return vextq_u8(v0, v1, 12);
+    case 13: return vextq_u8(v0, v1, 13);
+    case 14: return vextq_u8(v0, v1, 14);
+    case 15: return vextq_u8(v0, v1, 15);
+    }
+    return vdupq_n_u8(0);
 }
 
 /**
@@ -151,10 +151,10 @@ vextract(uint8x16_t v0, uint8x16_t v1, const int index)
 static inline uint64x2_t
 vshift_bytes_right(uint64x2_t reg, const unsigned int shift)
 {
-	return vreinterpretq_u64_u8(vextract(
-				vreinterpretq_u8_u64(reg),
-				vdupq_n_u8(0),
-				shift));
+    return vreinterpretq_u64_u8(vextract(
+                vreinterpretq_u8_u64(reg),
+                vdupq_n_u8(0),
+                shift));
 }
 
 /**
@@ -165,10 +165,10 @@ vshift_bytes_right(uint64x2_t reg, const unsigned int shift)
 static inline uint64x2_t
 vshift_bytes_left(uint64x2_t reg, const unsigned int shift)
 {
-	return vreinterpretq_u64_u8(vextract(
-				vdupq_n_u8(0),
-				vreinterpretq_u8_u64(reg),
-				16 - shift));
+    return vreinterpretq_u64_u8(vextract(
+                vdupq_n_u8(0),
+                vreinterpretq_u8_u64(reg),
+                16 - shift));
 }
 
 #ifdef __cplusplus

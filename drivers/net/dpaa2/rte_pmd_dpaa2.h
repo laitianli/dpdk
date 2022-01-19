@@ -18,8 +18,8 @@
 #include <rte_flow.h>
 
 enum pmd_dpaa2_ts {
-	PMD_DPAA2_DISABLE_TS,
-	PMD_DPAA2_ENABLE_TS
+    PMD_DPAA2_DISABLE_TS,
+    PMD_DPAA2_ENABLE_TS
 };
 
 /**
@@ -56,8 +56,8 @@ void rte_pmd_dpaa2_set_timestamp(enum pmd_dpaa2_ts);
 __rte_experimental
 struct rte_flow *
 rte_pmd_dpaa2_mux_flow_create(uint32_t dpdmux_id,
-			      struct rte_flow_item *pattern[],
-			      struct rte_flow_action *actions[]);
+                  struct rte_flow_item *pattern[],
+                  struct rte_flow_action *actions[]);
 
 /**
  * @warning
@@ -84,7 +84,7 @@ rte_pmd_dpaa2_mux_flow_create(uint32_t dpdmux_id,
 __rte_experimental
 int
 rte_pmd_dpaa2_set_custom_hash(uint16_t port_id,
-			      uint16_t offset,
-			      uint8_t size);
+                  uint16_t offset,
+                  uint8_t size);
 
 #endif /* _RTE_PMD_DPAA2_H */

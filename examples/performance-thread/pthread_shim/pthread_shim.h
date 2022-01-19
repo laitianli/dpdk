@@ -60,8 +60,8 @@
 void pthread_exit_override(void *v);
 
 #define pthread_exit(v) do { \
-	pthread_exit_override((v));	\
-	return NULL;	\
+    pthread_exit_override((v));    \
+    return NULL;    \
 } while (0)
 
 /*

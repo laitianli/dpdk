@@ -33,97 +33,97 @@ uint16_t rte_red_pow2_frac_inv[16];
 static void
 __rte_red_init_tables(void)
 {
-	uint32_t i = 0;
-	double scale = 0.0;
-	double table_size = 0.0;
+    uint32_t i = 0;
+    double scale = 0.0;
+    double table_size = 0.0;
 
-	scale = (double)(1 << RTE_RED_SCALING);
-	table_size = (double)(RTE_DIM(rte_red_pow2_frac_inv));
+    scale = (double)(1 << RTE_RED_SCALING);
+    table_size = (double)(RTE_DIM(rte_red_pow2_frac_inv));
 
-	for (i = 0; i < RTE_DIM(rte_red_pow2_frac_inv); i++) {
-		double m = (double)i;
+    for (i = 0; i < RTE_DIM(rte_red_pow2_frac_inv); i++) {
+        double m = (double)i;
 
-		rte_red_pow2_frac_inv[i] = (uint16_t) round(scale / pow(2, m / table_size));
-	}
+        rte_red_pow2_frac_inv[i] = (uint16_t) round(scale / pow(2, m / table_size));
+    }
 
-	scale = 1024.0;
+    scale = 1024.0;
 
-	RTE_ASSERT(RTE_RED_WQ_LOG2_NUM == RTE_DIM(rte_red_log2_1_minus_Wq));
+    RTE_ASSERT(RTE_RED_WQ_LOG2_NUM == RTE_DIM(rte_red_log2_1_minus_Wq));
 
-	for (i = RTE_RED_WQ_LOG2_MIN; i <= RTE_RED_WQ_LOG2_MAX; i++) {
-		double n = (double)i;
-		double Wq = pow(2, -n);
-		uint32_t index = i - RTE_RED_WQ_LOG2_MIN;
+    for (i = RTE_RED_WQ_LOG2_MIN; i <= RTE_RED_WQ_LOG2_MAX; i++) {
+        double n = (double)i;
+        double Wq = pow(2, -n);
+        uint32_t index = i - RTE_RED_WQ_LOG2_MIN;
 
-		rte_red_log2_1_minus_Wq[index] = (uint16_t) round(-1.0 * scale * log2(1.0 - Wq));
-		/**
-		* Table entry of zero, corresponds to a Wq of zero
-		* which is not valid (avg would remain constant no
-		* matter how long the queue is empty). So we have
-		* to check for zero and round up to one.
-		*/
-		if (rte_red_log2_1_minus_Wq[index] == 0) {
-			rte_red_log2_1_minus_Wq[index] = 1;
-		}
-	}
+        rte_red_log2_1_minus_Wq[index] = (uint16_t) round(-1.0 * scale * log2(1.0 - Wq));
+        /**
+        * Table entry of zero, corresponds to a Wq of zero
+        * which is not valid (avg would remain constant no
+        * matter how long the queue is empty). So we have
+        * to check for zero and round up to one.
+        */
+        if (rte_red_log2_1_minus_Wq[index] == 0) {
+            rte_red_log2_1_minus_Wq[index] = 1;
+        }
+    }
 }
 
 int
 rte_red_rt_data_init(struct rte_red *red)
 {
-	if (red == NULL)
-		return -1;
+    if (red == NULL)
+        return -1;
 
-	red->avg = 0;
-	red->count = 0;
-	red->q_time = 0;
-	return 0;
+    red->avg = 0;
+    red->count = 0;
+    red->q_time = 0;
+    return 0;
 }
 
 int
 rte_red_config_init(struct rte_red_config *red_cfg,
-	const uint16_t wq_log2,
-	const uint16_t min_th,
-	const uint16_t max_th,
-	const uint16_t maxp_inv)
+    const uint16_t wq_log2,
+    const uint16_t min_th,
+    const uint16_t max_th,
+    const uint16_t maxp_inv)
 {
-	if (red_cfg == NULL) {
-		return -1;
-	}
-	if (max_th > RTE_RED_MAX_TH_MAX) {
-		return -2;
-	}
-	if (min_th >= max_th) {
-		return -3;
-	}
-	if (wq_log2 > RTE_RED_WQ_LOG2_MAX) {
-		return -4;
-	}
-	if (wq_log2 < RTE_RED_WQ_LOG2_MIN) {
-		return -5;
-	}
-	if (maxp_inv < RTE_RED_MAXP_INV_MIN) {
-		return -6;
-	}
-	if (maxp_inv > RTE_RED_MAXP_INV_MAX) {
-		return -7;
-	}
+    if (red_cfg == NULL) {
+        return -1;
+    }
+    if (max_th > RTE_RED_MAX_TH_MAX) {
+        return -2;
+    }
+    if (min_th >= max_th) {
+        return -3;
+    }
+    if (wq_log2 > RTE_RED_WQ_LOG2_MAX) {
+        return -4;
+    }
+    if (wq_log2 < RTE_RED_WQ_LOG2_MIN) {
+        return -5;
+    }
+    if (maxp_inv < RTE_RED_MAXP_INV_MIN) {
+        return -6;
+    }
+    if (maxp_inv > RTE_RED_MAXP_INV_MAX) {
+        return -7;
+    }
 
-	/**
-	 *  Initialize the RED module if not already done
-	 */
-	if (!rte_red_init_done) {
-		rte_red_rand_seed = rte_rand();
-		rte_red_rand_val = rte_fast_rand();
-		__rte_red_init_tables();
-		rte_red_init_done = 1;
-	}
+    /**
+     *  Initialize the RED module if not already done
+     */
+    if (!rte_red_init_done) {
+        rte_red_rand_seed = rte_rand();
+        rte_red_rand_val = rte_fast_rand();
+        __rte_red_init_tables();
+        rte_red_init_done = 1;
+    }
 
-	red_cfg->min_th = ((uint32_t) min_th) << (wq_log2 + RTE_RED_SCALING);
-	red_cfg->max_th = ((uint32_t) max_th) << (wq_log2 + RTE_RED_SCALING);
-	red_cfg->pa_const = (2 * (max_th - min_th) * maxp_inv) << RTE_RED_SCALING;
-	red_cfg->maxp_inv = maxp_inv;
-	red_cfg->wq_log2 = wq_log2;
+    red_cfg->min_th = ((uint32_t) min_th) << (wq_log2 + RTE_RED_SCALING);
+    red_cfg->max_th = ((uint32_t) max_th) << (wq_log2 + RTE_RED_SCALING);
+    red_cfg->pa_const = (2 * (max_th - min_th) * maxp_inv) << RTE_RED_SCALING;
+    red_cfg->maxp_inv = maxp_inv;
+    red_cfg->wq_log2 = wq_log2;
 
-	return 0;
+    return 0;
 }

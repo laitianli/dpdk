@@ -15,89 +15,89 @@
 int
 softnic_mempool_init(struct pmd_internals *p)
 {
-	TAILQ_INIT(&p->mempool_list);
+    TAILQ_INIT(&p->mempool_list);
 
-	return 0;
+    return 0;
 }
 
 void
 softnic_mempool_free(struct pmd_internals *p)
 {
-	for ( ; ; ) {
-		struct softnic_mempool *mempool;
+    for ( ; ; ) {
+        struct softnic_mempool *mempool;
 
-		mempool = TAILQ_FIRST(&p->mempool_list);
-		if (mempool == NULL)
-			break;
+        mempool = TAILQ_FIRST(&p->mempool_list);
+        if (mempool == NULL)
+            break;
 
-		TAILQ_REMOVE(&p->mempool_list, mempool, node);
-		rte_mempool_free(mempool->m);
-		free(mempool);
-	}
+        TAILQ_REMOVE(&p->mempool_list, mempool, node);
+        rte_mempool_free(mempool->m);
+        free(mempool);
+    }
 }
 
 struct softnic_mempool *
 softnic_mempool_find(struct pmd_internals *p,
-	const char *name)
+    const char *name)
 {
-	struct softnic_mempool *mempool;
+    struct softnic_mempool *mempool;
 
-	if (name == NULL)
-		return NULL;
+    if (name == NULL)
+        return NULL;
 
-	TAILQ_FOREACH(mempool, &p->mempool_list, node)
-		if (strcmp(mempool->name, name) == 0)
-			return mempool;
+    TAILQ_FOREACH(mempool, &p->mempool_list, node)
+        if (strcmp(mempool->name, name) == 0)
+            return mempool;
 
-	return NULL;
+    return NULL;
 }
 
 struct softnic_mempool *
 softnic_mempool_create(struct pmd_internals *p,
-	const char *name,
-	struct softnic_mempool_params *params)
+    const char *name,
+    struct softnic_mempool_params *params)
 {
-	char mempool_name[NAME_SIZE];
-	struct softnic_mempool *mempool;
-	struct rte_mempool *m;
+    char mempool_name[NAME_SIZE];
+    struct softnic_mempool *mempool;
+    struct rte_mempool *m;
 
-	/* Check input params */
-	if (name == NULL ||
-		softnic_mempool_find(p, name) ||
-		params == NULL ||
-		params->buffer_size < BUFFER_SIZE_MIN ||
-		params->pool_size == 0)
-		return NULL;
+    /* Check input params */
+    if (name == NULL ||
+        softnic_mempool_find(p, name) ||
+        params == NULL ||
+        params->buffer_size < BUFFER_SIZE_MIN ||
+        params->pool_size == 0)
+        return NULL;
 
-	/* Resource create */
-	snprintf(mempool_name, sizeof(mempool_name), "%s_%s",
-		p->params.name,
-		name);
+    /* Resource create */
+    snprintf(mempool_name, sizeof(mempool_name), "%s_%s",
+        p->params.name,
+        name);
 
-	m = rte_pktmbuf_pool_create(mempool_name,
-		params->pool_size,
-		params->cache_size,
-		0,
-		params->buffer_size - sizeof(struct rte_mbuf),
-		p->params.cpu_id);
+    m = rte_pktmbuf_pool_create(mempool_name,
+        params->pool_size,
+        params->cache_size,
+        0,
+        params->buffer_size - sizeof(struct rte_mbuf),
+        p->params.cpu_id);
 
-	if (m == NULL)
-		return NULL;
+    if (m == NULL)
+        return NULL;
 
-	/* Node allocation */
-	mempool = calloc(1, sizeof(struct softnic_mempool));
-	if (mempool == NULL) {
-		rte_mempool_free(m);
-		return NULL;
-	}
+    /* Node allocation */
+    mempool = calloc(1, sizeof(struct softnic_mempool));
+    if (mempool == NULL) {
+        rte_mempool_free(m);
+        return NULL;
+    }
 
-	/* Node fill in */
-	strlcpy(mempool->name, name, sizeof(mempool->name));
-	mempool->m = m;
-	mempool->buffer_size = params->buffer_size;
+    /* Node fill in */
+    strlcpy(mempool->name, name, sizeof(mempool->name));
+    mempool->m = m;
+    mempool->buffer_size = params->buffer_size;
 
-	/* Node add to list */
-	TAILQ_INSERT_TAIL(&p->mempool_list, mempool, node);
+    /* Node add to list */
+    TAILQ_INSERT_TAIL(&p->mempool_list, mempool, node);
 
-	return mempool;
+    return mempool;
 }

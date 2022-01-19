@@ -15,11 +15,11 @@
 #endif
 
 struct link {
-	TAILQ_ENTRY(link) node;
-	char name[NAME_SIZE];
-	uint16_t port_id;
-	uint32_t n_rxq;
-	uint32_t n_txq;
+    TAILQ_ENTRY(link) node;
+    char name[NAME_SIZE];
+    uint16_t port_id;
+    uint32_t n_rxq;
+    uint32_t n_txq;
 };
 
 TAILQ_HEAD(link_list, link);
@@ -34,27 +34,27 @@ struct link *
 link_next(struct link *link);
 
 struct link_params_rss {
-	uint32_t queue_id[LINK_RXQ_RSS_MAX];
-	uint32_t n_queues;
+    uint32_t queue_id[LINK_RXQ_RSS_MAX];
+    uint32_t n_queues;
 };
 
 struct link_params {
-	const char *dev_name;
-	uint16_t port_id; /**< Valid only when *dev_name* is NULL. */
+    const char *dev_name;
+    uint16_t port_id; /**< Valid only when *dev_name* is NULL. */
 
-	struct {
-		uint32_t n_queues;
-		uint32_t queue_size;
-		const char *mempool_name;
-		struct link_params_rss *rss;
-	} rx;
+    struct {
+        uint32_t n_queues;
+        uint32_t queue_size;
+        const char *mempool_name;
+        struct link_params_rss *rss;
+    } rx;
 
-	struct {
-		uint32_t n_queues;
-		uint32_t queue_size;
-	} tx;
+    struct {
+        uint32_t n_queues;
+        uint32_t queue_size;
+    } tx;
 
-	int promiscuous;
+    int promiscuous;
 };
 
 struct link *

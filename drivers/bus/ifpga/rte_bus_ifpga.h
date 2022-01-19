@@ -34,8 +34,8 @@ TAILQ_HEAD(ifpga_afu_drv_list, rte_afu_driver);
 #define IFPGA_BUS_BITSTREAM_PATH_MAX_LEN 256
 
 struct rte_afu_uuid {
-	uint64_t uuid_low;
-	uint64_t uuid_high;
+    uint64_t uuid_low;
+    uint64_t uuid_high;
 } __attribute__ ((packed));
 
 #define IFPGA_BUS_DEV_PORT_MAX 4
@@ -45,8 +45,8 @@ struct rte_afu_uuid {
  * table of these IDs for each device that it supports.
  */
 struct rte_afu_id {
-	struct rte_afu_uuid uuid;
-	int      port; /**< port number */
+    struct rte_afu_uuid uuid;
+    int      port; /**< port number */
 } __attribute__ ((packed));
 
 /**
@@ -54,33 +54,33 @@ struct rte_afu_id {
  */
 
 struct rte_afu_pr_conf {
-	struct rte_afu_id afu_id;
-	int pr_enable;
-	char bs_path[IFPGA_BUS_BITSTREAM_PATH_MAX_LEN];
+    struct rte_afu_id afu_id;
+    int pr_enable;
+    char bs_path[IFPGA_BUS_BITSTREAM_PATH_MAX_LEN];
 };
 
 #define AFU_PRI_STR_SIZE (PCI_PRI_STR_SIZE + 8)
 
 struct rte_afu_shared {
-	rte_spinlock_t lock;
-	void *data;
+    rte_spinlock_t lock;
+    void *data;
 };
 
 /**
  * A structure describing a AFU device.
  */
 struct rte_afu_device {
-	TAILQ_ENTRY(rte_afu_device) next;       /**< Next in device list. */
-	struct rte_device device;               /**< Inherit core device */
-	struct rte_rawdev *rawdev;    /**< Point Rawdev */
-	struct rte_afu_id id;                   /**< AFU id within FPGA. */
-	uint32_t num_region;   /**< number of regions found */
-	struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];
-						/**< AFU Memory Resource */
-	struct rte_afu_shared shared;
-	struct rte_intr_handle intr_handle;     /**< Interrupt handle */
-	struct rte_afu_driver *driver;          /**< Associated driver */
-	char path[IFPGA_BUS_BITSTREAM_PATH_MAX_LEN];
+    TAILQ_ENTRY(rte_afu_device) next;       /**< Next in device list. */
+    struct rte_device device;               /**< Inherit core device */
+    struct rte_rawdev *rawdev;    /**< Point Rawdev */
+    struct rte_afu_id id;                   /**< AFU id within FPGA. */
+    uint32_t num_region;   /**< number of regions found */
+    struct rte_mem_resource mem_resource[PCI_MAX_RESOURCE];
+                        /**< AFU Memory Resource */
+    struct rte_afu_shared shared;
+    struct rte_intr_handle intr_handle;     /**< Interrupt handle */
+    struct rte_afu_driver *driver;          /**< Associated driver */
+    char path[IFPGA_BUS_BITSTREAM_PATH_MAX_LEN];
 } __attribute__ ((packed));
 
 /**
@@ -88,7 +88,7 @@ struct rte_afu_device {
  * Helper macro for drivers that need to convert to struct rte_afu_device.
  */
 #define RTE_DEV_TO_AFU(ptr) \
-	container_of(ptr, struct rte_afu_device, device)
+    container_of(ptr, struct rte_afu_device, device)
 
 /**
  * Initialization function for the driver called during FPGA BUS probing.
@@ -104,19 +104,19 @@ typedef int (afu_remove_t)(struct rte_afu_device *);
  * A structure describing a AFU device.
  */
 struct rte_afu_driver {
-	TAILQ_ENTRY(rte_afu_driver) next;       /**< Next afu driver. */
-	struct rte_driver driver;               /**< Inherit core driver. */
-	afu_probe_t *probe;                     /**< Device Probe function. */
-	afu_remove_t *remove;                   /**< Device Remove function. */
-	const struct rte_afu_uuid *id_table;    /**< AFU uuid within FPGA. */
+    TAILQ_ENTRY(rte_afu_driver) next;       /**< Next afu driver. */
+    struct rte_driver driver;               /**< Inherit core driver. */
+    afu_probe_t *probe;                     /**< Device Probe function. */
+    afu_remove_t *remove;                   /**< Device Remove function. */
+    const struct rte_afu_uuid *id_table;    /**< AFU uuid within FPGA. */
 };
 
 static inline const char *
 rte_ifpga_device_name(const struct rte_afu_device *afu)
 {
-	if (afu && afu->device.name)
-		return afu->device.name;
-	return NULL;
+    if (afu && afu->device.name)
+        return afu->device.name;
+    return NULL;
 }
 
 /**
@@ -150,9 +150,9 @@ void rte_ifpga_driver_unregister(struct rte_afu_driver *driver);
 static const char *afudrvinit_ ## nm ## _alias;\
 RTE_INIT(afudrvinitfn_ ##afudrv)\
 {\
-	(afudrv).driver.name = RTE_STR(nm);\
-	(afudrv).driver.alias = afudrvinit_ ## nm ## _alias;\
-	rte_ifpga_driver_register(&afudrv);\
+    (afudrv).driver.name = RTE_STR(nm);\
+    (afudrv).driver.alias = afudrvinit_ ## nm ## _alias;\
+    rte_ifpga_driver_register(&afudrv);\
 } \
 RTE_PMD_EXPORT_NAME(nm, __COUNTER__)
 

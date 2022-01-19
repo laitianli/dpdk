@@ -46,49 +46,49 @@ extern "C" {
 #define RDLINE_HISTORY_MAX_LINE 64
 
 enum rdline_status {
-	RDLINE_INIT,
-	RDLINE_RUNNING,
-	RDLINE_EXITED
+    RDLINE_INIT,
+    RDLINE_RUNNING,
+    RDLINE_EXITED
 };
 
 struct rdline;
 
 typedef int (rdline_write_char_t)(struct rdline *rdl, char);
 typedef void (rdline_validate_t)(struct rdline *rdl,
-				 const char *buf, unsigned int size);
+                 const char *buf, unsigned int size);
 typedef int (rdline_complete_t)(struct rdline *rdl, const char *buf,
-				char *dstbuf, unsigned int dstsize,
-				int *state);
+                char *dstbuf, unsigned int dstsize,
+                int *state);
 
 struct rdline {
-	enum rdline_status status;
-	/* rdline bufs */
-	struct cirbuf left;
-	struct cirbuf right;
-	char left_buf[RDLINE_BUF_SIZE+2]; /* reserve 2 chars for the \n\0 */
-	char right_buf[RDLINE_BUF_SIZE];
+    enum rdline_status status;
+    /* rdline bufs */
+    struct cirbuf left;
+    struct cirbuf right;
+    char left_buf[RDLINE_BUF_SIZE+2]; /* reserve 2 chars for the \n\0 */
+    char right_buf[RDLINE_BUF_SIZE];
 
-	char prompt[RDLINE_PROMPT_SIZE];
-	unsigned int prompt_size;
+    char prompt[RDLINE_PROMPT_SIZE];
+    unsigned int prompt_size;
 
-	char kill_buf[RDLINE_BUF_SIZE];
-	unsigned int kill_size;
+    char kill_buf[RDLINE_BUF_SIZE];
+    unsigned int kill_size;
 
-	/* history */
-	struct cirbuf history;
-	char history_buf[RDLINE_HISTORY_BUF_SIZE];
-	int history_cur_line;
+    /* history */
+    struct cirbuf history;
+    char history_buf[RDLINE_HISTORY_BUF_SIZE];
+    int history_cur_line;
 
-	/* callbacks and func pointers */
-	rdline_write_char_t *write_char;
-	rdline_validate_t *validate;
-	rdline_complete_t *complete;
+    /* callbacks and func pointers */
+    rdline_write_char_t *write_char;
+    rdline_validate_t *validate;
+    rdline_complete_t *complete;
 
-	/* vt100 parser */
-	struct cmdline_vt100 vt100;
+    /* vt100 parser */
+    struct cmdline_vt100 vt100;
 
-	/* opaque pointer */
-	void *opaque;
+    /* opaque pointer */
+    void *opaque;
 };
 
 /**
@@ -102,9 +102,9 @@ struct rdline {
  *                 user completes the buffer.
  */
 int rdline_init(struct rdline *rdl,
-		 rdline_write_char_t *write_char,
-		 rdline_validate_t *validate,
-		 rdline_complete_t *complete);
+         rdline_write_char_t *write_char,
+         rdline_validate_t *validate,
+         rdline_complete_t *complete);
 
 
 /**

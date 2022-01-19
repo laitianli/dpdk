@@ -11,74 +11,74 @@
 
 /**
  * mc_get_version() - Retrieves the Management Complex firmware
- *			version information
- * @mc_io:		Pointer to opaque I/O object
- * @cmd_flags:		Command flags; one or more of 'MC_CMD_FLAG_'
- * @mc_ver_info:	Returned version information structure
+ *            version information
+ * @mc_io:        Pointer to opaque I/O object
+ * @cmd_flags:        Command flags; one or more of 'MC_CMD_FLAG_'
+ * @mc_ver_info:    Returned version information structure
  *
- * Return:	'0' on Success; Error code otherwise.
+ * Return:    '0' on Success; Error code otherwise.
  */
 int mc_get_version(struct fsl_mc_io *mc_io,
-		   uint32_t cmd_flags,
-		   struct mc_version *mc_ver_info)
+           uint32_t cmd_flags,
+           struct mc_version *mc_ver_info)
 {
-	struct mc_command cmd = { 0 };
-	struct dpmng_rsp_get_version *rsp_params;
-	int err;
+    struct mc_command cmd = { 0 };
+    struct dpmng_rsp_get_version *rsp_params;
+    int err;
 
-	/* prepare command */
-	cmd.header = mc_encode_cmd_header(DPMNG_CMDID_GET_VERSION,
-					  cmd_flags,
-					  0);
+    /* prepare command */
+    cmd.header = mc_encode_cmd_header(DPMNG_CMDID_GET_VERSION,
+                      cmd_flags,
+                      0);
 
-	/* send command to mc*/
-	err = mc_send_command(mc_io, &cmd);
-	if (err)
-		return err;
+    /* send command to mc*/
+    err = mc_send_command(mc_io, &cmd);
+    if (err)
+        return err;
 
-	/* retrieve response parameters */
-	rsp_params = (struct dpmng_rsp_get_version *)cmd.params;
-	mc_ver_info->revision = le32_to_cpu(rsp_params->revision);
-	mc_ver_info->major = le32_to_cpu(rsp_params->version_major);
-	mc_ver_info->minor = le32_to_cpu(rsp_params->version_minor);
+    /* retrieve response parameters */
+    rsp_params = (struct dpmng_rsp_get_version *)cmd.params;
+    mc_ver_info->revision = le32_to_cpu(rsp_params->revision);
+    mc_ver_info->major = le32_to_cpu(rsp_params->version_major);
+    mc_ver_info->minor = le32_to_cpu(rsp_params->version_minor);
 
-	return 0;
+    return 0;
 }
 
 /**
  * mc_get_soc_version() - Retrieves the Management Complex firmware
  *                     version information
- * @mc_io		Pointer to opaque I/O object
- * @cmd_flags:		Command flags; one or more of 'MC_CMD_FLAG_'
- * @mc_platform_info:	Returned version information structure. The structure
- *			contains the values of SVR and PVR registers.
- *			Please consult platform specific reference manual
- *			for detailed information.
+ * @mc_io        Pointer to opaque I/O object
+ * @cmd_flags:        Command flags; one or more of 'MC_CMD_FLAG_'
+ * @mc_platform_info:    Returned version information structure. The structure
+ *            contains the values of SVR and PVR registers.
+ *            Please consult platform specific reference manual
+ *            for detailed information.
  *
  * Return:     '0' on Success; Error code otherwise.
  */
 int mc_get_soc_version(struct fsl_mc_io *mc_io,
-		       uint32_t cmd_flags,
-		       struct mc_soc_version *mc_platform_info)
+               uint32_t cmd_flags,
+               struct mc_soc_version *mc_platform_info)
 {
-	struct dpmng_rsp_get_soc_version *rsp_params;
-	struct mc_command cmd = { 0 };
-	int err;
+    struct dpmng_rsp_get_soc_version *rsp_params;
+    struct mc_command cmd = { 0 };
+    int err;
 
-	/* prepare command */
-	cmd.header = mc_encode_cmd_header(DPMNG_CMDID_GET_SOC_VERSION,
-					  cmd_flags,
-					  0);
+    /* prepare command */
+    cmd.header = mc_encode_cmd_header(DPMNG_CMDID_GET_SOC_VERSION,
+                      cmd_flags,
+                      0);
 
-	/* send command to mc*/
-	err = mc_send_command(mc_io, &cmd);
-	if (err)
-		return err;
+    /* send command to mc*/
+    err = mc_send_command(mc_io, &cmd);
+    if (err)
+        return err;
 
-	/* retrieve response parameters */
-	rsp_params = (struct dpmng_rsp_get_soc_version *)cmd.params;
-	mc_platform_info->svr = le32_to_cpu(rsp_params->svr);
-	mc_platform_info->pvr = le32_to_cpu(rsp_params->pvr);
+    /* retrieve response parameters */
+    rsp_params = (struct dpmng_rsp_get_soc_version *)cmd.params;
+    mc_platform_info->svr = le32_to_cpu(rsp_params->svr);
+    mc_platform_info->pvr = le32_to_cpu(rsp_params->pvr);
 
-	return 0;
+    return 0;
 }

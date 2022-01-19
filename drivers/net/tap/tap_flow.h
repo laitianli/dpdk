@@ -31,38 +31,38 @@
  * (but biggest value).
  */
 enum implicit_rule_index {
-	TAP_REMOTE_TX,
-	TAP_ISOLATE,
-	TAP_REMOTE_BROADCASTV6,
-	TAP_REMOTE_BROADCAST,
-	TAP_REMOTE_ALLMULTI,
-	TAP_REMOTE_PROMISC,
-	TAP_REMOTE_LOCAL_MAC,
-	TAP_REMOTE_MAX_IDX,
+    TAP_REMOTE_TX,
+    TAP_ISOLATE,
+    TAP_REMOTE_BROADCASTV6,
+    TAP_REMOTE_BROADCAST,
+    TAP_REMOTE_ALLMULTI,
+    TAP_REMOTE_PROMISC,
+    TAP_REMOTE_LOCAL_MAC,
+    TAP_REMOTE_MAX_IDX,
 };
 
 enum bpf_fd_idx {
-	SEC_L3_L4,
-	SEC_MAX,
+    SEC_L3_L4,
+    SEC_MAX,
 };
 
 int tap_dev_filter_ctrl(struct rte_eth_dev *dev,
-			enum rte_filter_type filter_type,
-			enum rte_filter_op filter_op,
-			void *arg);
+            enum rte_filter_type filter_type,
+            enum rte_filter_op filter_op,
+            void *arg);
 int tap_flow_flush(struct rte_eth_dev *dev, struct rte_flow_error *error);
 
 int tap_flow_implicit_create(struct pmd_internals *pmd,
-			     enum implicit_rule_index idx);
+                 enum implicit_rule_index idx);
 int tap_flow_implicit_destroy(struct pmd_internals *pmd,
-			      enum implicit_rule_index idx);
+                  enum implicit_rule_index idx);
 int tap_flow_implicit_flush(struct pmd_internals *pmd,
-			    struct rte_flow_error *error);
+                struct rte_flow_error *error);
 
 int tap_flow_bpf_cls_q(__u32 queue_idx);
 int tap_flow_bpf_calc_l3_l4_hash(__u32 key_idx, int map_fd);
 int tap_flow_bpf_rss_map_create(unsigned int key_size, unsigned int value_size,
-			unsigned int max_entries);
+            unsigned int max_entries);
 int tap_flow_bpf_update_rss_elem(int fd, void *key, void *value);
 
 #endif /* _TAP_FLOW_H_ */

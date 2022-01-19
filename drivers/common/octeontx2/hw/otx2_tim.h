@@ -28,7 +28,7 @@
 
 /* ENUMS */
 
-#define TIM_LF_INT_VEC_NRSPERR_INT	(0x0ull)
-#define TIM_LF_INT_VEC_RAS_INT		(0x1ull)
+#define TIM_LF_INT_VEC_NRSPERR_INT    (0x0ull)
+#define TIM_LF_INT_VEC_RAS_INT        (0x1ull)
 
 #endif /* __OTX2_TIM_HW_H__ */

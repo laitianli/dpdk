@@ -59,7 +59,7 @@ int power_kvm_vm_exit(unsigned int lcore_id);
  *  -ENOTSUP
  */
 uint32_t power_kvm_vm_freqs(unsigned int lcore_id, uint32_t *freqs,
-		uint32_t num);
+        uint32_t num);
 
 /**
  * Return the current index of available frequencies of a specific lcore.
@@ -192,7 +192,7 @@ int power_kvm_vm_disable_turbo(unsigned int lcore_id);
  *  - Negative on error.
  */
 int power_kvm_vm_get_capabilities(unsigned int lcore_id,
-		struct rte_power_core_capabilities *caps);
+        struct rte_power_core_capabilities *caps);
 
 #ifdef __cplusplus
 }

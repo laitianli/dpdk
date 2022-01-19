@@ -23,18 +23,18 @@ extern "C" {
 
 /** Array table parameters */
 struct rte_table_array_params {
-	/** Number of array entries. Has to be a power of two. */
-	uint32_t n_entries;
+    /** Number of array entries. Has to be a power of two. */
+    uint32_t n_entries;
 
-	/** Byte offset within input packet meta-data where lookup key (i.e. the
-	    array entry index) is located. */
-	uint32_t offset;
+    /** Byte offset within input packet meta-data where lookup key (i.e. the
+        array entry index) is located. */
+    uint32_t offset;
 };
 
 /** Array table key format */
 struct rte_table_array_key {
-	/** Array entry index */
-	uint32_t pos;
+    /** Array entry index */
+    uint32_t pos;
 };
 
 /** Array table operations */

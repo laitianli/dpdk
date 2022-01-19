@@ -57,32 +57,32 @@
 #define MLX4_MR_EXT_MEMSEG_EN_KVARG "mr_ext_memseg_en"
 
 enum {
-	PCI_VENDOR_ID_MELLANOX = 0x15b3,
+    PCI_VENDOR_ID_MELLANOX = 0x15b3,
 };
 
 enum {
-	PCI_DEVICE_ID_MELLANOX_CONNECTX3 = 0x1003,
-	PCI_DEVICE_ID_MELLANOX_CONNECTX3VF = 0x1004,
-	PCI_DEVICE_ID_MELLANOX_CONNECTX3PRO = 0x1007,
+    PCI_DEVICE_ID_MELLANOX_CONNECTX3 = 0x1003,
+    PCI_DEVICE_ID_MELLANOX_CONNECTX3VF = 0x1004,
+    PCI_DEVICE_ID_MELLANOX_CONNECTX3PRO = 0x1007,
 };
 
 /* Request types for IPC. */
 enum mlx4_mp_req_type {
-	MLX4_MP_REQ_VERBS_CMD_FD = 1,
-	MLX4_MP_REQ_CREATE_MR,
-	MLX4_MP_REQ_START_RXTX,
-	MLX4_MP_REQ_STOP_RXTX,
+    MLX4_MP_REQ_VERBS_CMD_FD = 1,
+    MLX4_MP_REQ_CREATE_MR,
+    MLX4_MP_REQ_START_RXTX,
+    MLX4_MP_REQ_STOP_RXTX,
 };
 
 /* Pameters for IPC. */
 struct mlx4_mp_param {
-	enum mlx4_mp_req_type type;
-	int port_id;
-	int result;
-	RTE_STD_C11
-	union {
-		uintptr_t addr; /* MLX4_MP_REQ_CREATE_MR */
-	} args;
+    enum mlx4_mp_req_type type;
+    int port_id;
+    int result;
+    RTE_STD_C11
+    union {
+        uintptr_t addr; /* MLX4_MP_REQ_CREATE_MR */
+    } args;
 };
 
 /** Request timeout for IPC. */
@@ -104,9 +104,9 @@ struct rte_flow;
  * Type of object being allocated.
  */
 enum mlx4_verbs_alloc_type {
-	MLX4_VERBS_ALLOC_TYPE_NONE,
-	MLX4_VERBS_ALLOC_TYPE_TX_QUEUE,
-	MLX4_VERBS_ALLOC_TYPE_RX_QUEUE,
+    MLX4_VERBS_ALLOC_TYPE_NONE,
+    MLX4_VERBS_ALLOC_TYPE_TX_QUEUE,
+    MLX4_VERBS_ALLOC_TYPE_RX_QUEUE,
 };
 
 /**
@@ -114,9 +114,9 @@ enum mlx4_verbs_alloc_type {
  * resources it is allocating.
  */
 struct mlx4_verbs_alloc_ctx {
-	int enabled;
-	enum mlx4_verbs_alloc_type type; /* Kind of object being allocated. */
-	const void *obj; /* Pointer to the DPDK object. */
+    int enabled;
+    enum mlx4_verbs_alloc_type type; /* Kind of object being allocated. */
+    const void *obj; /* Pointer to the DPDK object. */
 };
 
 LIST_HEAD(mlx4_dev_list, mlx4_priv);
@@ -124,74 +124,74 @@ LIST_HEAD(mlx4_mr_list, mlx4_mr);
 
 /* Shared data between primary and secondary processes. */
 struct mlx4_shared_data {
-	rte_spinlock_t lock;
-	/* Global spinlock for primary and secondary processes. */
-	int init_done; /* Whether primary has done initialization. */
-	unsigned int secondary_cnt; /* Number of secondary processes init'd. */
-	struct mlx4_dev_list mem_event_cb_list;
-	rte_rwlock_t mem_event_rwlock;
+    rte_spinlock_t lock;
+    /* Global spinlock for primary and secondary processes. */
+    int init_done; /* Whether primary has done initialization. */
+    unsigned int secondary_cnt; /* Number of secondary processes init'd. */
+    struct mlx4_dev_list mem_event_cb_list;
+    rte_rwlock_t mem_event_rwlock;
 };
 
 /* Per-process data structure, not visible to other processes. */
 struct mlx4_local_data {
-	int init_done; /* Whether a secondary has done initialization. */
+    int init_done; /* Whether a secondary has done initialization. */
 };
 
 extern struct mlx4_shared_data *mlx4_shared_data;
 
 /* Per-process private structure. */
 struct mlx4_proc_priv {
-	size_t uar_table_sz;
-	/* Size of UAR register table. */
-	void *uar_table[];
-	/* Table of UAR registers for each process. */
+    size_t uar_table_sz;
+    /* Size of UAR register table. */
+    void *uar_table[];
+    /* Table of UAR registers for each process. */
 };
 
 #define MLX4_PROC_PRIV(port_id) \
-	((struct mlx4_proc_priv *)rte_eth_devices[port_id].process_private)
+    ((struct mlx4_proc_priv *)rte_eth_devices[port_id].process_private)
 
 /** Private data structure. */
 struct mlx4_priv {
-	LIST_ENTRY(mlx4_priv) mem_event_cb;
-	/**< Called by memory event callback. */
-	struct rte_eth_dev_data *dev_data;  /* Pointer to device data. */
-	struct ibv_context *ctx; /**< Verbs context. */
-	struct ibv_device_attr device_attr; /**< Device properties. */
-	struct ibv_pd *pd; /**< Protection Domain. */
-	/* Device properties. */
-	unsigned int if_index;	/**< Associated network device index */
-	uint16_t mtu; /**< Configured MTU. */
-	uint8_t port; /**< Physical port number. */
-	uint32_t started:1; /**< Device started, flows enabled. */
-	uint32_t vf:1; /**< This is a VF device. */
-	uint32_t intr_alarm:1; /**< An interrupt alarm is scheduled. */
-	uint32_t isolated:1; /**< Toggle isolated mode. */
-	uint32_t rss_init:1; /**< Common RSS context is initialized. */
-	uint32_t hw_csum:1; /**< Checksum offload is supported. */
-	uint32_t hw_csum_l2tun:1; /**< Checksum support for L2 tunnels. */
-	uint32_t hw_fcs_strip:1; /**< FCS stripping toggling is supported. */
-	uint32_t tso:1; /**< Transmit segmentation offload is supported. */
-	uint32_t mr_ext_memseg_en:1;
-	/** Whether memseg should be extended for MR creation. */
-	uint32_t tso_max_payload_sz; /**< Max supported TSO payload size. */
-	uint32_t hw_rss_max_qps; /**< Max Rx Queues supported by RSS. */
-	uint64_t hw_rss_sup; /**< Supported RSS hash fields (Verbs format). */
-	struct rte_intr_handle intr_handle; /**< Port interrupt handle. */
-	struct mlx4_drop *drop; /**< Shared resources for drop flow rules. */
-	struct {
-		uint32_t dev_gen; /* Generation number to flush local caches. */
-		rte_rwlock_t rwlock; /* MR Lock. */
-		struct mlx4_mr_btree cache; /* Global MR cache table. */
-		struct mlx4_mr_list mr_list; /* Registered MR list. */
-		struct mlx4_mr_list mr_free_list; /* Freed MR list. */
-	} mr;
-	LIST_HEAD(, mlx4_rss) rss; /**< Shared targets for Rx flow rules. */
-	LIST_HEAD(, rte_flow) flows; /**< Configured flow rule handles. */
-	struct rte_ether_addr mac[MLX4_MAX_MAC_ADDRESSES];
-	/**< Configured MAC addresses. Unused entries are zeroed. */
-	uint32_t mac_mc; /**< Number of trailing multicast entries in mac[]. */
-	struct mlx4_verbs_alloc_ctx verbs_alloc_ctx;
-	/**< Context for Verbs allocator. */
+    LIST_ENTRY(mlx4_priv) mem_event_cb;
+    /**< Called by memory event callback. */
+    struct rte_eth_dev_data *dev_data;  /* Pointer to device data. */
+    struct ibv_context *ctx; /**< Verbs context. */
+    struct ibv_device_attr device_attr; /**< Device properties. */
+    struct ibv_pd *pd; /**< Protection Domain. */
+    /* Device properties. */
+    unsigned int if_index;    /**< Associated network device index */
+    uint16_t mtu; /**< Configured MTU. */
+    uint8_t port; /**< Physical port number. */
+    uint32_t started:1; /**< Device started, flows enabled. */
+    uint32_t vf:1; /**< This is a VF device. */
+    uint32_t intr_alarm:1; /**< An interrupt alarm is scheduled. */
+    uint32_t isolated:1; /**< Toggle isolated mode. */
+    uint32_t rss_init:1; /**< Common RSS context is initialized. */
+    uint32_t hw_csum:1; /**< Checksum offload is supported. */
+    uint32_t hw_csum_l2tun:1; /**< Checksum support for L2 tunnels. */
+    uint32_t hw_fcs_strip:1; /**< FCS stripping toggling is supported. */
+    uint32_t tso:1; /**< Transmit segmentation offload is supported. */
+    uint32_t mr_ext_memseg_en:1;
+    /** Whether memseg should be extended for MR creation. */
+    uint32_t tso_max_payload_sz; /**< Max supported TSO payload size. */
+    uint32_t hw_rss_max_qps; /**< Max Rx Queues supported by RSS. */
+    uint64_t hw_rss_sup; /**< Supported RSS hash fields (Verbs format). */
+    struct rte_intr_handle intr_handle; /**< Port interrupt handle. */
+    struct mlx4_drop *drop; /**< Shared resources for drop flow rules. */
+    struct {
+        uint32_t dev_gen; /* Generation number to flush local caches. */
+        rte_rwlock_t rwlock; /* MR Lock. */
+        struct mlx4_mr_btree cache; /* Global MR cache table. */
+        struct mlx4_mr_list mr_list; /* Registered MR list. */
+        struct mlx4_mr_list mr_free_list; /* Freed MR list. */
+    } mr;
+    LIST_HEAD(, mlx4_rss) rss; /**< Shared targets for Rx flow rules. */
+    LIST_HEAD(, rte_flow) flows; /**< Configured flow rule handles. */
+    struct rte_ether_addr mac[MLX4_MAX_MAC_ADDRESSES];
+    /**< Configured MAC addresses. Unused entries are zeroed. */
+    uint32_t mac_mc; /**< Number of trailing multicast entries in mac[]. */
+    struct mlx4_verbs_alloc_ctx verbs_alloc_ctx;
+    /**< Context for Verbs allocator. */
 };
 
 #define PORT_ID(priv) ((priv)->dev_data->port_id)
@@ -211,21 +211,21 @@ int mlx4_allmulticast_enable(struct rte_eth_dev *dev);
 int mlx4_allmulticast_disable(struct rte_eth_dev *dev);
 void mlx4_mac_addr_remove(struct rte_eth_dev *dev, uint32_t index);
 int mlx4_mac_addr_add(struct rte_eth_dev *dev, struct rte_ether_addr *mac_addr,
-		      uint32_t index, uint32_t vmdq);
+              uint32_t index, uint32_t vmdq);
 int mlx4_mac_addr_set(struct rte_eth_dev *dev, struct rte_ether_addr *mac_addr);
 int mlx4_set_mc_addr_list(struct rte_eth_dev *dev, struct rte_ether_addr *list,
-			  uint32_t num);
+              uint32_t num);
 int mlx4_vlan_filter_set(struct rte_eth_dev *dev, uint16_t vlan_id, int on);
 int mlx4_stats_get(struct rte_eth_dev *dev, struct rte_eth_stats *stats);
 int mlx4_stats_reset(struct rte_eth_dev *dev);
 int mlx4_fw_version_get(struct rte_eth_dev *dev, char *fw_ver, size_t fw_size);
 int mlx4_dev_infos_get(struct rte_eth_dev *dev,
-		       struct rte_eth_dev_info *info);
+               struct rte_eth_dev_info *info);
 int mlx4_link_update(struct rte_eth_dev *dev, int wait_to_complete);
 int mlx4_flow_ctrl_get(struct rte_eth_dev *dev,
-		       struct rte_eth_fc_conf *fc_conf);
+               struct rte_eth_fc_conf *fc_conf);
 int mlx4_flow_ctrl_set(struct rte_eth_dev *dev,
-		       struct rte_eth_fc_conf *fc_conf);
+               struct rte_eth_fc_conf *fc_conf);
 const uint32_t *mlx4_dev_supported_ptypes_get(struct rte_eth_dev *dev);
 int mlx4_is_removed(struct rte_eth_dev *dev);
 

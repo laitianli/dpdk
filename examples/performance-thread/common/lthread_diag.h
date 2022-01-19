@@ -40,17 +40,17 @@ extern uint64_t diag_mask;
  *  the event code
  *
  */
-#define DIAG_CREATE_EVENT(obj, ev) do {					\
-	struct lthread *ct = RTE_PER_LCORE(this_sched)->current_lthread;\
-	if ((BIT(ev) & diag_mask) && (ev < LT_DIAG_EVENT_MAX)) {	\
-		(obj)->diag_ref = (diag_cb)(rte_rdtsc(),		\
-					ct,				\
-					(ev),				\
-					0,				\
-					diag_event_text[(ev)],		\
-					(uint64_t)obj,			\
-					0);				\
-	}								\
+#define DIAG_CREATE_EVENT(obj, ev) do {                    \
+    struct lthread *ct = RTE_PER_LCORE(this_sched)->current_lthread;\
+    if ((BIT(ev) & diag_mask) && (ev < LT_DIAG_EVENT_MAX)) {    \
+        (obj)->diag_ref = (diag_cb)(rte_rdtsc(),        \
+                    ct,                \
+                    (ev),                \
+                    0,                \
+                    diag_event_text[(ev)],        \
+                    (uint64_t)obj,            \
+                    0);                \
+    }                                \
 } while (0)
 
 /*
@@ -65,17 +65,17 @@ extern uint64_t diag_mask;
  * @ param p2
  *  object specific value ( see lthread_diag_api.h )
  */
-#define DIAG_EVENT(obj, ev, p1, p2) do {				\
-	struct lthread *ct = RTE_PER_LCORE(this_sched)->current_lthread;\
-	if ((BIT(ev) & diag_mask) && (ev < LT_DIAG_EVENT_MAX)) {	\
-		(diag_cb)(rte_rdtsc(),					\
-				ct,					\
-				ev,					\
-				(obj)->diag_ref,			\
-				diag_event_text[(ev)],			\
-				(uint64_t)(p1),				\
-				(uint64_t)(p2));			\
-	}								\
+#define DIAG_EVENT(obj, ev, p1, p2) do {                \
+    struct lthread *ct = RTE_PER_LCORE(this_sched)->current_lthread;\
+    if ((BIT(ev) & diag_mask) && (ev < LT_DIAG_EVENT_MAX)) {    \
+        (diag_cb)(rte_rdtsc(),                    \
+                ct,                    \
+                ev,                    \
+                (obj)->diag_ref,            \
+                diag_event_text[(ev)],            \
+                (uint64_t)(p1),                \
+                (uint64_t)(p2));            \
+    }                                \
 } while (0)
 
 #define DIAG_COUNT_DEFINE(x) rte_atomic64_t count_##x
@@ -103,10 +103,10 @@ extern uint64_t diag_mask;
 
 #define DIAG_USED __rte_unused
 
-#endif				/* LTHREAD_DIAG */
+#endif                /* LTHREAD_DIAG */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* LTHREAD_DIAG_H_ */
+#endif                /* LTHREAD_DIAG_H_ */

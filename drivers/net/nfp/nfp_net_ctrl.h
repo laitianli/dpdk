@@ -135,10 +135,10 @@
  * - define more STS bits
  */
 #define NFP_NET_CFG_VERSION             0x0030
-#define   NFP_NET_CFG_VERSION_RESERVED_MASK	(0xff << 24)
+#define   NFP_NET_CFG_VERSION_RESERVED_MASK    (0xff << 24)
 #define   NFP_NET_CFG_VERSION_CLASS_MASK  (0xff << 16)
 #define   NFP_NET_CFG_VERSION_CLASS(x)    (((x) & 0xff) << 16)
-#define   NFP_NET_CFG_VERSION_CLASS_GENERIC	0
+#define   NFP_NET_CFG_VERSION_CLASS_GENERIC    0
 #define   NFP_NET_CFG_VERSION_MAJOR_MASK  (0xff <<  8)
 #define   NFP_NET_CFG_VERSION_MAJOR(x)    (((x) & 0xff) <<  8)
 #define   NFP_NET_CFG_VERSION_MINOR_MASK  (0xff <<  0)
@@ -172,8 +172,8 @@
 /**
  * NFP6000/NFP4000 - Prepend configuration
  */
-#define NFP_NET_CFG_RX_OFFSET		0x0050
-#define NFP_NET_CFG_RX_OFFSET_DYNAMIC		0	/* Prepend mode */
+#define NFP_NET_CFG_RX_OFFSET        0x0050
+#define NFP_NET_CFG_RX_OFFSET_DYNAMIC        0    /* Prepend mode */
 
 /**
  * Reuse spare address to contain the offset from the start of
@@ -220,7 +220,7 @@
 #define NFP_NET_CFG_RSS_KEY             (NFP_NET_CFG_RSS_BASE + 0x4)
 #define NFP_NET_CFG_RSS_KEY_SZ          0x28
 #define NFP_NET_CFG_RSS_ITBL            (NFP_NET_CFG_RSS_BASE + 0x4 + \
-					 NFP_NET_CFG_RSS_KEY_SZ)
+                     NFP_NET_CFG_RSS_KEY_SZ)
 #define NFP_NET_CFG_RSS_ITBL_SZ         0x80
 
 /*
@@ -236,12 +236,12 @@
 #define NFP_NET_CFG_TXR_BASE            0x0200
 #define NFP_NET_CFG_TXR_ADDR(_x)        (NFP_NET_CFG_TXR_BASE + ((_x) * 0x8))
 #define NFP_NET_CFG_TXR_WB_ADDR(_x)     (NFP_NET_CFG_TXR_BASE + 0x200 + \
-					 ((_x) * 0x8))
+                     ((_x) * 0x8))
 #define NFP_NET_CFG_TXR_SZ(_x)          (NFP_NET_CFG_TXR_BASE + 0x400 + (_x))
 #define NFP_NET_CFG_TXR_VEC(_x)         (NFP_NET_CFG_TXR_BASE + 0x440 + (_x))
 #define NFP_NET_CFG_TXR_PRIO(_x)        (NFP_NET_CFG_TXR_BASE + 0x480 + (_x))
 #define NFP_NET_CFG_TXR_IRQ_MOD(_x)     (NFP_NET_CFG_TXR_BASE + 0x500 + \
-					 ((_x) * 0x4))
+                     ((_x) * 0x4))
 
 /*
  * RX ring configuration (0x0800 - 0x0c00)
@@ -258,7 +258,7 @@
 #define NFP_NET_CFG_RXR_VEC(_x)         (NFP_NET_CFG_RXR_BASE + 0x240 + (_x))
 #define NFP_NET_CFG_RXR_PRIO(_x)        (NFP_NET_CFG_RXR_BASE + 0x280 + (_x))
 #define NFP_NET_CFG_RXR_IRQ_MOD(_x)     (NFP_NET_CFG_RXR_BASE + 0x300 + \
-					 ((_x) * 0x4))
+                     ((_x) * 0x4))
 
 /*
  * Interrupt Control/Cause registers (0x0c00 - 0x0d00)
@@ -309,13 +309,13 @@
  */
 #define NFP_NET_CFG_TXR_STATS_BASE      0x1000
 #define NFP_NET_CFG_TXR_STATS(_x)       (NFP_NET_CFG_TXR_STATS_BASE + \
-					 ((_x) * 0x10))
+                     ((_x) * 0x10))
 #define NFP_NET_CFG_RXR_STATS_BASE      0x1400
 #define NFP_NET_CFG_RXR_STATS(_x)       (NFP_NET_CFG_RXR_STATS_BASE + \
-					 ((_x) * 0x10))
+                     ((_x) * 0x10))
 
 /* PF multiport offset */
-#define NFP_PF_CSR_SLICE_SIZE	(32 * 1024)
+#define NFP_PF_CSR_SLICE_SIZE    (32 * 1024)
 
 #endif /* _NFP_NET_CTRL_H_ */
 /*

@@ -12,26 +12,26 @@
  * Response sent back to the caller after callback
  */
 enum rte_pmd_bnxt_mb_event_rsp {
-	RTE_PMD_BNXT_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
-	RTE_PMD_BNXT_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
-	RTE_PMD_BNXT_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
-	RTE_PMD_BNXT_MB_EVENT_MAX       /**< max value of this enum */
+    RTE_PMD_BNXT_MB_EVENT_NOOP_ACK,  /**< skip mbox request and ACK */
+    RTE_PMD_BNXT_MB_EVENT_NOOP_NACK, /**< skip mbox request and NACK */
+    RTE_PMD_BNXT_MB_EVENT_PROCEED,  /**< proceed with mbox request  */
+    RTE_PMD_BNXT_MB_EVENT_MAX       /**< max value of this enum */
 };
 
 /* mailbox message types */
-#define BNXT_VF_RESET			0x01 /* VF requests reset */
-#define BNXT_VF_SET_MAC_ADDR	0x02 /* VF requests PF to set MAC addr */
-#define BNXT_VF_SET_VLAN		0x03 /* VF requests PF to set VLAN */
-#define BNXT_VF_SET_MTU			0x04 /* VF requests PF to set MTU */
-#define BNXT_VF_SET_MRU			0x05 /* VF requests PF to set MRU */
+#define BNXT_VF_RESET            0x01 /* VF requests reset */
+#define BNXT_VF_SET_MAC_ADDR    0x02 /* VF requests PF to set MAC addr */
+#define BNXT_VF_SET_VLAN        0x03 /* VF requests PF to set VLAN */
+#define BNXT_VF_SET_MTU            0x04 /* VF requests PF to set MTU */
+#define BNXT_VF_SET_MRU            0x05 /* VF requests PF to set MRU */
 
 /*
  * Data sent to the caller when the callback is executed.
  */
 struct rte_pmd_bnxt_mb_event_param {
-	uint16_t vf_id;	/* Virtual Function number */
-	int	retval;	/* return value */
-	void	*msg;	/* pointer to message */
+    uint16_t vf_id;    /* Virtual Function number */
+    int    retval;    /* return value */
+    void    *msg;    /* pointer to message */
 };
 
 /**
@@ -67,7 +67,7 @@ int rte_pmd_bnxt_set_vf_mac_anti_spoof(uint16_t port, uint16_t vf, uint8_t on);
  *   - (-EINVAL) if *vf* or *mac_addr* is invalid.
  */
 int rte_pmd_bnxt_set_vf_mac_addr(uint16_t port, uint16_t vf,
-		struct rte_ether_addr *mac_addr);
+        struct rte_ether_addr *mac_addr);
 
 /**
  * Enable/Disable vf vlan strip for all queues in a pool
@@ -107,7 +107,7 @@ rte_pmd_bnxt_set_vf_vlan_stripq(uint16_t port, uint16_t vf, uint8_t on);
  */
 int
 rte_pmd_bnxt_set_vf_vlan_insert(uint16_t port, uint16_t vf,
-		uint16_t vlan_id);
+        uint16_t vlan_id);
 
 /**
  * Enable/Disable hardware VF VLAN filtering by an Ethernet device of
@@ -129,7 +129,7 @@ rte_pmd_bnxt_set_vf_vlan_insert(uint16_t port, uint16_t vf,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_bnxt_set_vf_vlan_filter(uint16_t port, uint16_t vlan,
-				    uint64_t vf_mask, uint8_t vlan_on);
+                    uint64_t vf_mask, uint8_t vlan_on);
 
 /**
  * Enable/Disable tx loopback
@@ -180,7 +180,7 @@ int rte_pmd_bnxt_set_all_queues_drop_en(uint16_t port, uint8_t on);
  *   - (-EINVAL) if *vf* or *mac_addr* is invalid.
  */
 int rte_pmd_bnxt_set_vf_rate_limit(uint16_t port, uint16_t vf,
-				uint16_t tx_rate, uint64_t q_msk);
+                uint16_t tx_rate, uint64_t q_msk);
 
 /**
  * Get VF's statistics
@@ -199,8 +199,8 @@ int rte_pmd_bnxt_set_vf_rate_limit(uint16_t port, uint16_t vf,
  */
 
 int rte_pmd_bnxt_get_vf_stats(uint16_t port,
-			      uint16_t vf_id,
-			      struct rte_eth_stats *stats);
+                  uint16_t vf_id,
+                  struct rte_eth_stats *stats);
 
 /**
  * Clear VF's statistics
@@ -215,7 +215,7 @@ int rte_pmd_bnxt_get_vf_stats(uint16_t port,
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_bnxt_reset_vf_stats(uint16_t port,
-				uint16_t vf_id);
+                uint16_t vf_id);
 
 /**
  * Enable/Disable VF VLAN anti spoof
@@ -253,7 +253,7 @@ int rte_pmd_bnxt_set_vf_vlan_anti_spoof(uint16_t port, uint16_t vf, uint8_t on);
  *   - (-EINVAL) if bad parameter.
  */
 int rte_pmd_bnxt_set_vf_rxmode(uint16_t port, uint16_t vf,
-				uint16_t rx_mask, uint8_t on);
+                uint16_t rx_mask, uint8_t on);
 
 /**
  * Returns the number of default RX queues on a VF
@@ -286,7 +286,7 @@ int rte_pmd_bnxt_get_vf_rx_status(uint16_t port, uint16_t vf_id);
  *   - (-ENOTSUP) Ethernet device is not a PF
  */
 int rte_pmd_bnxt_get_vf_tx_drop_count(uint16_t port, uint16_t vf_id,
-				      uint64_t *count);
+                      uint64_t *count);
 
 /**
  * Programs the MAC address for the function specified
@@ -304,7 +304,7 @@ int rte_pmd_bnxt_get_vf_tx_drop_count(uint16_t port, uint16_t vf_id,
  *   - (-ENOMEM) on an allocation failure
  */
 int rte_pmd_bnxt_mac_addr_add(uint16_t port, struct rte_ether_addr *mac_addr,
-				uint32_t vf_id);
+                uint32_t vf_id);
 
 /**
  * Enable/Disable VF statistics retention

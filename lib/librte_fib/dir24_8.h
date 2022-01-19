@@ -26,7 +26,7 @@ dir24_8_get_lookup_fn(struct rte_fib_conf *conf);
 
 int
 dir24_8_modify(struct rte_fib *fib, uint32_t ip, uint8_t depth,
-	uint64_t next_hop, int op);
+    uint64_t next_hop, int op);
 
 #ifdef __cplusplus
 }

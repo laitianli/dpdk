@@ -30,23 +30,23 @@ struct rte_ipsec_sa;
  */
 struct rte_ipsec_sa_prm {
 
-	uint64_t userdata; /**< provided and interpreted by user */
-	uint64_t flags;  /**< see RTE_IPSEC_SAFLAG_* below */
-	/** ipsec configuration */
-	struct rte_security_ipsec_xform ipsec_xform;
-	/** crypto session configuration */
-	struct rte_crypto_sym_xform *crypto_xform;
-	union {
-		struct {
-			uint8_t hdr_len;     /**< tunnel header len */
-			uint8_t hdr_l3_off;  /**< offset for IPv4/IPv6 header */
-			uint8_t next_proto;  /**< next header protocol */
-			const void *hdr;     /**< tunnel header template */
-		} tun; /**< tunnel mode related parameters */
-		struct {
-			uint8_t proto;  /**< next header protocol */
-		} trs; /**< transport mode related parameters */
-	};
+    uint64_t userdata; /**< provided and interpreted by user */
+    uint64_t flags;  /**< see RTE_IPSEC_SAFLAG_* below */
+    /** ipsec configuration */
+    struct rte_security_ipsec_xform ipsec_xform;
+    /** crypto session configuration */
+    struct rte_crypto_sym_xform *crypto_xform;
+    union {
+        struct {
+            uint8_t hdr_len;     /**< tunnel header len */
+            uint8_t hdr_l3_off;  /**< offset for IPv4/IPv6 header */
+            uint8_t next_proto;  /**< next header protocol */
+            const void *hdr;     /**< tunnel header template */
+        } tun; /**< tunnel mode related parameters */
+        struct {
+            uint8_t proto;  /**< next header protocol */
+        } trs; /**< transport mode related parameters */
+    };
 };
 
 /**
@@ -68,7 +68,7 @@ struct rte_ipsec_sa_prm {
  * In other words - it is a caller responsibility to serialize process()
  * invocations.
  */
-#define	RTE_IPSEC_SAFLAG_SQN_ATOM	(1ULL << 0)
+#define    RTE_IPSEC_SAFLAG_SQN_ATOM    (1ULL << 0)
 
 /**
  * SA type is an 64-bit value that contain the following information:
@@ -83,49 +83,49 @@ struct rte_ipsec_sa_prm {
  */
 
 enum {
-	RTE_SATP_LOG2_IPV,
-	RTE_SATP_LOG2_PROTO,
-	RTE_SATP_LOG2_DIR,
-	RTE_SATP_LOG2_MODE,
-	RTE_SATP_LOG2_SQN = RTE_SATP_LOG2_MODE + 2,
-	RTE_SATP_LOG2_ESN,
-	RTE_SATP_LOG2_ECN,
-	RTE_SATP_LOG2_DSCP,
-	RTE_SATP_LOG2_NUM
+    RTE_SATP_LOG2_IPV,
+    RTE_SATP_LOG2_PROTO,
+    RTE_SATP_LOG2_DIR,
+    RTE_SATP_LOG2_MODE,
+    RTE_SATP_LOG2_SQN = RTE_SATP_LOG2_MODE + 2,
+    RTE_SATP_LOG2_ESN,
+    RTE_SATP_LOG2_ECN,
+    RTE_SATP_LOG2_DSCP,
+    RTE_SATP_LOG2_NUM
 };
 
-#define RTE_IPSEC_SATP_IPV_MASK		(1ULL << RTE_SATP_LOG2_IPV)
-#define RTE_IPSEC_SATP_IPV4		(0ULL << RTE_SATP_LOG2_IPV)
-#define RTE_IPSEC_SATP_IPV6		(1ULL << RTE_SATP_LOG2_IPV)
+#define RTE_IPSEC_SATP_IPV_MASK        (1ULL << RTE_SATP_LOG2_IPV)
+#define RTE_IPSEC_SATP_IPV4        (0ULL << RTE_SATP_LOG2_IPV)
+#define RTE_IPSEC_SATP_IPV6        (1ULL << RTE_SATP_LOG2_IPV)
 
-#define RTE_IPSEC_SATP_PROTO_MASK	(1ULL << RTE_SATP_LOG2_PROTO)
-#define RTE_IPSEC_SATP_PROTO_AH		(0ULL << RTE_SATP_LOG2_PROTO)
-#define RTE_IPSEC_SATP_PROTO_ESP	(1ULL << RTE_SATP_LOG2_PROTO)
+#define RTE_IPSEC_SATP_PROTO_MASK    (1ULL << RTE_SATP_LOG2_PROTO)
+#define RTE_IPSEC_SATP_PROTO_AH        (0ULL << RTE_SATP_LOG2_PROTO)
+#define RTE_IPSEC_SATP_PROTO_ESP    (1ULL << RTE_SATP_LOG2_PROTO)
 
-#define RTE_IPSEC_SATP_DIR_MASK		(1ULL << RTE_SATP_LOG2_DIR)
-#define RTE_IPSEC_SATP_DIR_IB		(0ULL << RTE_SATP_LOG2_DIR)
-#define RTE_IPSEC_SATP_DIR_OB		(1ULL << RTE_SATP_LOG2_DIR)
+#define RTE_IPSEC_SATP_DIR_MASK        (1ULL << RTE_SATP_LOG2_DIR)
+#define RTE_IPSEC_SATP_DIR_IB        (0ULL << RTE_SATP_LOG2_DIR)
+#define RTE_IPSEC_SATP_DIR_OB        (1ULL << RTE_SATP_LOG2_DIR)
 
-#define RTE_IPSEC_SATP_MODE_MASK	(3ULL << RTE_SATP_LOG2_MODE)
-#define RTE_IPSEC_SATP_MODE_TRANS	(0ULL << RTE_SATP_LOG2_MODE)
-#define RTE_IPSEC_SATP_MODE_TUNLV4	(1ULL << RTE_SATP_LOG2_MODE)
-#define RTE_IPSEC_SATP_MODE_TUNLV6	(2ULL << RTE_SATP_LOG2_MODE)
+#define RTE_IPSEC_SATP_MODE_MASK    (3ULL << RTE_SATP_LOG2_MODE)
+#define RTE_IPSEC_SATP_MODE_TRANS    (0ULL << RTE_SATP_LOG2_MODE)
+#define RTE_IPSEC_SATP_MODE_TUNLV4    (1ULL << RTE_SATP_LOG2_MODE)
+#define RTE_IPSEC_SATP_MODE_TUNLV6    (2ULL << RTE_SATP_LOG2_MODE)
 
-#define RTE_IPSEC_SATP_SQN_MASK		(1ULL << RTE_SATP_LOG2_SQN)
-#define RTE_IPSEC_SATP_SQN_RAW		(0ULL << RTE_SATP_LOG2_SQN)
-#define RTE_IPSEC_SATP_SQN_ATOM		(1ULL << RTE_SATP_LOG2_SQN)
+#define RTE_IPSEC_SATP_SQN_MASK        (1ULL << RTE_SATP_LOG2_SQN)
+#define RTE_IPSEC_SATP_SQN_RAW        (0ULL << RTE_SATP_LOG2_SQN)
+#define RTE_IPSEC_SATP_SQN_ATOM        (1ULL << RTE_SATP_LOG2_SQN)
 
-#define RTE_IPSEC_SATP_ESN_MASK		(1ULL << RTE_SATP_LOG2_ESN)
-#define RTE_IPSEC_SATP_ESN_DISABLE	(0ULL << RTE_SATP_LOG2_ESN)
-#define RTE_IPSEC_SATP_ESN_ENABLE	(1ULL << RTE_SATP_LOG2_ESN)
+#define RTE_IPSEC_SATP_ESN_MASK        (1ULL << RTE_SATP_LOG2_ESN)
+#define RTE_IPSEC_SATP_ESN_DISABLE    (0ULL << RTE_SATP_LOG2_ESN)
+#define RTE_IPSEC_SATP_ESN_ENABLE    (1ULL << RTE_SATP_LOG2_ESN)
 
-#define RTE_IPSEC_SATP_ECN_MASK		(1ULL << RTE_SATP_LOG2_ECN)
-#define RTE_IPSEC_SATP_ECN_DISABLE	(0ULL << RTE_SATP_LOG2_ECN)
-#define RTE_IPSEC_SATP_ECN_ENABLE	(1ULL << RTE_SATP_LOG2_ECN)
+#define RTE_IPSEC_SATP_ECN_MASK        (1ULL << RTE_SATP_LOG2_ECN)
+#define RTE_IPSEC_SATP_ECN_DISABLE    (0ULL << RTE_SATP_LOG2_ECN)
+#define RTE_IPSEC_SATP_ECN_ENABLE    (1ULL << RTE_SATP_LOG2_ECN)
 
-#define RTE_IPSEC_SATP_DSCP_MASK	(1ULL << RTE_SATP_LOG2_DSCP)
-#define RTE_IPSEC_SATP_DSCP_DISABLE	(0ULL << RTE_SATP_LOG2_DSCP)
-#define RTE_IPSEC_SATP_DSCP_ENABLE	(1ULL << RTE_SATP_LOG2_DSCP)
+#define RTE_IPSEC_SATP_DSCP_MASK    (1ULL << RTE_SATP_LOG2_DSCP)
+#define RTE_IPSEC_SATP_DSCP_DISABLE    (0ULL << RTE_SATP_LOG2_DSCP)
+#define RTE_IPSEC_SATP_DSCP_ENABLE    (1ULL << RTE_SATP_LOG2_DSCP)
 
 /**
  * get type of given SA
@@ -164,7 +164,7 @@ rte_ipsec_sa_size(const struct rte_ipsec_sa_prm *prm);
 __rte_experimental
 int
 rte_ipsec_sa_init(struct rte_ipsec_sa *sa, const struct rte_ipsec_sa_prm *prm,
-	uint32_t size);
+    uint32_t size);
 
 /**
  * cleanup SA

@@ -176,22 +176,22 @@ extern "C" {
  * Crypto event adapter mode
  */
 enum rte_event_crypto_adapter_mode {
-	RTE_EVENT_CRYPTO_ADAPTER_OP_NEW,
-	/**< Start the crypto adapter in event new mode.
-	 * @see RTE_EVENT_OP_NEW.
-	 * Application submits crypto operations to the cryptodev.
-	 * Adapter only dequeues the crypto completions from cryptodev
-	 * and enqueue events to the eventdev.
-	 */
-	RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD,
-	/**< Start the crypto adapter in event forward mode.
-	 * @see RTE_EVENT_OP_FORWARD.
-	 * Application submits crypto requests as events to the crypto
-	 * adapter or crypto device based on
-	 * RTE_EVENT_CRYPTO_ADAPTER_CAP_INTERNAL_PORT_OP_FWD capability.
-	 * Crypto completions are enqueued back to the eventdev by
-	 * crypto adapter.
-	 */
+    RTE_EVENT_CRYPTO_ADAPTER_OP_NEW,
+    /**< Start the crypto adapter in event new mode.
+     * @see RTE_EVENT_OP_NEW.
+     * Application submits crypto operations to the cryptodev.
+     * Adapter only dequeues the crypto completions from cryptodev
+     * and enqueue events to the eventdev.
+     */
+    RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD,
+    /**< Start the crypto adapter in event forward mode.
+     * @see RTE_EVENT_OP_FORWARD.
+     * Application submits crypto requests as events to the crypto
+     * adapter or crypto device based on
+     * RTE_EVENT_CRYPTO_ADAPTER_CAP_INTERNAL_PORT_OP_FWD capability.
+     * Crypto completions are enqueued back to the eventdev by
+     * crypto adapter.
+     */
 };
 
 /**
@@ -199,17 +199,17 @@ enum rte_event_crypto_adapter_mode {
  * provide event request information to the adapter.
  */
 struct rte_event_crypto_request {
-	uint8_t resv[8];
-	/**< Overlaps with first 8 bytes of struct rte_event
-	 * that encode the response event information. Application
-	 * is expected to fill in struct rte_event response_info.
-	 */
-	uint16_t cdev_id;
-	/**< cryptodev ID to be used */
-	uint16_t queue_pair_id;
-	/**< cryptodev queue pair ID to be used */
-	uint32_t resv1;
-	/**< Reserved bits */
+    uint8_t resv[8];
+    /**< Overlaps with first 8 bytes of struct rte_event
+     * that encode the response event information. Application
+     * is expected to fill in struct rte_event response_info.
+     */
+    uint16_t cdev_id;
+    /**< cryptodev ID to be used */
+    uint16_t queue_pair_id;
+    /**< cryptodev queue pair ID to be used */
+    uint32_t resv1;
+    /**< Reserved bits */
 };
 
 /**
@@ -223,15 +223,15 @@ struct rte_event_crypto_request {
  * will be used by the adapter.
  */
 union rte_event_crypto_metadata {
-	struct rte_event_crypto_request request_info;
-	/**< Request information to be filled in by application
-	 * for RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
-	 */
-	struct rte_event response_info;
-	/**< Response information to be filled in by application
-	 * for RTE_EVENT_CRYPTO_ADAPTER_OP_NEW and
-	 * RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
-	 */
+    struct rte_event_crypto_request request_info;
+    /**< Request information to be filled in by application
+     * for RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
+     */
+    struct rte_event response_info;
+    /**< Response information to be filled in by application
+     * for RTE_EVENT_CRYPTO_ADAPTER_OP_NEW and
+     * RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
+     */
 };
 
 /**
@@ -240,16 +240,16 @@ union rte_event_crypto_metadata {
  * @see rte_event_crypto_adapter_conf_cb
  */
 struct rte_event_crypto_adapter_conf {
-	uint8_t event_port_id;
-	/**< Event port identifier, the adapter enqueues events to this
-	 * port and dequeues crypto request events in
-	 * RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
-	 */
-	uint32_t max_nb;
-	/**< The adapter can return early if it has processed at least
-	 * max_nb crypto ops. This isn't treated as a requirement; batching
-	 * may cause the adapter to process more than max_nb crypto ops.
-	 */
+    uint8_t event_port_id;
+    /**< Event port identifier, the adapter enqueues events to this
+     * port and dequeues crypto request events in
+     * RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode.
+     */
+    uint32_t max_nb;
+    /**< The adapter can return early if it has processed at least
+     * max_nb crypto ops. This isn't treated as a requirement; batching
+     * may cause the adapter to process more than max_nb crypto ops.
+     */
 };
 
 /**
@@ -274,8 +274,8 @@ struct rte_event_crypto_adapter_conf {
  *  rte_event_crypto_adapter_create_ext().
  */
 typedef int (*rte_event_crypto_adapter_conf_cb) (uint8_t id, uint8_t dev_id,
-			struct rte_event_crypto_adapter_conf *conf,
-			void *arg);
+            struct rte_event_crypto_adapter_conf *conf,
+            void *arg);
 
 /**
  * A structure used to retrieve statistics for an event crypto adapter
@@ -283,22 +283,22 @@ typedef int (*rte_event_crypto_adapter_conf_cb) (uint8_t id, uint8_t dev_id,
  */
 
 struct rte_event_crypto_adapter_stats {
-	uint64_t event_poll_count;
-	/**< Event port poll count */
-	uint64_t event_deq_count;
-	/**< Event dequeue count */
-	uint64_t crypto_enq_count;
-	/**< Cryptodev enqueue count */
-	uint64_t crypto_enq_fail;
-	/**< Cryptodev enqueue failed count */
-	uint64_t crypto_deq_count;
-	/**< Cryptodev dequeue count */
-	uint64_t event_enq_count;
-	/**< Event enqueue count */
-	uint64_t event_enq_retry_count;
-	/**< Event enqueue retry count */
-	uint64_t event_enq_fail_count;
-	/**< Event enqueue fail count */
+    uint64_t event_poll_count;
+    /**< Event port poll count */
+    uint64_t event_deq_count;
+    /**< Event dequeue count */
+    uint64_t crypto_enq_count;
+    /**< Cryptodev enqueue count */
+    uint64_t crypto_enq_fail;
+    /**< Cryptodev enqueue failed count */
+    uint64_t crypto_deq_count;
+    /**< Cryptodev dequeue count */
+    uint64_t event_enq_count;
+    /**< Event enqueue count */
+    uint64_t event_enq_retry_count;
+    /**< Event enqueue retry count */
+    uint64_t event_enq_fail_count;
+    /**< Event enqueue fail count */
 };
 
 /**
@@ -328,9 +328,9 @@ struct rte_event_crypto_adapter_stats {
  */
 int
 rte_event_crypto_adapter_create_ext(uint8_t id, uint8_t dev_id,
-				    rte_event_crypto_adapter_conf_cb conf_cb,
-				    enum rte_event_crypto_adapter_mode mode,
-				    void *conf_arg);
+                    rte_event_crypto_adapter_conf_cb conf_cb,
+                    enum rte_event_crypto_adapter_mode mode,
+                    void *conf_arg);
 
 /**
  * Create a new event crypto adapter with the specified identifier.
@@ -361,8 +361,8 @@ rte_event_crypto_adapter_create_ext(uint8_t id, uint8_t dev_id,
  */
 int
 rte_event_crypto_adapter_create(uint8_t id, uint8_t dev_id,
-				struct rte_event_port_conf *port_config,
-				enum rte_event_crypto_adapter_mode mode);
+                struct rte_event_port_conf *port_config,
+                enum rte_event_crypto_adapter_mode mode);
 
 /**
  * Free an event crypto adapter
@@ -402,9 +402,9 @@ rte_event_crypto_adapter_free(uint8_t id);
  */
 int
 rte_event_crypto_adapter_queue_pair_add(uint8_t id,
-			uint8_t cdev_id,
-			int32_t queue_pair_id,
-			const struct rte_event *event);
+            uint8_t cdev_id,
+            int32_t queue_pair_id,
+            const struct rte_event *event);
 
 /**
  * Delete a queue pair from an event crypto adapter.
@@ -424,7 +424,7 @@ rte_event_crypto_adapter_queue_pair_add(uint8_t id,
  */
 int
 rte_event_crypto_adapter_queue_pair_del(uint8_t id, uint8_t cdev_id,
-					int32_t queue_pair_id);
+                    int32_t queue_pair_id);
 
 /**
  * Start event crypto adapter
@@ -472,7 +472,7 @@ rte_event_crypto_adapter_stop(uint8_t id);
  */
 int
 rte_event_crypto_adapter_stats_get(uint8_t id,
-				struct rte_event_crypto_adapter_stats *stats);
+                struct rte_event_crypto_adapter_stats *stats);
 
 /**
  * Reset statistics for an adapter.
@@ -525,4 +525,4 @@ rte_event_crypto_adapter_event_port_get(uint8_t id, uint8_t *event_port_id);
 #ifdef __cplusplus
 }
 #endif
-#endif	/* _RTE_EVENT_CRYPTO_ADAPTER_ */
+#endif    /* _RTE_EVENT_CRYPTO_ADAPTER_ */

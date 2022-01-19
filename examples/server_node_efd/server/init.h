@@ -15,17 +15,17 @@
  * stats from the nodes.
  */
 struct node {
-	struct rte_ring *rx_q;
-	unsigned int node_id;
-	/* these stats hold how many packets the node will actually receive,
-	 * and how many packets were dropped because the node's queue was full.
-	 * The port-info stats, in contrast, record how many packets were received
-	 * or transmitted on an actual NIC port.
-	 */
-	struct {
-		uint64_t rx;
-		uint64_t rx_drop;
-	} stats;
+    struct rte_ring *rx_q;
+    unsigned int node_id;
+    /* these stats hold how many packets the node will actually receive,
+     * and how many packets were dropped because the node's queue was full.
+     * The port-info stats, in contrast, record how many packets were received
+     * or transmitted on an actual NIC port.
+     */
+    struct {
+        uint64_t rx;
+        uint64_t rx_drop;
+    } stats;
 };
 
 extern struct rte_efd_table *efd_table;

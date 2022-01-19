@@ -18,14 +18,14 @@ extern "C" {
 
 /** The context required in the I/O path for DPAA2 AIOP Command Interface */
 struct rte_dpaa2_cmdif_context {
-	/** Size to populate in QBMAN FD */
-	uint32_t size;
-	/** FRC to populate in QBMAN FD */
-	uint32_t frc;
-	/** FLC to populate in QBMAN FD */
-	uint64_t flc;
-	/** Priority of the command. This priority determines DPCI Queue*/
-	uint8_t priority;
+    /** Size to populate in QBMAN FD */
+    uint32_t size;
+    /** FRC to populate in QBMAN FD */
+    uint32_t frc;
+    /** FLC to populate in QBMAN FD */
+    uint64_t flc;
+    /** Priority of the command. This priority determines DPCI Queue*/
+    uint8_t priority;
 };
 
 #ifdef __cplusplus

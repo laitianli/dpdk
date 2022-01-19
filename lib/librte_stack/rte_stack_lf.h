@@ -30,28 +30,28 @@
 __rte_experimental
 static __rte_always_inline unsigned int
 __rte_stack_lf_push(struct rte_stack *s,
-		    void * const *obj_table,
-		    unsigned int n)
+            void * const *obj_table,
+            unsigned int n)
 {
-	struct rte_stack_lf_elem *tmp, *first, *last = NULL;
-	unsigned int i;
+    struct rte_stack_lf_elem *tmp, *first, *last = NULL;
+    unsigned int i;
 
-	if (unlikely(n == 0))
-		return 0;
+    if (unlikely(n == 0))
+        return 0;
 
-	/* Pop n free elements */
-	first = __rte_stack_lf_pop_elems(&s->stack_lf.free, n, NULL, &last);
-	if (unlikely(first == NULL))
-		return 0;
+    /* Pop n free elements */
+    first = __rte_stack_lf_pop_elems(&s->stack_lf.free, n, NULL, &last);
+    if (unlikely(first == NULL))
+        return 0;
 
-	/* Construct the list elements */
-	for (tmp = first, i = 0; i < n; i++, tmp = tmp->next)
-		tmp->data = obj_table[n - i - 1];
+    /* Construct the list elements */
+    for (tmp = first, i = 0; i < n; i++, tmp = tmp->next)
+        tmp->data = obj_table[n - i - 1];
 
-	/* Push them to the used list */
-	__rte_stack_lf_push_elems(&s->stack_lf.used, first, last, n);
+    /* Push them to the used list */
+    __rte_stack_lf_push_elems(&s->stack_lf.used, first, last, n);
 
-	return n;
+    return n;
 }
 
 /**
@@ -70,21 +70,21 @@ __rte_experimental
 static __rte_always_inline unsigned int
 __rte_stack_lf_pop(struct rte_stack *s, void **obj_table, unsigned int n)
 {
-	struct rte_stack_lf_elem *first, *last = NULL;
+    struct rte_stack_lf_elem *first, *last = NULL;
 
-	if (unlikely(n == 0))
-		return 0;
+    if (unlikely(n == 0))
+        return 0;
 
-	/* Pop n used elements */
-	first = __rte_stack_lf_pop_elems(&s->stack_lf.used,
-					 n, obj_table, &last);
-	if (unlikely(first == NULL))
-		return 0;
+    /* Pop n used elements */
+    first = __rte_stack_lf_pop_elems(&s->stack_lf.used,
+                     n, obj_table, &last);
+    if (unlikely(first == NULL))
+        return 0;
 
-	/* Push the list elements to the free list */
-	__rte_stack_lf_push_elems(&s->stack_lf.free, first, last, n);
+    /* Push the list elements to the free list */
+    __rte_stack_lf_push_elems(&s->stack_lf.free, first, last, n);
 
-	return n;
+    return n;
 }
 
 /**

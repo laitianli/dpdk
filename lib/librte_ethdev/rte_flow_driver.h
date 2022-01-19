@@ -61,41 +61,41 @@ extern "C" {
  * already resolved to a pointer to struct rte_eth_dev).
  */
 struct rte_flow_ops {
-	/** See rte_flow_validate(). */
-	int (*validate)
-		(struct rte_eth_dev *,
-		 const struct rte_flow_attr *,
-		 const struct rte_flow_item [],
-		 const struct rte_flow_action [],
-		 struct rte_flow_error *);
-	/** See rte_flow_create(). */
-	struct rte_flow *(*create)
-		(struct rte_eth_dev *,
-		 const struct rte_flow_attr *,
-		 const struct rte_flow_item [],
-		 const struct rte_flow_action [],
-		 struct rte_flow_error *);
-	/** See rte_flow_destroy(). */
-	int (*destroy)
-		(struct rte_eth_dev *,
-		 struct rte_flow *,
-		 struct rte_flow_error *);
-	/** See rte_flow_flush(). */
-	int (*flush)
-		(struct rte_eth_dev *,
-		 struct rte_flow_error *);
-	/** See rte_flow_query(). */
-	int (*query)
-		(struct rte_eth_dev *,
-		 struct rte_flow *,
-		 const struct rte_flow_action *,
-		 void *,
-		 struct rte_flow_error *);
-	/** See rte_flow_isolate(). */
-	int (*isolate)
-		(struct rte_eth_dev *,
-		 int,
-		 struct rte_flow_error *);
+    /** See rte_flow_validate(). */
+    int (*validate)
+        (struct rte_eth_dev *,
+         const struct rte_flow_attr *,
+         const struct rte_flow_item [],
+         const struct rte_flow_action [],
+         struct rte_flow_error *);
+    /** See rte_flow_create(). */
+    struct rte_flow *(*create)
+        (struct rte_eth_dev *,
+         const struct rte_flow_attr *,
+         const struct rte_flow_item [],
+         const struct rte_flow_action [],
+         struct rte_flow_error *);
+    /** See rte_flow_destroy(). */
+    int (*destroy)
+        (struct rte_eth_dev *,
+         struct rte_flow *,
+         struct rte_flow_error *);
+    /** See rte_flow_flush(). */
+    int (*flush)
+        (struct rte_eth_dev *,
+         struct rte_flow_error *);
+    /** See rte_flow_query(). */
+    int (*query)
+        (struct rte_eth_dev *,
+         struct rte_flow *,
+         const struct rte_flow_action *,
+         void *,
+         struct rte_flow_error *);
+    /** See rte_flow_isolate(). */
+    int (*isolate)
+        (struct rte_eth_dev *,
+         int,
+         struct rte_flow_error *);
 };
 
 /**
@@ -116,33 +116,33 @@ rte_flow_ops_get(uint16_t port_id, struct rte_flow_error *error);
 
 /** Helper macro to build input graph for rte_flow_expand_rss(). */
 #define RTE_FLOW_EXPAND_RSS_NEXT(...) \
-	(const int []){ \
-		__VA_ARGS__, 0, \
-	}
+    (const int []){ \
+        __VA_ARGS__, 0, \
+    }
 
 /** Node object of input graph for rte_flow_expand_rss(). */
 struct rte_flow_expand_node {
-	const int *const next;
-	/**<
-	 * List of next node indexes. Index 0 is interpreted as a terminator.
-	 */
-	const enum rte_flow_item_type type;
-	/**< Pattern item type of current node. */
-	uint64_t rss_types;
-	/**<
-	 * RSS types bit-field associated with this node
-	 * (see ETH_RSS_* definitions).
-	 */
+    const int *const next;
+    /**<
+     * List of next node indexes. Index 0 is interpreted as a terminator.
+     */
+    const enum rte_flow_item_type type;
+    /**< Pattern item type of current node. */
+    uint64_t rss_types;
+    /**<
+     * RSS types bit-field associated with this node
+     * (see ETH_RSS_* definitions).
+     */
 };
 
 /** Object returned by rte_flow_expand_rss(). */
 struct rte_flow_expand_rss {
-	uint32_t entries;
-	/**< Number of entries @p patterns and @p priorities. */
-	struct {
-		struct rte_flow_item *pattern; /**< Expanded pattern array. */
-		uint32_t priority; /**< Priority offset for each expansion. */
-	} entry[];
+    uint32_t entries;
+    /**< Number of entries @p patterns and @p priorities. */
+    struct {
+        struct rte_flow_item *pattern; /**< Expanded pattern array. */
+        uint32_t priority; /**< Priority offset for each expansion. */
+    } entry[];
 };
 
 /**
@@ -174,9 +174,9 @@ struct rte_flow_expand_rss {
 __rte_experimental
 int
 rte_flow_expand_rss(struct rte_flow_expand_rss *buf, size_t size,
-		    const struct rte_flow_item *pattern, uint64_t types,
-		    const struct rte_flow_expand_node graph[],
-		    int graph_root_index);
+            const struct rte_flow_item *pattern, uint64_t types,
+            const struct rte_flow_expand_node graph[],
+            int graph_root_index);
 
 #ifdef __cplusplus
 }

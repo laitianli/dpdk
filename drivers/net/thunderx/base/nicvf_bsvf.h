@@ -13,8 +13,8 @@ struct nicvf;
  * The base queue structure to hold secondary qsets.
  */
 struct svf_entry {
-	STAILQ_ENTRY(svf_entry) next; /**< Next element's pointer */
-	struct nicvf *vf;              /**< Holder of a secondary qset */
+    STAILQ_ENTRY(svf_entry) next; /**< Next element's pointer */
+    struct nicvf *vf;              /**< Holder of a secondary qset */
 };
 
 /**

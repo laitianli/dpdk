@@ -15,11 +15,11 @@ extern "C" {
 
 #include "generic/rte_atomic.h"
 
-#define	rte_mb()  __sync_synchronize()
+#define    rte_mb()  __sync_synchronize()
 
-#define	rte_wmb() do { asm volatile ("dmb st" : : : "memory"); } while (0)
+#define    rte_wmb() do { asm volatile ("dmb st" : : : "memory"); } while (0)
 
-#define	rte_rmb() __sync_synchronize()
+#define    rte_rmb() __sync_synchronize()
 
 #define rte_smp_mb() rte_mb()
 
