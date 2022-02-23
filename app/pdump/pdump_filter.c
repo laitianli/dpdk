@@ -55,6 +55,7 @@ static const char * const valid_pdump_filter_arguments[] = {
     FILTER_PORT_SRC,
     FILTER_PORT_DST,
     FILTER_PROTO,
+    FILTER_FILE_SPLIT,
     NULL
 };
 
@@ -584,6 +585,11 @@ int pdump_filter_parse(const char* optarg)
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_PROTO_FLAGS;
+    }
+
+    cnt1 = rte_kvargs_count(kvlist, FILTER_FILE_SPLIT);
+    if (cnt1 == 1) {
+        dp_filter->filter_flags |= FILTER_FILE_SPLIT_FLAGS;
     }
 
     dump_pdump_filter(dp_filter);

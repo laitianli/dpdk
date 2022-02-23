@@ -50,6 +50,10 @@
 #define FILTER_PROTO_FLAGS (1 << 14)
 #define FILTER_PROTO        "proto"
 
+#define FILTER_FILE_SPLIT_FLAGS   (1 << 15)
+#define FILTER_FILE_SPLIT         "split"
+
+
 #define FILTER_COUNT_SIZE_FLAGS (FILTER_COUNT_FLAGS | FILTER_SIZE_FLAGS)
 #define MAX_FILTER_SIZE 8
 struct ether_mac {

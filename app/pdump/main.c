@@ -131,6 +131,10 @@ struct pdump_tuples {
     enum pdump_by dump_by_type; /* 表示是通过portid or pcieid来抓包 */
     uint16_t rx_vdev_id; /* rx虚拟设备（vdev）id */
     uint16_t tx_vdev_id; /* tx虚拟设备（vdev）id */
+
+    uint16_t new_rx_vdev_id; /* rx虚拟设备（vdev）id */
+    uint16_t new_tx_vdev_id; /* tx虚拟设备（vdev）id */
+
     enum pcap_stream rx_vdev_stream_type;
     enum pcap_stream tx_vdev_stream_type;
     bool single_pdump_dev; /* 是否保存为单一文件 */
@@ -150,7 +154,7 @@ static int num_tuples;
 static struct rte_eth_conf port_conf_default;
 static volatile uint8_t quit_signal;
 static uint8_t multiple_core_capture;
-static union pdump_count_size pdump_cs = {0};
+static struct pdump_count_size pdump_cs = {0};
 /**< display usage */
 static void
 pdump_usage(const char *prgname)
@@ -497,8 +501,17 @@ disable_pdump(struct pdump_tuples *pt)
 static inline int pdump_filter_count_size(struct rte_mbuf **pkts, uint16_t nb_in_deq)
 {
     int ret = 1;
-    if (likely(!dp_filter || !(dp_filter->filter_flags & (FILTER_COUNT_FLAGS | FILTER_SIZE_FLAGS)))) {
+    if (likely(!dp_filter || !(dp_filter->filter_flags &
+            (FILTER_COUNT_FLAGS | FILTER_SIZE_FLAGS | FILTER_FILE_SPLIT_FLAGS)))) {
         return 1;
+    }
+    if (dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS) {
+        int i = 0;
+        for (i = 0; i < nb_in_deq; i++) {
+            pdump_cs.pdump_one_split_size += rte_pktmbuf_pkt_len(pkts[i]);
+        }
+        pdump_cs.pdump_size += pdump_cs.pdump_one_split_size;
+        ret = 2;
     }
     if (dp_filter->filter_flags & FILTER_COUNT_FLAGS) {
         pdump_cs.pdump_count += nb_in_deq;
@@ -951,6 +964,193 @@ enable_pdump(void)
     }
 }
 
+static void close_vdev(struct pdump_tuples *pt)
+{
+    char name[RTE_ETH_NAME_MAX_LEN];
+            /* Remove the vdev(s) created */
+    if (pt->dir & RTE_PDUMP_FLAG_RX) {
+        rte_eth_dev_get_name_by_port(pt->rx_vdev_id, name);
+        rte_eal_hotplug_remove("vdev", name);
+    }
+
+    if (pt->single_pdump_dev)
+        return;
+
+    if (pt->dir & RTE_PDUMP_FLAG_TX) {
+        rte_eth_dev_get_name_by_port(pt->tx_vdev_id, name);
+        rte_eal_hotplug_remove("vdev", name);
+    }
+}
+
+static const char* add_index_to_filename(const char* file_path, char* new_file_path, int size, int index)
+{
+    char tmp_buf[256] = {0};
+    snprintf(tmp_buf, sizeof(tmp_buf) - 1, "%s", file_path);
+    char* p = strstr(tmp_buf, ".pcap");
+    if (p) {
+        *p = '\0';
+        snprintf(new_file_path, size, "%s_%d%s", tmp_buf, index, ".pcap");
+    }
+    else {
+        snprintf(new_file_path, size, "%s_%d", tmp_buf, index);
+    }
+    return new_file_path;
+}
+
+static int create_new_vdev(struct pdump_tuples* pt, int index)
+{
+    uint16_t portid = 0;
+    char vdev_name[SIZE];
+    char vdev_args[SIZE];
+    char new_file_name[SIZE + 1];
+    int ret = 0;
+
+    if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
+        /* 创建虚拟设备名 */
+        /* create vdevs */
+        snprintf(vdev_name, sizeof(vdev_name),/* net_pcap_rx_0 */
+             VDEV_NAME_FMT, RX_STR, index);
+        add_index_to_filename(pt->rx_dev, new_file_name, sizeof(new_file_name) - 1, index);
+        (pt->rx_vdev_stream_type == IFACE) ?
+        snprintf(vdev_args, sizeof(vdev_args),
+             VDEV_IFACE_ARGS_FMT, new_file_name) :
+        snprintf(vdev_args, sizeof(vdev_args),/* rx_pcap=/root/rx.pcap */
+             VDEV_PCAP_ARGS_FMT, new_file_name);
+        printf("vdev_args: %s\n", vdev_args);
+        if (rte_eal_hotplug_add("vdev", vdev_name,/* 热添加虚拟设备 */
+                    vdev_args) < 0) {
+            RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
+                __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        /* 获取虚拟设备的portid */
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            printf("cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_rx_vdev_id = portid;
+        /* 配置虚拟设备 */
+        /* configure vdev */
+        configure_vdev(pt->new_rx_vdev_id);
+
+        if (pt->single_pdump_dev)/* 若是保存单一文件，则tx的虚拟设备id与rx的一样 */
+            pt->new_tx_vdev_id = portid;
+        else {
+            snprintf(vdev_name, sizeof(vdev_name),
+                 VDEV_NAME_FMT, TX_STR, index);
+            add_index_to_filename(pt->tx_dev, new_file_name, sizeof(new_file_name) - 1, index);
+            (pt->rx_vdev_stream_type == IFACE) ?
+            snprintf(vdev_args, sizeof(vdev_args),
+                 VDEV_IFACE_ARGS_FMT, new_file_name) :
+            snprintf(vdev_args, sizeof(vdev_args),
+                 VDEV_PCAP_ARGS_FMT, new_file_name);
+            printf("vdev_args: %s\n", vdev_args);
+            if (rte_eal_hotplug_add("vdev", vdev_name,
+                        vdev_args) < 0) {
+                RTE_LOG(CRIT, EAL, "vdev creation failed:"
+                    "%s:%d\n", __func__, __LINE__);
+                ret = -1;
+                goto error;
+            }
+            if (rte_eth_dev_get_port_by_name(vdev_name,
+                    &portid) != 0) {
+                rte_eal_hotplug_remove("vdev",
+                               vdev_name);
+                RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                    vdev_name, __func__, __LINE__);
+                ret = -1;
+                goto error;
+            }
+            pt->new_tx_vdev_id = portid;
+
+            /* configure vdev */
+            configure_vdev(pt->new_tx_vdev_id);
+        }
+    } else if (pt->dir == RTE_PDUMP_FLAG_RX) {
+        snprintf(vdev_name, sizeof(vdev_name),
+             VDEV_NAME_FMT, RX_STR, index);
+        add_index_to_filename(pt->rx_dev, new_file_name, sizeof(new_file_name) - 1, index);
+        (pt->rx_vdev_stream_type == IFACE) ?
+        snprintf(vdev_args, sizeof(vdev_args),
+             VDEV_IFACE_ARGS_FMT, new_file_name) :
+        snprintf(vdev_args, sizeof(vdev_args),
+             VDEV_PCAP_ARGS_FMT, new_file_name);
+        printf("vdev_args: %s\n", vdev_args);
+        if (rte_eal_hotplug_add("vdev", vdev_name,
+                    vdev_args) < 0) {
+           RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
+                __func__, __LINE__);
+           ret = -1;
+           goto error;
+        }
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_rx_vdev_id = portid;
+        /* configure vdev */
+        configure_vdev(pt->new_rx_vdev_id);
+    } else if (pt->dir == RTE_PDUMP_FLAG_TX) {
+        snprintf(vdev_name, sizeof(vdev_name),
+             VDEV_NAME_FMT, TX_STR, index);
+        add_index_to_filename(pt->tx_dev, new_file_name, sizeof(new_file_name) - 1, index);
+        (pt->tx_vdev_stream_type == IFACE) ?
+        snprintf(vdev_args, sizeof(vdev_args),
+             VDEV_IFACE_ARGS_FMT, new_file_name) :
+        snprintf(vdev_args, sizeof(vdev_args),
+             VDEV_PCAP_ARGS_FMT, new_file_name);
+        printf("vdev_args: %s\n", vdev_args);
+        if (rte_eal_hotplug_add("vdev", vdev_name, vdev_args) < 0) {
+            RTE_LOG(CRIT, EAL, "vdev creation failed\n");
+            ret = -1;
+            goto error;
+        }
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_tx_vdev_id = portid;
+        /* configure vdev */
+        configure_vdev(pt->new_tx_vdev_id);
+    }
+    ret = 0;
+error:
+    return ret;
+}
+
+static int split_pcap_file(struct pdump_tuples *pt)
+{
+#define SPLIT_SIZE 536870912 /* 512MB */
+
+    static int index = 1;
+    if (likely(!dp_filter || !(dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS))) {
+        return 1;
+    }
+    if (pdump_cs.pdump_one_split_size >= SPLIT_SIZE) {
+        pdump_cs.pdump_one_split_size = 0;
+        if(!create_new_vdev(pt, index++)) {
+            close_vdev(pt);
+
+            pt->rx_vdev_id = pt->new_rx_vdev_id;
+            pt->tx_vdev_id = pt->new_tx_vdev_id;
+        }
+    }
+    return 0;
+}
+
 static inline void
 pdump_packets(struct pdump_tuples *pt)
 {
@@ -958,6 +1158,9 @@ pdump_packets(struct pdump_tuples *pt)
         pdump_rxtx(pt->rx_ring, pt->rx_vdev_id, &pt->stats);
     if (pt->dir & RTE_PDUMP_FLAG_TX)
         pdump_rxtx(pt->tx_ring, pt->tx_vdev_id, &pt->stats);
+
+    if ((pt->dir & RTE_PDUMP_FLAG_TX) || (pt->dir & RTE_PDUMP_FLAG_RX))
+        split_pcap_file(pt);
 }
 
 static int

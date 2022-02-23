@@ -138,6 +138,11 @@ main()
         filter+=","
     fi
 
+    if [ ! -z "$split" ];then
+        filter+="split=$split"
+        filter+=","
+    fi
+
     if [ ! -z "$ether" ];then
         filter+="ether=$ether"
         filter+=","
