@@ -53,6 +53,10 @@
 #define FILTER_FILE_SPLIT_FLAGS   (1 << 15)
 #define FILTER_FILE_SPLIT         "split"
 
+#define FILTER_CAPLEN_FLAGS   (1 << 16)
+#define FILTER_CAPLEN         "caplen"
+
+
 
 #define FILTER_COUNT_SIZE_FLAGS (FILTER_COUNT_FLAGS | FILTER_SIZE_FLAGS)
 #define MAX_FILTER_SIZE 8
@@ -98,6 +102,8 @@ struct pdump_filter {
     struct ether_info ether;
     struct ether_info ether_src;
     struct ether_info ether_dst;
+    int split_size;
+    int snaplen;
 };
 
 int pdump_filter_pkts(struct rte_mbuf *pkt, void* filter);

@@ -56,6 +56,7 @@ static const char * const valid_pdump_filter_arguments[] = {
     FILTER_PORT_DST,
     FILTER_PROTO,
     FILTER_FILE_SPLIT,
+    FILTER_CAPLEN,
     NULL
 };
 
@@ -66,10 +67,16 @@ static void dump_pdump_filter(struct pdump_filter* pf)
     int i = 0;
     printf("->filter flags: 0x%016"PRIx64"\n", pf->filter_flags);
     if (pf->filter_flags & FILTER_COUNT_FLAGS) {
-        printf("->filter count: %u\n", pf->cs.count);
+        printf("->filter packet total count: %u\n", pf->cs.count);
     }
     if (pf->filter_flags & FILTER_SIZE_FLAGS) {
-        printf("->filter size: %u\n", pf->cs.size);
+        printf("->filter packet total size: %u\n", pf->cs.size);
+    }
+    if (pf->filter_flags & FILTER_FILE_SPLIT_FLAGS) {
+        printf("->split file size: %d.\n", pf->split_size);
+    }
+    if (pf->filter_flags & FILTER_CAPLEN_FLAGS) {
+        printf("->one packet len: %d.\n", pf->snaplen);
     }
     if (pf->filter_flags & FILTER_ETHER_FLAGS) {
         printf("->filter ether: ");
@@ -213,9 +220,8 @@ __parse_size(const char *key __rte_unused, const char *value,
     const char* str_size = NULL;
     char* p = NULL;
     char *end;
-    //int ret = 0;
+    int* val = extra_args;
     int size = 0;
-    struct pdump_filter *pf = extra_args;
 
     str_size = strdup(value);
     if ((p = strchr(str_size, 'K')) || (p = strchr(str_size, 'k'))) {
@@ -230,7 +236,7 @@ __parse_size(const char *key __rte_unused, const char *value,
     else {
         size = strtoul(str_size, &end, 10);
     }
-    pf->cs.size = (uint32_t)size;
+    *val = (uint32_t)size;
     return 0;
 }
 static int
@@ -465,7 +471,7 @@ int pdump_filter_parse(const char* optarg)
     }
     if (cnt2 == 1) {
         ret = rte_kvargs_process(kvlist, FILTER_SIZE,
-                &__parse_size, dp_filter);
+                &__parse_size, &dp_filter->cs.size);
         if (ret < 0)
             goto free_kvlist;
         dp_filter->filter_flags |= FILTER_SIZE_FLAGS;
@@ -589,9 +595,28 @@ int pdump_filter_parse(const char* optarg)
 
     cnt1 = rte_kvargs_count(kvlist, FILTER_FILE_SPLIT);
     if (cnt1 == 1) {
+        ret = rte_kvargs_process(kvlist, FILTER_FILE_SPLIT,
+                &__parse_size, &dp_filter->split_size);
+        if (ret < 0)
+            goto free_kvlist;
+        if (dp_filter->split_size < 1024 * 1024)
+            dp_filter->split_size = 1024 * 1204; /* 1MB */
+        if (dp_filter->split_size > 1024 * 1024 * 1024)
+            dp_filter->split_size = 1024 * 1024 * 1024; /* 1GB */
         dp_filter->filter_flags |= FILTER_FILE_SPLIT_FLAGS;
     }
 
+     cnt1 = rte_kvargs_count(kvlist, FILTER_CAPLEN);
+    if (cnt1 == 1) {
+        v.min = 64;
+        v.max = 0xFFFFFFFF;
+        ret = rte_kvargs_process(kvlist, FILTER_CAPLEN,
+                &__parse_uint_value, &v);
+        if (ret < 0)
+            goto free_kvlist;
+        dp_filter->snaplen = v.val;
+        dp_filter->filter_flags |= FILTER_CAPLEN_FLAGS;
+    }
     dump_pdump_filter(dp_filter);
     return 0;
 

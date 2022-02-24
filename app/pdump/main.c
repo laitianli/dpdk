@@ -68,8 +68,11 @@
 #define MAX_LONG_OPT_SZ 64
 #define RING_SIZE 16384
 #define SIZE 256
+#define VDEV_ARGS_SIZE 1024
 #define BURST_SIZE 32
 #define NUM_VDEVS 2
+#define PCAP_MIN_SNAPLEN 64
+
 /* Maximum delay for exiting after primary process. */
 #define MONITOR_INTERVAL (500 * 1000)
 
@@ -501,16 +504,21 @@ disable_pdump(struct pdump_tuples *pt)
 static inline int pdump_filter_count_size(struct rte_mbuf **pkts, uint16_t nb_in_deq)
 {
     int ret = 1;
+    int i = 0;
+    int data_len = 0;
     if (likely(!dp_filter || !(dp_filter->filter_flags &
             (FILTER_COUNT_FLAGS | FILTER_SIZE_FLAGS | FILTER_FILE_SPLIT_FLAGS)))) {
         return 1;
     }
     if (dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS) {
-        int i = 0;
         for (i = 0; i < nb_in_deq; i++) {
-            pdump_cs.pdump_one_split_size += rte_pktmbuf_pkt_len(pkts[i]);
+            data_len = rte_pktmbuf_pkt_len(pkts[i]);
+            if (dp_filter->filter_flags & FILTER_CAPLEN_FLAGS) {
+                if (data_len > dp_filter->snaplen)
+                    data_len = dp_filter->snaplen;
+            }
+            pdump_cs.pdump_one_split_size += data_len;
         }
-        pdump_cs.pdump_size += pdump_cs.pdump_one_split_size;
         ret = 2;
     }
     if (dp_filter->filter_flags & FILTER_COUNT_FLAGS) {
@@ -521,12 +529,16 @@ static inline int pdump_filter_count_size(struct rte_mbuf **pkts, uint16_t nb_in
         }
     }
     if (dp_filter->filter_flags & FILTER_SIZE_FLAGS) {
-        int i = 0;
         for (i = 0; i < nb_in_deq; i++) {
-            pdump_cs.pdump_size += rte_pktmbuf_pkt_len(pkts[i]);
+            data_len = rte_pktmbuf_pkt_len(pkts[i]);
+            if (dp_filter->filter_flags & FILTER_CAPLEN_FLAGS) {
+                if (data_len > dp_filter->snaplen)
+                    data_len = dp_filter->snaplen;
+            }
+            pdump_cs.pdump_size += data_len;
         }
         if (pdump_cs.pdump_size >= dp_filter->cs.size) {
-            printf("\033[32m [Info] recv packet size: %d, will exit dpdk-pdump...\033[0m \n", pdump_cs.pdump_size);
+            printf("\033[32m [Info] recv packet total size: %d, will exit dpdk-pdump...\033[0m \n", pdump_cs.pdump_size);
             ret = 0;
         }
     }
@@ -583,14 +595,24 @@ cleanup_rings(void)
     for (i = 0; i < num_tuples; i++) {
         pt = &pdump_t[i];
 
-        if (pt->device_id)
+        if (pt->device_id) {
             free(pt->device_id);
+            pt->device_id = NULL;
+        }
 
         /* free the rings */
-        if (pt->rx_ring)
+        if (pt->rx_ring) {
             rte_ring_free(pt->rx_ring);
-        if (pt->tx_ring)
+            pt->rx_ring = NULL;
+        }
+        if (pt->tx_ring) {
             rte_ring_free(pt->tx_ring);
+            pt->tx_ring = NULL;
+        }
+        if (pt->mp) {
+            rte_mempool_free(pt->mp);
+            pt->mp = NULL;
+        }
     }
 }
 
@@ -709,197 +731,309 @@ configure_vdev(uint16_t port_id)
     return 0;
 }
 
+static const char* add_index_to_filename(const char* file_path, char* new_file_path, int size, int index)
+{
+    char tmp_buf[256] = {0};
+    snprintf(tmp_buf, sizeof(tmp_buf) - 1, "%s", file_path);
+    char* p = strstr(tmp_buf, ".pcap");
+    if (p) {
+        *p = '\0';
+        snprintf(new_file_path, size, "%s_%03d%s", tmp_buf, index, ".pcap");
+    }
+    else {
+        snprintf(new_file_path, size, "%s_%03d", tmp_buf, index);
+    }
+    return new_file_path;
+}
+
+static int
+get_vdev_rx_args(char* vdev_args, int size, struct pdump_tuples* pt)
+{
+    static int index = 0;
+    int args_len = 0;
+    char new_file_name[SIZE] = {0};
+    if (!vdev_args || size < 0)
+        return -1;
+    char* str = pt->rx_dev;
+
+    if (dp_filter &&
+        (dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS)) {
+        add_index_to_filename(str, new_file_name, sizeof(new_file_name) - 1, index++);
+        str = new_file_name;
+    }
+
+    if (pt->rx_vdev_stream_type == IFACE) {
+        args_len += snprintf(vdev_args + args_len, size - args_len,
+                VDEV_IFACE_ARGS_FMT, str);
+    }
+    else {
+        args_len += snprintf(vdev_args + args_len, size - args_len,
+                VDEV_PCAP_ARGS_FMT, str);
+    }
+
+    if (dp_filter &&
+        (dp_filter->filter_flags & FILTER_CAPLEN_FLAGS) &&
+         dp_filter->snaplen >= 64) {
+        args_len += snprintf(vdev_args + args_len, size - args_len,
+            ","FILTER_CAPLEN"=%d", dp_filter->snaplen);
+        printf("[%s:%d] vdev_args: %s\n", __func__, __LINE__ , vdev_args);
+    }
+    return args_len;
+}
+
+static int
+get_vdev_tx_args(char* vdev_args, int size, struct pdump_tuples* pt)
+{
+    static int index = 0;
+    int args_len = 0;
+    char new_file_name[SIZE] = {0};
+    if (!vdev_args || size < 0)
+        return -1;
+    char* str = pt->tx_dev;
+    if (dp_filter &&
+        (dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS)) {
+        add_index_to_filename(str, new_file_name, sizeof(new_file_name) - 1, index++);
+        str = new_file_name;
+    }
+    if (pt->tx_vdev_stream_type == IFACE) {
+        args_len += snprintf(vdev_args + args_len, size - args_len,
+                VDEV_IFACE_ARGS_FMT, str);
+    }
+    else {
+        args_len += snprintf(vdev_args + args_len, size  - args_len,
+                VDEV_PCAP_ARGS_FMT, str);
+    }
+    if(dp_filter && dp_filter->snaplen >= PCAP_MIN_SNAPLEN) {
+        args_len += snprintf(vdev_args + args_len, size  - args_len,
+            ","FILTER_CAPLEN"=%d", dp_filter->snaplen);
+        printf("[%s:%d] vdev_args: %s\n", __func__, __LINE__, vdev_args);
+    }
+    return args_len;
+}
+
+static void create_mp_ring(struct pdump_tuples *pt, int i)
+{
+    struct rte_mempool *mbuf_pool = NULL;
+    char ring_name[SIZE];
+    char mempool_name[SIZE];
+    snprintf(mempool_name, SIZE, MP_NAME, i);
+    mbuf_pool = rte_mempool_lookup(mempool_name);
+    if (mbuf_pool == NULL) {
+        /* create mempool */ /* 创建内存池，操作集名: ring_mp_mc */
+        mbuf_pool = rte_pktmbuf_pool_create_by_ops(mempool_name,
+                pt->total_num_mbufs,
+                MBUF_POOL_CACHE_SIZE, 0,
+                pt->mbuf_data_size,
+                rte_socket_id(), "ring_mp_mc");
+        if (mbuf_pool == NULL) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE,
+                "Mempool creation failed: %s\n",
+                rte_strerror(rte_errno));
+        }
+    }
+    pt->mp = mbuf_pool;
+
+    if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
+        /* if captured packets has to send to the same vdev */
+        /* create rx_ring */ /* 创建rx环形队列 */
+        snprintf(ring_name, SIZE, RX_RING, i);
+        pt->rx_ring = rte_ring_create(ring_name, pt->ring_size,
+                rte_socket_id(), 0);
+        if (pt->rx_ring == NULL) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE, "%s:%s:%d\n",
+                    rte_strerror(rte_errno),
+                    __func__, __LINE__);
+        }
+
+        /* create tx_ring */ /* 创建tx环形队列 */
+        snprintf(ring_name, SIZE, TX_RING, i);
+        pt->tx_ring = rte_ring_create(ring_name, pt->ring_size,
+                rte_socket_id(), 0);
+        if (pt->tx_ring == NULL) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE, "%s:%s:%d\n",
+                    rte_strerror(rte_errno),
+                    __func__, __LINE__);
+        }
+    } else if (pt->dir == RTE_PDUMP_FLAG_RX) {
+        /* create rx_ring */
+        snprintf(ring_name, SIZE, RX_RING, i);
+        pt->rx_ring = rte_ring_create(ring_name, pt->ring_size,
+                rte_socket_id(), 0);
+        if (pt->rx_ring == NULL) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE, "%s\n",
+                rte_strerror(rte_errno));
+        }
+    } else if (pt->dir == RTE_PDUMP_FLAG_TX) {
+        /* create tx_ring */
+        snprintf(ring_name, SIZE, TX_RING, i);
+        pt->tx_ring = rte_ring_create(ring_name, pt->ring_size,
+                rte_socket_id(), 0);
+        if (pt->tx_ring == NULL) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE, "%s\n",
+                rte_strerror(rte_errno));
+        }
+    }
+}
+
+static int create_new_vdev(struct pdump_tuples* pt, int index)
+{
+    uint16_t portid = 0;
+    char vdev_name[SIZE];
+    char vdev_args[VDEV_ARGS_SIZE];
+    int ret = 0;
+    int args_len = 0;
+
+    if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
+        /* 创建虚拟设备名 */
+        /* create vdevs */
+        snprintf(vdev_name, sizeof(vdev_name),/* net_pcap_rx_0 */
+             VDEV_NAME_FMT, RX_STR, index);
+        args_len = get_vdev_rx_args(vdev_args, sizeof(vdev_args), pt);
+        if (args_len <= 0) {
+           RTE_LOG(CRIT, EAL, "vdev args error:%s:%d\n",
+                __func__, __LINE__);
+           ret = -1;
+           goto error;
+        }
+        if (rte_eal_hotplug_add("vdev", vdev_name,/* 热添加虚拟设备 */
+                    vdev_args) < 0) {
+            RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
+                __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        /* 获取虚拟设备的portid */
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_rx_vdev_id = portid;
+        /* 配置虚拟设备 */
+        /* configure vdev */
+        configure_vdev(pt->new_rx_vdev_id);
+
+        if (pt->single_pdump_dev)/* 若是保存单一文件，则tx的虚拟设备id与rx的一样 */
+            pt->new_tx_vdev_id = portid;
+        else {
+            snprintf(vdev_name, sizeof(vdev_name),
+                 VDEV_NAME_FMT, TX_STR, index);
+            args_len = get_vdev_tx_args(vdev_args, sizeof(vdev_args), pt);
+            if (args_len <= 0) {
+                RTE_LOG(CRIT, EAL, "vdev args error:%s:%d\n",
+                    __func__, __LINE__);
+                ret = -1;
+                goto error;
+            }
+
+            if (rte_eal_hotplug_add("vdev", vdev_name,
+                        vdev_args) < 0) {
+                RTE_LOG(CRIT, EAL, "vdev creation failed:"
+                    "%s:%d\n", __func__, __LINE__);
+                ret = -1;
+                goto error;
+            }
+            if (rte_eth_dev_get_port_by_name(vdev_name,
+                    &portid) != 0) {
+                rte_eal_hotplug_remove("vdev",
+                               vdev_name);
+                RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                    vdev_name, __func__, __LINE__);
+                ret = -1;
+                goto error;
+            }
+            pt->new_tx_vdev_id = portid;
+
+            /* configure vdev */
+            configure_vdev(pt->new_tx_vdev_id);
+        }
+    } else if (pt->dir == RTE_PDUMP_FLAG_RX) {
+        snprintf(vdev_name, sizeof(vdev_name),
+             VDEV_NAME_FMT, RX_STR, index);
+        args_len = get_vdev_rx_args(vdev_args, sizeof(vdev_args), pt);
+        if (args_len <= 0) {
+            RTE_LOG(CRIT, EAL, "vdev args error:%s:%d\n",
+                __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        if (rte_eal_hotplug_add("vdev", vdev_name,
+                    vdev_args) < 0) {
+           RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
+                __func__, __LINE__);
+           ret = -1;
+           goto error;
+        }
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_rx_vdev_id = portid;
+        /* configure vdev */
+        configure_vdev(pt->new_rx_vdev_id);
+    } else if (pt->dir == RTE_PDUMP_FLAG_TX) {
+        snprintf(vdev_name, sizeof(vdev_name),
+             VDEV_NAME_FMT, TX_STR, index);
+        args_len = get_vdev_tx_args(vdev_args, sizeof(vdev_args), pt);
+        if (args_len <= 0) {
+            RTE_LOG(CRIT, EAL, "vdev args error:%s:%d\n",
+                __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        if (rte_eal_hotplug_add("vdev", vdev_name, vdev_args) < 0) {
+            RTE_LOG(CRIT, EAL, "vdev creation failed\n");
+            ret = -1;
+            goto error;
+        }
+        if (rte_eth_dev_get_port_by_name(vdev_name,
+                         &portid) != 0) {
+            rte_eal_hotplug_remove("vdev", vdev_name);
+            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
+                vdev_name, __func__, __LINE__);
+            ret = -1;
+            goto error;
+        }
+        pt->new_tx_vdev_id = portid;
+        /* configure vdev */
+        configure_vdev(pt->new_tx_vdev_id);
+    }
+    return 0;
+error:
+    printf("[%s:%d] error\n", __func__, __LINE__);
+    return ret;
+}
+
 static void
 create_mp_ring_vdev(void)
 {
     int i;
-    uint16_t portid;
+    int ret = 0;
     struct pdump_tuples *pt = NULL;
-    struct rte_mempool *mbuf_pool = NULL;
-    char vdev_name[SIZE];
-    char vdev_args[SIZE];
-    char ring_name[SIZE];
-    char mempool_name[SIZE];
-
     for (i = 0; i < num_tuples; i++) {
         pt = &pdump_t[i];
-        snprintf(mempool_name, SIZE, MP_NAME, i);
-        mbuf_pool = rte_mempool_lookup(mempool_name);
-        if (mbuf_pool == NULL) {
-            /* create mempool */ /* 创建内存池，操作集名: ring_mp_mc */
-            mbuf_pool = rte_pktmbuf_pool_create_by_ops(mempool_name,
-                    pt->total_num_mbufs,
-                    MBUF_POOL_CACHE_SIZE, 0,
-                    pt->mbuf_data_size,
-                    rte_socket_id(), "ring_mp_mc");
-            if (mbuf_pool == NULL) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "Mempool creation failed: %s\n",
-                    rte_strerror(rte_errno));
-            }
+        create_mp_ring(pt, i);
+        ret = create_new_vdev(pt, i);
+        if (ret < 0) {
+            cleanup_rings();
+            rte_exit(EXIT_FAILURE,
+                "vdev creation failed: %s\n",
+                rte_strerror(rte_errno));
         }
-        pt->mp = mbuf_pool;
-
-        if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
-            /* if captured packets has to send to the same vdev */
-            /* create rx_ring */ /* 创建rx环形队列 */
-            snprintf(ring_name, SIZE, RX_RING, i);
-            pt->rx_ring = rte_ring_create(ring_name, pt->ring_size,
-                    rte_socket_id(), 0);
-            if (pt->rx_ring == NULL) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE, "%s:%s:%d\n",
-                        rte_strerror(rte_errno),
-                        __func__, __LINE__);
-            }
-
-            /* create tx_ring */ /* 创建tx环形队列 */
-            snprintf(ring_name, SIZE, TX_RING, i);
-            pt->tx_ring = rte_ring_create(ring_name, pt->ring_size,
-                    rte_socket_id(), 0);
-            if (pt->tx_ring == NULL) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE, "%s:%s:%d\n",
-                        rte_strerror(rte_errno),
-                        __func__, __LINE__);
-            }
-            /* 创建虚拟设备名 */
-            /* create vdevs */
-            snprintf(vdev_name, sizeof(vdev_name),/* net_pcap_rx_0 */
-                 VDEV_NAME_FMT, RX_STR, i);
-            (pt->rx_vdev_stream_type == IFACE) ?
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_IFACE_ARGS_FMT, pt->rx_dev) :
-            snprintf(vdev_args, sizeof(vdev_args),/* rx_pcap=/root/rx.pcap */
-                 VDEV_PCAP_ARGS_FMT, pt->rx_dev);
-            if (rte_eal_hotplug_add("vdev", vdev_name,/* 热添加虚拟设备 */
-                        vdev_args) < 0) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "vdev creation failed:%s:%d\n",
-                    __func__, __LINE__);
-            }
-            /* 获取虚拟设备的portid */
-            if (rte_eth_dev_get_port_by_name(vdev_name,
-                             &portid) != 0) {
-                rte_eal_hotplug_remove("vdev", vdev_name);
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "cannot find added vdev %s:%s:%d\n",
-                    vdev_name, __func__, __LINE__);
-            }
-            pt->rx_vdev_id = portid;
-            /* 配置虚拟设备 */
-            /* configure vdev */
-            configure_vdev(pt->rx_vdev_id);
-
-            if (pt->single_pdump_dev)/* 若是保存单一文件，则tx的虚拟设备id与rx的一样 */
-                pt->tx_vdev_id = portid;
-            else {
-                snprintf(vdev_name, sizeof(vdev_name),
-                     VDEV_NAME_FMT, TX_STR, i);
-                (pt->rx_vdev_stream_type == IFACE) ?
-                snprintf(vdev_args, sizeof(vdev_args),
-                     VDEV_IFACE_ARGS_FMT, pt->tx_dev) :
-                snprintf(vdev_args, sizeof(vdev_args),
-                     VDEV_PCAP_ARGS_FMT, pt->tx_dev);
-                if (rte_eal_hotplug_add("vdev", vdev_name,
-                            vdev_args) < 0) {
-                    cleanup_rings();
-                    rte_exit(EXIT_FAILURE,
-                        "vdev creation failed:"
-                        "%s:%d\n", __func__, __LINE__);
-                }
-                if (rte_eth_dev_get_port_by_name(vdev_name,
-                        &portid) != 0) {
-                    rte_eal_hotplug_remove("vdev",
-                                   vdev_name);
-                    cleanup_rings();
-                    rte_exit(EXIT_FAILURE,
-                        "cannot find added vdev %s:%s:%d\n",
-                        vdev_name, __func__, __LINE__);
-                }
-                pt->tx_vdev_id = portid;
-
-                /* configure vdev */
-                configure_vdev(pt->tx_vdev_id);
-            }
-        } else if (pt->dir == RTE_PDUMP_FLAG_RX) {
-
-            /* create rx_ring */
-            snprintf(ring_name, SIZE, RX_RING, i);
-            pt->rx_ring = rte_ring_create(ring_name, pt->ring_size,
-                    rte_socket_id(), 0);
-            if (pt->rx_ring == NULL) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE, "%s\n",
-                    rte_strerror(rte_errno));
-            }
-
-            snprintf(vdev_name, sizeof(vdev_name),
-                 VDEV_NAME_FMT, RX_STR, i);
-            (pt->rx_vdev_stream_type == IFACE) ?
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_IFACE_ARGS_FMT, pt->rx_dev) :
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_PCAP_ARGS_FMT, pt->rx_dev);
-            if (rte_eal_hotplug_add("vdev", vdev_name,
-                        vdev_args) < 0) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "vdev creation failed:%s:%d\n",
-                    __func__, __LINE__);
-            }
-            if (rte_eth_dev_get_port_by_name(vdev_name,
-                             &portid) != 0) {
-                rte_eal_hotplug_remove("vdev", vdev_name);
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "cannot find added vdev %s:%s:%d\n",
-                    vdev_name, __func__, __LINE__);
-            }
-            pt->rx_vdev_id = portid;
-            /* configure vdev */
-            configure_vdev(pt->rx_vdev_id);
-        } else if (pt->dir == RTE_PDUMP_FLAG_TX) {
-
-            /* create tx_ring */
-            snprintf(ring_name, SIZE, TX_RING, i);
-            pt->tx_ring = rte_ring_create(ring_name, pt->ring_size,
-                    rte_socket_id(), 0);
-            if (pt->tx_ring == NULL) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE, "%s\n",
-                    rte_strerror(rte_errno));
-            }
-
-            snprintf(vdev_name, sizeof(vdev_name),
-                 VDEV_NAME_FMT, TX_STR, i);
-            (pt->tx_vdev_stream_type == IFACE) ?
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_IFACE_ARGS_FMT, pt->tx_dev) :
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_PCAP_ARGS_FMT, pt->tx_dev);
-            if (rte_eal_hotplug_add("vdev", vdev_name,
-                        vdev_args) < 0) {
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "vdev creation failed\n");
-            }
-            if (rte_eth_dev_get_port_by_name(vdev_name,
-                             &portid) != 0) {
-                rte_eal_hotplug_remove("vdev", vdev_name);
-                cleanup_rings();
-                rte_exit(EXIT_FAILURE,
-                    "cannot find added vdev %s:%s:%d\n",
-                    vdev_name, __func__, __LINE__);
-            }
-            pt->tx_vdev_id = portid;
-
-            /* configure vdev */
-            configure_vdev(pt->tx_vdev_id);
-        }
+        pt->rx_vdev_id = pt->new_rx_vdev_id;
+        pt->tx_vdev_id = pt->new_tx_vdev_id;
     }
 }
 /* 使能pdump */
@@ -982,164 +1116,16 @@ static void close_vdev(struct pdump_tuples *pt)
     }
 }
 
-static const char* add_index_to_filename(const char* file_path, char* new_file_path, int size, int index)
-{
-    char tmp_buf[256] = {0};
-    snprintf(tmp_buf, sizeof(tmp_buf) - 1, "%s", file_path);
-    char* p = strstr(tmp_buf, ".pcap");
-    if (p) {
-        *p = '\0';
-        snprintf(new_file_path, size, "%s_%d%s", tmp_buf, index, ".pcap");
-    }
-    else {
-        snprintf(new_file_path, size, "%s_%d", tmp_buf, index);
-    }
-    return new_file_path;
-}
-
-static int create_new_vdev(struct pdump_tuples* pt, int index)
-{
-    uint16_t portid = 0;
-    char vdev_name[SIZE];
-    char vdev_args[SIZE];
-    char new_file_name[SIZE + 1];
-    int ret = 0;
-
-    if (pt->dir == RTE_PDUMP_FLAG_RXTX) {
-        /* 创建虚拟设备名 */
-        /* create vdevs */
-        snprintf(vdev_name, sizeof(vdev_name),/* net_pcap_rx_0 */
-             VDEV_NAME_FMT, RX_STR, index);
-        add_index_to_filename(pt->rx_dev, new_file_name, sizeof(new_file_name) - 1, index);
-        (pt->rx_vdev_stream_type == IFACE) ?
-        snprintf(vdev_args, sizeof(vdev_args),
-             VDEV_IFACE_ARGS_FMT, new_file_name) :
-        snprintf(vdev_args, sizeof(vdev_args),/* rx_pcap=/root/rx.pcap */
-             VDEV_PCAP_ARGS_FMT, new_file_name);
-        printf("vdev_args: %s\n", vdev_args);
-        if (rte_eal_hotplug_add("vdev", vdev_name,/* 热添加虚拟设备 */
-                    vdev_args) < 0) {
-            RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
-                __func__, __LINE__);
-            ret = -1;
-            goto error;
-        }
-        /* 获取虚拟设备的portid */
-        if (rte_eth_dev_get_port_by_name(vdev_name,
-                         &portid) != 0) {
-            rte_eal_hotplug_remove("vdev", vdev_name);
-            printf("cannot find added vdev %s:%s:%d\n",
-                vdev_name, __func__, __LINE__);
-            ret = -1;
-            goto error;
-        }
-        pt->new_rx_vdev_id = portid;
-        /* 配置虚拟设备 */
-        /* configure vdev */
-        configure_vdev(pt->new_rx_vdev_id);
-
-        if (pt->single_pdump_dev)/* 若是保存单一文件，则tx的虚拟设备id与rx的一样 */
-            pt->new_tx_vdev_id = portid;
-        else {
-            snprintf(vdev_name, sizeof(vdev_name),
-                 VDEV_NAME_FMT, TX_STR, index);
-            add_index_to_filename(pt->tx_dev, new_file_name, sizeof(new_file_name) - 1, index);
-            (pt->rx_vdev_stream_type == IFACE) ?
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_IFACE_ARGS_FMT, new_file_name) :
-            snprintf(vdev_args, sizeof(vdev_args),
-                 VDEV_PCAP_ARGS_FMT, new_file_name);
-            printf("vdev_args: %s\n", vdev_args);
-            if (rte_eal_hotplug_add("vdev", vdev_name,
-                        vdev_args) < 0) {
-                RTE_LOG(CRIT, EAL, "vdev creation failed:"
-                    "%s:%d\n", __func__, __LINE__);
-                ret = -1;
-                goto error;
-            }
-            if (rte_eth_dev_get_port_by_name(vdev_name,
-                    &portid) != 0) {
-                rte_eal_hotplug_remove("vdev",
-                               vdev_name);
-                RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
-                    vdev_name, __func__, __LINE__);
-                ret = -1;
-                goto error;
-            }
-            pt->new_tx_vdev_id = portid;
-
-            /* configure vdev */
-            configure_vdev(pt->new_tx_vdev_id);
-        }
-    } else if (pt->dir == RTE_PDUMP_FLAG_RX) {
-        snprintf(vdev_name, sizeof(vdev_name),
-             VDEV_NAME_FMT, RX_STR, index);
-        add_index_to_filename(pt->rx_dev, new_file_name, sizeof(new_file_name) - 1, index);
-        (pt->rx_vdev_stream_type == IFACE) ?
-        snprintf(vdev_args, sizeof(vdev_args),
-             VDEV_IFACE_ARGS_FMT, new_file_name) :
-        snprintf(vdev_args, sizeof(vdev_args),
-             VDEV_PCAP_ARGS_FMT, new_file_name);
-        printf("vdev_args: %s\n", vdev_args);
-        if (rte_eal_hotplug_add("vdev", vdev_name,
-                    vdev_args) < 0) {
-           RTE_LOG(CRIT, EAL, "vdev creation failed:%s:%d\n",
-                __func__, __LINE__);
-           ret = -1;
-           goto error;
-        }
-        if (rte_eth_dev_get_port_by_name(vdev_name,
-                         &portid) != 0) {
-            rte_eal_hotplug_remove("vdev", vdev_name);
-            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
-                vdev_name, __func__, __LINE__);
-            ret = -1;
-            goto error;
-        }
-        pt->new_rx_vdev_id = portid;
-        /* configure vdev */
-        configure_vdev(pt->new_rx_vdev_id);
-    } else if (pt->dir == RTE_PDUMP_FLAG_TX) {
-        snprintf(vdev_name, sizeof(vdev_name),
-             VDEV_NAME_FMT, TX_STR, index);
-        add_index_to_filename(pt->tx_dev, new_file_name, sizeof(new_file_name) - 1, index);
-        (pt->tx_vdev_stream_type == IFACE) ?
-        snprintf(vdev_args, sizeof(vdev_args),
-             VDEV_IFACE_ARGS_FMT, new_file_name) :
-        snprintf(vdev_args, sizeof(vdev_args),
-             VDEV_PCAP_ARGS_FMT, new_file_name);
-        printf("vdev_args: %s\n", vdev_args);
-        if (rte_eal_hotplug_add("vdev", vdev_name, vdev_args) < 0) {
-            RTE_LOG(CRIT, EAL, "vdev creation failed\n");
-            ret = -1;
-            goto error;
-        }
-        if (rte_eth_dev_get_port_by_name(vdev_name,
-                         &portid) != 0) {
-            rte_eal_hotplug_remove("vdev", vdev_name);
-            RTE_LOG(CRIT, EAL, "cannot find added vdev %s:%s:%d\n",
-                vdev_name, __func__, __LINE__);
-            ret = -1;
-            goto error;
-        }
-        pt->new_tx_vdev_id = portid;
-        /* configure vdev */
-        configure_vdev(pt->new_tx_vdev_id);
-    }
-    ret = 0;
-error:
-    return ret;
-}
-
 static int split_pcap_file(struct pdump_tuples *pt)
 {
-#define SPLIT_SIZE 536870912 /* 512MB */
-
-    static int index = 1;
+//#define SPLIT_SIZE 209715200 /* 200MB */
+#define SPLIT_SIZE (2*1024*1024) /* 2MB */
     if (likely(!dp_filter || !(dp_filter->filter_flags & FILTER_FILE_SPLIT_FLAGS))) {
         return 1;
     }
-    if (pdump_cs.pdump_one_split_size >= SPLIT_SIZE) {
+    static int index = 5;
+    if ((typeof(dp_filter->split_size))pdump_cs.pdump_one_split_size >=
+                                                dp_filter->split_size) {
         pdump_cs.pdump_one_split_size = 0;
         if(!create_new_vdev(pt, index++)) {
             close_vdev(pt);

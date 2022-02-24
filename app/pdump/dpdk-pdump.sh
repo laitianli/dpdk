@@ -22,6 +22,8 @@ useage()
 	str1_3_3="\t  3.3 端口过滤参数格式：（三选一）\n\t\t -port     <port1>/.../<port8> : 指定端口列表，最多8个，端口间用符号\"/\"分隔。\n\t\t -port_src <port1>/.../<port8>  : 指定源端口列表，最多8个，端口间用符号\"/\"分隔。\n\t\t -port_dst <port1>/.../<port8>  : 指定目的端口列表，最多8个，端口间用符号\"/\"分隔。"
 	str1_3_4="\t  3.4 协议名过滤参数格式：        \n\t\t -proto  <arp>/<icmp>/<tcp>/<udp> : 指定协议列表，最多8个，协议间用符号\"/\"分隔。"
 	str1_4="\t4.支持按数据包个数和抓取数据总大小：（二选一）\n\t\t -c <count>       : 指定抓取的数据包个数。\n\t\t -s <size><K/M/G> : 指定抓取的数据总大小。"
+	str1_5="\t5.支持按指定数据包长度保存文件： \n\t\t -caplen <packet_len> : 指定保存文件的每一个数据包长度。"
+	str1_6="\t6.支持按指定文件大小分割抓包文件： \n\t\t -split <pcap_size><K/M/G> : 指定每个抓包文件.pcap大小。"
 	str2="【示    例】"
 	str_example1="\t[01] ./dpdk-pdump.sh -pcieid $OFP_NETDEV -c 1000  #从网口[ $OFP_NETDEV ]抓取1000个数包。"
 	str_example2="\t[02] ./dpdk-pdump.sh -pcieid $OFP_NETDEV -s 100M  #从网口[ $OFP_NETDEV ]抓取100MB数据。"
@@ -40,6 +42,7 @@ useage()
 			#抓取MAC地址是00:01:13:11:22:33或00:ab:ac:1a:1b:bb，且IP是10.88.20.127或10.88.20.98，且端口是2154或1235或9999的UDP报文，共抓取1000个包。"
 	str_example14="\t[14] ./dpdk-pdump.sh -pcieid $OFP_NETDEV -s 500M -ether "00:01:13:11:22:33/00:ab:ac:1a:1b:bb" -host "10.88.20.127/10.88.20.98" -port "2154/1235/9999" -proto "udp"
 			#抓取MAC地址是00:01:13:11:22:33或00:ab:ac:1a:1b:bb，且IP是10.88.20.127或10.88.20.98，且端口是2154或1235或9999的UDP报文，共抓取500Mo数据。"
+	str_example15="\t[15] ./dpdk-pdump.sh -pcieid $OFP_NETDEV -caplen 200 -split 100M -s 10G  #从网口[ $OFP_NETDEV ]抓取每个数据包长100B，每个.pcap文件大小为100M, 总共抓取10G的数据。"
 
 	echo -e "\033[36m $str_title \033[0m"
 	echo ""
@@ -52,6 +55,8 @@ useage()
 	echo -e "\033[36m $str1_3_3 \033[0m"
 	echo -e "\033[36m $str1_3_4 \033[0m"
 	echo -e "\033[36m $str1_4 \033[0m"
+	echo -e "\033[36m $str1_5 \033[0m"
+	echo -e "\033[36m $str1_6 \033[0m"
 	echo ""
 	echo -e "\033[36m $str2 \033[0m"
 	echo -e "\033[36m $str_example1 \033[0m"
@@ -68,6 +73,7 @@ useage()
 	echo -e "\033[36m $str_example12 \033[0m"
 	echo -e "\033[36m $str_example13 \033[0m"
 	echo -e "\033[36m $str_example14 \033[0m"
+	echo -e "\033[36m $str_example15 \033[0m"
 	echo ""
 	echo -e "\033[36m $str_t_end \033[0m"
  }
@@ -140,6 +146,11 @@ main()
 
     if [ ! -z "$split" ];then
         filter+="split=$split"
+        filter+=","
+    fi
+
+    if [ ! -z "$caplen" ];then
+        filter+="caplen=$caplen"
         filter+=","
     fi
 
